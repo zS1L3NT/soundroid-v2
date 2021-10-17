@@ -21,7 +21,7 @@
 		"spotify-web-api-node": "^5.0.2",
 		"uuid": "^8.3.2",
 		"youtube-music-api": "^1.0.6",
-		"ytdl-core": "^4.9.0"
+		"ytdl-core": "^4.9.1"
 	},
 	"engines": {
 		"node": ">=0.12"
