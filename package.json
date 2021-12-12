@@ -1,5 +1,5 @@
 {
-	"name": "web-node-soundroid",
+	"name": "web-express-soundroid",
 	"version": "1.0.0",
 	"description": "Node API for SounDroid",
 	"main": "build/app.js",
