@@ -1,7 +1,7 @@
 import admin from "firebase-admin"
-import getImageColor from "../../functions/getImageColor"
+import getImageColor from "../functions/getImageColor"
 import { Request, Response } from "express"
-import { Song } from "../../types"
+import { Song } from "../types"
 
 const db = admin.firestore()
 

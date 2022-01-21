@@ -1,4 +1,4 @@
-import { cache } from "../../app"
+import { cache } from "../app"
 import { Request, Response } from "express"
 
 export const GET = async (req: Request, res: Response) => {
