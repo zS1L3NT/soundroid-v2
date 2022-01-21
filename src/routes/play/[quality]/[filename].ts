@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import { Request, Response } from "express"
 import { v4 } from "uuid"
+import convertSong from "../../../functions/convertSong"
 
 export const GET = async (req: Request, res: Response) => {
 	const { quality: quality_, filename } = req.params
@@ -18,7 +19,7 @@ export const GET = async (req: Request, res: Response) => {
 		} else if (fs.existsSync(path.join(__dirname, "..", "..", "part", quality, filename!))) {
 			return res.redirect(`/part/${quality}/${filename}`)
 		} else {
-			convert_song(`convert_song_${quality}<${v4()}>:`, IDRegex[1], quality)
+			convertSong(IDRegex[1], quality)
 			setTimeout(() => {
 				res.redirect(`/part/${quality}/${filename}`)
 			}, 3000)
