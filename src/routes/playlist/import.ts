@@ -15,14 +15,17 @@ export const POST = withValidBody(
 		const link = new URL(url)
 		let data: Playlist
 
-		if (link.host !== "open.spotify.com") throw new Error("URL does not reference a playlist")
+		if (link.host !== "open.spotify.com")
+			return res.status(400).send("URL does not reference a playlist")
 
 		const playlistId = link.pathname.match(/^\/playlist\/(.*)/)?.[1]
 		const albumId = link.pathname.match(/^\/album\/(.*)/)?.[1]
 		const firestoreId = db.collection("playlists").doc().id
 
-		if (!playlistId && !albumId) throw new Error("Spotify URL does not reference a playlist")
-		if (cache.importing[userId]) throw new Error("User is already importing a playlist!")
+		if (!playlistId && !albumId)
+			return res.status(400).send("Spotify URL does not reference a playlist")
+		if (cache.importing[userId])
+			return res.status(400).send("User is already importing a playlist!")
 		cache.importing[userId] = firestoreId
 
 		const queries: [string, string][] = []
@@ -117,5 +120,7 @@ export const POST = withValidBody(
 				}
 			})
 		}
+
+		return
 	}
 )

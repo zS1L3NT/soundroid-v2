@@ -27,9 +27,9 @@ export const PUT = withValidBody<Song, Request>(
 			.where("playlistId", "==", song.playlistId)
 			.get()
 
-		if (snap.docs.length === 0) throw new Error("Document not found in database")
+		if (snap.docs.length === 0) return res.status(400).send("Document not found in database")
 
 		await songRef.doc(snap.docs[0]!.id).set(song)
-		res.status(200).send({})
+		return res.status(200).send({})
 	}
 )

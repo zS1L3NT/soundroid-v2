@@ -9,7 +9,7 @@ const db = admin.firestore()
 
 export const GET = async (req: Request, res: Response) => {
 	const playlistId = req.query.id as string
-	if (!playlistId) throw new Error("Missing Playlist ID")
+	if (!playlistId) return res.status(400).send("Missing Playlist ID")
 
 	const playlist = await cache.ytmusic_api.getPlaylistVideos(playlistId)
 	const promises: Promise<Song>[] = []
@@ -28,7 +28,7 @@ export const GET = async (req: Request, res: Response) => {
 		promises.push(song)
 	}
 
-	res.status(200).send(await Promise.all(promises))
+	return res.status(200).send(await Promise.all(promises))
 }
 
 export const POST = async (req: Request, res: Response) => {
@@ -90,12 +90,11 @@ export const PUT = withValidBody<{ playlist: Playlist; removed: string[] }, Requ
 
 		const songsColl = db.collection("songs")
 
-		if (Object.values(cache.importing).includes(newPlaylist.id)) {
-			throw new Error("Cannot edit a playlist that is being imported...")
-		}
+		if (Object.values(cache.importing).includes(newPlaylist.id))
+			return res.status(400).send("Cannot edit a playlist that is being imported...")
 
 		const snap = await db.collection("playlists").doc(newPlaylist.id).get()
-		if (!snap.exists) throw new Error("Document not found in database")
+		if (!snap.exists) return res.status(400).send("Document not found in database")
 
 		const oldPlaylist = snap.data() as Playlist
 		const promises: Promise<any>[] = removed.map(async songId => {
@@ -114,7 +113,7 @@ export const PUT = withValidBody<{ playlist: Playlist; removed: string[] }, Requ
 		await db.collection("playlists").doc(newPlaylist.id).set(newPlaylist)
 		await Promise.allSettled(promises)
 
-		res.status(200).send({})
+		return res.status(200).send({})
 	}
 )
 
@@ -129,7 +128,7 @@ export const DELETE = withValidBody(
 		const promises: Promise<any>[] = []
 
 		if (Object.values(cache.importing).includes(playlistId))
-			throw new Error("Cannot delete a playlist that is being imported...")
+			return res.status(400).send("Cannot delete a playlist that is being imported...")
 
 		songsColl
 			.where("playlistId", "==", playlistId)
@@ -138,6 +137,6 @@ export const DELETE = withValidBody(
 
 		await Promise.allSettled(promises)
 		await playlistDoc.delete()
-		res.status(200).send({})
+		return res.status(200).send({})
 	}
 )

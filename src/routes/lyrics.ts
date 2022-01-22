@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 export const GET = async (req: Request, res: Response) => {
 	const [song] = await cache.genius_api.search(req.query.query as string)
-	if (!song) throw new Error(`Could not find lyrics for this song`)
+	if (!song) return res.status(400).send(`Could not find lyrics for this song`)
 
 	const lyrics = await cache.genius_api.lyrics(song.result.id)
 	const lines: string[] = []
@@ -12,5 +12,5 @@ export const GET = async (req: Request, res: Response) => {
 		lines.push(...part.content)
 	}
 
-	res.status(200).send(lines)
+	return res.status(200).send(lines)
 }
