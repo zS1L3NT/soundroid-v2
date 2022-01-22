@@ -41,7 +41,7 @@ IO.on("connection", socket => {
 })
 
 const readRouteFolder = (folderName: string) => {
-	const folderPath = path.join(__dirname, folderName)
+	const folderPath = path.join(__dirname, "routes", folderName)
 
 	for (const entityName of fs.readdirSync(folderPath)) {
 		const [fileName, extensionName] = entityName.split(".")
@@ -62,7 +62,7 @@ const readRouteFolder = (folderName: string) => {
 	}
 }
 
-readRouteFolder("routes")
+readRouteFolder("")
 
 server.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
 
