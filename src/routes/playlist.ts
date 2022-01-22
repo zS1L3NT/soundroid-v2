@@ -1,20 +1,20 @@
 import admin from "firebase-admin"
 import getImageColor from "../functions/getImageColor"
 import { cache } from "../app"
-import { Playlist, Song } from "../types"
+import { LIST, OBJECT, OR, STRING, UNDEFINED, withValidBody } from "validate-any"
+import { Playlist, Song } from "../types.d"
 import { Request, Response } from "express"
-import { v4 } from "uuid"
 
 const db = admin.firestore()
 
 export const GET = async (req: Request, res: Response) => {
-	const id = req.query.id as string
-	if (!id) throw new Error("Missing Playlist ID")
+	const playlistId = req.query.id as string
+	if (!playlistId) throw new Error("Missing Playlist ID")
 
-	const album = await cache.ytmusic_api.getAlbum(id)
+	const playlist = await cache.ytmusic_api.getPlaylistVideos(playlistId)
 	const promises: Promise<Song>[] = []
 
-	for (const track of album.songs) {
+	for (const track of playlist) {
 		const song: Promise<Song> = (async () => ({
 			type: "Song",
 			songId: track.videoId || "",
@@ -22,113 +22,122 @@ export const GET = async (req: Request, res: Response) => {
 			artiste: track.artists.map(a => a.name).join(", "),
 			cover: track.thumbnails.at(-1)?.url || "",
 			colorHex: await getImageColor(track.thumbnails.at(-1)?.url || ""),
-			playlistId: id,
+			playlistId,
 			userId: ""
 		}))()
 		promises.push(song)
 	}
+
 	res.status(200).send(await Promise.all(promises))
 }
 
 export const POST = async (req: Request, res: Response) => {
 	const playlist = req.body as Playlist
 
-	const songs = await playlist_songs(`playlist_songs<${v4()}>`, playlist.id, cache.ytmusic_api)
-
 	const playlistColl = db.collection("playlists")
 	const songsColl = db.collection("songs")
-	const id = playlistColl.doc().id
-	const playlistDoc = playlistColl.doc(id)
+	const playlistDoc = playlistColl.doc()
 	const promises: Promise<any>[] = []
 
-	for (let i = 0; i < songs.length; i++) {
-		const song = songs[i]
+	const songs = await cache.ytmusic_api.getPlaylistVideos(playlist.id)
+
+	for (const song of songs) {
 		promises.push(
-			songsColl.add({
-				artiste: song.artiste,
-				colorHex: song.colorHex,
-				cover: song.cover,
-				songId: song.songId,
-				title: song.title,
-				playlistId: id,
-				userId: playlist.userId
-			})
+			new Promise(async () =>
+				songsColl.add({
+					songId: song.videoId || "",
+					title: song.name,
+					artiste: song.artists.map(a => a.name).join(", "),
+					cover: song.thumbnails.at(-1)?.url || "",
+					colorHex: await getImageColor(song.thumbnails.at(-1)?.url || ""),
+					playlistId: playlistDoc.id,
+					userId: playlist.userId
+				})
+			)
 		)
 	}
+
 	promises.push(
 		playlistDoc.set({
-			colorHex: playlist.colorHex,
-			cover: playlist.cover,
-			id,
+			id: playlistDoc.id,
 			name: playlist.name,
+			cover: playlist.cover,
+			colorHex: playlist.colorHex,
 			userId: playlist.userId,
-			order: songs.map(s => s.songId)
-		} as Playlist)
+			order: songs.map(s => s.videoId)
+		})
 	)
 
 	await Promise.allSettled(promises)
 	res.status(200).send({})
 }
 
-export const PUT = async (req: Request, res: Response) => {
-	const { info: newPlaylist, removed } = req.body as { info: Playlist; removed: string[] }
-	const songsColl = db.collection("songs")
+export const PUT = withValidBody<{ playlist: Playlist; removed: string[] }, Request>(
+	OBJECT({
+		playlist: OBJECT({
+			type: OR(STRING("Playlist"), UNDEFINED()),
+			id: STRING(),
+			name: STRING(),
+			cover: STRING(),
+			colorHex: STRING(),
+			userId: STRING(),
+			order: LIST(STRING())
+		}),
+		removed: LIST(STRING())
+	}),
+	async (req, res: Response) => {
+		const { playlist: newPlaylist, removed } = req.body
 
-	if (Object.values(cache.importing).includes(newPlaylist.id)) {
-		throw new Error("Cannot edit a playlist that is being imported...")
-	}
+		const songsColl = db.collection("songs")
 
-	const snap = await db.collection("playlists").doc(newPlaylist.id).get()
-
-	if (!snap.exists) {
-		throw new Error("Document not found in database")
-	}
-	const oldPlaylist = snap.data() as Playlist
-
-	const promises: Promise<any>[] = removed.map(async songId => {
-		const snaps = await songsColl
-			.where("playlistId", "==", newPlaylist.id)
-			.where("songId", "==", songId)
-			.get()
-
-		if (!snaps.empty) {
-			await songsColl.doc(snaps.docs[0]!.id).delete()
+		if (Object.values(cache.importing).includes(newPlaylist.id)) {
+			throw new Error("Cannot edit a playlist that is being imported...")
 		}
-	})
 
-	if (oldPlaylist.cover !== newPlaylist.cover) {
-		newPlaylist.colorHex = await getImageColor(newPlaylist.cover)
+		const snap = await db.collection("playlists").doc(newPlaylist.id).get()
+		if (!snap.exists) throw new Error("Document not found in database")
+
+		const oldPlaylist = snap.data() as Playlist
+		const promises: Promise<any>[] = removed.map(async songId => {
+			const snaps = await songsColl
+				.where("playlistId", "==", newPlaylist.id)
+				.where("songId", "==", songId)
+				.get()
+
+			if (!snaps.empty) await songsColl.doc(snaps.docs[0]!.id).delete()
+		})
+
+		if (oldPlaylist.cover !== newPlaylist.cover) {
+			newPlaylist.colorHex = await getImageColor(newPlaylist.cover)
+		}
+
+		await db.collection("playlists").doc(newPlaylist.id).set(newPlaylist)
+		await Promise.allSettled(promises)
+
+		res.status(200).send({})
 	}
+)
 
-	await db.collection("playlists").doc(newPlaylist.id).set(newPlaylist)
+export const DELETE = withValidBody(
+	OBJECT({ playlistId: STRING() }),
+	async (req, res: Response) => {
+		const { playlistId } = req.body
 
-	await Promise.allSettled(promises)
+		const playlistDoc = db.collection("playlists").doc(playlistId)
+		const songsColl = db.collection("songs")
 
-	res.status(200).send({})
-}
+		const promises: Promise<any>[] = []
 
-export const DELETE = async (req: Request, res: Response) => {
-	const playlistId = req.body.playlistId
+		if (Object.values(cache.importing).includes(playlistId))
+			throw new Error("Cannot delete a playlist that is being imported...")
 
-	const playlistDoc = db.collection("playlists").doc(playlistId)
-	const songsColl = db.collection("songs")
+		songsColl
+			.where("playlistId", "==", playlistId)
+			.get()
+			.then(snaps => snaps.forEach(snap => promises.push(songsColl.doc(snap.id).delete())))
 
-	const promises: Promise<any>[] = []
-
-	if (Object.values(cache.importing).includes(playlistId)) {
-		throw new Error("Cannot delete a playlist that is being imported...")
+		await Promise.allSettled(promises)
+		await playlistDoc.delete()
+		res.status(200).send({})
 	}
-
-	songsColl
-		.where("playlistId", "==", playlistId)
-		.get()
-		.then(snaps =>
-			snaps.forEach(snap => {
-				promises.push(songsColl.doc(snap.id).delete())
-			})
-		)
-
-	await Promise.allSettled(promises)
-	await playlistDoc.delete()
-	res.status(200).send({})
-}
+)

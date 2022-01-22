@@ -2,7 +2,7 @@ import getImageColor from "./getImageColor"
 import { AlbumDetailed, SongDetailed } from "ytmusic-api"
 import { cache } from "../app"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
-import { Playlist, Song } from "../types"
+import { Playlist, Song } from "../types.d"
 import { Server } from "socket.io"
 
 /**
@@ -19,7 +19,7 @@ export default async (
 
 			const playlist: Playlist = {
 				type: "Playlist",
-				id: albumDetailed.albumId,
+				id: albumDetailed.playlistId,
 				name: albumDetailed.name,
 				cover: albumDetailed.thumbnails.at(-1)?.url || "",
 				userId: "",

@@ -1,5 +1,5 @@
 import admin from "firebase-admin"
-import { Playlist, Song } from "../../types"
+import { Playlist, Song } from "../../types.d"
 import { Request, Response } from "express"
 
 const db = admin.firestore()
@@ -114,4 +114,6 @@ export const POST = async (req: Request, res: Response) => {
 	for (const IUSong of IUSongs) {
 		await db.collection("songs").add(IUSong)
 	}
+
+	res.status(200).send({})
 }

@@ -21,6 +21,7 @@
 		"socket.io": "^4.1.2",
 		"spotify-web-api-node": "^5.0.2",
 		"uuid": "^8.3.2",
+		"validate-any": "^1.2.0",
 		"youtube-music-api": "^1.0.6",
 		"ytdl-core": "^4.9.1",
 		"ytmusic-api": "^1.0.3"
