@@ -33,15 +33,9 @@ app.use("/song/lowest", express.static(path.join(__dirname, "..", "song", "lowes
 
 IO.on("connection", socket => {
 	let inactive = false
-	const sendToClient = (ev: string, tag: string, ...args: any[]) => {
-		IO.emit(ev + "_" + tag, ...args)
-	}
 
 	socket.on("search", (...args) => {
-		search(sendToClient, () => inactive, youtubeApi, ...args).then()
-	})
-	socket.onAny((...args) => {
-		console.log("Socket", args)
+		search(IO, () => inactive, args.at(0)).then()
 	})
 
 	socket.on("disconnect", () => (inactive = true))

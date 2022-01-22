@@ -1,91 +1,91 @@
-import { color_thief, Playlist, Song } from "../all"
-import { v4 } from "uuid"
+import getImageColor from "./getImageColor"
+import { AlbumDetailed, SongDetailed } from "ytmusic-api"
+import { cache } from "../app"
+import { DefaultEventsMap } from "socket.io/dist/typed-events"
+import { Playlist, Song } from "../types"
+import { Server } from "socket.io"
 
 /**
  * Endpoint to search the API for song results
- *
- * @param sendToClient
- * @param inactive
- * @param youtubeApi
- * @param args
  */
 export default async (
-	sendToClient: (event: string, tag: string, data) => void,
-	inactive: () => boolean,
-	youtubeApi,
-	...args
+	IO: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>,
+	isInactive: () => boolean,
+	query: string
 ) => {
-	const [query] = args as string[]
-	const TAG = `search<${v4()}>:`
-	if (!query) return sendToClient("error", query, "Missing query")
-	console.time(TAG)
-	console.log(TAG, "Search: " + query)
-	sendToClient("search_message", query, "Waiting for YouTube...")
+	const transformAlbum = (albumDetailed: AlbumDetailed): Promise<Playlist> => {
+		return new Promise<Playlist>(async (resolve, reject) => {
+			if (isInactive()) return reject(null)
 
-	const destroy = () => {
-		console.log(TAG, "disconnect")
-		console.timeEnd(TAG)
+			const playlist: Playlist = {
+				type: "Playlist",
+				id: albumDetailed.albumId,
+				name: albumDetailed.name,
+				cover: albumDetailed.thumbnails.at(-1)?.url || "",
+				userId: "",
+				colorHex: await getImageColor(albumDetailed.thumbnails.at(-1)?.url || ""),
+				order: (await cache.ytmusic_api.getPlaylistVideos(albumDetailed.playlistId)).map(
+					t => t.videoId || ""
+				)
+			}
+
+			IO.emit(`search_result_${query}`, playlist)
+			resolve(playlist)
+		})
 	}
 
-	console.time(TAG + " YouTube API Responded")
-	Promise.allSettled([
-		youtubeApi.search(query, "song"),
-		youtubeApi.search(query, "album")
-	]).then(async res => {
-		console.timeEnd(TAG + " YouTube API Responded")
-		sendToClient("search_message", query, "Generating gradient backgrounds...")
-		if (inactive()) return destroy()
-		if (res[0].status === "fulfilled" && res[1].status === "fulfilled") {
-			const playlists_ = res[1].value.content.filter((a: any) => a.type === "album")
-			const playlists = playlists_.slice(0, playlists_.length >= 5 ? 5 : playlists_.length)
-			const songs_ = res[0].value.content
-			const songs = songs_.slice(0, songs_.length >= 15 ? 15 : songs_.length)
+	const transformSong = (songDetailed: SongDetailed): Promise<Song> => {
+		return new Promise<Song>(async (resolve, reject) => {
+			if (isInactive()) return reject(null)
 
-			const results = await Promise.allSettled(promises(playlists, songs))
-			const successResults = results.filter(result => result.status === "fulfilled") as PromiseFulfilledResult<Song | Playlist>[]
-			const successValues = successResults.map(result => result.value)
+			const song: Song = {
+				type: "Song",
+				songId: songDetailed.videoId || "",
+				title: songDetailed.name,
+				artiste: songDetailed.artists.map(a => a.name).join(", "),
+				cover: `https://i.ytimg.com/vi/${songDetailed.videoId}/maxresdefault.jpg`,
+				colorHex: await getImageColor(
+					`https://i.ytimg.com/vi/${songDetailed.videoId}/maxresdefault.jpg`
+				),
+				playlistId: "",
+				userId: ""
+			}
 
-			if (inactive()) return destroy()
-			sendToClient("search_done", query, successValues)
-		}
-		else {
-			console.error(TAG, JSON.stringify(res, null, 2))
-			sendToClient("error", query, "Error searching on server")
-		}
-		console.timeEnd(TAG)
-	})
+			IO.emit(`search_result_${query}`, song)
+			resolve(song)
+		})
+	}
 
-	const promises: (playlists, songs) => (Promise<Song> | Promise<Playlist>)[] = (playlists, songs) =>
-		[...playlists.map(playlist => playlistPromise(playlist)), ...songs.map(song => songPromise(song))]
+	if (!query) return IO.emit(`error_${query}`, "Missing query")
+	IO.emit(`search_message_${query}`, "Waiting for YouTube...")
 
-	const playlistPromise = playlist => new Promise<Playlist>(async (resolve, reject) => {
-		if (inactive()) return reject(null)
-		const item: Playlist = {
-			type: "Playlist",
-			id: playlist.browseId,
-			name: playlist.name,
-			cover: playlist.thumbnails[playlist.thumbnails.length - 1].url,
-			userId: "",
-			colorHex: await color_thief(playlist.thumbnails[playlist.thumbnails.length - 1].url),
-			order: (await youtubeApi.getAlbum(playlist.browseId)).tracks.map(track => track.videoId)
-		}
-		sendToClient("search_result", query, item)
-		resolve(item)
-	})
+	const promises = [
+		cache.ytmusic_api.search(query, "SONG"),
+		cache.ytmusic_api.search(query, "ALBUM")
+	] as const
 
-	const songPromise = song => new Promise<Song>(async (resolve, reject) => {
-		if (inactive()) return reject(null)
-		const item: Song = {
-			type: "Song",
-			songId: song.videoId,
-			title: song.name,
-			artiste: Array.isArray(song.artist) ? song.artist.map((a: any) => a.name).join(", ") : song.artist.name,
-			cover: `https://i.ytimg.com/vi/${song.videoId}/maxresdefault.jpg`,
-			colorHex: await color_thief(`https://i.ytimg.com/vi/${song.videoId}/maxresdefault.jpg`),
-			playlistId: "",
-			userId: ""
-		}
-		sendToClient("search_result", query, item)
-		resolve(item)
-	})
+	const results = await Promise.allSettled(promises)
+	IO.emit(`search_message_${query}`, "Generating gradient backgrounds...")
+	if (isInactive()) return undefined
+
+	if (results.every(r => r.status === "fulfilled")) {
+		const [songsDetailed, albumFull] = [
+			(results[0] as PromiseFulfilledResult<SongDetailed[]>).value.slice(0, 5),
+			(results[1] as PromiseFulfilledResult<AlbumDetailed[]>).value.slice(0, 15)
+		]
+
+		const promiseData = await Promise.allSettled([
+			...songsDetailed.map(transformSong),
+			...albumFull.map(transformAlbum)
+		])
+		const fulfilledData = promiseData.filter(
+			r => r.status === "fulfilled"
+		) as PromiseFulfilledResult<Song | Playlist>[]
+		const transformedData = fulfilledData.map(r => r.value)
+
+		if (isInactive()) return undefined
+		return IO.emit(`search_done_${query}`, transformedData)
+	} else {
+		return IO.emit(`error_${query}`, "Error searching on server")
+	}
 }
