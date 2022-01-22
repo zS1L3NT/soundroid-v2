@@ -20,11 +20,11 @@ const IO = new Server(server, {
 const PORT = 5190
 ffmpeg.setFfmpegPath(require("@ffmpeg-installer/ffmpeg").path)
 admin.initializeApp({
-	credential: admin.credential.cert(require("../config.json").firebase.service_account),
+	credential: admin.credential.cert(require("./config.json").firebase.service_account),
 	databaseURL: "https://android-soundroid-default-rtdb.asia-southeast1.firebasedatabase.app"
 })
 
-app.use(express.json())
+// app.use(express.json())
 app.use("/", express.static(path.join(__dirname, "../public")))
 app.use("/part/highest", express.static(path.join(__dirname, "..", "part", "highest")))
 app.use("/part/lowest", express.static(path.join(__dirname, "..", "part", "lowest")))
@@ -42,11 +42,10 @@ IO.on("connection", socket => {
 })
 
 const readRouteFolder = (folderName: string) => {
-	const folderPath = path.join(__dirname, "./routes", folderName)
+	const folderPath = path.join(__dirname, folderName)
 
 	for (const entityName of fs.readdirSync(folderPath)) {
-		const fileName = entityName.split(".").slice(0, -1).join(".")
-		const extensionName = entityName.split(".").pop()
+		const [fileName, extensionName] = entityName.split(".")
 		const pathName = `${folderName}/${fileName}`
 
 		if (extensionName) {
@@ -64,7 +63,7 @@ const readRouteFolder = (folderName: string) => {
 	}
 }
 
-readRouteFolder("")
+readRouteFolder("routes")
 
 app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`))
 
