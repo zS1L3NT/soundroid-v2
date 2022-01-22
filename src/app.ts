@@ -1,6 +1,7 @@
 import admin from "firebase-admin"
 import Cache from "./Cache"
-import express from "express"
+import config from "./config.json"
+import express, { RequestHandler } from "express"
 import ffmpeg from "fluent-ffmpeg"
 import fs from "fs"
 import http from "http"
@@ -9,6 +10,8 @@ import search from "./functions/search"
 import { Server } from "socket.io"
 
 const app = express()
+const PORT = 5190
+
 const server = http.createServer(app)
 const IO = new Server(server, {
 	cors: {
@@ -17,19 +20,15 @@ const IO = new Server(server, {
 	pingTimeout: 60000,
 	pingInterval: 300000
 })
-const PORT = 5190
+
 ffmpeg.setFfmpegPath(require("@ffmpeg-installer/ffmpeg").path)
 admin.initializeApp({
-	credential: admin.credential.cert(require("./config.json").firebase.service_account),
-	databaseURL: "https://android-soundroid-default-rtdb.asia-southeast1.firebasedatabase.app"
+	credential: admin.credential.cert(config.firebase.service_account),
+	databaseURL: config.firebase.database_url
 })
 
-// app.use(express.json())
-app.use("/", express.static(path.join(__dirname, "../public")))
-app.use("/part/highest", express.static(path.join(__dirname, "..", "part", "highest")))
-app.use("/part/lowest", express.static(path.join(__dirname, "..", "part", "lowest")))
-app.use("/song/highest", express.static(path.join(__dirname, "..", "song", "highest")))
-app.use("/song/lowest", express.static(path.join(__dirname, "..", "song", "lowest")))
+app.use(express.json() as RequestHandler)
+app.use(express.static(path.join(__dirname, "../public")))
 
 IO.on("connection", socket => {
 	let inactive = false
@@ -65,6 +64,6 @@ const readRouteFolder = (folderName: string) => {
 
 readRouteFolder("routes")
 
-app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`))
+server.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
 
 export const cache = new Cache()
