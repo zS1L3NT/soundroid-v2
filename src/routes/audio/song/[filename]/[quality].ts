@@ -1,11 +1,10 @@
-import convertSong from "../../../functions/convertSong"
+import convertSong from "../../../../functions/convertSong"
 import { Request, Response } from "express"
 
 export const GET = async (req: Request, res: Response) => {
-	const { filename } = req.params
-	const { quality: quality_ } = req.query
+	const { quality: quality_, filename } = req.params
 
-	if (!["highest", "lowest"].includes((quality_ as string) || "")) {
+	if (!["highest", "lowest"].includes(quality_ || "")) {
 		return res.status(400).send(`Cannot GET /song/${quality_}/${filename}`)
 	}
 
