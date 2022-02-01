@@ -4,7 +4,7 @@ import { Response } from "express"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, withValidBody } from "validate-any"
 import { Track } from "../../types"
 
-export const GET = withValidBody(
+export const POST = withValidBody(
 	OBJECT({ artistId: OR(STRING(), UNDEFINED()), trackIds: OR(LIST(STRING()), UNDEFINED()) }),
 	async (req, res: Response<Track[] | { message: string }>) => {
 		if (Object.keys(req.body).length !== 1) {

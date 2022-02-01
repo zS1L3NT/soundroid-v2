@@ -4,7 +4,7 @@ import { Response } from "express"
 import { OBJECT, STRING, withValidBody } from "validate-any"
 import { Track } from "../../types"
 
-export const GET = withValidBody(
+export const POST = withValidBody(
 	OBJECT({ trackId: STRING() }),
 	async (req, res: Response<Track>) => {
 		const track = await cache.ytmusic_api.getSong(req.body.trackId)
