@@ -1,5 +1,6 @@
 import admin from "firebase-admin"
 import Cache from "./Cache"
+import colors from "colors"
 import config from "./config.json"
 import express, { RequestHandler } from "express"
 import ffmpeg from "fluent-ffmpeg"
@@ -7,8 +8,10 @@ import fs from "fs"
 import http from "http"
 import path from "path"
 import search from "./functions/search"
-import { Server } from "socket.io"
+import Tracer from "tracer"
 import withErrorHandling from "./functions/withErrorHandling"
+import { Server } from "socket.io"
+require("dotenv").config()
 
 const app = express()
 const PORT = 5190
@@ -68,3 +71,22 @@ readRouteFolder("")
 server.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
 
 export const cache = new Cache()
+export const logger = Tracer.colorConsole({
+	level: process.env.LOG_LEVEL || "log",
+	format: "[{{timestamp}}] <{{path}}{{method}}, Line {{line}}> {{message}}",
+	methods: ["log", "http", "debug", "info", "warn", "error"],
+	dateformat: "dd mmm yyyy, hh:MM:sstt",
+	filters: {
+		log: colors.gray,
+		//@ts-ignore
+		http: colors.cyan,
+		debug: colors.blue,
+		info: colors.green,
+		warn: colors.yellow,
+		error: [colors.red, colors.bold]
+	},
+	preprocess: data => {
+		data.path = data.path.split("\\src\\")[1]!.replaceAll("\\", "/")
+		if (data.method) data.method = ", " + data.method
+	}
+})

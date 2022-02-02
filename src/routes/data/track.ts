@@ -1,6 +1,6 @@
 import assert from "assert"
 import getImageColor from "../../functions/getImageColor"
-import { cache } from "../../app"
+import { cache, logger } from "../../app"
 import { OBJECT, STRING, validate } from "validate-any"
 import { Request } from "express"
 import { RequestHandler } from "../../functions/withErrorHandling"
@@ -8,6 +8,7 @@ import { RequestHandler } from "../../functions/withErrorHandling"
 export const POST: RequestHandler = async (req: Request) => {
 	const { success, errors, data } = validate(req.body, OBJECT({ trackId: STRING() }))
 	if (!success) {
+		logger.warn(`Invalid request body, returning 400`, req.body)
 		return {
 			status: 400,
 			data: {
@@ -17,6 +18,7 @@ export const POST: RequestHandler = async (req: Request) => {
 	}
 	assert(data!)
 
+	logger.log(`Getting track from trackId`, data.trackId)
 	const track = await cache.ytmusic_api.getSong(data.trackId)
 	return {
 		status: 200,
