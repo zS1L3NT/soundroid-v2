@@ -2,7 +2,7 @@ import admin from "firebase-admin"
 import getImageColor from "../functions/getImageColor"
 import { cache } from "../app"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, withValidBody } from "validate-any"
-import { Playlist, Song } from "../types.d"
+import { Playlist, Song } from "../types"
 import { Request, Response } from "express"
 
 const db = admin.firestore()
