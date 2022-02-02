@@ -7,11 +7,11 @@ import { cache, logger } from "../app"
  * occurred during the song conversion. Once the conversion is done, it will also handle those requests
  * that came earlier on and are waiting to be handled
  */
-export default async (trackId: string, quality: "highest" | "lowest") =>
+export default async (trackId: string, quality: "highest" | "lowest", rid: string) =>
 	new Promise<string>(async (resolve, reject) => {
 		if (cache.converting[`${trackId}-${quality}`]) {
 			// Request came while song is converting
-			logger.info(`Track being converted, waiting conversion to finish...`)
+			logger.info(rid, `Track being converted, waiting conversion to finish...`)
 			cache.converting[`${trackId}-${quality}`]!.push({ resolve, reject })
 			return
 		}
@@ -22,7 +22,7 @@ export default async (trackId: string, quality: "highest" | "lowest") =>
 		}).on("error", () => {
 			fs.unlinkSync(partialPath)
 			reject("Error converting song on Server; Invalid YouTube ID")
-			logger.error(`Invalid YouTube ID`, trackId)
+			logger.error(rid, `Invalid YouTube ID`, trackId)
 
 			// Reject all other inbound requests
 			cache.converting[`${trackId}-${quality}`]?.forEach(p =>
@@ -45,7 +45,7 @@ export default async (trackId: string, quality: "highest" | "lowest") =>
 			.on("finish", () => {
 				fs.renameSync(partialPath, trackPath)
 				resolve(`/audio/track/${trackId}-${quality}.mp3`)
-				logger.info(`Track converted`, trackId)
+				logger.info(rid, `Track converted`, trackId)
 
 				// Resolve all other inbound requests
 				cache.converting[`${trackId}-${quality}`]?.forEach(p =>
@@ -58,7 +58,7 @@ export default async (trackId: string, quality: "highest" | "lowest") =>
 			.on("error", err => {
 				fs.unlinkSync(partialPath)
 				reject(`Error converting song on Server`)
-				logger.error(`Error converting track`, err)
+				logger.error(rid, `Error converting track`, err)
 
 				// Reject all other inbound requests
 				cache.converting[`${trackId}-${quality}`]?.forEach(p =>

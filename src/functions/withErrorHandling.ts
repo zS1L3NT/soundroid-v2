@@ -1,7 +1,7 @@
-import { logger } from "../app"
+import { cache, logger } from "../app"
 import { Request, Response } from "express"
 
-export type RequestHandler = (req: Request) => Promise<
+export type RequestHandler = (req: Request & { rid: string }) => Promise<
 	| {
 			status: number
 			data: any
@@ -10,9 +10,10 @@ export type RequestHandler = (req: Request) => Promise<
 >
 
 export default (handler: RequestHandler) => async (req: Request, res: Response) => {
-	logger.http!("Opening", req.method, req.url, req.body)
+	const rid = cache.generateRID()
+	logger.http!(`Opening ${rid}`, req.method, req.url, req.body)
 	try {
-		const response = await handler(req)
+		const response = await handler(Object.assign(req, { rid }))
 		if ("redirect" in response) {
 			res.redirect(response.redirect)
 		} else {
@@ -22,5 +23,6 @@ export default (handler: RequestHandler) => async (req: Request, res: Response) 
 		logger.error(err)
 		res.status(500).send(err)
 	}
-	logger.http!("Closing", req.method, req.url, req.body)
+	cache.clearRID(rid)
+	logger.http!(`Closing ${rid}`, req.method, req.url, req.body)
 }

@@ -73,7 +73,7 @@ server.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
 export const cache = new Cache()
 export const logger = Tracer.colorConsole({
 	level: process.env.LOG_LEVEL || "log",
-	format: "[{{timestamp}}] <{{path}}{{method}}, Line {{line}}> {{message}}",
+	format: "[{{timestamp}}] <{{path}}, Line {{line}}> {{message}}",
 	methods: ["log", "http", "debug", "info", "warn", "error"],
 	dateformat: "dd mmm yyyy, hh:MM:sstt",
 	filters: {
@@ -87,6 +87,5 @@ export const logger = Tracer.colorConsole({
 	},
 	preprocess: data => {
 		data.path = data.path.split("\\src\\")[1]!.replaceAll("\\", "/")
-		if (data.method) data.method = ", " + data.method
 	}
 })

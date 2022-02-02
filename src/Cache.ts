@@ -17,6 +17,7 @@ export default class Cache {
 
 	public importing: Record<string, string> = {}
 	public converting: Record<string, PromiseCallback[]> = {}
+	public queue: number[] = []
 
 	public constructor() {
 		this.ytmusic_api.initialize()
@@ -29,6 +30,21 @@ export default class Cache {
 
 	public getTrackPath(trackId: string, quality: "highest" | "lowest"): string {
 		return path.join(__dirname, `../public/audio/track/${trackId}-${quality}.mp3`)
+	}
+
+	public generateRID() {
+		if (this.queue.length === 0) {
+			this.queue.push(1)
+		} else {
+			this.queue.push(this.queue.at(-1)! + 1)
+		}
+		return `{#${this.queue.at(-1)!}}`
+	}
+
+	public clearRID(rid: string) {
+		setTimeout(() => {
+			this.queue.splice(this.queue.indexOf(+rid.slice(2, -1)), 1)
+		}, 60_000)
 	}
 }
 

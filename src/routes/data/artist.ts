@@ -1,13 +1,12 @@
 import assert from "assert"
 import { cache, logger } from "../../app"
 import { OBJECT, STRING, validate } from "validate-any"
-import { Request } from "express"
 import { RequestHandler } from "../../functions/withErrorHandling"
 
-export const POST: RequestHandler = async (req: Request) => {
+export const POST: RequestHandler = async req => {
 	const { success, data, errors } = validate(req.body, OBJECT({ artistId: STRING() }))
 	if (!success) {
-		logger.warn(`Invalid request body, returning 400`, req.body)
+		logger.warn(req.rid, `Invalid request body, returning 400`, req.body)
 		return {
 			status: 400,
 			data: {
@@ -17,7 +16,7 @@ export const POST: RequestHandler = async (req: Request) => {
 	}
 	assert(data!)
 
-	logger.log(`Getting artist from artistId`, data.artistId)
+	logger.log(req.rid, `Getting artist from artistId`, data.artistId)
 	const artist = await cache.ytmusic_api.getArtist(data.artistId)
 	return {
 		status: 200,
