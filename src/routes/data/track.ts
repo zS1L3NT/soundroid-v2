@@ -1,18 +1,30 @@
+import assert from "assert"
 import getImageColor from "../../functions/getImageColor"
 import { cache } from "../../app"
-import { Response } from "express"
-import { OBJECT, STRING, withValidBody } from "validate-any"
-import { Track } from "../../types"
+import { OBJECT, STRING, validate } from "validate-any"
+import { Request } from "express"
+import { RequestHandler } from "../../functions/withErrorHandling"
 
-export const POST = withValidBody(
-	OBJECT({ trackId: STRING() }),
-	async (req, res: Response<Track>) => {
-		const track = await cache.ytmusic_api.getSong(req.body.trackId)
-		res.status(200).send({
+export const POST: RequestHandler = async (req: Request) => {
+	const { success, errors, data } = validate(req.body, OBJECT({ trackId: STRING() }))
+	if (!success) {
+		return {
+			status: 400,
+			data: {
+				errors
+			}
+		}
+	}
+	assert(data!)
+
+	const track = await cache.ytmusic_api.getSong(data.trackId)
+	return {
+		status: 200,
+		data: {
 			trackId: track.videoId || "",
 			title: track.name,
 			thumbnail: track.thumbnails.at(-1)?.url || "",
 			colorHex: await getImageColor(track.thumbnails.at(-1)?.url || "")
-		})
+		}
 	}
-)
+}

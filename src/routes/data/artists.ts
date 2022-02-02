@@ -1,38 +1,56 @@
+import assert from "assert"
 import { cache } from "../../app"
-import { Response } from "express"
-import { LIST, OBJECT, OR, STRING, UNDEFINED, withValidBody } from "validate-any"
-import { Artist } from "../../types"
+import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
+import { Request } from "express"
+import { RequestHandler } from "../../functions/withErrorHandling"
 
-export const POST = withValidBody(
-	OBJECT({ trackId: OR(STRING(), UNDEFINED()), artistIds: OR(LIST(STRING()), UNDEFINED()) }),
-	async (req, res: Response<Artist[] | { message: string }>) => {
-		if (Object.keys(req.body).length !== 1) {
-			return res.status(400).send({ message: "Invalid body" })
+export const POST: RequestHandler = async (req: Request) => {
+	const { success, data, errors } = validate(
+		req.body,
+		OBJECT({ trackId: OR(STRING(), UNDEFINED()), artistIds: OR(LIST(STRING()), UNDEFINED()) })
+	)
+	if (!success) {
+		return {
+			status: 400,
+			data: {
+				errors
+			}
 		}
+	}
+	assert(data!)
 
-		const artistIds: string[] = []
-
-		if (req.body.artistIds) {
-			artistIds.push(...req.body.artistIds)
+	if (Object.keys(data).length !== 1) {
+		return {
+			status: 400,
+			data: {
+				message: "Invalid body"
+			}
 		}
+	}
 
-		if (req.body.trackId) {
-			const track = await cache.ytmusic_api.getSong(req.body.trackId)
-			artistIds.push(...track.artists.map(artist => artist.artistId || ""))
-		}
+	const artistIds: string[] = []
 
-		return res.status(200).send(
-			await Promise.all(
-				artistIds.map(async id => {
-					const artist = await cache.ytmusic_api.getArtist(id)
-					return {
-						artistId: artist.artistId,
-						name: artist.name,
-						thumbnail: artist.thumbnails.at(-1)?.url || "",
-						description: artist.description || ""
-					}
-				})
-			)
+	if (data.artistIds) {
+		artistIds.push(...data.artistIds)
+	}
+
+	if (data.trackId) {
+		const track = await cache.ytmusic_api.getSong(data.trackId)
+		artistIds.push(...track.artists.map(artist => artist.artistId || ""))
+	}
+
+	return {
+		status: 200,
+		data: await Promise.all(
+			artistIds.map(async id => {
+				const artist = await cache.ytmusic_api.getArtist(id)
+				return {
+					artistId: artist.artistId,
+					name: artist.name,
+					thumbnail: artist.thumbnails.at(-1)?.url || "",
+					description: artist.description || ""
+				}
+			})
 		)
 	}
-)
+}

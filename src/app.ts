@@ -8,6 +8,7 @@ import http from "http"
 import path from "path"
 import search from "./functions/search"
 import { Server } from "socket.io"
+import withErrorHandling from "./functions/withErrorHandling"
 
 const app = express()
 const PORT = 5190
@@ -53,7 +54,7 @@ const readRouteFolder = (folderName: string) => {
 			for (const [method, handler] of Object.entries(file)) {
 				app[method.toLowerCase() as "get" | "post" | "put" | "delete"](
 					pathName.replace(/\[(\w+)\]/g, ":$1"),
-					handler
+					withErrorHandling(handler)
 				)
 			}
 		} else {
