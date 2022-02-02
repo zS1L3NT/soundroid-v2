@@ -16,22 +16,19 @@ export default class Cache {
 	public genius_api = new Genius(config.genius)
 
 	public importing: Record<string, string> = {}
-	public converting: Record<"highest" | "lowest", Record<string, PromiseCallback[]>> = {
-		highest: {},
-		lowest: {}
-	}
+	public converting: Record<string, PromiseCallback[]> = {}
 
 	public constructor() {
 		this.ytmusic_api.initialize()
 		this.spotify_api.authenticate()
 	}
 
-	public getPartPath(quality: "highest" | "lowest", songId: string): string {
-		return path.join(__dirname, `../public/part/${quality}/${songId}.mp3`)
+	public getPartialPath(trackId: string, quality: "highest" | "lowest"): string {
+		return path.join(__dirname, `../public/audio/partial/${trackId}-${quality}.mp3`)
 	}
 
-	public getSongPath(quality: "highest" | "lowest", songId: string): string {
-		return path.join(__dirname, `../public/song/${quality}/${songId}.mp3`)
+	public getTrackPath(trackId: string, quality: "highest" | "lowest"): string {
+		return path.join(__dirname, `../public/audio/track/${trackId}-${quality}.mp3`)
 	}
 }
 
