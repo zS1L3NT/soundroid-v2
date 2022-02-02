@@ -4,3 +4,4 @@
 **/config.json
 **/*.test.ts
 **/.vscode
+/public/audio
