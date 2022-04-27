@@ -2,9 +2,9 @@ import assert from "assert"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
 
 import { ytmusic } from "../apis"
-import { logger } from "../app"
 import getImageColor from "../functions/getImageColor"
 import { RequestHandler } from "../functions/withErrorHandling"
+import logger from "../logger"
 
 export const POST: RequestHandler = async req => {
 	const { success, errors, data } = validate(

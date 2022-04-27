@@ -1,10 +1,8 @@
 import "dotenv/config"
 
-import colors from "colors"
 import express from "express"
 import fs from "fs"
 import path from "path"
-import Tracer from "tracer"
 
 import withErrorHandling from "./functions/withErrorHandling"
 
@@ -39,22 +37,3 @@ const readRouteFolder = (folderName: string) => {
 readRouteFolder("")
 
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
-
-export const logger = Tracer.colorConsole({
-	level: process.env.LOG_LEVEL || "log",
-	format: "[{{timestamp}}] <{{path}}, Line {{line}}> {{message}}",
-	methods: ["log", "http", "debug", "info", "warn", "error"],
-	dateformat: "dd mmm yyyy, hh:MM:sstt",
-	filters: {
-		log: colors.gray,
-		//@ts-ignore
-		http: colors.cyan,
-		debug: colors.blue,
-		info: colors.green,
-		warn: colors.yellow,
-		error: [colors.red, colors.bold]
-	},
-	preprocess: data => {
-		data.path = data.path.split("\\src\\")[1]!.replaceAll("\\", "/")
-	}
-})

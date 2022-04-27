@@ -2,8 +2,8 @@ import assert from "assert"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
 
 import { ytmusic } from "../apis"
-import { logger } from "../app"
 import { RequestHandler } from "../functions/withErrorHandling"
+import logger from "../logger"
 
 export const POST: RequestHandler = async req => {
 	const { success, data, errors } = validate(

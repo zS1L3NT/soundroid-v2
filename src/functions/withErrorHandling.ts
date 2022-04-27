@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 
-import { logger } from "../app"
+import logger from "../logger"
 import { clearRID, generateRID } from "../rid"
 
 export type RequestHandler = (req: Request & { rid: string }) => Promise<
