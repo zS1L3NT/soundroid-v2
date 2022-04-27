@@ -2,7 +2,7 @@ import admin from "firebase-admin"
 import getImageColor from "../../functions/getImageColor"
 import { cache } from "../../app"
 import { OBJECT, STRING, withValidBody } from "validate-any"
-import { Playlist, Song } from "../../types.d"
+import { Playlist, Song } from "../../@types/models"
 import { Response } from "express"
 import { useTryAsync } from "no-try"
 

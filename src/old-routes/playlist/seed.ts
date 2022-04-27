@@ -1,5 +1,5 @@
 import admin from "firebase-admin"
-import { Playlist, Song } from "../../types.d"
+import { Playlist, Song } from "../../@types/models"
 import { Request, Response } from "express"
 
 const db = admin.firestore()

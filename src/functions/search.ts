@@ -2,7 +2,7 @@ import getImageColor from "./getImageColor"
 import { AlbumDetailed, SongDetailed } from "ytmusic-api"
 import { cache } from "../app"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
-import { Playlist, Song } from "../types.d"
+import { Playlist, Song } from "../@types/models"
 import { Server } from "socket.io"
 
 /**
