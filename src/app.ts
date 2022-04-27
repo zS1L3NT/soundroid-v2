@@ -7,7 +7,7 @@ import path from "path"
 import withErrorHandling from "./functions/withErrorHandling"
 
 const app = express()
-const PORT = 5190
+const PORT = process.env.PORT || 5190
 
 app.use(express.json())
 app.use(express.static(path.join(__dirname, "../public")))
