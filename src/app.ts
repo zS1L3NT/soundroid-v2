@@ -1,25 +1,18 @@
-import admin from "firebase-admin"
-import Cache from "./Cache"
+import "dotenv/config"
+
 import colors from "colors"
-import config from "./config.json"
-import express, { RequestHandler } from "express"
-import ffmpeg from "fluent-ffmpeg"
+import express from "express"
 import fs from "fs"
 import path from "path"
 import Tracer from "tracer"
+
+import Cache from "./Cache"
 import withErrorHandling from "./functions/withErrorHandling"
-require("dotenv").config()
 
 const app = express()
 const PORT = 5190
 
-ffmpeg.setFfmpegPath(require("@ffmpeg-installer/ffmpeg").path)
-admin.initializeApp({
-	credential: admin.credential.cert(config.firebase.service_account),
-	databaseURL: config.firebase.database_url
-})
-
-app.use(express.json() as RequestHandler)
+app.use(express.json())
 app.use(express.static(path.join(__dirname, "../public")))
 
 const readRouteFolder = (folderName: string) => {
