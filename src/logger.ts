@@ -16,6 +16,6 @@ export default Tracer.colorConsole({
 		error: [colors.red, colors.bold]
 	},
 	preprocess: data => {
-		data.path = data.path.split("\\src\\")[1]!.replaceAll("\\", "/")
+		data.path = data.path.replaceAll("\\", "/").split(/\/(src|dist)\//)[1]!
 	}
 })
