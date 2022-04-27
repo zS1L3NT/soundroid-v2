@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node dist/app.js",
 		"dev": "ts-node --files src/app.ts",
-		"build": ""
+		"build": "tsc"
 	},
 	"dependencies": {
 		"colors": "^1.4.0",
