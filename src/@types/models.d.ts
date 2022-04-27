@@ -4,7 +4,6 @@ export interface Song {
 	title: string
 	artiste: string
 	cover: string
-	colorHex: string
 	playlistId: string
 	userId: string
 }
@@ -14,7 +13,6 @@ export interface Playlist {
 	id: string
 	name: string
 	cover: string
-	colorHex: string
 	userId: string
 	order: string[]
 }
