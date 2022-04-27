@@ -16,17 +16,3 @@ export interface Playlist {
 	userId: string
 	order: string[]
 }
-
-export interface Track {
-	trackId: string
-	title: string
-	thumbnail: string
-	colorHex: string
-}
-
-export interface Artist {
-	artistId: string
-	name: string
-	thumbnail: string
-	description: string
-}
