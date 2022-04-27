@@ -1,7 +1,8 @@
 import assert from "assert"
-import { cache, logger } from "../../app"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
-import { RequestHandler } from "../../functions/withErrorHandling"
+
+import { cache, logger } from "../app"
+import { RequestHandler } from "../functions/withErrorHandling"
 
 export const POST: RequestHandler = async req => {
 	const { success, data, errors } = validate(

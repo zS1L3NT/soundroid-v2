@@ -1,8 +1,9 @@
 import assert from "assert"
-import getImageColor from "../../functions/getImageColor"
-import { cache, logger } from "../../app"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
-import { RequestHandler } from "../../functions/withErrorHandling"
+
+import { cache, logger } from "../app"
+import getImageColor from "../functions/getImageColor"
+import { RequestHandler } from "../functions/withErrorHandling"
 
 export const POST: RequestHandler = async req => {
 	const { success, errors, data } = validate(
