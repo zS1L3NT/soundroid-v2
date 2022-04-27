@@ -1,7 +1,8 @@
 import assert from "assert"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
 
-import { cache, logger } from "../app"
+import { ytmusic } from "../apis"
+import { logger } from "../app"
 import { RequestHandler } from "../functions/withErrorHandling"
 
 export const POST: RequestHandler = async req => {
@@ -38,7 +39,7 @@ export const POST: RequestHandler = async req => {
 	}
 
 	if (data.trackId) {
-		const track = await cache.ytmusic_api.getSong(data.trackId)
+		const track = await ytmusic.getSong(data.trackId)
 		artistIds.push(...track.artists.map(artist => artist.artistId || ""))
 		logger.log(req.rid, `Getting artists from trackId`, data.trackId)
 	}
@@ -47,7 +48,7 @@ export const POST: RequestHandler = async req => {
 		status: 200,
 		data: await Promise.all(
 			artistIds.map(async id => {
-				const artist = await cache.ytmusic_api.getArtist(id)
+				const artist = await ytmusic.getArtist(id)
 				return {
 					artistId: artist.artistId,
 					name: artist.name,

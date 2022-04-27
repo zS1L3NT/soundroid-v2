@@ -1,5 +1,7 @@
-import { cache, logger } from "../app"
 import { Request, Response } from "express"
+
+import { logger } from "../app"
+import { clearRID, generateRID } from "../rid"
 
 export type RequestHandler = (req: Request & { rid: string }) => Promise<
 	| {
@@ -10,7 +12,7 @@ export type RequestHandler = (req: Request & { rid: string }) => Promise<
 >
 
 export default (handler: RequestHandler) => async (req: Request, res: Response) => {
-	const rid = cache.generateRID()
+	const rid = generateRID()
 	logger.http!(`Opening ${rid}`, req.method, req.url, req.body)
 	try {
 		const response = await handler(Object.assign(req, { rid }))
@@ -23,6 +25,6 @@ export default (handler: RequestHandler) => async (req: Request, res: Response) 
 		logger.error(err)
 		res.status(500).send(err)
 	}
-	cache.clearRID(rid)
+	clearRID(rid)
 	logger.http!(`Closing ${rid}`, req.method, req.url, req.body)
 }

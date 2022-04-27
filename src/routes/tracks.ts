@@ -1,7 +1,8 @@
 import assert from "assert"
 import { LIST, OBJECT, OR, STRING, UNDEFINED, validate } from "validate-any"
 
-import { cache, logger } from "../app"
+import { ytmusic } from "../apis"
+import { logger } from "../app"
 import getImageColor from "../functions/getImageColor"
 import { RequestHandler } from "../functions/withErrorHandling"
 
@@ -39,7 +40,7 @@ export const POST: RequestHandler = async req => {
 	}
 
 	if (data.artistId) {
-		const artist = await cache.ytmusic_api.getArtist(data.artistId)
+		const artist = await ytmusic.getArtist(data.artistId)
 		trackIds.push(...artist.topSongs.map(song => song.videoId || ""))
 		logger.log(req.rid, `Getting tracks from artistId`, data.artistId)
 	}
@@ -48,7 +49,7 @@ export const POST: RequestHandler = async req => {
 		status: 200,
 		data: await Promise.all(
 			trackIds.map(async id => {
-				const track = await cache.ytmusic_api.getSong(id)
+				const track = await ytmusic.getSong(id)
 				return {
 					trackId: track.videoId || "",
 					title: track.name,

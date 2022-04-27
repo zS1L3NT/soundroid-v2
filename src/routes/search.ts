@@ -1,4 +1,4 @@
-import { cache } from "../app"
+import { ytmusic } from "../apis"
 import { RequestHandler } from "../functions/withErrorHandling"
 
 export const GET: RequestHandler = async req => {
@@ -15,12 +15,7 @@ export const GET: RequestHandler = async req => {
 	return {
 		status: 200,
 		data: await Promise.all(
-			(
-				await Promise.all([
-					cache.ytmusic_api.searchSongs(query),
-					cache.ytmusic_api.searchAlbums(query)
-				])
-			)
+			(await Promise.all([ytmusic.searchSongs(query), ytmusic.searchAlbums(query)]))
 				.flat()
 				.map(async result =>
 					result.type === "SONG"
@@ -40,7 +35,7 @@ export const GET: RequestHandler = async req => {
 								cover: result.thumbnails.at(-1)?.url || "",
 								userId: "",
 								order: (
-									await cache.ytmusic_api.getPlaylistVideos(result.playlistId)
+									await ytmusic.getPlaylistVideos(result.playlistId)
 								).map(t => t.videoId)
 						  }
 				)

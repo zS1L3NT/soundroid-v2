@@ -6,7 +6,6 @@ import fs from "fs"
 import path from "path"
 import Tracer from "tracer"
 
-import Cache from "./Cache"
 import withErrorHandling from "./functions/withErrorHandling"
 
 const app = express()
@@ -41,7 +40,6 @@ readRouteFolder("")
 
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
 
-export const cache = new Cache()
 export const logger = Tracer.colorConsole({
 	level: process.env.LOG_LEVEL || "log",
 	format: "[{{timestamp}}] <{{path}}, Line {{line}}> {{message}}",

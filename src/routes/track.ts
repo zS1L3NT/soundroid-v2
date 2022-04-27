@@ -1,7 +1,8 @@
 import assert from "assert"
 import { OBJECT, STRING, validate } from "validate-any"
 
-import { cache, logger } from "../app"
+import { ytmusic } from "../apis"
+import { logger } from "../app"
 import getImageColor from "../functions/getImageColor"
 import { RequestHandler } from "../functions/withErrorHandling"
 
@@ -19,7 +20,7 @@ export const POST: RequestHandler = async req => {
 	assert(data!)
 
 	logger.log(req.rid, `Getting track from trackId`, data.trackId)
-	const track = await cache.ytmusic_api.getSong(data.trackId)
+	const track = await ytmusic.getSong(data.trackId)
 	return {
 		status: 200,
 		data: {

@@ -1,7 +1,8 @@
 import assert from "assert"
 import { OBJECT, STRING, validate } from "validate-any"
 
-import { cache, logger } from "../app"
+import { ytmusic } from "../apis"
+import { logger } from "../app"
 import { RequestHandler } from "../functions/withErrorHandling"
 
 export const POST: RequestHandler = async req => {
@@ -18,7 +19,7 @@ export const POST: RequestHandler = async req => {
 	assert(data!)
 
 	logger.log(req.rid, `Getting artist from artistId`, data.artistId)
-	const artist = await cache.ytmusic_api.getArtist(data.artistId)
+	const artist = await ytmusic.getArtist(data.artistId)
 	return {
 		status: 200,
 		data: {
