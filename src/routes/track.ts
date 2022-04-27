@@ -2,7 +2,6 @@ import assert from "assert"
 import { OBJECT, STRING, validate } from "validate-any"
 
 import { ytmusic } from "../apis"
-import getImageColor from "../functions/getImageColor"
 import { RequestHandler } from "../functions/withErrorHandling"
 import logger from "../logger"
 
@@ -26,8 +25,7 @@ export const POST: RequestHandler = async req => {
 		data: {
 			trackId: track.videoId || "",
 			title: track.name,
-			thumbnail: track.thumbnails.at(-1)?.url || "",
-			colorHex: await getImageColor(track.thumbnails.at(-1)?.url || "")
+			thumbnail: track.thumbnails.at(-1)?.url || ""
 		}
 	}
 }
