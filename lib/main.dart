@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:soundroid/widgets/app/scaffold.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +28,10 @@ class MyApp extends StatelessWidget {
           800: Color.fromRGBO(18, 109, 255, 0.9),
           900: Color.fromRGBO(18, 109, 255, 1)
         }),
+        backgroundColor: const Color(0xFF222222),
+        fontFamily: "Poppins",
       ),
-      home: Container(),
+      home: const SounDroidScaffold(),
     );
   }
 }
