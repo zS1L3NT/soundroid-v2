@@ -1,4 +1,4 @@
-package com.example.soundroid
+package com.zectan.soundroid
 
 import io.flutter.embedding.android.FlutterActivity
 
