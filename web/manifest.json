@@ -1,6 +1,6 @@
 {
-    "name": "soundroid",
-    "short_name": "soundroid",
+    "name": "SounDroid",
+    "short_name": "SounDroid",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
