@@ -1,18 +1,23 @@
-export interface Song {
-	type?: "Song"
-	songId: string
-	title: string
-	artiste: string
-	cover: string
-	playlistId: string
-	userId: string
+declare interface User {
+	id: string
 }
 
-export interface Playlist {
-	type?: "Playlist"
+declare interface Playlist {
 	id: string
-	name: string
-	cover: string
 	userId: string
-	order: string[]
+	trackIds: string[]
+}
+
+declare interface Track {
+	id: string
+	title: string
+	artists: string
+	thumbnail: string
+}
+
+declare interface Listen {
+	trackId: string
+	userId: string
+	startTime: number
+	endTime: number
 }
