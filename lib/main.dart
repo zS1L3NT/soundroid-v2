@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:soundroid/models/listen.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/widgets/app/scaffold.dart';
@@ -15,10 +14,8 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<Playlist>(PlaylistAdapter());
   Hive.registerAdapter<Track>(TrackAdapter());
-  Hive.registerAdapter<Listen>(ListenAdapter());
   await Hive.openBox<Playlist>("playlists");
   await Hive.openBox<Track>("tracks");
-  await Hive.openBox<Listen>("listens");
 
   runApp(const MyApp());
 }
