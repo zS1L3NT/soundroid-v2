@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
-import 'package:soundroid/widgets/app/scaffold.dart';
+import 'package:soundroid/screens/main_screen.dart';
+import 'package:soundroid/screens/settings_screen.dart';
 
 void main() async {
   // Initialize Firebase
@@ -43,7 +44,11 @@ class MyApp extends StatelessWidget {
         backgroundColor: const Color(0xFF222222),
         fontFamily: "Poppins",
       ),
-      home: const SounDroidScaffold(),
+      initialRoute: "/main",
+      routes: {
+        "/main": (context) => const MainScreen(),
+        "/settings": (context) => const SettingsScreen(),
+      },
     );
   }
 }

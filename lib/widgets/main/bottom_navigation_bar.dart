@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 
-class SounDroidBottomNavigationBar extends StatefulWidget {
-  const SounDroidBottomNavigationBar({Key? key}) : super(key: key);
+class MainBottomNavigationBar extends StatefulWidget {
+  const MainBottomNavigationBar({Key? key}) : super(key: key);
 
   @override
-  State<SounDroidBottomNavigationBar> createState() =>
-      _SounDroidBottomNavigationBarState();
+  State<MainBottomNavigationBar> createState() =>
+      _MainBottomNavigationBarState();
 }
 
-class _SounDroidBottomNavigationBarState
-    extends State<SounDroidBottomNavigationBar> {
+class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   int _currentIndex = 0;
+
   @override
   BottomNavigationBar build(BuildContext context) {
     return BottomNavigationBar(
       onTap: (index) {
         setState(() {
+          switch (index) {
+            case 0:
+              break;
+            case 1:
+              break;
+            case 2:
+              break;
+            case 3:
+              break;
+          }
           _currentIndex = index;
         });
       },

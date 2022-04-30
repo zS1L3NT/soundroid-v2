@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SounDroidAppBar extends AppBar {
-  SounDroidAppBar({Key? key}) : super(key: key);
+class MainAppBar extends AppBar {
+  MainAppBar({Key? key}) : super(key: key);
 
   @override
-  State<SounDroidAppBar> createState() => _SounDroidAppBarState();
+  State<MainAppBar> createState() => _MainAppBarState();
 }
 
-class _SounDroidAppBarState extends State<SounDroidAppBar> {
+class _MainAppBarState extends State<MainAppBar> {
   @override
   AppBar build(BuildContext context) {
     return AppBar(
