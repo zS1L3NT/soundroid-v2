@@ -1,15 +1,23 @@
-import 'package:hive/hive.dart';
-
-part 'playlist.g.dart';
-
-@HiveType(typeId: 0)
 class Playlist {
-  @HiveField(0)
-  late String name;
+  final String name;
+  final String userId;
+  final List<String> trackIds;
 
-  @HiveField(1)
-  late String userId;
+  Playlist({
+    required this.name,
+    required this.userId,
+    required this.trackIds,
+  });
 
-  @HiveField(2)
-  late List<String> trackIds;
+  static Playlist fromJSON(Map<String, dynamic> json) => Playlist(
+        name: json["name"],
+        userId: json["userId"],
+        trackIds: List<String>.from(json["trackIds"]),
+      );
+
+  Map<String, dynamic> toJSON() => <String, dynamic>{
+        "name": name,
+        "userId": userId,
+        "trackIds": List<String>.from(trackIds),
+      };
 }

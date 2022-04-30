@@ -1,18 +1,27 @@
-import 'package:hive/hive.dart';
-
-part 'track.g.dart';
-
-@HiveType(typeId: 1)
 class Track {
-  @HiveField(0)
-  late String id;
+  final String id;
+  final String title;
+  final String artists;
+  final String thumbnail;
 
-  @HiveField(1)
-  late String title;
+  Track({
+    required this.id,
+    required this.title,
+    required this.artists,
+    required this.thumbnail,
+  });
 
-  @HiveField(2)
-  late String artists;
+  static Track fromJSON(Map<String, dynamic> json) => Track(
+        id: json["id"],
+        title: json["title"],
+        artists: json["artists"],
+        thumbnail: json["thumbnail"],
+      );
 
-  @HiveField(3)
-  late String thumbnail;
+  Map<String, dynamic> toJSON() => <String, dynamic>{
+        "id": id,
+        "title": title,
+        "artists": artists,
+        "thumbnail": thumbnail,
+      };
 }
