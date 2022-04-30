@@ -1,0 +1,118 @@
+import 'package:flutter/material.dart';
+import 'package:soundroid/models/track.dart';
+import 'package:transparent_image/transparent_image.dart';
+
+import '../../app/text.dart';
+
+class RecentlyRepeatedSection extends StatefulWidget {
+  const RecentlyRepeatedSection({Key? key}) : super(key: key);
+
+  @override
+  State<RecentlyRepeatedSection> createState() =>
+      _RecentlyRepeatedSectionState();
+}
+
+class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
+  final List<Track> _tracks = [
+    Track(
+      id: "",
+      title: "Mago",
+      artists: "GFRIEND",
+      thumbnail:
+          "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
+    ),
+    Track(
+      id: "",
+      title: "Lilac",
+      artists: "IU",
+      thumbnail:
+          "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
+    ),
+    Track(
+      id: "",
+      title: "All About You",
+      artists: "Taeyeon",
+      thumbnail:
+          "https://upload.wikimedia.org/wikipedia/en/e/e1/Taeyeon-All_About_You_%28cover%29.png",
+    ),
+    Track(
+      id: "",
+      title: "Can You See My Heart",
+      artists: "HEIZE",
+      thumbnail:
+          "https://i.scdn.co/image/ab67616d0000b273d5ec3d052355298db92ea249",
+    ),
+    Track(
+      id: "",
+      title: "strawberry moon",
+      artists: "IU",
+      thumbnail:
+          "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
+    )
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+          child: Text(
+            "Songs you've been listening to a lot recently",
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 200,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              const SizedBox(width: 16),
+              for (var track in _tracks)
+                Container(
+                  width: 125,
+                  margin: const EdgeInsets.only(right: 16),
+                  child: Material(
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          child: FadeInImage.memoryNetwork(
+                            fadeInCurve: Curves.decelerate,
+                            placeholder: kTransparentImage,
+                            image: track.thumbnail,
+                            fit: BoxFit.cover,
+                            width: 125,
+                            height: 125,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        AppText(
+                          track.title,
+                          height: 30,
+                          width: 125,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        AppText(
+                          track.artists,
+                          height: 24,
+                          width: 125,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}

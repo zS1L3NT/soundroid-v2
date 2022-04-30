@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/widgets/main/home/recently_repeated_section.dart';
 import 'package:soundroid/widgets/main/home/your_playlists_section.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,7 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: const [YourPlaylistsSection()],
+        children: const [
+          SizedBox(height: 16),
+          YourPlaylistsSection(),
+          SizedBox(height: 16),
+          RecentlyRepeatedSection(),
+          SizedBox(height: 16),
+        ],
       ),
     );
   }
