@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../app/text.dart';
+
 class YourPlaylistsSection extends StatefulWidget {
   const YourPlaylistsSection({Key? key}) : super(key: key);
 
@@ -89,7 +91,12 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Text(playlist.name)
+                  AppText(
+                    playlist.name,
+                    height: 24,
+                    width: MediaQuery.of(context).size.width - 124,
+                    textAlign: TextAlign.left,
+                  )
                 ],
               ),
             ),
