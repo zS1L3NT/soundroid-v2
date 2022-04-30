@@ -7,6 +7,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// 1) Your playlists
+// 2) Songs that you've been listening to a lot
+// 3) Recommended for you
+// 4) More from {artistName}
+// 5) Songs that you don't listen to very often
+// 6) More from {artistName}
+// 7) More from {artistName}
+// 8) Recently played songs
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
