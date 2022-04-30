@@ -5,6 +5,7 @@ declare interface User {
 declare interface Playlist {
 	id: string
 	userId: string
+	thumbnail: string
 	trackIds: string[]
 }
 
