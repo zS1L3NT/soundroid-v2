@@ -19,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 // 5) Songs that you don't listen to very often
 // 6) More from {artistName}
 // 7) More from {artistName}
-// 8) Recently played songs
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -37,6 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
           MoreFromArtistSection(artistId: "UCTUR0sVEkD8T5MlSHqgaI_Q"),
           SizedBox(height: 16),
           RareListensSection(),
+          SizedBox(height: 16),
+          MoreFromArtistSection(artistId: "UCwzCuKxyMY_sT7hr1E8G1XA"),
+          SizedBox(height: 16),
+          MoreFromArtistSection(artistId: "UCTP45_DE3fMLujU8sZ-MBzw"),
           SizedBox(height: 16),
         ],
       ),
