@@ -42,7 +42,7 @@ class AppText extends StatelessWidget {
           text: span,
         );
 
-        tp.layout(maxWidth: width - 10);
+        tp.layout(maxWidth: width - 25);
 
         if (tp.didExceedMaxLines) {
           return SizedBox(
