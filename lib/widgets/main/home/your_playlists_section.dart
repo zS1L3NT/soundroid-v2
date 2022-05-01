@@ -44,60 +44,63 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Your Playlists",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        for (var playlist in _playlists) ...[
-          Material(
-            elevation: 8,
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                  ),
-                  child: ShaderMask(
-                    shaderCallback: (rectangle) => const LinearGradient(
-                      colors: [Colors.black, Colors.transparent],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: [0.5, 1.0],
-                    ).createShader(rectangle),
-                    blendMode: BlendMode.dstIn,
-                    child: FadeInImage.memoryNetwork(
-                      fadeInCurve: Curves.decelerate,
-                      placeholder: kTransparentImage,
-                      image: playlist.thumbnail,
-                      fit: BoxFit.cover,
-                      width: 60,
-                      height: 60,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                AppText(
-                  playlist.name,
-                  height: 24,
-                  width: MediaQuery.of(context).size.width - 124,
-                  textAlign: TextAlign.left,
-                )
-              ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Your Playlists",
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 12),
-        ]
-      ],
+          for (var playlist in _playlists) ...[
+            Material(
+              elevation: 8,
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (rectangle) => const LinearGradient(
+                        colors: [Colors.black, Colors.transparent],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        stops: [0.5, 1.0],
+                      ).createShader(rectangle),
+                      blendMode: BlendMode.dstIn,
+                      child: FadeInImage.memoryNetwork(
+                        fadeInCurve: Curves.decelerate,
+                        placeholder: kTransparentImage,
+                        image: playlist.thumbnail,
+                        fit: BoxFit.cover,
+                        width: 60,
+                        height: 60,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  AppText(
+                    playlist.name,
+                    height: 24,
+                    width: MediaQuery.of(context).size.width - 124,
+                    textAlign: TextAlign.left,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+          ]
+        ],
+      ),
     );
   }
 }

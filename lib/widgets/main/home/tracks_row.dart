@@ -26,47 +26,55 @@ class _TracksRowState extends State<TracksRow> {
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          stops: [0, 0.01, 0.99, 1],
+          stops: [0, 0.1, 0.9, 1],
         ).createShader(rectangle),
         blendMode: BlendMode.dstIn,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          separatorBuilder: (context, index) => const SizedBox(width: 24),
-          itemCount: widget.tracks.length,
-          itemBuilder: (context, index) {
-            final track = widget.tracks[index];
-            return SizedBox(
-              width: 125,
-              child: Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    child: FadeInImage.memoryNetwork(
-                      fadeInCurve: Curves.decelerate,
-                      placeholder: kTransparentImage,
-                      image: track.thumbnail,
-                      fit: BoxFit.cover,
-                      width: 125,
-                      height: 125,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  AppText(
-                    track.title,
-                    height: 26,
-                    width: 125,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  AppText(
-                    track.artists,
-                    height: 22,
-                    width: 125,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            );
+        child: NotificationListener(
+          onNotification: (OverscrollIndicatorNotification overscroll) {
+            overscroll.disallowIndicator();
+            return false;
           },
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              const SizedBox(width: 24),
+              for (var track in widget.tracks) ...[
+                SizedBox(
+                  width: 125,
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: FadeInImage.memoryNetwork(
+                          fadeInCurve: Curves.decelerate,
+                          placeholder: kTransparentImage,
+                          image: track.thumbnail,
+                          fit: BoxFit.cover,
+                          width: 125,
+                          height: 125,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      AppText(
+                        track.title,
+                        height: 26,
+                        width: 125,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      AppText(
+                        track.artists,
+                        height: 22,
+                        width: 125,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 24)
+              ]
+            ],
+          ),
         ),
       ),
     );
