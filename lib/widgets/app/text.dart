@@ -48,13 +48,26 @@ class AppText extends StatelessWidget {
           return SizedBox(
             height: height,
             width: width,
-            child: Marquee(
-              text: text,
-              style: style,
-              blankSpace: blankSpace,
-              velocity: velocity,
-              startAfter: startAfter,
-              pauseAfterRound: pauseAfterRound,
+            child: ShaderMask(
+              shaderCallback: (rectangle) => const LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  Colors.black,
+                  Colors.black,
+                  Colors.transparent
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: [0, 0.1, 0.9, 1.0],
+              ).createShader(rectangle),
+              child: Marquee(
+                text: text,
+                style: style,
+                blankSpace: blankSpace,
+                velocity: velocity,
+                startAfter: startAfter,
+                pauseAfterRound: pauseAfterRound,
+              ),
             ),
           );
         } else {
