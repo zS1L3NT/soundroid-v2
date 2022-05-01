@@ -25,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar(),
+      appBar: MainAppBar(screenIndex: _screenIndex),
       bottomNavigationBar: MainBottomNavigationBar(
         index: _screenIndex,
         setIndex: (index) {

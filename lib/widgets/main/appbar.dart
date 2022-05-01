@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MainAppBar extends AppBar {
-  MainAppBar({Key? key}) : super(key: key);
+  final int screenIndex;
+  MainAppBar({Key? key, required this.screenIndex}) : super(key: key);
 
   @override
   State<MainAppBar> createState() => _MainAppBarState();
@@ -10,26 +11,65 @@ class MainAppBar extends AppBar {
 class _MainAppBarState extends State<MainAppBar> {
   @override
   AppBar build(BuildContext context) {
+    Widget title = const Text("");
+    List<Widget> actions = [];
+
+    switch (widget.screenIndex) {
+      case 0:
+        title = const Text("SounDroid");
+        actions.add(
+          PopupMenuButton(
+            onSelected: (item) {},
+            icon: const Icon(Icons.more_vert),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: "settings",
+                child: Row(
+                  children: [
+                    Icon(Icons.settings, color: Colors.grey[800]),
+                    const SizedBox(width: 8),
+                    const Text("Settings"),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+        break;
+      case 1:
+        title = TextField(
+          decoration: InputDecoration(
+            hintText: 'Search songs or albums...',
+            hintStyle: TextStyle(
+              color: Colors.white.withOpacity(0.5),
+              fontSize: 18,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          cursorColor: Colors.white,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        );
+        actions.add(
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.clear),
+            splashRadius: 20,
+          ),
+        );
+        break;
+      case 2:
+        title = const Text("Library");
+        break;
+      case 3:
+        title = const Text("Profile");
+        break;
+    }
+
     return AppBar(
-      title: const Text('SounDroid'),
-      actions: [
-        PopupMenuButton(
-          onSelected: (item) {},
-          icon: const Icon(Icons.more_vert),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: "settings",
-              child: Row(
-                children: [
-                  Icon(Icons.settings, color: Colors.grey[800]),
-                  const SizedBox(width: 8),
-                  const Text("Settings"),
-                ],
-              ),
-            )
-          ],
-        )
-      ],
+      title: title,
+      actions: actions,
       elevation: 10,
     );
   }
