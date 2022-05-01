@@ -161,42 +161,39 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8, left: 20),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(24)),
-                child: FadeInImage.memoryNetwork(
-                  fadeInCurve: Curves.decelerate,
-                  placeholder: kTransparentImage,
-                  image: _artist["thumbnail"]!,
-                  fit: BoxFit.cover,
-                  width: 48,
-                  height: 48,
-                ),
+        Row(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(24)),
+              child: FadeInImage.memoryNetwork(
+                fadeInCurve: Curves.decelerate,
+                placeholder: kTransparentImage,
+                image: _artist["thumbnail"]!,
+                fit: BoxFit.cover,
+                width: 48,
+                height: 48,
               ),
-              const SizedBox(width: 12),
-              const Text(
-                "More from ",
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              "More from ",
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
               ),
-              Text(
-                _artist["name"]!,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ],
-          ),
+            ),
+            Text(
+              _artist["name"]!,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
         TracksRow(tracks: _tracks)
       ],
     );

@@ -54,17 +54,23 @@ class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16, left: 16),
-          child: Text(
-            "Songs you've been listening to a lot recently",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+        Text(
+          "Tracks you listen to a lot",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        Text(
+          "A list of tracks that you've heard a lot recently",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+        const SizedBox(height: 12),
         TracksRow(tracks: _tracks)
       ],
     );

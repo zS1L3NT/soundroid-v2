@@ -15,15 +15,28 @@ class _TracksRowState extends State<TracksRow> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 190,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          const SizedBox(width: 16),
-          for (var track in widget.tracks)
-            Container(
+      height: 180,
+      child: ShaderMask(
+        shaderCallback: (rectangle) => const LinearGradient(
+          colors: [
+            Colors.transparent,
+            Colors.black,
+            Colors.black,
+            Colors.transparent
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          stops: [0, 0.01, 0.99, 1],
+        ).createShader(rectangle),
+        blendMode: BlendMode.dstIn,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) => const SizedBox(width: 24),
+          itemCount: widget.tracks.length,
+          itemBuilder: (context, index) {
+            final track = widget.tracks[index];
+            return SizedBox(
               width: 125,
-              margin: const EdgeInsets.only(right: 16),
               child: Material(
                 child: Column(
                   children: [
@@ -38,24 +51,25 @@ class _TracksRowState extends State<TracksRow> {
                         height: 125,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     AppText(
                       track.title,
-                      height: 30,
+                      height: 26,
                       width: 125,
                       style: const TextStyle(fontSize: 16),
                     ),
                     AppText(
                       track.artists,
-                      height: 24,
+                      height: 22,
                       width: 125,
                       style: const TextStyle(fontSize: 14),
                     ),
                   ],
                 ),
               ),
-            ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }

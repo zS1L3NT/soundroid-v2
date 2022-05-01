@@ -53,17 +53,23 @@ class _RareListensSectionState extends State<RareListensSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16, left: 16),
-          child: Text(
-            "Songs you rarely listen to",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+        Text(
+          "Tracks you rarely listen to",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        Text(
+          "A list of Tracks you haven't been listening to",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+        const SizedBox(height: 12),
         TracksRow(tracks: _tracks)
       ],
     );

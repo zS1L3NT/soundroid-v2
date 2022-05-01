@@ -13,10 +13,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 // 1) Your playlists
-// 2) Songs that you've been listening to a lot
+// 2) Tracks that you've been listening to a lot
 // 3) Recommended for you
 // 4) More from {artistName}
-// 5) Songs that you don't listen to very often
+// 5) Tracks that you don't listen to very often
 // 6) More from {artistName}
 // 7) More from {artistName}
 
@@ -34,14 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          for (var widge in widgets) ...[
-            widge,
-            const SizedBox(height: 16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            for (var widget in widgets) ...[
+              widget,
+              const SizedBox(height: 24),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

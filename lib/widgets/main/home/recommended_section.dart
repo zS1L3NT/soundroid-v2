@@ -52,28 +52,23 @@ class _RecommendedSectionState extends State<RecommendedSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text(
-            "Recommended for You",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+        Text(
+          "Recommended for You",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16, left: 16),
-          child: Text(
-            "A list of Tracks we think you might like",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w300,
-            ),
+        Text(
+          "A list of Tracks we think you might like",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w300,
           ),
         ),
+        const SizedBox(height: 12),
         TracksRow(tracks: _tracks)
       ],
     );
