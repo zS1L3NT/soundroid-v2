@@ -37,35 +37,33 @@ class _TracksRowState extends State<TracksRow> {
             final track = widget.tracks[index];
             return SizedBox(
               width: 125,
-              child: Material(
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      child: FadeInImage.memoryNetwork(
-                        fadeInCurve: Curves.decelerate,
-                        placeholder: kTransparentImage,
-                        image: track.thumbnail,
-                        fit: BoxFit.cover,
-                        width: 125,
-                        height: 125,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    AppText(
-                      track.title,
-                      height: 26,
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: FadeInImage.memoryNetwork(
+                      fadeInCurve: Curves.decelerate,
+                      placeholder: kTransparentImage,
+                      image: track.thumbnail,
+                      fit: BoxFit.cover,
                       width: 125,
-                      style: const TextStyle(fontSize: 16),
+                      height: 125,
                     ),
-                    AppText(
-                      track.artists,
-                      height: 22,
-                      width: 125,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 6),
+                  AppText(
+                    track.title,
+                    height: 26,
+                    width: 125,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  AppText(
+                    track.artists,
+                    height: 22,
+                    width: 125,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ],
               ),
             );
           },
