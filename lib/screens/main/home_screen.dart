@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/widgets/main/home/more_from_artist_section.dart';
 import 'package:soundroid/widgets/main/home/recently_repeated_section.dart';
 import 'package:soundroid/widgets/main/home/recommended_section.dart';
 import 'package:soundroid/widgets/main/home/your_playlists_section.dart';
@@ -31,6 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
           RecentlyRepeatedSection(),
           SizedBox(height: 16),
           RecommendedSection(),
+          SizedBox(height: 16),
+          MoreFromArtistSection(artistId: "UCTUR0sVEkD8T5MlSHqgaI_Q"),
           SizedBox(height: 16),
         ],
       ),
