@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/widgets/main/search/recent_item.dart';
+import 'package:soundroid/widgets/main/search/search_suggestion_item.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final String query;
+  const SearchScreen({
+    Key? key,
+    required this.query,
+  }) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -25,13 +30,26 @@ class _SearchScreenState extends State<SearchScreen> {
     "goblin the lonely and great god ost"
   ];
 
+  final searchSuggestionsApiData = const [
+    "iu lilac",
+    "iu lilac cover english",
+    "iu lilac live",
+    "iu lilac slowed and reverb",
+    "iu lilac album",
+    "iu lilac edit audio",
+    "iu lilac for 1 hour"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: [
-          for (final search in history) RecentItem(text: search),
-        ],
+        children: widget.query.isEmpty
+            ? [for (final search in history) RecentItem(text: search)]
+            : [
+                for (final suggestion in searchSuggestionsApiData)
+                  SearchSuggestionItem(text: suggestion)
+              ],
       ),
     );
   }

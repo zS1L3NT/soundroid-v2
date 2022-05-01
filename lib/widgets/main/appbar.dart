@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class MainAppBar extends AppBar {
   final int screenIndex;
-  MainAppBar({Key? key, required this.screenIndex}) : super(key: key);
+  final Function(String searchQuery) setSearchQuery;
+  MainAppBar({
+    Key? key,
+    required this.screenIndex,
+    required this.setSearchQuery,
+  }) : super(key: key);
 
   @override
   State<MainAppBar> createState() => _MainAppBarState();
@@ -38,6 +43,7 @@ class _MainAppBarState extends State<MainAppBar> {
         break;
       case 1:
         title = TextField(
+          onChanged: widget.setSearchQuery,
           decoration: InputDecoration(
             hintText: 'Search songs or albums...',
             hintStyle: TextStyle(
