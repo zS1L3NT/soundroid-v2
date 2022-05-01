@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/widgets/main/home/recently_repeated_section.dart';
+import 'package:soundroid/widgets/main/home/recommended_section.dart';
 import 'package:soundroid/widgets/main/home/your_playlists_section.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
           YourPlaylistsSection(),
           SizedBox(height: 16),
           RecentlyRepeatedSection(),
+          SizedBox(height: 16),
+          RecommendedSection(),
           SizedBox(height: 16),
         ],
       ),
