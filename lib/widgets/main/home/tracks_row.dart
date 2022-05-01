@@ -38,7 +38,7 @@ class _TracksRowState extends State<TracksRow> {
             scrollDirection: Axis.horizontal,
             children: [
               const SizedBox(width: 24),
-              for (var track in widget.tracks) ...[
+              for (final track in widget.tracks) ...[
                 SizedBox(
                   width: 125,
                   child: Column(

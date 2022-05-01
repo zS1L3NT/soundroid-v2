@@ -30,12 +30,12 @@ class AppText extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        var span = TextSpan(
+        final span = TextSpan(
           text: text,
           style: style,
         );
 
-        var tp = TextPainter(
+        final tp = TextPainter(
           maxLines: 1,
           textAlign: textAlign,
           textDirection: TextDirection.ltr,

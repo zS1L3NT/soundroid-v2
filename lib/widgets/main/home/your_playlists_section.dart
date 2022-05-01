@@ -58,7 +58,7 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
             ),
           ),
           const SizedBox(height: 12),
-          for (var playlist in _playlists) ...[
+          for (final playlist in _playlists) ...[
             Material(
               elevation: 8,
               borderRadius: const BorderRadius.all(Radius.circular(8)),
