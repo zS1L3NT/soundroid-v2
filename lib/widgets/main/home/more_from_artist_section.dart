@@ -162,7 +162,7 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20),
+          padding: const EdgeInsets.only(bottom: 8, left: 20),
           child: Row(
             children: [
               ClipRRect(

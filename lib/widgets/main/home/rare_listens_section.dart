@@ -54,7 +54,7 @@ class _RareListensSectionState extends State<RareListensSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 16, left: 16),
+          padding: const EdgeInsets.only(bottom: 16, left: 16),
           child: Text(
             "Songs you rarely listen to",
             style: TextStyle(

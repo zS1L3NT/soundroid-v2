@@ -21,26 +21,26 @@ class HomeScreen extends StatefulWidget {
 // 7) More from {artistName}
 
 class _HomeScreenState extends State<HomeScreen> {
+  var widgets = const [
+    YourPlaylistsSection(),
+    RecentlyRepeatedSection(),
+    RecommendedSection(),
+    MoreFromArtistSection(artistId: "UCTUR0sVEkD8T5MlSHqgaI_Q"),
+    RareListensSection(),
+    MoreFromArtistSection(artistId: "UCwzCuKxyMY_sT7hr1E8G1XA"),
+    MoreFromArtistSection(artistId: "UCTP45_DE3fMLujU8sZ-MBzw"),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: const [
-          SizedBox(height: 16),
-          YourPlaylistsSection(),
-          SizedBox(height: 16),
-          RecentlyRepeatedSection(),
-          SizedBox(height: 16),
-          RecommendedSection(),
-          SizedBox(height: 16),
-          MoreFromArtistSection(artistId: "UCTUR0sVEkD8T5MlSHqgaI_Q"),
-          SizedBox(height: 16),
-          RareListensSection(),
-          SizedBox(height: 16),
-          MoreFromArtistSection(artistId: "UCwzCuKxyMY_sT7hr1E8G1XA"),
-          SizedBox(height: 16),
-          MoreFromArtistSection(artistId: "UCTP45_DE3fMLujU8sZ-MBzw"),
-          SizedBox(height: 16),
+        children: [
+          const SizedBox(height: 16),
+          for (var widge in widgets) ...[
+            widge,
+            const SizedBox(height: 16),
+          ],
         ],
       ),
     );

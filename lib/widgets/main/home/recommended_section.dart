@@ -53,7 +53,7 @@ class _RecommendedSectionState extends State<RecommendedSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8, left: 16),
+          padding: const EdgeInsets.only(left: 16),
           child: Text(
             "Recommended for You",
             style: TextStyle(

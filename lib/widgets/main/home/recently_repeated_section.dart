@@ -55,7 +55,7 @@ class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 16, left: 16),
+          padding: const EdgeInsets.only(bottom: 16, left: 16),
           child: Text(
             "Songs you've been listening to a lot recently",
             style: TextStyle(

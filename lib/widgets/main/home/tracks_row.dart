@@ -15,7 +15,7 @@ class _TracksRowState extends State<TracksRow> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 190,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
