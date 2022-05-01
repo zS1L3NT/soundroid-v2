@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/widgets/main/home/tracks_row.dart';
-import 'package:transparent_image/transparent_image.dart';
-
-import '../../app/text.dart';
 
 class RecentlyRepeatedSection extends StatefulWidget {
   const RecentlyRepeatedSection({Key? key}) : super(key: key);

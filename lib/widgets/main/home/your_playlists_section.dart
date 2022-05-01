@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
+import 'package:soundroid/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-import '../../app/text.dart';
 
 class YourPlaylistsSection extends StatefulWidget {
   const YourPlaylistsSection({Key? key}) : super(key: key);
