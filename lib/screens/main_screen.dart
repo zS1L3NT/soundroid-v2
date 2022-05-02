@@ -15,25 +15,18 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   var _screenIndex = 1;
-  var _searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
-    final _screens = <Widget>[
-      const HomeScreen(),
-      SearchScreen(query: _searchQuery),
-      const LibraryScreen(),
-      const ProfileScreen(),
+    const _screens = [
+      HomeScreen(),
+      SearchScreen(),
+      LibraryScreen(),
+      ProfileScreen(),
     ];
 
     return Scaffold(
-      appBar: MainAppBar(
-          screenIndex: _screenIndex,
-          setSearchQuery: (searchQuery) {
-            setState(() {
-              _searchQuery = searchQuery;
-            });
-          }),
+      appBar: MainAppBar(screenIndex: _screenIndex),
       bottomNavigationBar: MainBottomNavigationBar(
         index: _screenIndex,
         setIndex: (index) {

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/widgets/main/search/recent_item.dart';
 import 'package:soundroid/widgets/main/search/search_suggestion_item.dart';
 
 class SearchScreen extends StatefulWidget {
-  final String query;
-  const SearchScreen({
-    Key? key,
-    required this.query,
-  }) : super(key: key);
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -44,12 +42,11 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: widget.query.isEmpty
-            ? [for (final search in history) RecentItem(text: search)]
-            : [
-                for (final suggestion in searchSuggestionsApiData)
-                  SearchSuggestionItem(text: suggestion)
-              ],
+        children: context.watch<SearchProvider>().query.isEmpty
+            ? history.map((search) => RecentItem(text: search)).toList()
+            : searchSuggestionsApiData
+                .map((suggestion) => SearchSuggestionItem(text: suggestion))
+                .toList(),
       ),
     );
   }

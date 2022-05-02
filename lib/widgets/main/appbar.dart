@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/providers/search_provider.dart';
 
 class MainAppBar extends AppBar {
   final int screenIndex;
-  final Function(String searchQuery) setSearchQuery;
-  MainAppBar({
-    Key? key,
-    required this.screenIndex,
-    required this.setSearchQuery,
-  }) : super(key: key);
+  MainAppBar({Key? key, required this.screenIndex}) : super(key: key);
 
   @override
   State<MainAppBar> createState() => _MainAppBarState();
@@ -47,7 +44,7 @@ class _MainAppBarState extends State<MainAppBar> {
         title = TextField(
           autofocus: true,
           controller: textEditingController,
-          onChanged: widget.setSearchQuery,
+          onChanged: context.read<SearchProvider>().setQuery,
           decoration: InputDecoration(
             hintText: 'Search songs or albums...',
             hintStyle: TextStyle(
@@ -61,11 +58,11 @@ class _MainAppBarState extends State<MainAppBar> {
             color: Colors.white,
           ),
         );
-        if (textEditingController.text != "") {
+        if (context.watch<SearchProvider>().query != "") {
           actions.add(
             IconButton(
               onPressed: () {
-                widget.setSearchQuery("");
+                context.read<SearchProvider>().setQuery("");
                 textEditingController.clear();
               },
               icon: const Icon(Icons.clear),
