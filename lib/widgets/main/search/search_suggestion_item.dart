@@ -15,12 +15,26 @@ class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 56),
-        child: AppText(
-          widget.text,
-          width: MediaQuery.of(context).size.width - 104,
-          textAlign: TextAlign.left,
-          fontSize: 18,
+        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
+        child: Row(
+          children: [
+            const Icon(Icons.search, color: Colors.black87),
+            const SizedBox(width: 16),
+            AppText(
+              widget.text,
+              width: MediaQuery.of(context).size.width - 104,
+              textAlign: TextAlign.left,
+              fontSize: 18,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.north_west,
+                color: Colors.black.withOpacity(0.7),
+              ),
+              splashRadius: 20,
+            ),
+          ],
         ),
       ),
     );
