@@ -12,26 +12,29 @@ class RecentItem extends StatefulWidget {
 class _RecentItemState extends State<RecentItem> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
-        child: Row(
-          children: [
-            const Icon(Icons.history, color: Colors.black87),
-            const SizedBox(width: 16),
-            AppText(
-              widget.text,
-              width: MediaQuery.of(context).size.width - 104,
-              textAlign: TextAlign.left,
-              fontSize: 18,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.clear, color: Colors.black87),
-              splashRadius: 20,
-            ),
-          ],
+    return InkWell(
+      onTap: () {},
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
+          child: Row(
+            children: [
+              const Icon(Icons.history, color: Colors.black87),
+              const SizedBox(width: 16),
+              AppText(
+                widget.text,
+                width: MediaQuery.of(context).size.width - 104,
+                textAlign: TextAlign.left,
+                fontSize: 18,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.clear, color: Colors.black87),
+                splashRadius: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

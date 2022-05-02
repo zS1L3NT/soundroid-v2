@@ -12,29 +12,32 @@ class SearchSuggestionItem extends StatefulWidget {
 class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
-        child: Row(
-          children: [
-            const Icon(Icons.search, color: Colors.black87),
-            const SizedBox(width: 16),
-            AppText(
-              widget.text,
-              width: MediaQuery.of(context).size.width - 104,
-              textAlign: TextAlign.left,
-              fontSize: 18,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.north_west,
-                color: Colors.black.withOpacity(0.7),
+    return InkWell(
+      onTap: () {},
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
+          child: Row(
+            children: [
+              const Icon(Icons.search, color: Colors.black87),
+              const SizedBox(width: 16),
+              AppText(
+                widget.text,
+                width: MediaQuery.of(context).size.width - 104,
+                textAlign: TextAlign.left,
+                fontSize: 18,
               ),
-              splashRadius: 20,
-            ),
-          ],
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.north_west,
+                  color: Colors.black.withOpacity(0.7),
+                ),
+                splashRadius: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );
