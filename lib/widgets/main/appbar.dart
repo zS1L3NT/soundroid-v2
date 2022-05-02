@@ -14,6 +14,8 @@ class MainAppBar extends AppBar {
 }
 
 class _MainAppBarState extends State<MainAppBar> {
+  final textEditingController = TextEditingController();
+
   @override
   AppBar build(BuildContext context) {
     Widget title = const Text("");
@@ -43,6 +45,7 @@ class _MainAppBarState extends State<MainAppBar> {
         break;
       case 1:
         title = TextField(
+          controller: textEditingController,
           onChanged: widget.setSearchQuery,
           decoration: InputDecoration(
             hintText: 'Search songs or albums...',
@@ -59,7 +62,10 @@ class _MainAppBarState extends State<MainAppBar> {
         );
         actions.add(
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              widget.setSearchQuery("");
+              textEditingController.clear();
+            },
             icon: const Icon(Icons.clear),
             splashRadius: 20,
           ),
