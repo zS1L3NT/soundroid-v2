@@ -44,7 +44,7 @@ class _MainAppBarState extends State<MainAppBar> {
         title = TextField(
           autofocus: true,
           controller: textEditingController,
-          onChanged: context.read<SearchProvider>().setQuery,
+          onChanged: (query) => context.read<SearchProvider>().query = query,
           onEditingComplete: context.read<SearchProvider>().onSearch,
           decoration: InputDecoration(
             hintText: 'Search songs or albums...',
@@ -63,7 +63,7 @@ class _MainAppBarState extends State<MainAppBar> {
           actions.add(
             IconButton(
               onPressed: () {
-                context.read<SearchProvider>().setQuery("");
+                context.read<SearchProvider>().query = "";
                 textEditingController.clear();
               },
               icon: const Icon(Icons.clear),

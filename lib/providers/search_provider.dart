@@ -8,12 +8,12 @@ class SearchProvider with ChangeNotifier {
   String get query => _query;
   Function() get onSearch => _onSearch;
 
-  void setQuery(String query) {
+  set query(String query) {
     _query = query;
     notifyListeners();
   }
 
-  void setOnSearch(Function() onSearch) {
+  set onSearch(Function() onSearch) {
     _onSearch = onSearch;
     notifyListeners();
   }

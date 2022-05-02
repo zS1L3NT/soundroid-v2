@@ -48,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     // Initialize the setOnSearch method in the SearchProvider
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      context.read<SearchProvider>().setOnSearch(fetchResults);
+      context.read<SearchProvider>().onSearch = fetchResults;
     });
   }
 
