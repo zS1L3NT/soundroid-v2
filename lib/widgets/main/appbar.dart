@@ -45,6 +45,7 @@ class _MainAppBarState extends State<MainAppBar> {
         break;
       case 1:
         title = TextField(
+          autofocus: true,
           controller: textEditingController,
           onChanged: widget.setSearchQuery,
           decoration: InputDecoration(
@@ -60,16 +61,18 @@ class _MainAppBarState extends State<MainAppBar> {
             color: Colors.white,
           ),
         );
-        actions.add(
-          IconButton(
-            onPressed: () {
-              widget.setSearchQuery("");
-              textEditingController.clear();
-            },
-            icon: const Icon(Icons.clear),
-            splashRadius: 20,
-          ),
-        );
+        if (textEditingController.text != "") {
+          actions.add(
+            IconButton(
+              onPressed: () {
+                widget.setSearchQuery("");
+                textEditingController.clear();
+              },
+              icon: const Icon(Icons.clear),
+              splashRadius: 20,
+            ),
+          );
+        }
         break;
       case 2:
         title = const Text("Library");
