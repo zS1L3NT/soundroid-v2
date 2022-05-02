@@ -45,6 +45,7 @@ class _MainAppBarState extends State<MainAppBar> {
           autofocus: true,
           controller: textEditingController,
           onChanged: context.read<SearchProvider>().setQuery,
+          onEditingComplete: context.read<SearchProvider>().onSearch,
           decoration: InputDecoration(
             hintText: 'Search songs or albums...',
             hintStyle: TextStyle(

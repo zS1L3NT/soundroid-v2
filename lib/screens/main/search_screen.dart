@@ -38,6 +38,20 @@ class _SearchScreenState extends State<SearchScreen> {
     "iu lilac for 1 hour"
   ];
 
+  void fetchResults() async {
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the setOnSearch method in the SearchProvider
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      context.read<SearchProvider>().setOnSearch(fetchResults);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
