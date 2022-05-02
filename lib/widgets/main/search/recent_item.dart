@@ -23,12 +23,8 @@ class _RecentItemState extends State<RecentItem> {
             AppText(
               widget.text,
               width: MediaQuery.of(context).size.width - 104,
-              height: 36,
               textAlign: TextAlign.left,
-              style: const TextStyle(
-                fontSize: 18,
-                height: 1.7,
-              ),
+              fontSize: 18,
             ),
             IconButton(
               onPressed: () {},

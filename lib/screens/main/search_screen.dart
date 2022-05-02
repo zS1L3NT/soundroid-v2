@@ -32,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   final searchSuggestionsApiData = const [
     "iu lilac",
-    "iu lilac cover english",
+    "iu lilac cover english a b c d e f g",
     "iu lilac live",
     "iu lilac slowed and reverb",
     "iu lilac album",

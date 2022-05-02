@@ -90,7 +90,6 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
                   const SizedBox(width: 12),
                   AppText(
                     playlist.name,
-                    height: 24,
                     width: MediaQuery.of(context).size.width - 124,
                     textAlign: TextAlign.left,
                   )

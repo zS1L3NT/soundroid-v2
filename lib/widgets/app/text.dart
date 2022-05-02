@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
@@ -5,8 +6,8 @@ import 'package:marquee/marquee.dart';
 class AppText extends StatelessWidget {
   final String text;
   final double width;
-  final double height;
-  final TextStyle? style;
+  final double fontSize;
+  final FontWeight fontWeight;
   final TextAlign textAlign;
   final double blankSpace;
   final double velocity;
@@ -17,8 +18,8 @@ class AppText extends StatelessWidget {
     this.text, {
     Key? key,
     required this.width,
-    required this.height,
-    this.style,
+    this.fontSize = 16,
+    this.fontWeight = FontWeight.normal,
     this.textAlign = TextAlign.center,
     this.blankSpace = 30.0,
     this.velocity = 30.0,
@@ -28,60 +29,43 @@ class AppText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final span = TextSpan(
-          text: text,
-          style: style,
-        );
-
-        final tp = TextPainter(
-          maxLines: 1,
-          textAlign: textAlign,
-          textDirection: TextDirection.ltr,
-          text: span,
-        );
-
-        tp.layout(maxWidth: width - 25);
-
-        if (tp.didExceedMaxLines) {
-          return SizedBox(
-            height: height,
-            width: width,
-            child: ShaderMask(
-              shaderCallback: (rectangle) => const LinearGradient(
-                colors: [
-                  Colors.transparent,
-                  Colors.black,
-                  Colors.black,
-                  Colors.transparent
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: [0, 0.1, 0.9, 1.0],
-              ).createShader(rectangle),
-              child: Marquee(
-                text: text,
-                style: style,
-                blankSpace: blankSpace,
-                velocity: velocity,
-                startAfter: startAfter,
-                pauseAfterRound: pauseAfterRound,
-              ),
+    return SizedBox(
+      width: width,
+      height: (fontSize + 9) * MediaQuery.of(context).textScaleFactor,
+      child: AutoSizeText(
+        text,
+        minFontSize: fontSize,
+        maxFontSize: fontSize,
+        textAlign: textAlign,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+        ),
+        overflowReplacement: ShaderMask(
+          shaderCallback: (rectangle) => const LinearGradient(
+            colors: [
+              Colors.transparent,
+              Colors.black,
+              Colors.black,
+              Colors.transparent
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            stops: [0, 0.1, 0.9, 1.0],
+          ).createShader(rectangle),
+          child: Marquee(
+            text: text,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: fontWeight,
             ),
-          );
-        } else {
-          return SizedBox(
-            width: width,
-            height: height,
-            child: Text(
-              text,
-              style: style,
-              textAlign: textAlign,
-            ),
-          );
-        }
-      },
+            blankSpace: blankSpace,
+            velocity: velocity,
+            startAfter: startAfter,
+            pauseAfterRound: pauseAfterRound,
+          ),
+        ),
+      ),
     );
   }
 }

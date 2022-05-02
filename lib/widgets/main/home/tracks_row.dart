@@ -15,7 +15,7 @@ class _TracksRowState extends State<TracksRow> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 180,
+      height: 190,
       child: ShaderMask(
         shaderCallback: (rectangle) => const LinearGradient(
           colors: [
@@ -26,7 +26,7 @@ class _TracksRowState extends State<TracksRow> {
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          stops: [0, 0.1, 0.9, 1],
+          stops: [0, 0.05, 0.9, 1],
         ).createShader(rectangle),
         blendMode: BlendMode.dstIn,
         child: NotificationListener(
@@ -58,15 +58,12 @@ class _TracksRowState extends State<TracksRow> {
                       const SizedBox(height: 6),
                       AppText(
                         track.title,
-                        height: 26,
                         width: 125,
-                        style: const TextStyle(fontSize: 16),
                       ),
                       AppText(
                         track.artists,
-                        height: 22,
                         width: 125,
-                        style: const TextStyle(fontSize: 14),
+                        fontSize: 14,
                       ),
                     ],
                   ),
