@@ -36,7 +36,13 @@ class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
                 fontSize: 18,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  final search = context.read<SearchProvider>();
+                  search.textEditingController.text = widget.text;
+                  search.textEditingController.selection =
+                      TextSelection.collapsed(offset: widget.text.length);
+                  search.query = widget.text;
+                },
                 icon: Icon(
                   Icons.north_west,
                   color: Colors.black.withOpacity(0.7),
