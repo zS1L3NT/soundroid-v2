@@ -117,6 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
   };
 
   void fetchResults() {
+    FocusScope.of(context).requestFocus(FocusNode());
     if (!context.read<SearchProvider>().isLoading) {
       context.read<SearchProvider>().isLoading = true;
       context.read<SearchProvider>().results = null;

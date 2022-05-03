@@ -14,6 +14,16 @@ class _MainAppBarState extends State<MainAppBar> {
   final textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      context.read<SearchProvider>().textEditingController =
+          textEditingController;
+    });
+  }
+
+  @override
   AppBar build(BuildContext context) {
     Widget title = const Text("");
     List<Widget> actions = [];
@@ -50,6 +60,7 @@ class _MainAppBarState extends State<MainAppBar> {
           },
           onEditingComplete: context.read<SearchProvider>().onSearch,
           decoration: InputDecoration(
+            border: InputBorder.none,
             hintText: 'Search songs or albums...',
             hintStyle: TextStyle(
               color: Colors.white.withOpacity(0.5),
