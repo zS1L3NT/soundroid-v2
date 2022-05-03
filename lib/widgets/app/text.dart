@@ -6,6 +6,7 @@ import 'package:marquee/marquee.dart';
 class AppText extends StatelessWidget {
   final String text;
   final double width;
+  final double extraHeight;
   final double fontSize;
   final FontWeight fontWeight;
   final TextAlign textAlign;
@@ -18,6 +19,7 @@ class AppText extends StatelessWidget {
     this.text, {
     Key? key,
     required this.width,
+    this.extraHeight = 9,
     this.fontSize = 16,
     this.fontWeight = FontWeight.normal,
     this.textAlign = TextAlign.center,
@@ -31,7 +33,7 @@ class AppText extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: (fontSize * 1.7) * MediaQuery.of(context).textScaleFactor,
+      height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
       child: AutoSizeText(
         text,
         minFontSize: fontSize,

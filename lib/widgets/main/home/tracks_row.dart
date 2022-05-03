@@ -15,7 +15,7 @@ class _TracksRowState extends State<TracksRow> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 190,
+      height: 186,
       child: ShaderMask(
         shaderCallback: (rectangle) => const LinearGradient(
           colors: [
@@ -64,6 +64,7 @@ class _TracksRowState extends State<TracksRow> {
                         track.artists,
                         width: 125,
                         fontSize: 14,
+                        extraHeight: 8,
                       ),
                     ],
                   ),
