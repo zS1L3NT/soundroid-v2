@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/screens/main_screen.dart';
 import 'package:soundroid/screens/settings_screen.dart';
+import 'package:soundroid/widgets/app/scroll_behaviour.dart';
 
 void main() async {
   // Initialize Firebase
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: const Color(0xFF222222),
         fontFamily: "Poppins",
       ),
+      scrollBehavior: AppScrollBehavior(),
       initialRoute: "/main",
       routes: {
         "/main": (context) => const MainScreen(),
