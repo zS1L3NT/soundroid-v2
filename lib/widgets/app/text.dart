@@ -31,7 +31,7 @@ class AppText extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: (fontSize + 9) * MediaQuery.of(context).textScaleFactor,
+      height: (fontSize * 1.7) * MediaQuery.of(context).textScaleFactor,
       child: AutoSizeText(
         text,
         minFontSize: fontSize,
@@ -51,7 +51,7 @@ class AppText extends StatelessWidget {
             ],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            stops: [0, 0.1, 0.9, 1.0],
+            stops: [0, 0.01, 0.9, 1.0],
           ).createShader(rectangle),
           child: Marquee(
             text: text,
