@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,7 +11,9 @@ import 'package:soundroid/screens/settings_screen.dart';
 void main() async {
   // Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (!Platform.isWindows) {
+    await Firebase.initializeApp();
+  }
 
   // Initialize Hive
   await Hive.initFlutter();
