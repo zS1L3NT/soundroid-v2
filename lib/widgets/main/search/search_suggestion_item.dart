@@ -31,8 +31,8 @@ class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
               const SizedBox(width: 16),
               AppText(
                 widget.text,
+                type: TextType.ellipse,
                 width: MediaQuery.of(context).size.width - 104,
-                textAlign: TextAlign.left,
                 fontSize: 18,
               ),
               IconButton(
