@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 // 7) More from {artistName}
 
 class _HomeScreenState extends State<HomeScreen> {
-  final widgets = const [
+  final _widgets = const [
     YourPlaylistsSection(),
     RecentlyRepeatedSection(),
     RecommendedSection(),
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 12),
-            for (final widget in widgets) ...[
+            for (final widget in _widgets) ...[
               widget,
               const SizedBox(height: 24),
             ],

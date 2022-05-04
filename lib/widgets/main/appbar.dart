@@ -11,7 +11,7 @@ class MainAppBar extends AppBar {
 }
 
 class _MainAppBarState extends State<MainAppBar> {
-  final textEditingController = TextEditingController();
+  final _textEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -19,7 +19,7 @@ class _MainAppBarState extends State<MainAppBar> {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       context.read<SearchProvider>().textEditingController =
-          textEditingController;
+          _textEditingController;
     });
   }
 
@@ -53,7 +53,7 @@ class _MainAppBarState extends State<MainAppBar> {
       case 1:
         title = TextField(
           autofocus: true,
-          controller: textEditingController,
+          controller: _textEditingController,
           onChanged: (query) {
             context.read<SearchProvider>().query = query;
             context.read<SearchProvider>().results = null;
@@ -79,7 +79,7 @@ class _MainAppBarState extends State<MainAppBar> {
               onPressed: () {
                 context.read<SearchProvider>().query = "";
                 context.read<SearchProvider>().results = null;
-                textEditingController.clear();
+                _textEditingController.clear();
               },
               icon: const Icon(Icons.clear),
               splashRadius: 20,

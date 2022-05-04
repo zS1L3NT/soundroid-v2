@@ -13,7 +13,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final history = [
+  final _history = [
     "iu lilac",
     "iu llac",
     "iu strawbrry moon",
@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
     "goblin the lonely and great god ost"
   ];
 
-  final searchSuggestionsApiData = const [
+  final _searchSuggestionsApiData = const [
     "iu lilac",
     "iu lilac cover english a b c d e f g",
     "iu lilac live",
@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
     "iu lilac for 1 hour"
   ];
 
-  final searchApiData = const {
+  final _searchApiData = const {
     "tracks": [
       {
         "id": "04tYkKUPPv4",
@@ -123,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
       context.read<SearchProvider>().results = null;
       Future.delayed(const Duration(seconds: 1), () {
         context.read<SearchProvider>().isLoading = false;
-        context.read<SearchProvider>().results = searchApiData;
+        context.read<SearchProvider>().results = _searchApiData;
       });
     }
   }
@@ -171,10 +171,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             .toList(),
                       ]
                     : search.query.isEmpty
-                        ? history
+                        ? _history
                             .map((search) => RecentItem(text: search))
                             .toList()
-                        : searchSuggestionsApiData
+                        : _searchSuggestionsApiData
                             .map((suggestion) =>
                                 SearchSuggestionItem(text: suggestion))
                             .toList(),
