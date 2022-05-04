@@ -52,11 +52,11 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: "/main",
+      initialRoute: MainScreen.routeName,
       routes: {
-        "/main": (context) => const MainScreen(),
-        "/settings": (context) => const SettingsScreen(),
-        "/playlist": (context) => const PlaylistScreen(),
+        MainScreen.routeName: (context) => const MainScreen(),
+        SettingsScreen.routeName: (context) => const SettingsScreen(),
+        PlaylistScreen.routeName: (context) => const PlaylistScreen(),
       },
     );
   }

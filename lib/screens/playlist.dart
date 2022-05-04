@@ -4,6 +4,8 @@ import 'package:soundroid/models/playlist.dart';
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({Key? key}) : super(key: key);
 
+  static const routeName = "/playlist";
+
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();
 }
