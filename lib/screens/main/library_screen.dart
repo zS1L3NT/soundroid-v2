@@ -49,11 +49,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
         children: [
           const SizedBox(height: 4),
           const LikedSongsItem(),
+          ..._playlists
+              .map((playlist) => PlaylistItem(playlist: playlist))
+              .toList(),
           const SizedBox(height: 4),
-          for (final playlist in _playlists) ...[
-            PlaylistItem(playlist: playlist),
-            const SizedBox(height: 4),
-          ]
         ],
       ),
     );
