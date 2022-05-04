@@ -29,50 +29,47 @@ class _SearchResultItemState extends State<SearchResultItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: FadeInImage.memoryNetwork(
-                  fadeInCurve: Curves.decelerate,
-                  placeholder: kTransparentImage,
-                  image: widget.thumbnail,
-                  fit: BoxFit.cover,
-                  width: 48,
-                  height: 48,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              child: FadeInImage.memoryNetwork(
+                fadeInCurve: Curves.decelerate,
+                placeholder: kTransparentImage,
+                image: widget.thumbnail,
+                fit: BoxFit.cover,
+                width: 48,
+                height: 48,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  widget.title,
+                  width: MediaQuery.of(context).size.width - 124,
+                  extraHeight: 8,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText(
-                    widget.title,
-                    width: MediaQuery.of(context).size.width - 124,
-                    extraHeight: 8,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  AppText(
-                    widget.description,
-                    width: MediaQuery.of(context).size.width - 124,
-                    extraHeight: 7,
-                    fontSize: 12,
-                  ),
-                ],
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.more_vert),
-                iconSize: 20,
-                splashRadius: 20,
-              )
-            ],
-          ),
+                AppText(
+                  widget.description,
+                  width: MediaQuery.of(context).size.width - 124,
+                  extraHeight: 7,
+                  fontSize: 12,
+                ),
+              ],
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_vert),
+              iconSize: 20,
+              splashRadius: 20,
+            )
+          ],
         ),
       ),
     );

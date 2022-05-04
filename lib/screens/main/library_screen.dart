@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
+import 'package:soundroid/widgets/main/library/liked_songs_item.dart';
 import 'package:soundroid/widgets/main/library/playlist_item.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -47,15 +48,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
       child: Column(
         children: [
           const SizedBox(height: 4),
-          PlaylistItem(
-            playlist: Playlist(
-              name: "Liked Songs",
-              userId: "",
-              thumbnail:
-                  "https://media-exp1.licdn.com/dms/image/C5603AQH44a3q4YZIzQ/profile-displayphoto-shrink_800_800/0/1634632712439?e=1657152000&v=beta&t=GVQpTq83TxzfMnok37IolQPJXvpau3_wIedhS8GTvIc",
-              trackIds: [],
-            ),
-          ),
+          const LikedSongsItem(),
+          const SizedBox(height: 4),
+          for (final playlist in _playlists) ...[
+            PlaylistItem(playlist: playlist),
+            const SizedBox(height: 4),
+          ]
         ],
       ),
     );

@@ -17,7 +17,7 @@ class _PlaylistItemState extends State<PlaylistItem> {
     return InkWell(
       onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
         child: Row(
           children: [
             ClipRRect(
@@ -27,26 +27,35 @@ class _PlaylistItemState extends State<PlaylistItem> {
                 placeholder: kTransparentImage,
                 image: widget.playlist.thumbnail,
                 fit: BoxFit.cover,
-                width: 64,
-                height: 64,
+                width: 48,
+                height: 48,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
                   widget.playlist.name,
-                  width: MediaQuery.of(context).size.width - 112,
-                  fontSize: 18,
+                  width: MediaQuery.of(context).size.width - 124,
+                  extraHeight: 8,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
                 AppText(
                   "${widget.playlist.trackIds.length} tracks",
-                  width: MediaQuery.of(context).size.width - 112,
-                )
+                  width: MediaQuery.of(context).size.width - 124,
+                  extraHeight: 7,
+                  fontSize: 12,
+                ),
               ],
             ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_vert),
+              iconSize: 20,
+              splashRadius: 20,
+            )
           ],
         ),
       ),
