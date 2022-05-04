@@ -10,7 +10,7 @@ class RecommendedSection extends StatefulWidget {
 }
 
 class _RecommendedSectionState extends State<RecommendedSection> {
-  final List<Track> _tracks = [
+  final _tracks = [
     Track(
       id: "",
       title: "Weekend",

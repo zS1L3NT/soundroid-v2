@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
     "goblin the lonely and great god ost"
   ];
 
-  final _searchSuggestionsApiData = const [
+  final _searchSuggestionsApiData = [
     "iu lilac",
     "iu lilac cover english a b c d e f g",
     "iu lilac live",
@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
     "iu lilac for 1 hour"
   ];
 
-  final _searchApiData = const {
+  final _searchApiData = {
     "tracks": [
       {
         "id": "04tYkKUPPv4",

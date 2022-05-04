@@ -11,7 +11,7 @@ class YourPlaylistsSection extends StatefulWidget {
 }
 
 class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
-  final List<Playlist> _playlists = [
+  final _playlists = [
     Playlist(
       name: "Korean Songs",
       userId: "",

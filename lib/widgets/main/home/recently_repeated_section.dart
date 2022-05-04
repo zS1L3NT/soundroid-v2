@@ -11,7 +11,7 @@ class RecentlyRepeatedSection extends StatefulWidget {
 }
 
 class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
-  final List<Track> _tracks = [
+  final _tracks = [
     Track(
       id: "",
       title: "Mago",
