@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/screens/main_screen.dart';
-import 'package:soundroid/screens/playlist_screen.dart';
-import 'package:soundroid/screens/settings_screen.dart';
+import 'package:soundroid/screens/main.dart';
+import 'package:soundroid/screens/playlist.dart';
+import 'package:soundroid/screens/settings.dart';
 import 'package:soundroid/widgets/app/scroll_behaviour.dart';
 
 void main() async {

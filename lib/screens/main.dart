@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/screens/main/home_screen.dart';
-import 'package:soundroid/screens/main/library_screen.dart';
-import 'package:soundroid/screens/main/profile_screen.dart';
-import 'package:soundroid/screens/main/search_screen.dart';
+import 'package:soundroid/screens/main/home.dart';
+import 'package:soundroid/screens/main/library.dart';
+import 'package:soundroid/screens/main/profile.dart';
+import 'package:soundroid/screens/main/search.dart';
 import 'package:soundroid/widgets/main/appbar.dart';
 import 'package:soundroid/widgets/main/bottom_navigation_bar.dart';
 
