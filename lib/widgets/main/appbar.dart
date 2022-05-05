@@ -97,7 +97,10 @@ class _MainAppBarState extends State<MainAppBar> {
 
     return AppBar(
       title: title,
-      actions: actions,
+      actions: [
+        ...actions,
+        const SizedBox(width: 8),
+      ],
       elevation: 10,
     );
   }
