@@ -35,14 +35,14 @@ class _PlaylistItemState extends State<PlaylistItem> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText(
+                AppText.marquee(
                   widget.playlist.name,
                   width: MediaQuery.of(context).size.width - 124,
                   extraHeight: 8,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                AppText(
+                AppText.marquee(
                   "${widget.playlist.trackIds.length} tracks",
                   width: MediaQuery.of(context).size.width - 124,
                   extraHeight: 7,

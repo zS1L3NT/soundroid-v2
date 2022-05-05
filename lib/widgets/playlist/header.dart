@@ -83,14 +83,14 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText(
+                        AppText.marquee(
                           playlist.name,
                           width: MediaQuery.of(context).size.width,
                           extraHeight: 12,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
-                        AppText(
+                        AppText.marquee(
                           "${playlist.trackIds.length} tracks",
                           width: MediaQuery.of(context).size.width,
                           fontSize: 18,

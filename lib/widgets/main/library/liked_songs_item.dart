@@ -34,14 +34,14 @@ class _LikedSongsItemState extends State<LikedSongsItem> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText(
+                AppText.marquee(
                   "Liked Songs",
                   width: MediaQuery.of(context).size.width - 76,
                   extraHeight: 8,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                AppText(
+                AppText.marquee(
                   "3 tracks",
                   width: MediaQuery.of(context).size.width - 76,
                   extraHeight: 7,

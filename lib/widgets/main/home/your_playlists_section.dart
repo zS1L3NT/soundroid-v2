@@ -88,7 +88,7 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  AppText(
+                  AppText.marquee(
                     playlist.name,
                     width: MediaQuery.of(context).size.width - 124,
                     textAlign: TextAlign.left,

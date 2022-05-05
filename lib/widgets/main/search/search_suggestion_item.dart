@@ -29,9 +29,8 @@ class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
             children: [
               const Icon(Icons.search, color: Colors.black87),
               const SizedBox(width: 16),
-              AppText(
+              AppText.ellipse(
                 widget.text,
-                type: TextType.ellipse,
                 width: MediaQuery.of(context).size.width - 104,
                 fontSize: 18,
               ),

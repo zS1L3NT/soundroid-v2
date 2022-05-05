@@ -29,9 +29,8 @@ class _RecentItemState extends State<RecentItem> {
             children: [
               const Icon(Icons.history, color: Colors.black87),
               const SizedBox(width: 16),
-              AppText(
+              AppText.ellipse(
                 widget.text,
-                type: TextType.ellipse,
                 width: MediaQuery.of(context).size.width - 104,
                 fontSize: 18,
               ),

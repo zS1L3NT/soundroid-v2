@@ -56,11 +56,11 @@ class _TracksRowState extends State<TracksRow> {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      AppText(
+                      AppText.marquee(
                         track.title,
                         width: 125,
                       ),
-                      AppText(
+                      AppText.marquee(
                         track.artists,
                         width: 125,
                         fontSize: 14,

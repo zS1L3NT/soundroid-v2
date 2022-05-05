@@ -31,16 +31,14 @@ class _TrackItemState extends State<TrackItem> {
             height: 48,
           ),
         ),
-        title: AppText(
+        title: AppText.ellipse(
           widget.track.title,
-          type: TextType.ellipse,
           fontSize: 18,
           extraHeight: 9,
           width: MediaQuery.of(context).size.width,
         ),
-        subtitle: AppText(
+        subtitle: AppText.ellipse(
           widget.track.artists,
-          type: TextType.ellipse,
           extraHeight: 11,
           fontWeight: FontWeight.w400,
           width: MediaQuery.of(context).size.width,
