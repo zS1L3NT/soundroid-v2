@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
+import 'package:soundroid/screens/playlist.dart';
 import 'package:soundroid/widgets/app/list_item.dart';
 import 'package:soundroid/widgets/main/library/liked_songs_item.dart';
 
@@ -53,7 +54,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
               .map(
                 (playlist) => AppListItem.fromPlaylist(
                   playlist,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, PlaylistScreen.routeName);
+                  },
                 ),
               )
               .toList(),
