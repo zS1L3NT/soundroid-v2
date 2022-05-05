@@ -14,42 +14,34 @@ class _LikedSongsItemState extends State<LikedSongsItem> {
     return InkWell(
       onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Container(
-                width: 48,
-                height: 48,
-                color: Theme.of(context).primaryColorLight,
-                child: Icon(
-                  Icons.favorite,
-                  size: 20,
-                  color: Theme.of(context).primaryColorDark,
-                ),
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: ListTile(
+          leading: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            child: Container(
+              width: 48,
+              height: 48,
+              color: Theme.of(context).primaryColorLight,
+              child: Icon(
+                Icons.favorite,
+                size: 20,
+                color: Theme.of(context).primaryColorDark,
               ),
             ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText.marquee(
-                  "Liked Songs",
-                  width: MediaQuery.of(context).size.width - 76,
-                  extraHeight: 8,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                AppText.marquee(
-                  "3 tracks",
-                  width: MediaQuery.of(context).size.width - 76,
-                  extraHeight: 7,
-                  fontSize: 12,
-                ),
-              ],
-            )
-          ],
+          ),
+          title: AppText.ellipse(
+            "Liked Songs",
+            extraHeight: 9,
+            width: MediaQuery.of(context).size.width,
+          ),
+          subtitle: AppText.ellipse(
+            "3 tracks",
+            fontSize: 14,
+            extraHeight: 11,
+            fontWeight: FontWeight.w400,
+            width: MediaQuery.of(context).size.width,
+          ),
+          contentPadding: const EdgeInsets.only(left: 16, right: 8),
         ),
       ),
     );
