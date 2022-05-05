@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: PlaylistScreen.routeName,
+      initialRoute: MainScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),

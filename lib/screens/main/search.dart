@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/widgets/main/search/recent_item.dart';
-import 'package:soundroid/widgets/main/search/search_result_item.dart';
 import 'package:soundroid/widgets/main/search/search_suggestion_item.dart';
+import 'package:soundroid/widgets/track_item.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -151,21 +152,25 @@ class _SearchScreenState extends State<SearchScreen> {
                     ? [
                         ...search.results!["tracks"]!
                             .map<Widget>(
-                              (track) => SearchResultItem(
-                                type: SearchResultType.track,
-                                title: track["title"]!,
-                                description: track["artists"]!,
-                                thumbnail: track["thumbnail"]!,
+                              (track) => TrackItem(
+                                track: Track(
+                                  id: track["id"]!,
+                                  title: track["title"]!,
+                                  artists: track["artists"]!,
+                                  thumbnail: track["thumbnail"]!,
+                                ),
                               ),
                             )
                             .toList(),
                         ...search.results!["albums"]!
                             .map<Widget>(
-                              (track) => SearchResultItem(
-                                type: SearchResultType.album,
-                                title: track["title"]!,
-                                description: track["artists"]!,
-                                thumbnail: track["thumbnail"]!,
+                              (album) => TrackItem(
+                                track: Track(
+                                  id: album["id"]!,
+                                  title: album["title"]!,
+                                  artists: album["artists"]!,
+                                  thumbnail: album["thumbnail"]!,
+                                ),
                               ),
                             )
                             .toList(),

@@ -3,6 +3,7 @@ import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/widgets/app/text.dart';
 import 'package:soundroid/widgets/playlist/header.dart';
+import 'package:soundroid/widgets/track_item.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -179,39 +180,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             delegate: SliverChildBuilderDelegate(
               (_, int index) => InkWell(
                 onTap: () {},
-                child: ListTile(
-                  leading: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    child: FadeInImage.memoryNetwork(
-                      fadeInCurve: Curves.decelerate,
-                      placeholder: kTransparentImage,
-                      image: _tracks[index].thumbnail,
-                      fit: BoxFit.cover,
-                      width: 48,
-                      height: 48,
-                    ),
-                  ),
-                  title: AppText(
-                    _tracks[index].title,
-                    type: TextType.ellipse,
-                    fontSize: 18,
-                    extraHeight: 9,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  subtitle: AppText(
-                    _tracks[index].artists,
-                    type: TextType.ellipse,
-                    extraHeight: 11,
-                    fontWeight: FontWeight.w400,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  trailing: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.more_vert),
-                    splashRadius: 20,
-                    color: Colors.black,
-                  ),
-                ),
+                child: TrackItem(track: _tracks[index]),
               ),
               childCount: _tracks.length,
             ),
