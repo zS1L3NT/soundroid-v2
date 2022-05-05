@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Chatic',
       theme: ThemeData(
         primarySwatch: const MaterialColor(0xFF126DFF, {
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: MainScreen.routeName,
+      initialRoute: PlaylistScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),

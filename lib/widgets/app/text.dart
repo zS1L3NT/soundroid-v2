@@ -13,6 +13,7 @@ class AppText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final TextAlign textAlign;
+  final Color? color;
   final double blankSpace;
   final double velocity;
   final Duration startAfter;
@@ -27,6 +28,7 @@ class AppText extends StatelessWidget {
     this.fontSize = 16,
     this.fontWeight = FontWeight.normal,
     this.textAlign = TextAlign.left,
+    this.color,
     this.blankSpace = 30.0,
     this.velocity = 30.0,
     this.startAfter = const Duration(seconds: 3),
@@ -47,24 +49,26 @@ class AppText extends StatelessWidget {
               style: TextStyle(
                 fontSize: fontSize,
                 fontWeight: fontWeight,
+                color: color,
               ),
               overflowReplacement: ShaderMask(
-                shaderCallback: (rectangle) => const LinearGradient(
+                shaderCallback: (rectangle) => LinearGradient(
                   colors: [
                     Colors.transparent,
-                    Colors.black,
-                    Colors.black,
+                    color != null ? color! : Colors.black,
+                    color != null ? color! : Colors.black,
                     Colors.transparent
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  stops: [0, 0.01, 0.9, 1.0],
+                  stops: const [0, 0.01, 0.9, 1.0],
                 ).createShader(rectangle),
                 child: Marquee(
                   text: text,
                   style: TextStyle(
                     fontSize: fontSize,
                     fontWeight: fontWeight,
+                    color: color,
                   ),
                   blankSpace: blankSpace,
                   velocity: velocity,
@@ -78,6 +82,7 @@ class AppText extends StatelessWidget {
               style: TextStyle(
                 fontSize: fontSize,
                 fontWeight: fontWeight,
+                color: color,
               ),
               textAlign: textAlign,
               overflow: TextOverflow.ellipsis,
