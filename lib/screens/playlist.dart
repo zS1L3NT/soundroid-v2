@@ -3,7 +3,7 @@ import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/widgets/app/text.dart';
 import 'package:soundroid/widgets/playlist/header.dart';
-import 'package:soundroid/widgets/track_item.dart';
+import 'package:soundroid/widgets/app/list_item.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -178,9 +178,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
           const SliverPadding(padding: EdgeInsets.only(top: 8)),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (_, int index) => InkWell(
+              (_, int index) => AppListItem.fromTrack(
+                _tracks[index],
                 onTap: () {},
-                child: TrackItem(track: _tracks[index]),
               ),
               childCount: _tracks.length,
             ),

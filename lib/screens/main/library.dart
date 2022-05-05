@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
+import 'package:soundroid/widgets/app/list_item.dart';
 import 'package:soundroid/widgets/main/library/liked_songs_item.dart';
-import 'package:soundroid/widgets/main/library/playlist_item.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({Key? key}) : super(key: key);
@@ -50,7 +50,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
           const SizedBox(height: 4),
           const LikedSongsItem(),
           ..._playlists
-              .map((playlist) => PlaylistItem(playlist: playlist))
+              .map(
+                (playlist) => AppListItem.fromPlaylist(
+                  playlist,
+                  onTap: () {},
+                ),
+              )
               .toList(),
           const SizedBox(height: 4),
         ],

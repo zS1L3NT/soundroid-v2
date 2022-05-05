@@ -4,7 +4,7 @@ import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/widgets/main/search/recent_item.dart';
 import 'package:soundroid/widgets/main/search/search_suggestion_item.dart';
-import 'package:soundroid/widgets/track_item.dart';
+import 'package:soundroid/widgets/app/list_item.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -151,26 +151,18 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: search.results != null
                     ? [
                         ...search.results!["tracks"]!
-                            .map<Widget>(
-                              (track) => TrackItem(
-                                track: Track(
-                                  id: track["id"]!,
-                                  title: track["title"]!,
-                                  artists: track["artists"]!,
-                                  thumbnail: track["thumbnail"]!,
-                                ),
+                            .map(
+                              (track) => AppListItem.fromSearchResult(
+                                track,
+                                onTap: () {},
                               ),
                             )
                             .toList(),
                         ...search.results!["albums"]!
-                            .map<Widget>(
-                              (album) => TrackItem(
-                                track: Track(
-                                  id: album["id"]!,
-                                  title: album["title"]!,
-                                  artists: album["artists"]!,
-                                  thumbnail: album["thumbnail"]!,
-                                ),
+                            .map(
+                              (album) => AppListItem.fromSearchResult(
+                                album,
+                                onTap: () {},
                               ),
                             )
                             .toList(),
