@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/screens/playlist.dart';
-import 'package:soundroid/screens/settings.dart';
 import 'package:soundroid/widgets/app/scroll_behaviour.dart';
 
 void main() async {
@@ -56,7 +55,6 @@ class MyApp extends StatelessWidget {
       initialRoute: MainScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
-        SettingsScreen.routeName: (context) => const SettingsScreen(),
         PlaylistScreen.routeName: (context) => const PlaylistScreen(),
       },
     );

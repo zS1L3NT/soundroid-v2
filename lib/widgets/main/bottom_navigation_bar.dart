@@ -34,8 +34,8 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
           label: 'Library',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          icon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
       unselectedItemColor: Colors.grey,

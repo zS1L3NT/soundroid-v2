@@ -31,24 +31,6 @@ class _MainAppBarState extends State<MainAppBar> {
     switch (widget.screenIndex) {
       case 0:
         title = const Text("SounDroid");
-        actions.add(
-          PopupMenuButton(
-            onSelected: (item) {},
-            icon: const Icon(Icons.more_vert),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: "settings",
-                child: Row(
-                  children: [
-                    Icon(Icons.settings, color: Colors.grey[800]),
-                    const SizedBox(width: 8),
-                    const Text("Settings"),
-                  ],
-                ),
-              )
-            ],
-          ),
-        );
         break;
       case 1:
         title = TextField(
@@ -91,7 +73,7 @@ class _MainAppBarState extends State<MainAppBar> {
         title = const Text("Library");
         break;
       case 3:
-        title = const Text("Profile");
+        title = const Text("Settings");
         break;
     }
 

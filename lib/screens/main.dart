@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/screens/main/home.dart';
 import 'package:soundroid/screens/main/library.dart';
-import 'package:soundroid/screens/main/profile.dart';
+import 'package:soundroid/screens/main/settings.dart';
 import 'package:soundroid/screens/main/search.dart';
 import 'package:soundroid/widgets/main/appbar.dart';
 import 'package:soundroid/widgets/main/bottom_navigation_bar.dart';
@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
       HomeScreen(),
       SearchScreen(),
       LibraryScreen(),
-      ProfileScreen(),
+      SettingsScreen(),
     ];
 
     return Scaffold(
