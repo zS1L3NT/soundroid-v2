@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/screens/login.dart';
+import 'package:soundroid/screens/auth.dart';
 import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/screens/playlist.dart';
 import 'package:soundroid/widgets/app/scroll_behaviour.dart';
@@ -53,11 +53,11 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: LoginScreen.routeName,
+      initialRoute: AuthScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         PlaylistScreen.routeName: (context) => const PlaylistScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
+        AuthScreen.routeName: (context) => const AuthScreen(),
       },
     );
   }
