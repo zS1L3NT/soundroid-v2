@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
+import 'package:soundroid/screens/login.dart';
 import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/screens/playlist.dart';
 import 'package:soundroid/widgets/app/scroll_behaviour.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Chatic',
+      title: 'SounDroid',
       theme: ThemeData(
         primarySwatch: const MaterialColor(0xFF126DFF, {
           50: Color.fromRGBO(18, 109, 255, 0.1),
@@ -52,10 +53,11 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: MainScreen.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         PlaylistScreen.routeName: (context) => const PlaylistScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
       },
     );
   }
