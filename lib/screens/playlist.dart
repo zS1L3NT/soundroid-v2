@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
-import 'package:soundroid/widgets/app/text.dart';
 import 'package:soundroid/widgets/playlist/header.dart';
 import 'package:soundroid/widgets/app/list_item.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({Key? key}) : super(key: key);

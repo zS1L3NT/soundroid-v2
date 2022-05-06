@@ -4,11 +4,12 @@ import 'package:marquee/marquee.dart';
 
 // Credits to https://gist.github.com/rtybanana/2b0639052cd5bfd701b8d892f2d1088b
 class AppText extends StatelessWidget {
-  final Widget Function(BuildContext) child;
   const AppText({
     Key? key,
     required this.child,
   }) : super(key: key);
+
+  final Widget Function(BuildContext) child;
 
   static Widget marquee(
     String text, {

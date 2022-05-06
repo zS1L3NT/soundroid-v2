@@ -3,22 +3,21 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/widgets/app/text.dart';
 
-class SearchSuggestionItem extends StatefulWidget {
+class SearchSuggestionItem extends StatelessWidget {
+  const SearchSuggestionItem({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
   final String text;
-  const SearchSuggestionItem({Key? key, required this.text}) : super(key: key);
 
-  @override
-  State<SearchSuggestionItem> createState() => _SearchSuggestionItemState();
-}
-
-class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         final search = context.read<SearchProvider>();
-        search.textEditingController.text = widget.text;
-        search.query = widget.text;
+        search.textEditingController.text = text;
+        search.query = text;
         search.onSearch();
       },
       child: SizedBox(
@@ -30,17 +29,17 @@ class _SearchSuggestionItemState extends State<SearchSuggestionItem> {
               const Icon(Icons.search, color: Colors.black87),
               const SizedBox(width: 16),
               AppText.ellipse(
-                widget.text,
+                text,
                 width: MediaQuery.of(context).size.width - 104,
                 fontSize: 18,
               ),
               IconButton(
                 onPressed: () {
                   final search = context.read<SearchProvider>();
-                  search.textEditingController.text = widget.text;
+                  search.textEditingController.text = text;
                   search.textEditingController.selection =
-                      TextSelection.collapsed(offset: widget.text.length);
-                  search.query = widget.text;
+                      TextSelection.collapsed(offset: text.length);
+                  search.query = text;
                 },
                 icon: Icon(
                   Icons.north_west,

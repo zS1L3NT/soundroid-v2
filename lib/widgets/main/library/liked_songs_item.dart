@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/widgets/app/text.dart';
 
-class LikedSongsItem extends StatefulWidget {
+class LikedSongsItem extends StatelessWidget {
   const LikedSongsItem({Key? key}) : super(key: key);
 
-  @override
-  State<LikedSongsItem> createState() => _LikedSongsItemState();
-}
-
-class _LikedSongsItemState extends State<LikedSongsItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(

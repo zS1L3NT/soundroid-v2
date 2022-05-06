@@ -3,8 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class MainAppBar extends AppBar {
+  MainAppBar({
+    Key? key,
+    required this.screenIndex,
+  }) : super(key: key);
+
   final int screenIndex;
-  MainAppBar({Key? key, required this.screenIndex}) : super(key: key);
 
   @override
   State<MainAppBar> createState() => _MainAppBarState();

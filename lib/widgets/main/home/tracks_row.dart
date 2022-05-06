@@ -3,15 +3,14 @@ import 'package:soundroid/models/track.dart';
 import 'package:soundroid/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class TracksRow extends StatefulWidget {
+class TracksRow extends StatelessWidget {
+  const TracksRow({
+    Key? key,
+    required this.tracks,
+  }) : super(key: key);
+
   final List<Track> tracks;
-  const TracksRow({Key? key, required this.tracks}) : super(key: key);
 
-  @override
-  State<TracksRow> createState() => _TracksRowState();
-}
-
-class _TracksRowState extends State<TracksRow> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -38,7 +37,7 @@ class _TracksRowState extends State<TracksRow> {
             scrollDirection: Axis.horizontal,
             children: [
               const SizedBox(width: 24),
-              for (final track in widget.tracks) ...[
+              for (final track in tracks) ...[
                 SizedBox(
                   width: 125,
                   child: Column(

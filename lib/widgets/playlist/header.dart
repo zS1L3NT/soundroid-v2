@@ -9,11 +9,12 @@ import 'package:transparent_image/transparent_image.dart';
 class PlaylistHeader extends SliverPersistentHeaderDelegate {
   final double extendedHeight = 200 - kToolbarHeight;
 
-  final Playlist playlist;
   const PlaylistHeader({
     Key? key,
     required this.playlist,
   });
+
+  final Playlist playlist;
 
   @override
   Widget build(

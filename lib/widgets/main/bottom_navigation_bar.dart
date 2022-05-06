@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 
-class MainBottomNavigationBar extends StatefulWidget {
-  final int index;
-  final Function(int index) setIndex;
+class MainBottomNavigationBar extends StatelessWidget {
   const MainBottomNavigationBar({
     Key? key,
     required this.index,
     required this.setIndex,
   }) : super(key: key);
 
-  @override
-  State<MainBottomNavigationBar> createState() =>
-      _MainBottomNavigationBarState();
-}
+  final int index;
 
-class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
+  final Function(int index) setIndex;
+
   @override
   BottomNavigationBar build(BuildContext context) {
     return BottomNavigationBar(
-      onTap: widget.setIndex,
-      currentIndex: widget.index,
+      onTap: setIndex,
+      currentIndex: index,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),

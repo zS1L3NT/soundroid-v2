@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/widgets/main/search/recent_item.dart';
 import 'package:soundroid/widgets/main/search/search_suggestion_item.dart';

@@ -4,11 +4,7 @@ import 'package:soundroid/models/track.dart';
 import 'package:soundroid/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class AppListItem extends StatefulWidget {
-  final String title;
-  final String subtitle;
-  final String image;
-  final Function() onTap;
+class AppListItem extends StatelessWidget {
   const AppListItem({
     Key? key,
     required this.title,
@@ -16,6 +12,14 @@ class AppListItem extends StatefulWidget {
     required this.image,
     required this.onTap,
   }) : super(key: key);
+
+  final String title;
+
+  final String subtitle;
+
+  final String image;
+
+  final Function() onTap;
 
   static AppListItem fromTrack(
     Track track, {
@@ -54,14 +58,9 @@ class AppListItem extends StatefulWidget {
   }
 
   @override
-  State<AppListItem> createState() => _AppListItemState();
-}
-
-class _AppListItemState extends State<AppListItem> {
-  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.onTap,
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 3),
         child: ListTile(
@@ -70,19 +69,19 @@ class _AppListItemState extends State<AppListItem> {
             child: FadeInImage.memoryNetwork(
               fadeInCurve: Curves.decelerate,
               placeholder: kTransparentImage,
-              image: widget.image,
+              image: image,
               fit: BoxFit.cover,
               width: 48,
               height: 48,
             ),
           ),
           title: AppText.ellipse(
-            widget.title,
+            title,
             extraHeight: 9,
             width: MediaQuery.of(context).size.width,
           ),
           subtitle: AppText.ellipse(
-            widget.subtitle,
+            subtitle,
             fontSize: 14,
             extraHeight: 11,
             fontWeight: FontWeight.w400,

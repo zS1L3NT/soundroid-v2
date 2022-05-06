@@ -4,11 +4,12 @@ import 'package:soundroid/widgets/main/home/tracks_row.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MoreFromArtistSection extends StatefulWidget {
-  final String artistId;
   const MoreFromArtistSection({
     Key? key,
     required this.artistId,
   }) : super(key: key);
+
+  final String artistId;
 
   @override
   State<MoreFromArtistSection> createState() => _MoreFromArtistSectionState();
