@@ -6,8 +6,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/screens/auth.dart';
+import 'package:soundroid/screens/forgot_password.dart';
 import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/screens/playlist.dart';
+import 'package:soundroid/screens/reset_password.dart';
 import 'package:soundroid/screens/signin.dart';
 import 'package:soundroid/screens/signup.dart';
 import 'package:soundroid/screens/verify_email.dart';
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
         PlaylistScreen.routeName: (context) => const PlaylistScreen(),
         AuthScreen.routeName: (context) => const AuthScreen(),
         SigninScreen.routeName: (context) => const SigninScreen(),
+        ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+        ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
         SignupScreen.routeName: (context) => const SignupScreen(),
         VerifyEmailScreen.routeName: (context) => const VerifyEmailScreen(),
       },
