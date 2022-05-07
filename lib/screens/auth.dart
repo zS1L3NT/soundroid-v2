@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/screens/signin.dart';
+import 'package:soundroid/screens/signup.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -49,7 +50,9 @@ class AuthScreen extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width - 32,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SignupScreen.routeName);
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(12),
                   child: Text("Sign Up with Email"),
