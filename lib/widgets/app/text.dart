@@ -27,8 +27,7 @@ class AppText extends StatelessWidget {
     return AppText(
       child: (context) => SizedBox(
         width: width,
-        height:
-            (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
+        height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
         child: AutoSizeText(
           text,
           minFontSize: fontSize,
@@ -81,8 +80,7 @@ class AppText extends StatelessWidget {
     return AppText(
       child: (context) => SizedBox(
         width: width,
-        height:
-            (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
+        height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
         child: Text(
           text,
           style: TextStyle(

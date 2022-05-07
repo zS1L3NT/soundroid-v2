@@ -15,8 +15,7 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
     Playlist(
       name: "Korean Songs",
       userId: "",
-      thumbnail:
-          "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
+      thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
       trackIds: [],
     ),
     Playlist(
@@ -29,15 +28,13 @@ class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
     Playlist(
       name: "OSTs",
       userId: "",
-      thumbnail:
-          "https://i.scdn.co/image/ab67616d0000b273a1f0a8d516a2b7448b2ccc8b",
+      thumbnail: "https://i.scdn.co/image/ab67616d0000b273a1f0a8d516a2b7448b2ccc8b",
       trackIds: [],
     ),
     Playlist(
       name: "EDM Songs",
       userId: "",
-      thumbnail:
-          "https://upload.wikimedia.org/wikipedia/en/d/da/Alan_Walker_-_Faded.png",
+      thumbnail: "https://upload.wikimedia.org/wikipedia/en/d/da/Alan_Walker_-_Faded.png",
       trackIds: [],
     )
   ];

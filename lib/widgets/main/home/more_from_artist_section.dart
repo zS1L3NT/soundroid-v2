@@ -34,15 +34,13 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
           id: "",
           title: "My Sea",
           artists: "IU",
-          thumbnail:
-              "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
+          thumbnail: "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
         ),
         Track(
           id: "",
           title: "Eight",
           artists: "IU",
-          thumbnail:
-              "https://upload.wikimedia.org/wikipedia/en/c/c2/IU_EIGHT_FT_SUGA.jpg",
+          thumbnail: "https://upload.wikimedia.org/wikipedia/en/c/c2/IU_EIGHT_FT_SUGA.jpg",
         ),
         Track(
           id: "",
@@ -61,8 +59,7 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
           id: "",
           title: "Good Day",
           artists: "IU",
-          thumbnail:
-              "https://i1.sndcdn.com/artworks-000090881151-jg71ro-t500x500.jpg",
+          thumbnail: "https://i1.sndcdn.com/artworks-000090881151-jg71ro-t500x500.jpg",
         ),
       ];
     }
@@ -80,15 +77,13 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
           id: "",
           title: "All With You",
           artists: "Taeyeon",
-          thumbnail:
-              "http://images.genius.com/9ae86007931fa7108e5331464366cc17.600x600x1.jpg",
+          thumbnail: "http://images.genius.com/9ae86007931fa7108e5331464366cc17.600x600x1.jpg",
         ),
         Track(
           id: "",
           title: "Cover Up",
           artists: "Taeyeon",
-          thumbnail:
-              "https://i.scdn.co/image/ab67616d0000b2738c7e7f435fdcc70772c5555e",
+          thumbnail: "https://i.scdn.co/image/ab67616d0000b2738c7e7f435fdcc70772c5555e",
         ),
         Track(
           id: "",
@@ -133,8 +128,7 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
           id: "",
           title: "Not Shy",
           artists: "ITZY",
-          thumbnail:
-              "https://upload.wikimedia.org/wikipedia/en/9/9a/Itzy_-_Not_Shy.jpg",
+          thumbnail: "https://upload.wikimedia.org/wikipedia/en/9/9a/Itzy_-_Not_Shy.jpg",
         ),
         Track(
           id: "",
@@ -154,8 +148,7 @@ class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
           id: "",
           title: "Icy",
           artists: "ITZY",
-          thumbnail:
-              "https://i1.sndcdn.com/artworks-000576804008-p3iewb-t500x500.jpg",
+          thumbnail: "https://i1.sndcdn.com/artworks-000576804008-p3iewb-t500x500.jpg",
         ),
       ];
     }

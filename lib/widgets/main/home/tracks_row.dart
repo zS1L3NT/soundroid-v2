@@ -21,7 +21,7 @@ class TracksRow extends StatelessWidget {
             Colors.transparent,
             Colors.black,
             Colors.black,
-            Colors.transparent
+            Colors.transparent,
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
@@ -43,8 +43,7 @@ class TracksRow extends StatelessWidget {
                   child: Column(
                     children: [
                       ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         child: FadeInImage.memoryNetwork(
                           fadeInCurve: Curves.decelerate,
                           placeholder: kTransparentImage,

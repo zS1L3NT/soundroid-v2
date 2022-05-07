@@ -71,8 +71,7 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
             child: Opacity(
               opacity: 1 - progress,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [

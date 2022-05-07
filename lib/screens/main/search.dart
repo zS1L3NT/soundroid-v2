@@ -167,12 +167,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             .toList(),
                       ]
                     : search.query.isEmpty
-                        ? _history
-                            .map((search) => RecentItem(text: search))
-                            .toList()
+                        ? _history.map((search) => RecentItem(text: search)).toList()
                         : _searchSuggestionsApiData
-                            .map((suggestion) =>
-                                SearchSuggestionItem(text: suggestion))
+                            .map((suggestion) => SearchSuggestionItem(text: suggestion))
                             .toList(),
               ),
             ),

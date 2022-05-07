@@ -6,8 +6,7 @@ class RecentlyRepeatedSection extends StatefulWidget {
   const RecentlyRepeatedSection({Key? key}) : super(key: key);
 
   @override
-  State<RecentlyRepeatedSection> createState() =>
-      _RecentlyRepeatedSectionState();
+  State<RecentlyRepeatedSection> createState() => _RecentlyRepeatedSectionState();
 }
 
 class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
@@ -16,15 +15,13 @@ class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
       id: "",
       title: "Mago",
       artists: "GFRIEND",
-      thumbnail:
-          "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
+      thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
     ),
     Track(
       id: "",
       title: "Lilac",
       artists: "IU",
-      thumbnail:
-          "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
+      thumbnail: "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
     ),
     Track(
       id: "",
@@ -37,15 +34,13 @@ class _RecentlyRepeatedSectionState extends State<RecentlyRepeatedSection> {
       id: "",
       title: "Can You See My Heart",
       artists: "HEIZE",
-      thumbnail:
-          "https://i.scdn.co/image/ab67616d0000b273d5ec3d052355298db92ea249",
+      thumbnail: "https://i.scdn.co/image/ab67616d0000b273d5ec3d052355298db92ea249",
     ),
     Track(
       id: "",
       title: "strawberry moon",
       artists: "IU",
-      thumbnail:
-          "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
+      thumbnail: "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
     )
   ];
 

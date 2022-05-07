@@ -22,8 +22,7 @@ class _MainAppBarState extends State<MainAppBar> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      context.read<SearchProvider>().textEditingController =
-          _textEditingController;
+      context.read<SearchProvider>().textEditingController = _textEditingController;
     });
   }
 

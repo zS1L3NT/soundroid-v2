@@ -15,8 +15,7 @@ class _RareListensSectionState extends State<RareListensSection> {
       id: "",
       title: "NAKKA",
       artists: "IU",
-      thumbnail:
-          "https://images.genius.com/d789d2c3131299c6f72313b9622a0527.640x640x1.jpg",
+      thumbnail: "https://images.genius.com/d789d2c3131299c6f72313b9622a0527.640x640x1.jpg",
     ),
     Track(
       id: "",
@@ -29,15 +28,13 @@ class _RareListensSectionState extends State<RareListensSection> {
       id: "",
       title: "Wind",
       artists: "Jung Seung Hwan",
-      thumbnail:
-          "https://i.scdn.co/image/ab67616d0000b273cd5441e4b9f4ed4fd28ce835",
+      thumbnail: "https://i.scdn.co/image/ab67616d0000b273cd5441e4b9f4ed4fd28ce835",
     ),
     Track(
       id: "",
       title: "You are so beautiful",
       artists: "Eddy Kim",
-      thumbnail:
-          "https://i.scdn.co/image/ab67616d0000b2734c265d6a7481608674c7eb32",
+      thumbnail: "https://i.scdn.co/image/ab67616d0000b2734c265d6a7481608674c7eb32",
     ),
     Track(
       id: "",
