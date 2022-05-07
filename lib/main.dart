@@ -10,6 +10,7 @@ import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/screens/playlist.dart';
 import 'package:soundroid/screens/signin.dart';
 import 'package:soundroid/screens/signup.dart';
+import 'package:soundroid/screens/verify_email.dart';
 import 'package:soundroid/widgets/app/scroll_behaviour.dart';
 
 void main() async {
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         AuthScreen.routeName: (context) => const AuthScreen(),
         SigninScreen.routeName: (context) => const SigninScreen(),
         SignupScreen.routeName: (context) => const SignupScreen(),
+        VerifyEmailScreen.routeName: (context) => const VerifyEmailScreen(),
       },
     );
   }

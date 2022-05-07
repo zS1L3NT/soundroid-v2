@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/screens/verify_email.dart';
+import 'package:soundroid/utils/route_transition.dart';
 import 'package:soundroid/widgets/signup/appbar.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -137,7 +139,15 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 45,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        RouteTransition.slide(
+                          const VerifyEmailScreen(),
+                          from: const Offset(0.5, 0),
+                        ),
+                        (_) => false,
+                      );
+                    }
                   },
                   child: const Text(
                     "Register",
