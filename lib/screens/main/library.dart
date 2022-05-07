@@ -55,7 +55,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 (playlist) => AppListItem.fromPlaylist(
                   playlist,
                   onTap: () {
-                    Navigator.pushNamed(context, PlaylistScreen.routeName);
+                    Navigator.of(context).pushNamed(PlaylistScreen.routeName);
                   },
                 ),
               )

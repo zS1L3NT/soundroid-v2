@@ -41,7 +41,7 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
           child: AppBar(
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
