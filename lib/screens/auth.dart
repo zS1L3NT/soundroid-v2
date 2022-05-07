@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/screens/signin.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -86,7 +87,9 @@ class AuthScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SigninScreen.routeName);
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
