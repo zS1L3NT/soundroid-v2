@@ -120,7 +120,10 @@ class _SigninScreenState extends State<SigninScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pushNamed(MainScreen.routeName);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            MainScreen.routeName,
+                            (_) => false,
+                          );
                         }
                       },
                       child: const Text(
