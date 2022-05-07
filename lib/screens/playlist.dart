@@ -154,6 +154,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(toolbarHeight: 0),
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
