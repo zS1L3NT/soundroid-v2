@@ -29,7 +29,7 @@ class ProfileCard extends StatelessWidget {
                 AppText.marquee(
                   "Zechariah Tan",
                   width: MediaQuery.of(context).size.width - 152,
-                  extraHeight: 11,
+                  extraHeight: 12,
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
                 ),
