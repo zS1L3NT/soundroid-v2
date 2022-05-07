@@ -146,7 +146,12 @@ class _SigninScreenState extends State<SigninScreen> {
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        MainScreen.routeName,
+                        (_) => false,
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Row(

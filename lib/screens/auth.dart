@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/screens/signin.dart';
 import 'package:soundroid/screens/signup.dart';
 
@@ -63,7 +64,12 @@ class AuthScreen extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width - 32,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    MainScreen.routeName,
+                    (_) => false,
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Row(
