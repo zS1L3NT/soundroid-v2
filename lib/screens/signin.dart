@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/screens/forgot_password.dart';
 import 'package:soundroid/screens/main.dart';
 import 'package:soundroid/widgets/close_app_bar.dart';
 
@@ -178,7 +179,9 @@ class _SigninScreenState extends State<SigninScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(ForgotPasswordScreen.routeName);
+                      },
                       child: const Text("Forgot your password?"),
                     ),
                   ),
