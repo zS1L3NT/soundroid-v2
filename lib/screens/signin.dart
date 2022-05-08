@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/screens/main.dart';
-import 'package:soundroid/widgets/signin/appbar.dart';
+import 'package:soundroid/widgets/close_app_bar.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SigninAppBar(),
+      appBar: CloseAppBar(),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height -

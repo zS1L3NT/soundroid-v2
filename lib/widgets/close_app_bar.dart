@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SigninAppBar extends AppBar {
-  SigninAppBar({Key? key}) : super(key: key);
+class CloseAppBar extends AppBar {
+  CloseAppBar({Key? key}) : super(key: key);
 
   @override
-  State<SigninAppBar> createState() => _SigninAppBarState();
+  State<CloseAppBar> createState() => _CloseAppBarState();
 }
 
-class _SigninAppBarState extends State<SigninAppBar> {
+class _CloseAppBarState extends State<CloseAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(

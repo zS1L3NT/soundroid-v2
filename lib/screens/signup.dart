@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/screens/verify_email.dart';
 import 'package:soundroid/utils/route_transition.dart';
-import 'package:soundroid/widgets/signup/appbar.dart';
+import 'package:soundroid/widgets/close_app_bar.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SignupAppBar(),
+      appBar: CloseAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
