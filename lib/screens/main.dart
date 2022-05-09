@@ -40,13 +40,14 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      resizeToAvoidBottomInset: false,
       appBar: _appBars[_index],
       bottomNavigationBar: MainBottomAppBar(
         index: _index,
         setIndex: (index) => setState(() => _index = index),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingMusicButton(),
+      floatingActionButton: const FloatingMusicButton(),
       body: _screens[_index],
     );
   }
