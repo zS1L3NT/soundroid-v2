@@ -12,6 +12,8 @@ class PlayingScreen extends StatefulWidget {
 class _PlayingScreenState extends State<PlayingScreen> {
   final _screens = const [
     CurrentScreen(),
+    Text("Queue"),
+    Text("Lyrics"),
   ];
 
   int _index = 0;
@@ -19,7 +21,10 @@ class _PlayingScreenState extends State<PlayingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PlayingAppBar(),
+      appBar: PlayingAppBar(
+        index: _index,
+        setIndex: (index) => setState(() => _index = index),
+      ),
       body: _screens[_index],
     );
   }
