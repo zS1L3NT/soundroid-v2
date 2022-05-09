@@ -19,7 +19,7 @@ class MainBottomAppBar extends StatelessWidget {
 
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
-      notchMargin: 10,
+      notchMargin: 8,
       child: SizedBox(
         height: 59,
         child: Row(

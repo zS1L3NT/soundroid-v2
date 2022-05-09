@@ -4,6 +4,7 @@ import 'package:soundroid/screens/main/library.dart';
 import 'package:soundroid/screens/main/settings.dart';
 import 'package:soundroid/screens/main/search.dart';
 import 'package:soundroid/widgets/main/bottom_app_bar.dart';
+import 'package:soundroid/widgets/main/floating_music_button.dart';
 import 'package:soundroid/widgets/main/home/app_bar.dart';
 import 'package:soundroid/widgets/main/library/app_bar.dart';
 import 'package:soundroid/widgets/main/settings/app_bar.dart';
@@ -45,10 +46,7 @@ class _MainScreenState extends State<MainScreen> {
         setIndex: (index) => setState(() => _index = index),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingMusicButton(),
       body: _screens[_index],
     );
   }
