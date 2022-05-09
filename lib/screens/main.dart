@@ -3,8 +3,11 @@ import 'package:soundroid/screens/main/home.dart';
 import 'package:soundroid/screens/main/library.dart';
 import 'package:soundroid/screens/main/settings.dart';
 import 'package:soundroid/screens/main/search.dart';
-import 'package:soundroid/widgets/main/appbar.dart';
-import 'package:soundroid/widgets/main/bottom_navigation_bar.dart';
+import 'package:soundroid/widgets/main/bottom_app_bar.dart';
+import 'package:soundroid/widgets/main/home/app_bar.dart';
+import 'package:soundroid/widgets/main/library/app_bar.dart';
+import 'package:soundroid/widgets/main/settings/app_bar.dart';
+import 'package:soundroid/widgets/main/search/app_bar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,42 +19,37 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  var _screenIndex = 3;
+  final _screens = const [
+    HomeScreen(),
+    SearchScreen(),
+    LibraryScreen(),
+    SettingsScreen(),
+  ];
+
+  final _appBars = [
+    HomeAppBar(),
+    SearchAppBar(),
+    LibraryAppBar(),
+    SettingsAppBar(),
+  ];
+
+  var _index = 0;
 
   @override
   Widget build(BuildContext context) {
-    const _screens = [
-      HomeScreen(),
-      SearchScreen(),
-      LibraryScreen(),
-      SettingsScreen(),
-    ];
-
     return Scaffold(
-      appBar: MainAppBar(screenIndex: _screenIndex),
-      bottomNavigationBar: MainBottomNavigationBar(
-        index: _screenIndex,
-        setIndex: (index) {
-          setState(() {
-            switch (index) {
-              case 0:
-                _screenIndex = 0;
-                break;
-              case 1:
-                _screenIndex = 1;
-                break;
-              case 2:
-                _screenIndex = 2;
-                break;
-              case 3:
-                _screenIndex = 3;
-                break;
-            }
-            _screenIndex = index;
-          });
-        },
+      extendBody: true,
+      appBar: _appBars[_index],
+      bottomNavigationBar: MainBottomAppBar(
+        index: _index,
+        setIndex: (index) => setState(() => _index = index),
       ),
-      body: _screens[_screenIndex],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      body: _screens[_index],
     );
   }
 }
