@@ -21,7 +21,7 @@ class MainBottomAppBar extends StatelessWidget {
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: SizedBox(
-        height: 59,
+        height: kBottomNavigationBarHeight,
         child: Row(
           children: [
             Expanded(

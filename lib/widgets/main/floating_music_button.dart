@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:soundroid/screens/playing.dart';
+import 'package:soundroid/utils/route_transition.dart';
 
 class FloatingMusicButton extends StatefulWidget {
   const FloatingMusicButton({Key? key}) : super(key: key);
@@ -54,7 +56,19 @@ class _FloatingMusicButtonState extends State<FloatingMusicButton>
               child: InkWell(
                 splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
                 borderRadius: const BorderRadius.all(Radius.circular(30)),
-                onTap: () {},
+                onTap: () {
+                  final size = MediaQuery.of(context).size;
+                  Navigator.of(context).push(
+                    RouteTransition.reveal(
+                      const PlayingScreen(),
+                      center: Offset(
+                        size.width / 2,
+                        size.height - kBottomNavigationBarHeight,
+                      ),
+                      duration: const Duration(milliseconds: 400),
+                    ),
+                  );
+                },
               ),
             ),
           ),
