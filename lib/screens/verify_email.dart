@@ -13,7 +13,7 @@ class VerifyEmailScreen extends StatefulWidget {
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  var _cooldown = 60;
+  int _cooldown = 60;
 
   @override
   void initState() {

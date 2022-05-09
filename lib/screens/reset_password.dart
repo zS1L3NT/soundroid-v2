@@ -13,7 +13,7 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  var _areObscure = [true, true, true];
+  List<bool> _areObscure = [true, true, true];
 
   @override
   Widget build(BuildContext context) {

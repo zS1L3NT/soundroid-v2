@@ -16,8 +16,8 @@ class MoreFromArtistSection extends StatefulWidget {
 }
 
 class _MoreFromArtistSectionState extends State<MoreFromArtistSection> {
-  var _artist = <String, String>{};
-  var _tracks = <Track>[];
+  Map<String, String> _artist = {};
+  List<Track> _tracks = [];
 
   @override
   Widget build(BuildContext context) {

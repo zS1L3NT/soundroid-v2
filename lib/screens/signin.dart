@@ -14,7 +14,7 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
-  var _isObscure = true;
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
