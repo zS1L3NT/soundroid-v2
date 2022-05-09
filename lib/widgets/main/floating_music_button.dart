@@ -47,6 +47,17 @@ class _FloatingMusicButtonState extends State<FloatingMusicButton>
               value: 0.5,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(1.5),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                onTap: () {},
+              ),
+            ),
+          ),
         ],
       ),
     );
