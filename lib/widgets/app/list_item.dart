@@ -61,40 +61,33 @@ class AppListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        child: ListTile(
-          leading: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            child: FadeInImage.memoryNetwork(
-              fadeInCurve: Curves.decelerate,
-              placeholder: kTransparentImage,
-              image: image,
-              fit: BoxFit.cover,
-              width: 48,
-              height: 48,
-            ),
+      child: ListTile(
+        leading: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          child: FadeInImage.memoryNetwork(
+            fadeInCurve: Curves.decelerate,
+            placeholder: kTransparentImage,
+            image: image,
+            fit: BoxFit.cover,
+            width: 56,
+            height: 56,
           ),
-          title: AppText.ellipse(
-            title,
-            extraHeight: 9,
-            width: MediaQuery.of(context).size.width,
-          ),
-          subtitle: AppText.ellipse(
-            subtitle,
-            fontSize: 14,
-            extraHeight: 11,
-            fontWeight: FontWeight.w400,
-            width: MediaQuery.of(context).size.width,
-          ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
-            splashRadius: 20,
-            color: Colors.black,
-          ),
-          contentPadding: const EdgeInsets.only(left: 16, right: 8),
         ),
+        title: AppText.ellipse(
+          title,
+          width: MediaQuery.of(context).size.width,
+        ),
+        subtitle: AppText.ellipse(
+          subtitle,
+          width: MediaQuery.of(context).size.width,
+        ),
+        trailing: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.more_vert),
+          splashRadius: 20,
+          color: Colors.black,
+        ),
+        contentPadding: const EdgeInsets.only(left: 16, right: 4),
       ),
     );
   }
