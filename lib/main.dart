@@ -8,6 +8,7 @@ import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/screens/auth.dart';
 import 'package:soundroid/screens/forgot_password.dart';
 import 'package:soundroid/screens/main.dart';
+import 'package:soundroid/screens/playing.dart';
 import 'package:soundroid/screens/playlist.dart';
 import 'package:soundroid/screens/reset_password.dart';
 import 'package:soundroid/screens/signin.dart';
@@ -58,10 +59,11 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: MainScreen.routeName,
+      initialRoute: "/playing",
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         PlaylistScreen.routeName: (context) => const PlaylistScreen(),
+        "/playing": (context) => const PlayingScreen(),
         AuthScreen.routeName: (context) => const AuthScreen(),
         SigninScreen.routeName: (context) => const SigninScreen(),
         ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
