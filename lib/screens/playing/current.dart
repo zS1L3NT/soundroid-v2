@@ -191,7 +191,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
             Row(
               children: [
                 Icon(
-                  Icons.volume_up_rounded,
+                  Icons.volume_down_rounded,
                   size: 20,
                   color: Theme.of(context).primaryColor,
                 ),
