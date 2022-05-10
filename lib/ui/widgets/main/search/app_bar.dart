@@ -10,14 +10,14 @@ class SearchAppBar extends AppBar {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  final _textEditingController = TextEditingController();
+  final _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      context.read<SearchProvider>().textEditingController = _textEditingController;
+      context.read<SearchProvider>().textEditingController = _controller;
     });
   }
 
@@ -26,12 +26,12 @@ class _SearchAppBarState extends State<SearchAppBar> {
     return AppBar(
       title: TextField(
         autofocus: true,
-        controller: _textEditingController,
+        controller: _controller,
         onChanged: (query) {
           context.read<SearchProvider>().query = query;
           context.read<SearchProvider>().results = null;
         },
-        onEditingComplete: context.read<SearchProvider>().onSearch,
+        onEditingComplete: context.watch<SearchProvider>().onSearch,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: 'Search songs or albums...',
@@ -51,7 +51,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           onPressed: () {
             context.read<SearchProvider>().query = "";
             context.read<SearchProvider>().results = null;
-            _textEditingController.clear();
+            _controller.clear();
           },
           icon: const Icon(Icons.clear_rounded),
           splashRadius: 20,
