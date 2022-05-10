@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/playing.dart';
 import 'package:soundroid/utils/route_transition.dart';
 
-class FloatingMusicButton extends StatefulWidget {
-  const FloatingMusicButton({Key? key}) : super(key: key);
+class MainFloatingMusicButton extends StatefulWidget {
+  const MainFloatingMusicButton({Key? key}) : super(key: key);
 
   @override
-  State<FloatingMusicButton> createState() => _FloatingMusicButtonState();
+  State<MainFloatingMusicButton> createState() => _MainFloatingMusicButtonState();
 }
 
-class _FloatingMusicButtonState extends State<FloatingMusicButton>
+class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
     with SingleTickerProviderStateMixin {
   late final _controller = AnimationController(
     vsync: this,

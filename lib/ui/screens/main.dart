@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
         setIndex: (index) => setState(() => _index = index),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const FloatingMusicButton(),
+      floatingActionButton: const MainFloatingMusicButton(),
       body: _screens[_index],
     );
   }
