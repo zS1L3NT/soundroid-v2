@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/screens/playing/current.dart';
+import 'package:soundroid/screens/playing/lyrics.dart';
 import 'package:soundroid/screens/playing/queue.dart';
 import 'package:soundroid/widgets/playing/app_bar.dart';
 
@@ -14,10 +15,10 @@ class _PlayingScreenState extends State<PlayingScreen> {
   final _screens = const [
     CurrentScreen(),
     QueueScreen(),
-    Text("Lyrics"),
+    LyricsScreen(),
   ];
 
-  int _index = 1;
+  int _index = 2;
 
   @override
   Widget build(BuildContext context) {
