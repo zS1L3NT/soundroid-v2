@@ -14,7 +14,7 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  List<bool> _areObscure = [true, true];
+  final _areObscure = [true, true];
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +47,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  "Password",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
                 TextFormField(
                   obscureText: _areObscure[0],
                   style: const TextStyle(fontSize: 15),
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
+                    labelText: "Password",
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -86,17 +82,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  "Confirm Password",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
                 TextFormField(
                   obscureText: _areObscure[1],
                   style: const TextStyle(fontSize: 15),
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password confirmation',
+                    labelText: "Confirm Password",
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,

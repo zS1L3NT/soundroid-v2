@@ -45,16 +45,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  "Email Address",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
                 TextFormField(
                   style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
+                    labelText: "Email Address",
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,

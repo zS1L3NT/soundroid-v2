@@ -47,16 +47,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  "Name",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
                 TextFormField(
                   style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your name',
+                    labelText: "Name",
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -71,16 +67,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  "Email Address",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
                 TextFormField(
                   style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
+                    labelText: "Email Address",
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -95,17 +87,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  "Password",
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
                 TextFormField(
                   obscureText: _isObscure,
                   style: const TextStyle(fontSize: 15),
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
+                    labelText: "Password",
                     contentPadding: const EdgeInsets.only(
                       top: 4,
                       bottom: 4,
