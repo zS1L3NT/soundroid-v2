@@ -24,27 +24,34 @@ class _SearchAppBarState extends State<SearchAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: TextField(
-        autofocus: true,
-        controller: _controller,
-        onChanged: (query) {
-          context.read<SearchProvider>().query = query;
-          context.read<SearchProvider>().results = null;
-        },
-        onEditingComplete: context.watch<SearchProvider>().onSearch,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Search songs or albums...',
-          hintStyle: TextStyle(
-            color: Colors.white.withOpacity(0.5),
-            fontSize: 16,
-            fontStyle: FontStyle.italic,
+      title: Row(
+        children: [
+          const Icon(Icons.music_note_rounded),
+          const SizedBox(width: 16),
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              onChanged: (query) {
+                context.read<SearchProvider>().query = query;
+                context.read<SearchProvider>().results = null;
+              },
+              onEditingComplete: context.watch<SearchProvider>().onSearch,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Search songs or albums...',
+                hintStyle: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              cursorColor: Colors.white,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
-        ),
-        cursorColor: Colors.white,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
+        ],
       ),
       actions: [
         IconButton(
