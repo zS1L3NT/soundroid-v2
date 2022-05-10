@@ -26,7 +26,7 @@ class RecentItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
           child: Row(
             children: [
-              const Icon(Icons.history, color: Colors.black87),
+              const Icon(Icons.history_rounded, color: Colors.black87),
               const SizedBox(width: 16),
               AppText.ellipse(
                 text,
@@ -35,7 +35,7 @@ class RecentItem extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.clear, color: Colors.black87),
+                icon: const Icon(Icons.clear_rounded, color: Colors.black87),
                 splashRadius: 20,
               ),
             ],

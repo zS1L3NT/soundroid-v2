@@ -79,7 +79,7 @@ class _QueueListItemState extends State<QueueListItem> {
           index: widget.index,
           child: IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.drag_handle),
+            icon: const Icon(Icons.drag_handle_rounded),
             splashRadius: 20,
             color: Colors.black,
           ),

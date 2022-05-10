@@ -83,7 +83,7 @@ class AppListItem extends StatelessWidget {
         ),
         trailing: IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.more_vert),
+          icon: const Icon(Icons.more_vert_rounded),
           splashRadius: 20,
           color: Colors.black,
         ),

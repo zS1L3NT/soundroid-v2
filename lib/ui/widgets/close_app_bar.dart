@@ -17,7 +17,7 @@ class _CloseAppBarState extends State<CloseAppBar> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        icon: const Icon(Icons.close),
+        icon: const Icon(Icons.close_rounded),
         color: Colors.black,
         splashRadius: 20,
       ),

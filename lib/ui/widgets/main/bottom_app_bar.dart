@@ -33,7 +33,7 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.home, color: getColor(0)),
+                    Icon(Icons.home_rounded, color: getColor(0)),
                     Text(
                       "Home",
                       style: TextStyle(
@@ -55,7 +55,7 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.search, color: getColor(1)),
+                    Icon(Icons.search_rounded, color: getColor(1)),
                     Text(
                       "Search",
                       style: TextStyle(
@@ -78,7 +78,7 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.library_music, color: getColor(2)),
+                    Icon(Icons.library_music_rounded, color: getColor(2)),
                     Text(
                       "Library",
                       style: TextStyle(
@@ -100,7 +100,7 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.settings, color: getColor(3)),
+                    Icon(Icons.settings_rounded, color: getColor(3)),
                     Text(
                       "Settings",
                       style: TextStyle(

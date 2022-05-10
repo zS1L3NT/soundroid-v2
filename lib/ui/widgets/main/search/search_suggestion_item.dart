@@ -26,7 +26,7 @@ class SearchSuggestionItem extends StatelessWidget {
           padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
           child: Row(
             children: [
-              const Icon(Icons.search, color: Colors.black87),
+              const Icon(Icons.search_rounded, color: Colors.black87),
               const SizedBox(width: 16),
               AppText.ellipse(
                 text,
@@ -41,10 +41,8 @@ class SearchSuggestionItem extends StatelessWidget {
                       TextSelection.collapsed(offset: text.length);
                   search.query = text;
                 },
-                icon: Icon(
-                  Icons.north_west,
-                  color: Colors.black.withOpacity(0.7),
-                ),
+                icon: const Icon(Icons.north_west_rounded),
+                color: Colors.black.withOpacity(0.7),
                 splashRadius: 20,
               ),
             ],

@@ -43,7 +43,7 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back_rounded),
               splashRadius: 20,
               color: blackWhiteTween,
             ),
@@ -55,7 +55,7 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
             actions: [
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.search),
+                icon: const Icon(Icons.search_rounded),
                 splashRadius: 20,
                 color: blackWhiteTween,
               ),
@@ -110,19 +110,19 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                             children: [
                               IconButton(
                                 onPressed: () {},
-                                icon: const Icon(Icons.favorite),
+                                icon: const Icon(Icons.favorite_rounded),
                                 splashRadius: 20,
                                 color: Theme.of(context).primaryColor,
                               ),
                               IconButton(
                                 onPressed: () {},
-                                icon: const Icon(Icons.download_done),
+                                icon: const Icon(Icons.download_done_rounded),
                                 splashRadius: 20,
                                 color: Theme.of(context).primaryColor,
                               ),
                               IconButton(
                                 onPressed: () {},
-                                icon: const Icon(Icons.more_vert),
+                                icon: const Icon(Icons.more_vert_rounded),
                                 splashRadius: 20,
                               ),
                             ],

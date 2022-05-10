@@ -121,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           });
                         },
                         icon: Icon(
-                          _isObscure ? Icons.visibility_off : Icons.visibility,
+                          _isObscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                         ),
                         splashRadius: 20,
                       ),

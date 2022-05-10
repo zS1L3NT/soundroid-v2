@@ -18,7 +18,7 @@ class LikedSongsItem extends StatelessWidget {
               height: 48,
               color: Theme.of(context).primaryColorLight,
               child: Icon(
-                Icons.favorite,
+                Icons.favorite_rounded,
                 size: 20,
                 color: Theme.of(context).primaryColorDark,
               ),

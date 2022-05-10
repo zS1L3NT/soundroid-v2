@@ -42,7 +42,7 @@ class DeleteDataCard extends StatelessWidget {
             child: ListTile(
               leading: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Icon(Icons.music_off, color: Colors.red)],
+                children: const [Icon(Icons.music_off_rounded, color: Colors.red)],
               ),
               title: const Text("Clear Listening History"),
               subtitle: const Text("Clear all of your music listening history"),
@@ -84,7 +84,7 @@ class DeleteDataCard extends StatelessWidget {
             child: ListTile(
               leading: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Icon(Icons.search_off, color: Colors.red)],
+                children: const [Icon(Icons.search_off_rounded, color: Colors.red)],
               ),
               title: const Text("Clear Search History"),
               subtitle: const Text("Clear all of your search history"),
@@ -131,7 +131,7 @@ class DeleteDataCard extends StatelessWidget {
             child: ListTile(
               leading: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Icon(Icons.delete, color: Colors.red)],
+                children: const [Icon(Icons.delete_rounded, color: Colors.red)],
               ),
               title: const Text(
                 "Delete Account Data",
@@ -179,7 +179,7 @@ class DeleteDataCard extends StatelessWidget {
             child: ListTile(
               leading: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Icon(Icons.logout)],
+                children: const [Icon(Icons.logout_rounded)],
               ),
               title: const Text(
                 "Logout",

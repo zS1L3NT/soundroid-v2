@@ -53,7 +53,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
             context.read<SearchProvider>().results = null;
             _textEditingController.clear();
           },
-          icon: const Icon(Icons.clear),
+          icon: const Icon(Icons.clear_rounded),
           splashRadius: 20,
         )
       ],

@@ -50,7 +50,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 height: 100,
                 color: Theme.of(context).primaryColorLight,
                 child: Icon(
-                  Icons.email_outlined,
+                  Icons.email_rounded,
                   size: 50,
                   color: Theme.of(context).primaryColorDark,
                 ),
