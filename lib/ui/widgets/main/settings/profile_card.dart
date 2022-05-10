@@ -29,15 +29,11 @@ class ProfileCard extends StatelessWidget {
                 children: [
                   AppText.marquee(
                     "Zechariah Tan",
-                    width: double.infinity,
                     extraHeight: 12,
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                   ),
-                  AppText.marquee(
-                    "2100326D@student.tp.edu.sg",
-                    width: double.infinity,
-                  ),
+                  AppText.marquee("2100326D@student.tp.edu.sg"),
                 ],
               ),
             )

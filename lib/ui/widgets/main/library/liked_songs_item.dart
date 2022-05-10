@@ -22,14 +22,8 @@ class LikedSongsItem extends StatelessWidget {
             ),
           ),
         ),
-        title: AppText.ellipse(
-          "Liked Songs",
-          width: double.infinity,
-        ),
-        subtitle: AppText.ellipse(
-          "3 tracks",
-          width: double.infinity,
-        ),
+        title: AppText.ellipse("Liked Songs"),
+        subtitle: AppText.ellipse("3 tracks"),
         contentPadding: const EdgeInsets.only(left: 16),
       ),
     );

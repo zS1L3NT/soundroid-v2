@@ -97,14 +97,12 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                           children: [
                             AppText.marquee(
                               playlist.name,
-                              width: double.infinity,
                               extraHeight: 12,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                             AppText.marquee(
                               "${playlist.trackIds.length} tracks",
-                              width: double.infinity,
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),

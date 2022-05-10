@@ -73,14 +73,8 @@ class AppListItem extends StatelessWidget {
             height: 56,
           ),
         ),
-        title: AppText.ellipse(
-          title,
-          width: double.infinity,
-        ),
-        subtitle: AppText.ellipse(
-          subtitle,
-          width: double.infinity,
-        ),
+        title: AppText.ellipse(title),
+        subtitle: AppText.ellipse(subtitle),
         trailing: IconButton(
           onPressed: () {},
           icon: const Icon(Icons.more_vert_rounded),

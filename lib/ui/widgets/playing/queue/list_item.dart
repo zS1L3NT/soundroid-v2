@@ -67,14 +67,8 @@ class _QueueListItemState extends State<QueueListItem> {
             height: 56,
           ),
         ),
-        title: AppText.ellipse(
-          widget.track.title,
-          width: double.infinity,
-        ),
-        subtitle: AppText.ellipse(
-          widget.track.artists,
-          width: double.infinity,
-        ),
+        title: AppText.ellipse(widget.track.title),
+        subtitle: AppText.ellipse(widget.track.artists),
         trailing: ReorderableDragStartListener(
           index: widget.index,
           child: IconButton(

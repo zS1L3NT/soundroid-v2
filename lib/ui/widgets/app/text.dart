@@ -13,7 +13,7 @@ class AppText extends StatelessWidget {
 
   static Widget marquee(
     String text, {
-    required double width,
+    double width = double.infinity,
     double extraHeight = 9,
     double fontSize = 16,
     FontWeight fontWeight = FontWeight.normal,
@@ -70,7 +70,7 @@ class AppText extends StatelessWidget {
 
   static Widget ellipse(
     String text, {
-    required double width,
+    double width = double.infinity,
     double extraHeight = 9,
     double fontSize = 16,
     FontWeight fontWeight = FontWeight.normal,

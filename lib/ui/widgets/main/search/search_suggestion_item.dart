@@ -29,11 +29,7 @@ class SearchSuggestionItem extends StatelessWidget {
               const Icon(Icons.search_rounded, color: Colors.black87),
               const SizedBox(width: 16),
               Expanded(
-                child: AppText.ellipse(
-                  text,
-                  width: double.infinity,
-                  fontSize: 18,
-                ),
+                child: AppText.ellipse(text, fontSize: 18),
               ),
               IconButton(
                 onPressed: () {
