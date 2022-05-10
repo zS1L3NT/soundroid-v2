@@ -87,7 +87,7 @@ class AppListItem extends StatelessWidget {
           splashRadius: 20,
           color: Colors.black,
         ),
-        contentPadding: const EdgeInsets.only(left: 16, right: 4),
+        contentPadding: const EdgeInsets.only(left: 16),
       ),
     );
   }

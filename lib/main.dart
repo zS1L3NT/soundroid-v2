@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/screens/auth.dart';
 import 'package:soundroid/screens/forgot_password.dart';
@@ -29,6 +30,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => SearchProvider()),
+      ChangeNotifierProvider(create: (_) => PlayingProvider()),
     ],
     child: const MyApp(),
   ));

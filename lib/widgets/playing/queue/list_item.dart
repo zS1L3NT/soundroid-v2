@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/models/track.dart';
+import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -8,29 +10,52 @@ class QueueListItem extends StatefulWidget {
     Key? key,
     required this.index,
     required this.track,
-    required this.onTap,
-    required this.onLongPress,
   }) : super(key: key);
 
   final int index;
 
   final Track track;
 
-  final Function() onTap;
-
-  final Function() onLongPress;
-
   @override
   State<QueueListItem> createState() => _QueueListItemState();
 }
 
 class _QueueListItemState extends State<QueueListItem> {
+  void onTap(BuildContext context) {
+    final selected = context.read<PlayingProvider>().selected;
+    if (selected == null) {
+      // Play the song
+    } else {
+      if (selected.contains(widget.track)) {
+        if (selected.length == 1) {
+          context.read<PlayingProvider>().selected = null;
+        } else {
+          context.read<PlayingProvider>().selected =
+              selected.where((t) => t != widget.track).toList();
+        }
+      } else {
+        context.read<PlayingProvider>().selected = selected.toList()..add(widget.track);
+      }
+    }
+  }
+
+  void onLongPress(BuildContext context) {
+    final selected = context.read<PlayingProvider>().selected;
+    if (selected == null) {
+      context.read<PlayingProvider>().selected = [widget.track];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final selected = context.watch<PlayingProvider>().selected;
     return InkWell(
-      onTap: widget.onTap,
-      onLongPress: widget.onLongPress,
+      onTap: () => onTap(context),
+      onLongPress: () => onLongPress(context),
       child: ListTile(
+        tileColor: selected != null && selected.contains(widget.track)
+            ? Theme.of(context).highlightColor
+            : Colors.transparent,
         leading: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           child: FadeInImage.memoryNetwork(
@@ -59,7 +84,7 @@ class _QueueListItemState extends State<QueueListItem> {
             color: Colors.black,
           ),
         ),
-        contentPadding: const EdgeInsets.only(left: 16, right: 4),
+        contentPadding: const EdgeInsets.only(left: 16),
       ),
     );
   }

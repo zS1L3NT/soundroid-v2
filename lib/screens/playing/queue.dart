@@ -151,8 +151,6 @@ class _QueueScreenState extends State<QueueScreen> {
               key: Key(entry.value.title),
               index: entry.key,
               track: entry.value,
-              onTap: () {},
-              onLongPress: () {},
             ),
           )
           .toList(),
