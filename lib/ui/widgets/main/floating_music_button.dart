@@ -61,11 +61,8 @@ class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
                   Navigator.of(context).push(
                     RouteTransition.reveal(
                       const PlayingScreen(),
-                      center: Offset(
-                        size.width / 2,
-                        size.height - kBottomNavigationBarHeight,
-                      ),
-                      duration: const Duration(milliseconds: 400),
+                      center: Offset(size.width / 2, size.height),
+                      duration: const Duration(milliseconds: 500),
                     ),
                   );
                 },
