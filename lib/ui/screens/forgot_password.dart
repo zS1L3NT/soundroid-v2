@@ -51,6 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
                     labelText: "Email Address",
+                    prefixIcon: Icon(Icons.email_rounded),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,

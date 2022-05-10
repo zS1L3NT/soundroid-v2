@@ -53,6 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: OutlineInputBorder(),
                     hintText: 'Enter your name',
                     labelText: "Name",
+                    prefixIcon: Icon(Icons.person_rounded),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -73,6 +74,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
                     labelText: "Email Address",
+                    prefixIcon: Icon(Icons.email_rounded),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -94,6 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
                     labelText: "Password",
+                    prefixIcon: const Icon(Icons.password_rounded),
                     contentPadding: const EdgeInsets.only(
                       top: 4,
                       bottom: 4,

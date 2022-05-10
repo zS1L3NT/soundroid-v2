@@ -54,6 +54,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
                     labelText: "Password",
+                    prefixIcon: const Icon(Icons.password_rounded),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -89,6 +90,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password confirmation',
                     labelText: "Confirm Password",
+                    prefixIcon: const Icon(Icons.password_rounded),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,

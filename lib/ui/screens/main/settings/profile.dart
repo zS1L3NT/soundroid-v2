@@ -61,9 +61,9 @@ class ProfileScreenState extends State<ProfileScreen> {
                 child: TextFormField(
                   initialValue: "Zechariah Tan",
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.person_rounded),
                     hintText: 'What should we call you?',
                     labelText: 'Display Name',
+                    prefixIcon: Icon(Icons.person_rounded),
                     contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                   ),
                 ),
@@ -77,8 +77,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                     });
                   },
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.password_rounded),
                     labelText: 'Current Password (optional)',
+                    prefixIcon: Icon(Icons.password_rounded),
                     contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                   ),
                 ),
@@ -89,8 +89,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          icon: Icon(Icons.password_rounded),
                           labelText: 'New Password',
+                          prefixIcon: Icon(Icons.password_rounded),
                           contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                         ),
                       ),
@@ -101,8 +101,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          icon: Icon(Icons.password_rounded),
                           labelText: 'New Password Confirmation',
+                          prefixIcon: Icon(Icons.password_rounded),
                           contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                         ),
                       ),
