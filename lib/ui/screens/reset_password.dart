@@ -13,7 +13,8 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  List<bool> _areObscure = [true, true, true];
+
+  List<bool> _areObscure = [true, true];
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +53,30 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 const SizedBox(height: 4),
                 TextFormField(
+                  obscureText: _areObscure[0],
                   style: const TextStyle(fontSize: 15),
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
                     ),
-                    errorStyle: TextStyle(height: 1),
+                    errorStyle: const TextStyle(height: 1),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _areObscure[0] = !_areObscure[0];
+                          });
+                        },
+                        icon: Icon(
+                          _areObscure[0] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                        ),
+                        splashRadius: 20,
+                      ),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -76,15 +92,30 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 const SizedBox(height: 4),
                 TextFormField(
+                  obscureText: _areObscure[1],
                   style: const TextStyle(fontSize: 15),
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
                     hintText: 'Enter your password confirmation',
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
                     ),
-                    errorStyle: TextStyle(height: 1),
+                    errorStyle: const TextStyle(height: 1),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _areObscure[1] = !_areObscure[1];
+                          });
+                        },
+                        icon: Icon(
+                          _areObscure[1] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                        ),
+                        splashRadius: 20,
+                      ),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
