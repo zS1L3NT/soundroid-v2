@@ -18,7 +18,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
     LyricsScreen(),
   ];
 
-  int _index = 2;
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
