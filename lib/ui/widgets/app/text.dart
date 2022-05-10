@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
-// Credits to https://gist.github.com/rtybanana/2b0639052cd5bfd701b8d892f2d1088b
 class AppText extends StatelessWidget {
   const AppText({
     Key? key,
