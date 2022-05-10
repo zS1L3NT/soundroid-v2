@@ -69,11 +69,11 @@ class _QueueListItemState extends State<QueueListItem> {
         ),
         title: AppText.ellipse(
           widget.track.title,
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
         ),
         subtitle: AppText.ellipse(
           widget.track.artists,
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
         ),
         trailing: ReorderableDragStartListener(
           index: widget.index,

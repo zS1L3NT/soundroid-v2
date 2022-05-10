@@ -24,20 +24,22 @@ class ProfileCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            Column(
-              children: [
-                AppText.marquee(
-                  "Zechariah Tan",
-                  width: MediaQuery.of(context).size.width - 152,
-                  extraHeight: 12,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                ),
-                AppText.marquee(
-                  "2100326D@student.tp.edu.sg",
-                  width: MediaQuery.of(context).size.width - 152,
-                ),
-              ],
+            Flexible(
+              child: Column(
+                children: [
+                  AppText.marquee(
+                    "Zechariah Tan",
+                    width: double.infinity,
+                    extraHeight: 12,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  AppText.marquee(
+                    "2100326D@student.tp.edu.sg",
+                    width: double.infinity,
+                  ),
+                ],
+              ),
             )
           ],
         ),

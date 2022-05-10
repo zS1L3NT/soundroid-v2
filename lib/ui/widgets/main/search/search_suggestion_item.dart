@@ -21,17 +21,19 @@ class SearchSuggestionItem extends StatelessWidget {
         search.onSearch();
       },
       child: SizedBox(
-        width: MediaQuery.of(context).size.width,
+        width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
           child: Row(
             children: [
               const Icon(Icons.search_rounded, color: Colors.black87),
               const SizedBox(width: 16),
-              AppText.ellipse(
-                text,
-                width: MediaQuery.of(context).size.width - 104,
-                fontSize: 18,
+              Expanded(
+                child: AppText.ellipse(
+                  text,
+                  width: double.infinity,
+                  fontSize: 18,
+                ),
               ),
               IconButton(
                 onPressed: () {

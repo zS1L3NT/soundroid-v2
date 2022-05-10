@@ -39,6 +39,7 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
         Indexed(
           index: progress == 1 ? 3 : 1,
           child: AppBar(
+            elevation: 0,
             leading: IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -70,8 +71,9 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
             bottom: 0,
             child: Opacity(
               opacity: 1 - progress,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -87,47 +89,49 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Material(
-                      color: primaryColorWhiteTween,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppText.marquee(
-                            playlist.name,
-                            width: MediaQuery.of(context).size.width,
-                            extraHeight: 12,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          AppText.marquee(
-                            "${playlist.trackIds.length} tracks",
-                            width: MediaQuery.of(context).size.width,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.favorite_rounded),
-                                splashRadius: 20,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.download_done_rounded),
-                                splashRadius: 20,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.more_vert_rounded),
-                                splashRadius: 20,
-                              ),
-                            ],
-                          ),
-                        ],
+                    Expanded(
+                      child: Material(
+                        color: primaryColorWhiteTween,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText.marquee(
+                              playlist.name,
+                              width: double.infinity,
+                              extraHeight: 12,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            AppText.marquee(
+                              "${playlist.trackIds.length} tracks",
+                              width: double.infinity,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.favorite_rounded),
+                                  splashRadius: 20,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.download_done_rounded),
+                                  splashRadius: 20,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.more_vert_rounded),
+                                  splashRadius: 20,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

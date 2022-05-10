@@ -24,11 +24,11 @@ class LikedSongsItem extends StatelessWidget {
         ),
         title: AppText.ellipse(
           "Liked Songs",
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
         ),
         subtitle: AppText.ellipse(
           "3 tracks",
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
         ),
         contentPadding: const EdgeInsets.only(left: 16),
       ),

@@ -75,11 +75,11 @@ class AppListItem extends StatelessWidget {
         ),
         title: AppText.ellipse(
           title,
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
         ),
         subtitle: AppText.ellipse(
           subtitle,
-          width: MediaQuery.of(context).size.width,
+          width: double.infinity,
         ),
         trailing: IconButton(
           onPressed: () {},
