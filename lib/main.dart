@@ -6,15 +6,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/screens/auth.dart';
-import 'package:soundroid/screens/forgot_password.dart';
-import 'package:soundroid/screens/main.dart';
-import 'package:soundroid/screens/playlist.dart';
-import 'package:soundroid/screens/reset_password.dart';
-import 'package:soundroid/screens/signin.dart';
-import 'package:soundroid/screens/signup.dart';
-import 'package:soundroid/screens/verify_email.dart';
-import 'package:soundroid/widgets/app/scroll_behaviour.dart';
+import 'package:soundroid/ui/screens/auth.dart';
+import 'package:soundroid/ui/screens/forgot_password.dart';
+import 'package:soundroid/ui/screens/main.dart';
+import 'package:soundroid/ui/screens/playlist.dart';
+import 'package:soundroid/ui/screens/reset_password.dart';
+import 'package:soundroid/ui/screens/signin.dart';
+import 'package:soundroid/ui/screens/signup.dart';
+import 'package:soundroid/ui/screens/verify_email.dart';
+import 'package:soundroid/ui/widgets/app/scroll_behaviour.dart';
 
 void main() async {
   // Initialize Firebase
