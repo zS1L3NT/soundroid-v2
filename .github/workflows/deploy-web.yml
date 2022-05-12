@@ -18,3 +18,5 @@ jobs:
               
             - name: Deploying with flutter-gh-pages
               uses: bluefireteam/flutter-gh-pages@v7
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
