@@ -109,7 +109,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                     ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Profile saved!"),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
                 child: const Text("Save"),
               ),
             ],
