@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +14,6 @@ import 'package:soundroid/ui/screens/verify_email.dart';
 import 'package:soundroid/ui/widgets/app/scroll_behaviour.dart';
 
 void main() async {
-  // Initialize Firebase
-  WidgetsFlutterBinding.ensureInitialized();
-  if (!Platform.isWindows) {
-    await Firebase.initializeApp();
-  }
-
   // Initialize Hive
   await Hive.initFlutter();
 
