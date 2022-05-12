@@ -12,6 +12,9 @@ jobs:
 
             - name: Creating a Flutter environment
               uses: subosito/flutter-action@v1
+              with:
+                flutter-version: '2.10.5'
+                channel: 'stable'
               
             - name: Deploying with flutter-gh-pages
               uses: bluefireteam/flutter-gh-pages@v7
