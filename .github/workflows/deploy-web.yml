@@ -15,6 +15,9 @@ jobs:
               with:
                 flutter-version: '2.10.5'
                 channel: 'stable'
+            
+            - name: Adding CNAME file
+              run:  echo 'soundroid-app.zectan.com' > CNAME
               
             - name: Deploying with flutter-gh-pages
               uses: bluefireteam/flutter-gh-pages@v7
