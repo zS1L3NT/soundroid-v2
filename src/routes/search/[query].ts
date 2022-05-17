@@ -1,10 +1,10 @@
 import { ytmusic } from "../../apis"
+import { data } from "../../functions/responses"
 import { RequestHandler } from "../../functions/withErrorHandling"
 
-export const GET: RequestHandler = async req => {
-	return {
-		status: 200,
-		data: (
+export const GET: RequestHandler = async req =>
+	data(
+		(
 			await Promise.all([
 				ytmusic.searchSongs(req.params.query!),
 				ytmusic.searchAlbums(req.params.query!)
@@ -21,9 +21,7 @@ export const GET: RequestHandler = async req => {
 									{
 										id: result.videoId,
 										title: result.name,
-										artists: result.artists
-											.map(artist => artist.name)
-											.join(", "),
+										artistIds: result.artists.map(artist => artist.artistId),
 										thumbnail: result.thumbnails.at(-1)?.url || ""
 									}
 								]
@@ -35,9 +33,7 @@ export const GET: RequestHandler = async req => {
 									{
 										id: result.albumId,
 										title: result.name,
-										artists: result.artists
-											.map(artist => artist.name)
-											.join(", "),
+										artistIds: result.artists.map(artist => artist.artistId),
 										thumbnail: result.thumbnails.at(-1)?.url || ""
 									}
 								]
@@ -47,5 +43,4 @@ export const GET: RequestHandler = async req => {
 					albums: [] as Track[]
 				}
 			)
-	}
-}
+	)
