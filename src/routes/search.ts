@@ -1,15 +1,11 @@
-import { ytmusic } from "../../apis"
-import { data } from "../../functions/responses"
-import { RequestHandler } from "../../functions/withErrorHandling"
+import { ytmusic } from "../apis"
+import { data } from "../functions/responses"
+import { RequestHandler } from "../functions/withErrorHandling"
 
-export const GET: RequestHandler = async req =>
-	data(
-		(
-			await Promise.all([
-				ytmusic.searchSongs(req.params.query!),
-				ytmusic.searchAlbums(req.params.query!)
-			])
-		)
+export const GET: RequestHandler = async req => {
+	const query = req.query.query?.toString() || ""
+	return data(
+		(await Promise.all([ytmusic.searchSongs(query), ytmusic.searchAlbums(query)]))
 			.flat()
 			.reduce(
 				(response, result) =>
@@ -44,3 +40,4 @@ export const GET: RequestHandler = async req =>
 				}
 			)
 	)
+}

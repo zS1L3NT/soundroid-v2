@@ -1,12 +1,12 @@
 import ytdl from "ytdl-core"
 
-import { error, redirect } from "../../functions/responses"
-import { RequestHandler } from "../../functions/withErrorHandling"
+import { error, redirect } from "../functions/responses"
+import { RequestHandler } from "../functions/withErrorHandling"
 
 export const GET: RequestHandler = async req => {
 	try {
 		return redirect(
-			(await ytdl.getInfo(req.params.videoId!)).formats
+			(await ytdl.getInfo(req.query.videoId?.toString() || "")).formats
 				.filter(f => f.container === "webm")
 				.filter(f => f.mimeType?.startsWith("audio"))
 				.filter(f => f.audioBitrate !== undefined)
