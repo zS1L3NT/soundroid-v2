@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 
 import logger from "../logger"
-import { clearRID, generateRID } from "../RID"
 
 export type RequestHandler = (req: Request & { rid: string }) => Promise<
 	| {
@@ -11,8 +10,12 @@ export type RequestHandler = (req: Request & { rid: string }) => Promise<
 	| { redirect: string }
 >
 
+const queue: number[] = []
+
 export default (handler: RequestHandler) => async (req: Request, res: Response) => {
-	const rid = generateRID()
+	queue.push(queue.length === 0 ? 1 : queue.at(-1)! + 1)
+	const rid = `{#${queue.at(-1)!}}`
+
 	logger.http!(`Opening ${rid}`, req.method, req.url, req.body)
 	try {
 		const response = await handler(Object.assign(req, { rid }))
@@ -25,6 +28,10 @@ export default (handler: RequestHandler) => async (req: Request, res: Response) 
 		logger.error(err)
 		res.status(500).send(err)
 	}
-	clearRID(rid)
+
+	setTimeout(() => {
+		queue.splice(queue.indexOf(+rid.slice(2, -1)), 1)
+	}, 60_000)
+
 	logger.http!(`Closing ${rid}`, req.method, req.url, req.body)
 }
