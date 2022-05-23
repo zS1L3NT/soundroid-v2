@@ -1,13 +1,17 @@
 import { ytmusic } from "../apis"
-import { data } from "../functions/responses"
-import { RequestHandler } from "../functions/withErrorHandling"
+import Route from "../Route"
 
-export const GET: RequestHandler = async req => {
-	const query = req.query.query?.toString() || ""
-	return data(
-		(await Promise.all([ytmusic.searchSongs(query), ytmusic.searchAlbums(query)]))
-			.flat()
-			.reduce(
+export class GET extends Route {
+	async handle() {
+		const query = this.query.query?.toString() || ""
+
+		const promises = await Promise.all([
+			ytmusic.searchSongs(query),
+			ytmusic.searchAlbums(query)
+		])
+
+		this.respond(
+			promises.flat().reduce(
 				(response, result) =>
 					result.type === "SONG"
 						? {
@@ -39,5 +43,6 @@ export const GET: RequestHandler = async req => {
 					albums: [] as Track[]
 				}
 			)
-	)
+		)
+	}
 }

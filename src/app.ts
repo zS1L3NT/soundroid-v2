@@ -4,7 +4,7 @@ import express from "express"
 import fs from "fs"
 import path from "path"
 
-import withErrorHandling from "./functions/withErrorHandling"
+import { iRoute } from "./Route"
 
 const app = express()
 const PORT = process.env.PORT || 5190
@@ -21,11 +21,11 @@ const readRouteFolder = (folderName: string) => {
 
 		if (extensionName) {
 			// Entity is a file
-			const file = require(path.join(folderPath, entityName)) as Record<any, any>
-			for (const [method, handler] of Object.entries(file)) {
+			const file = require(path.join(folderPath, entityName)) as Record<string, iRoute>
+			for (const [method, Route] of Object.entries(file)) {
 				app[method.toLowerCase() as "get" | "post" | "put" | "delete"](
 					pathName.replace(/\[(\w+)\]/g, ":$1"),
-					withErrorHandling(handler)
+					(req, res) => new Route(req, res)
 				)
 			}
 		} else {
