@@ -1,24 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Listen {
+class Search {
   final DocumentReference userRef;
-  final List<String> trackIds;
+  final String query;
   final Timestamp timestamp;
 
-  Listen({
+  Search({
     required this.userRef,
-    required this.trackIds,
+    required this.query,
     required this.timestamp,
   });
 
-  Listen.fromJson(Map<String, dynamic> json)
+  Search.fromJson(Map<String, dynamic> json)
       : userRef = json["userRef"],
-        trackIds = json["trackIds"],
+        query = json["query"],
         timestamp = json["timestamp"];
 
   Map<String, dynamic> toJson() => {
         "userRef": userRef,
-        "trackIds": trackIds,
+        "query": query,
         "timestamp": timestamp,
       };
 }

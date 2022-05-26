@@ -11,14 +11,13 @@ class Track {
     required this.thumbnail,
   });
 
-  static Track fromJSON(Map<String, dynamic> json) => Track(
-        id: json["id"],
-        title: json["title"],
-        artists: json["artists"],
-        thumbnail: json["thumbnail"],
-      );
+  Track.fromJson(Map<String, dynamic> json)
+      : id = json["id"].toString(),
+        title = json["title"].toString(),
+        artists = json["artists"].toString(),
+        thumbnail = json["thumbnail"].toString();
 
-  Map<String, dynamic> toJSON() => <String, dynamic>{
+  Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
         "artists": artists,
