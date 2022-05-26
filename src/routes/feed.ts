@@ -16,7 +16,7 @@ export class GET extends Route {
 		this.mostFrequentTrackIds = Object.entries(
 			(
 				await listensColl
-					.where("userId", "==", this.userRef)
+					.where("userRef", "==", this.userRef)
 					.orderBy("timestamp", "desc")
 					.limit(50)
 					.get()

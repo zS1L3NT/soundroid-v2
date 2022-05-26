@@ -2,7 +2,7 @@ import { DocumentReference, FirestoreDataConverter } from "firebase-admin/firest
 
 export default class Playlist {
 	constructor(
-		public userId: DocumentReference,
+		public userRef: DocumentReference,
 		public name: string,
 		public thumbnail: string,
 		public favourite: boolean,
@@ -11,7 +11,7 @@ export default class Playlist {
 
 	static converter: FirestoreDataConverter<Playlist> = {
 		toFirestore: listen => ({
-			userId: listen.userId,
+			userRef: listen.userRef,
 			name: listen.name,
 			thumbnail: listen.thumbnail,
 			favourite: listen.favourite,
@@ -19,7 +19,7 @@ export default class Playlist {
 		}),
 		fromFirestore: snap =>
 			new Playlist(
-				snap.get("userId"),
+				snap.get("userRef"),
 				snap.get("name"),
 				snap.get("thumbnail"),
 				snap.get("favourite"),

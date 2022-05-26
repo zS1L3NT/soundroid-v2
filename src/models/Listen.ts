@@ -2,18 +2,18 @@ import { DocumentReference, FirestoreDataConverter, Timestamp } from "firebase-a
 
 export default class Listen {
 	constructor(
-		public userId: DocumentReference,
+		public userRef: DocumentReference,
 		public trackIds: string[],
 		public timestamp: Timestamp
 	) {}
 
 	static converter: FirestoreDataConverter<Listen> = {
 		toFirestore: listen => ({
-			userId: listen.userId,
+			userRef: listen.userRef,
 			trackIds: listen.trackIds,
 			timestamp: listen.timestamp
 		}),
 		fromFirestore: snap =>
-			new Listen(snap.get("userId"), snap.get("trackIds"), snap.get("timestamp"))
+			new Listen(snap.get("userRef"), snap.get("trackIds"), snap.get("timestamp"))
 	}
 }
