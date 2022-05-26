@@ -1,14 +1,19 @@
-import { FirestoreDataConverter } from "firebase-admin/firestore"
+import { DocumentReference, FirestoreDataConverter, Timestamp } from "firebase-admin/firestore"
 
 export default class Search {
-	constructor(public userId: string, public query: string, public date: number) {}
+	constructor(
+		public userId: DocumentReference,
+		public query: string,
+		public timestamp: Timestamp
+	) {}
 
 	static converter: FirestoreDataConverter<Search> = {
 		toFirestore: listen => ({
 			userId: listen.userId,
 			query: listen.query,
-			date: listen.date
+			timestamp: listen.timestamp
 		}),
-		fromFirestore: snap => new Search(snap.get("userId"), snap.get("query"), snap.get("date"))
+		fromFirestore: snap =>
+			new Search(snap.get("userId"), snap.get("query"), snap.get("timestamp"))
 	}
 }

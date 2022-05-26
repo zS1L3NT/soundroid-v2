@@ -1,7 +1,7 @@
-import { FirestoreDataConverter } from "firebase-admin/firestore"
+import { DocumentReference, FirestoreDataConverter } from "firebase-admin/firestore"
 
 export default class Listen {
-	constructor(public userId: string, public trackId: string, public count: number) {}
+	constructor(public userId: DocumentReference, public trackId: string, public count: number) {}
 
 	static converter: FirestoreDataConverter<Listen> = {
 		toFirestore: listen => ({

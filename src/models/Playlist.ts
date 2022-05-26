@@ -1,9 +1,8 @@
-import { FirestoreDataConverter } from "firebase-admin/firestore"
+import { DocumentReference, FirestoreDataConverter } from "firebase-admin/firestore"
 
 export default class Playlist {
 	constructor(
-		public id: string,
-		public userId: string,
+		public userId: DocumentReference,
 		public name: string,
 		public thumbnail: string,
 		public favourite: boolean,
@@ -12,7 +11,6 @@ export default class Playlist {
 
 	static converter: FirestoreDataConverter<Playlist> = {
 		toFirestore: listen => ({
-			id: listen.id,
 			userId: listen.userId,
 			name: listen.name,
 			thumbnail: listen.thumbnail,
@@ -21,7 +19,6 @@ export default class Playlist {
 		}),
 		fromFirestore: snap =>
 			new Playlist(
-				snap.get("id"),
 				snap.get("userId"),
 				snap.get("name"),
 				snap.get("thumbnail"),

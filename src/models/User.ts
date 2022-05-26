@@ -2,7 +2,6 @@ import { FirestoreDataConverter } from "firebase-admin/firestore"
 
 export default class User {
 	constructor(
-		public id: string,
 		public name: string,
 		public email: string,
 		public picture: string,
@@ -12,7 +11,6 @@ export default class User {
 
 	static converter: FirestoreDataConverter<User> = {
 		toFirestore: user => ({
-			id: user.id,
 			name: user.name,
 			email: user.email,
 			picture: user.picture,
@@ -21,7 +19,6 @@ export default class User {
 		}),
 		fromFirestore: snap =>
 			new User(
-				snap.get("id"),
 				snap.get("name"),
 				snap.get("email"),
 				snap.get("picture"),
