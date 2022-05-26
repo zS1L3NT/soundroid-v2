@@ -1,9 +1,15 @@
 import { cert, initializeApp } from "firebase-admin/app"
 import { getAuth } from "firebase-admin/auth"
+import { getFirestore } from "firebase-admin/firestore"
 import { useTryAsync } from "no-try"
 import Genius from "node-genius-api"
 import SpotifyWebApi from "spotify-web-api-node"
 import YTMusic from "ytmusic-api"
+
+import Listen from "./models/Listen"
+import Playlist from "./models/Playlist"
+import Search from "./models/Search"
+import User from "./models/User"
 
 export const firebaseApp = initializeApp({
 	credential: cert({
@@ -12,6 +18,12 @@ export const firebaseApp = initializeApp({
 		privateKey: process.env.FIREBASE__SERVICE_ACCOUNT__PRIVATE_KEY
 	})
 })
+
+export const firestore = getFirestore(firebaseApp)
+export const usersColl = firestore.collection("users").withConverter(User.converter)
+export const playlistsColl = firestore.collection("playlists").withConverter(Playlist.converter)
+export const listensColl = firestore.collection("listens").withConverter(Listen.converter)
+export const searchesColl = firestore.collection("searches").withConverter(Search.converter)
 
 export const auth = getAuth(firebaseApp)
 
