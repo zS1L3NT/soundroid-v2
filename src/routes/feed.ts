@@ -2,6 +2,7 @@ import { QueryDocumentSnapshot } from "firebase-admin/firestore"
 
 import { listensColl, ytmusic } from "../apis"
 import Artist from "../models/Artist"
+import Listen from "../models/Listen"
 import Track from "../models/Track"
 import { Route } from "../setup"
 

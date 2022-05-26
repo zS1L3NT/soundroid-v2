@@ -1,4 +1,5 @@
 import { ytmusic } from "../apis"
+import Track from "../models/Track"
 import { Route } from "../setup"
 
 export class GET extends Route {
