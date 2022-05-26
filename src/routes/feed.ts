@@ -67,7 +67,6 @@ export class GET extends Route {
 			response.push({
 				type: "artist",
 				artist: mostListenedArtists[0][0],
-				description: "A list of artists that you've heard a lot recently",
 				items: mostListenedArtists[0][1]
 			})
 		}
@@ -85,7 +84,6 @@ export class GET extends Route {
 			response.push({
 				type: "artist",
 				artist: mostListenedArtists[1][0],
-				description: "A list of artists that you've heard a lot recently",
 				items: mostListenedArtists[1][1]
 			})
 		}
@@ -94,7 +92,6 @@ export class GET extends Route {
 			response.push({
 				type: "artist",
 				artist: mostListenedArtists[2][0],
-				description: "A list of artists that you've heard a lot recently",
 				items: mostListenedArtists[2][1]
 			})
 		}
