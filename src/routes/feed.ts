@@ -22,20 +22,23 @@ export class GET extends Route {
 
 		const response: any[] = []
 
-		response.push(
-			{
+		if (mostListenedArtists.length) {
+			response.push({
 				type: "track",
 				title: "Tracks you listen to a lot",
 				description: "A list of tracks that you've heard a lot recently",
 				items: mostListenedTracks
-			},
-			{
+			})
+		}
+
+		if (recommendedTracks.length) {
+			response.push({
 				type: "track",
 				title: "Recommended for You",
 				description: "A list of tracks we think you might like",
 				items: recommendedTracks
-			}
-		)
+			})
+		}
 
 		if (mostListenedArtists[0]) {
 			response.push({
@@ -46,12 +49,14 @@ export class GET extends Route {
 			})
 		}
 
-		response.push({
-			type: "track",
-			title: "Tracks you rarely listen to",
-			description: "A list of tracks that you haven't been listening to",
-			items: leastListenedTracks
-		})
+		if (leastListenedTracks.length) {
+			response.push({
+				type: "track",
+				title: "Tracks you rarely listen to",
+				description: "A list of tracks that you haven't been listening to",
+				items: leastListenedTracks
+			})
+		}
 
 		if (mostListenedArtists[1]) {
 			response.push({
