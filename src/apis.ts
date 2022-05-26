@@ -1,4 +1,5 @@
 import { cert, initializeApp } from "firebase-admin/app"
+import { getAuth } from "firebase-admin/auth"
 import { useTryAsync } from "no-try"
 import Genius from "node-genius-api"
 import SpotifyWebApi from "spotify-web-api-node"
@@ -11,6 +12,8 @@ export const firebaseApp = initializeApp({
 		privateKey: process.env.FIREBASE__SERVICE_ACCOUNT__PRIVATE_KEY
 	})
 })
+
+export const auth = getAuth(firebaseApp)
 
 export const ytmusic = new YTMusic()
 ytmusic.initialize()
