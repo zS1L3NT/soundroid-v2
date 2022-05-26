@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
@@ -15,9 +16,10 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   final _playlist = Playlist(
+    userRef: FirebaseFirestore.instance.collection("-").doc("-"),
     name: "Korean Songs",
-    userId: "",
     thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
+    favourite: true,
     trackIds: [],
   );
 
