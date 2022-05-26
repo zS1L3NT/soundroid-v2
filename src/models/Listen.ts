@@ -1,15 +1,19 @@
-import { DocumentReference, FirestoreDataConverter } from "firebase-admin/firestore"
+import { DocumentReference, FirestoreDataConverter, Timestamp } from "firebase-admin/firestore"
 
 export default class Listen {
-	constructor(public userId: DocumentReference, public trackId: string, public count: number) {}
+	constructor(
+		public userId: DocumentReference,
+		public trackIds: string[],
+		public timestamp: Timestamp
+	) {}
 
 	static converter: FirestoreDataConverter<Listen> = {
 		toFirestore: listen => ({
 			userId: listen.userId,
-			trackId: listen.trackId,
-			count: listen.count
+			trackIds: listen.trackIds,
+			timestamp: listen.timestamp
 		}),
 		fromFirestore: snap =>
-			new Listen(snap.get("userId"), snap.get("trackId"), snap.get("count"))
+			new Listen(snap.get("userId"), snap.get("trackIds"), snap.get("timestamp"))
 	}
 }

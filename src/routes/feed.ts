@@ -1,17 +1,39 @@
-import { QueryDocumentSnapshot } from "firebase-admin/firestore"
+import { DocumentReference } from "firebase-admin/firestore"
 
-import { listensColl, ytmusic } from "../apis"
+import { listensColl, usersColl, ytmusic } from "../apis"
 import Artist from "../models/Artist"
-import Listen from "../models/Listen"
 import Track from "../models/Track"
+import User from "../models/User"
 import { Route } from "../setup"
 
 export class GET extends Route {
-	private userId = ""
+	private userRef!: DocumentReference<User>
+	private mostFrequentTrackIds: string[] = []
 
 	async handle() {
 		//@ts-ignore
-		this.userId = this.req.userId
+		this.userRef = usersColl.doc("jnbZI9qOLtVsehqd6ICcw584ED93")
+		this.mostFrequentTrackIds = Object.entries(
+			(
+				await listensColl
+					.where("userId", "==", this.userRef)
+					.orderBy("timestamp", "desc")
+					.limit(50)
+					.get()
+			).docs
+				.map(doc => doc.data())
+				.map(listen => listen.trackIds)
+				.flat()
+				.reduce<Record<string, number>>(
+					(occ, trackId) => ({
+						...occ,
+						[trackId]: trackId in occ ? occ[trackId]! + 1 : 1
+					}),
+					{}
+				)
+		)
+			.sort((a, b) => b[1] - a[1])
+			.map(occurance => occurance[0])
 
 		const [mostListenedTracks, leastListenedTracks, recommendedTracks, mostListenedArtists] =
 			await Promise.all([
@@ -81,15 +103,11 @@ export class GET extends Route {
 	}
 
 	async getMostListenedTracks() {
-		const snaps = await listensColl
-			.where("userId", "==", this.userId)
-			.orderBy("count", "desc")
-			.limit(10)
-			.get()
-		const trackIds = snaps.docs.map(doc => doc.data().trackId)
-
-		const songs = await Promise.all(trackIds.map(ytmusic.getSong.bind(ytmusic)))
-		return songs.map(
+		return (
+			await Promise.all(
+				this.mostFrequentTrackIds.slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
+			)
+		).map(
 			song =>
 				new Track(
 					song.videoId,
@@ -101,15 +119,11 @@ export class GET extends Route {
 	}
 
 	async getLeastListenedTracks() {
-		const snaps = await listensColl
-			.where("userId", "==", this.userId)
-			.orderBy("count", "asc")
-			.limit(10)
-			.get()
-		const trackIds = snaps.docs.map(doc => doc.data().trackId)
-
-		const songs = await Promise.all(trackIds.map(ytmusic.getSong.bind(ytmusic)))
-		return songs.map(
+		return (
+			await Promise.all(
+				this.mostFrequentTrackIds.reverse().slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
+			)
+		).map(
 			song =>
 				new Track(
 					song.videoId,
@@ -126,50 +140,34 @@ export class GET extends Route {
 
 	async getMostListenedArtists() {
 		const items: [Artist, Promise<Track[]>][] = []
-		let lastSnap: QueryDocumentSnapshot<Listen> | undefined
 
-		while (true) {
-			let query = listensColl
-				.where("userId", "==", this.userId)
-				.orderBy("count", "asc")
-				.limit(10)
-			if (lastSnap) query = query.startAfter(lastSnap)
+		const songs = await Promise.all(
+			this.mostFrequentTrackIds.slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
+		)
 
-			const snaps = await query.get()
-			const trackIds = snaps.docs.map(doc => doc.data().trackId)
+		for (const song of songs) {
+			if (items.length === 3) break
 
-			if (trackIds.length === 0) break
-			const songs = await Promise.all(trackIds.map(ytmusic.getSong.bind(ytmusic)))
-
-			for (const song of songs) {
-				if (items.length === 3) break
-
-				const artistId = song.artists[0]?.artistId
-				if (!artistId || items.find(item => item[0].id === artistId)) {
-					continue
-				}
-
-				const artist = await ytmusic.getArtist(artistId)
-				items.push([
-					new Artist(artist.artistId, artist.name, artist.thumbnails.at(-1)?.url || ""),
-					ytmusic.getArtistSongs(artistId).then(songs =>
-						songs.map(
-							song =>
-								new Track(
-									song.videoId,
-									song.name,
-									song.artists.map(artist => artist.artistId),
-									song.thumbnails.at(-1)?.url || ""
-								)
-						)
-					)
-				])
+			const artistId = song.artists[0]?.artistId
+			if (!artistId || items.find(item => item[0].id === artistId)) {
+				continue
 			}
 
-			if (items.length === 3) break
-			//@ts-ignore
-			lastSnap = snaps.docs.at(-1)!
-			continue
+			const artist = await ytmusic.getArtist(artistId)
+			items.push([
+				new Artist(artist.artistId, artist.name, artist.thumbnails.at(-1)?.url || ""),
+				ytmusic.getArtistSongs(artistId).then(songs =>
+					songs.map(
+						song =>
+							new Track(
+								song.videoId,
+								song.name,
+								song.artists.map(artist => artist.artistId),
+								song.thumbnails.at(-1)?.url || ""
+							)
+					)
+				)
+			])
 		}
 
 		return await Promise.all(
