@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { validate } from "validate-any"
 import Validator from "validate-any/dist/classes/Validator"
 
@@ -8,7 +8,7 @@ const queue: number[] = []
 
 export type iRoute<T = any> = new (req: Request, res: Response) => Route<T>
 
-export default abstract class Route<T = any> {
+export abstract class Route<T = any> {
 	constructor(protected readonly req: Request, protected readonly res: Response) {
 		queue.push(queue.length === 0 ? 1 : queue.at(-1)! + 1)
 		const rid = `{#${queue.at(-1)!}}`
@@ -21,6 +21,12 @@ export default abstract class Route<T = any> {
 				this.res.status(400).send(errors)
 				return
 			}
+		}
+
+		let handle = this.handle
+
+		for (const Middleware of this.middleware.reverse()) {
+			this.handle = () => new Middleware(req, res).handle(handle)
 		}
 
 		this.handle()
@@ -37,6 +43,8 @@ export default abstract class Route<T = any> {
 
 	validator: Validator<T> | undefined
 
+	middleware: iMiddleware[] = []
+
 	abstract handle(): Promise<void>
 
 	body(): T {
@@ -50,6 +58,34 @@ export default abstract class Route<T = any> {
 	get params() {
 		return this.req.params as Record<string, string>
 	}
+
+	respond(data: any, status = 200) {
+		this.res.send({
+			data,
+			status
+		})
+	}
+
+	throw(message: string, status = 400) {
+		this.res.send({
+			data: {
+				message
+			},
+			status
+		})
+	}
+
+	redirect(url: string) {
+		this.res.redirect(url)
+	}
+}
+
+export type iMiddleware = new (req: Request, res: Response) => Middleware
+
+export abstract class Middleware {
+	constructor(protected readonly req: Request, protected readonly res: Response) {}
+
+	abstract handle(next: NextFunction): Promise<void>
 
 	respond(data: any, status = 200) {
 		this.res.send({

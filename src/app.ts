@@ -4,7 +4,7 @@ import express from "express"
 import fs from "fs"
 import path from "path"
 
-import { iRoute } from "./Route"
+import { iRoute } from "./setup"
 
 const app = express()
 const PORT = process.env.PORT || 5190

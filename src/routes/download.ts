@@ -1,6 +1,6 @@
 import ytdl from "ytdl-core"
 
-import Route from "../Route"
+import { Route } from "../setup"
 
 export class GET extends Route {
 	async handle() {
