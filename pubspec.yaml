@@ -45,6 +45,7 @@ dependencies:
   indexed: ^0.0.6
   palette_generator: ^0.3.3
   flutter_settings_screens: ^0.3.2-null-safety
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
