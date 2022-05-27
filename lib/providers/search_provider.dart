@@ -44,7 +44,7 @@ class SearchProvider with ChangeNotifier {
   // This method is moved into the provider so it can be called from multiple places
   void search(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode());
-    final searchProvider = Provider.of<SearchProvider>(context, listen: false);
+    final searchProvider = context.read<SearchProvider>();
     searchProvider.suggestions = null;
     searchProvider.results = await ApiHelper.fetchSearchResults(searchProvider);
   }

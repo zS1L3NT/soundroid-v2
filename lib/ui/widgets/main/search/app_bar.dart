@@ -18,7 +18,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Provider.of<SearchProvider>(context).textEditingController = _controller;
+      context.read<SearchProvider>().textEditingController = _controller;
     });
   }
 
@@ -33,13 +33,12 @@ class _SearchAppBarState extends State<SearchAppBar> {
             child: TextField(
               controller: _controller,
               onChanged: (query) async {
-                final provider = Provider.of<SearchProvider>(context, listen: false);
+                final provider = context.read<SearchProvider>();
                 provider.query = query;
                 provider.results = null;
                 provider.suggestions = await ApiHelper.fetchSearchSuggestions(provider);
               },
-              onEditingComplete: () =>
-                  Provider.of<SearchProvider>(context, listen: false).search(context),
+              onEditingComplete: () => context.read<SearchProvider>().search(context),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Search songs or albums...',

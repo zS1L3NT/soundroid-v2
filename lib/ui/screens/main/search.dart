@@ -15,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    final search = Provider.of<SearchProvider>(context);
+    final search = context.watch<SearchProvider>();
     return search.isLoading
         ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
