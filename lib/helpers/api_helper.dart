@@ -6,8 +6,12 @@ import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class ApiHelper {
+  static bool inDevelopment = true;
+
+  static String get host => inDevelopment ? "http://localhost:5190" : "http://soundroid.zectan.com";
+
   static Future<List<Map<String, dynamic>>> fetchFeed() async {
-    final response = await get(Uri.parse("http://localhost:5190/feed"));
+    final response = await get(Uri.parse("$host/feed"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -18,8 +22,7 @@ class ApiHelper {
   }
 
   static Future<List<String>> fetchSearchSuggestions(SearchProvider searchProvider) async {
-    final response =
-        await get(Uri.parse("http://localhost:5190/suggestions?query=" + searchProvider.query));
+    final response = await get(Uri.parse("$host/suggestions?query=${searchProvider.query}"));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)["data"];
@@ -33,8 +36,7 @@ class ApiHelper {
   static Future<Map<String, List<SearchResult>>> fetchSearchResults(
       SearchProvider searchProvider) async {
     searchProvider.isLoading = true;
-    final response =
-        await get(Uri.parse("http://localhost:5190/search?query=" + searchProvider.query));
+    final response = await get(Uri.parse("$host/search?query=${searchProvider.query}"));
 
     searchProvider.isLoading = false;
     if (response.statusCode == 200) {
