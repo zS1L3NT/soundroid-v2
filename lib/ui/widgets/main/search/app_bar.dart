@@ -66,8 +66,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
       actions: [
         IconButton(
           onPressed: () {
-            context.read<SearchProvider>().query = "";
-            context.read<SearchProvider>().results = null;
+            final searchProvider = context.read<SearchProvider>();
+            searchProvider.query = "";
+            searchProvider.results = null;
             _controller.clear();
           },
           icon: const Icon(Icons.clear_rounded),
