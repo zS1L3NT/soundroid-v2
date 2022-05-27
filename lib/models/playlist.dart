@@ -20,7 +20,7 @@ class Playlist {
         name = json["name"],
         thumbnail = json["thumbnail"],
         favourite = json["favourite"],
-        trackIds = json["trackIds"];
+        trackIds = json["trackIds"].cast<String>();
 
   Map<String, dynamic> toJson() => {
         "userRef": userRef,

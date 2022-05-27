@@ -18,7 +18,7 @@ class User {
         email = json["email"],
         picture = json["picture"],
         verified = json["verified"],
-        likedTrackIds = json["likedTrackIds"];
+        likedTrackIds = json["likedTrackIds"].cast<String>();
 
   Map<String, dynamic> toJson() => {
         'name': name,

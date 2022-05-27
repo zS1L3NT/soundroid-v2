@@ -13,7 +13,7 @@ class Listen {
 
   Listen.fromJson(Map<String, dynamic> json)
       : userRef = json["userRef"],
-        trackIds = json["trackIds"],
+        trackIds = json["trackIds"].cast<String>(),
         timestamp = json["timestamp"];
 
   Map<String, dynamic> toJson() => {
