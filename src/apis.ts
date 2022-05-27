@@ -28,7 +28,7 @@ export const searchesColl = firestore.collection("searches").withConverter(Searc
 export const auth = getAuth(firebaseApp)
 
 export const ytmusic = new YTMusic()
-ytmusic.initialize()
+ytmusic.initialize().then(() => console.log("YTMusic Initialized"))
 
 class Spotify extends SpotifyWebApi {
 	constructor() {
