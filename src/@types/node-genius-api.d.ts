@@ -1,8 +1,8 @@
 declare module "node-genius-api" {
 	class Genius {
-		public constructor(apiKey: string)
-		public search(query: string): any
-		public lyrics(songId: string): any
+		constructor(apiKey: string)
+		search(query: string): any
+		lyrics(songId: string): any
 	}
 
 	export default Genius
