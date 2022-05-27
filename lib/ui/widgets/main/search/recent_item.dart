@@ -15,10 +15,10 @@ class RecentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        final search = context.read<SearchProvider>();
-        search.textEditingController.text = text;
-        search.query = text;
-        // search.onSearch();
+        final searchProvider = Provider.of<SearchProvider>(context);
+        searchProvider.textEditingController.text = text;
+        searchProvider.query = text;
+        searchProvider.search(context);
       },
       child: SizedBox(
         width: double.infinity,

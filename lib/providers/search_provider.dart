@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/models/search_result.dart';
 
 class SearchProvider with ChangeNotifier {
@@ -37,5 +39,13 @@ class SearchProvider with ChangeNotifier {
   set results(Map<String, List<SearchResult>>? results) {
     _results = results;
     notifyListeners();
+  }
+
+  // This method is moved into the provider so it can be called from multiple places
+  void search(BuildContext context) async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    final searchProvider = Provider.of<SearchProvider>(context, listen: false);
+    searchProvider.suggestions = null;
+    searchProvider.results = await ApiHelper.fetchSearchResults(searchProvider);
   }
 }

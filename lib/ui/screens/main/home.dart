@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/ui/widgets/main/home/playlists.dart';
 import 'package:soundroid/ui/widgets/main/home/section.dart';
 
@@ -26,18 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _futureFeed = getFutureFeed();
-  }
 
-  Future<List<Map<String, dynamic>>> getFutureFeed() async {
-    final response = await http.get(Uri.parse("http://localhost:5190/feed"));
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      debugPrint(response.body);
-      throw Exception("Failed to fetch feed");
-    }
+    _futureFeed = ApiHelper.fetchFeed();
   }
 
   @override
