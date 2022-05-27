@@ -6,12 +6,14 @@ import 'package:soundroid/models/search_result.dart';
 class SearchProvider with ChangeNotifier {
   TextEditingController _textEditingController = TextEditingController();
   String _query = "";
+  DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
   List<String>? _suggestions;
   Map<String, List<SearchResult>>? _results;
 
   TextEditingController get textEditingController => _textEditingController;
   String get query => _query;
+  DateTime get latest => _latest;
   bool get isLoading => _isLoading;
   List<String>? get suggestions => _suggestions;
   Map<String, List<SearchResult>>? get results => _results;
@@ -23,6 +25,11 @@ class SearchProvider with ChangeNotifier {
 
   set query(String query) {
     _query = query;
+    notifyListeners();
+  }
+
+  set latest(DateTime latest) {
+    _latest = latest;
     notifyListeners();
   }
 

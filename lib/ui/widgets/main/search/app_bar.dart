@@ -33,10 +33,17 @@ class _SearchAppBarState extends State<SearchAppBar> {
             child: TextField(
               controller: _controller,
               onChanged: (query) async {
-                final provider = context.read<SearchProvider>();
-                provider.query = query;
-                provider.results = null;
-                provider.suggestions = await ApiHelper.fetchSearchSuggestions(provider);
+                SearchProvider searchProvider = context.read<SearchProvider>();
+                final dateTime = DateTime.now();
+                searchProvider.query = query;
+                searchProvider.results = null;
+
+                final suggestions = await ApiHelper.fetchSearchSuggestions(searchProvider);
+                searchProvider = context.read<SearchProvider>();
+                if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+                  searchProvider.latest = dateTime;
+                  searchProvider.suggestions = suggestions;
+                }
               },
               onEditingComplete: () => context.read<SearchProvider>().search(context),
               decoration: InputDecoration(
