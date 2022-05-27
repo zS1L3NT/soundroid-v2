@@ -125,7 +125,7 @@ class Section extends StatelessWidget {
                             width: 125,
                           ),
                           AppText.marquee(
-                            track.artists,
+                            track.artistIds,
                             width: 125,
                             fontSize: 14,
                             extraHeight: 8,
