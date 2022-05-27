@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/models/search_result.dart';
 
 class SearchProvider with ChangeNotifier {
   TextEditingController _textEditingController = TextEditingController();
   String _query = "";
-  // ignore: prefer_function_declarations_over_variables
-  Function() _onSearch = () {};
   bool _isLoading = false;
-  Map<String, List<Map<String, String>>>? _results;
+  List<String>? _suggestions;
+  Map<String, List<SearchResult>>? _results;
 
   TextEditingController get textEditingController => _textEditingController;
   String get query => _query;
-  Function() get onSearch => _onSearch;
   bool get isLoading => _isLoading;
-  Map<String, List<Map<String, String>>>? get results => _results;
+  List<String>? get suggestions => _suggestions;
+  Map<String, List<SearchResult>>? get results => _results;
 
   set textEditingController(TextEditingController textEditingController) {
     _textEditingController = textEditingController;
@@ -24,17 +24,17 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set onSearch(Function() onSearch) {
-    _onSearch = onSearch;
-    notifyListeners();
-  }
-
   set isLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
   }
 
-  set results(Map<String, List<Map<String, String>>>? results) {
+  set suggestions(List<String>? suggestions) {
+    _suggestions = suggestions;
+    notifyListeners();
+  }
+
+  set results(Map<String, List<SearchResult>>? results) {
     _results = results;
     notifyListeners();
   }

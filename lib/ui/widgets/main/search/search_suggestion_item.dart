@@ -18,7 +18,7 @@ class SearchSuggestionItem extends StatelessWidget {
         final search = context.read<SearchProvider>();
         search.textEditingController.text = text;
         search.query = text;
-        search.onSearch();
+        // search.onSearch();
       },
       child: SizedBox(
         width: double.infinity,
