@@ -2,7 +2,6 @@ import { cert, initializeApp } from "firebase-admin/app"
 import { getAuth } from "firebase-admin/auth"
 import { getFirestore } from "firebase-admin/firestore"
 import { useTryAsync } from "no-try"
-import Genius from "node-genius-api"
 import SpotifyWebApi from "spotify-web-api-node"
 import YTMusic from "ytmusic-api"
 
@@ -60,5 +59,3 @@ class Spotify extends SpotifyWebApi {
 }
 
 export const spotify = new Spotify()
-
-export const genius = new Genius(process.env.GENIUS_ACCESS_TOKEN)
