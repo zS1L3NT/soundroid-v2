@@ -5,7 +5,7 @@ import { Middleware } from "../setup"
 
 export default class extends Middleware {
 	override async handle(next: NextFunction) {
-		const [type, token] = this.req.headers.authorization || ""
+		const [type, token] = (this.req.headers.authorization || "").split(" ")
 
 		if (type !== "Bearer" || !token) {
 			return this.throw("Unauthorized")
