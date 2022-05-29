@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
@@ -23,6 +24,13 @@ class _CurrentScreenState extends State<CurrentScreen> {
         "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
       ),
     ).then((palette) => setState(() => _color = palette.colors.first));
+
+    final player = AudioPlayer();
+    player.play("http://soundroid.zectan.com/download?videoId=sqgxcCjD04s").then((result) {
+      print("Result: $result");
+    }).catchError((error) {
+      print("Error: $error");
+    });
   }
 
   @override
