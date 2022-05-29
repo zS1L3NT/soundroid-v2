@@ -24,8 +24,8 @@ const readRouteFolder = (folderName: string) => {
 			const file = require(path.join(folderPath, entityName)) as Record<string, iRoute>
 			for (const [method, Route] of Object.entries(file)) {
 				app[method.toLowerCase() as "get" | "post" | "put" | "delete"](
-					pathName.replace(/\[(\w+)\]/g, ":$1"),
-					(req, res) => new Route(req, res)
+					"/api" + pathName.replace(/\[(\w+)\]/g, ":$1"),
+					(req, res) => new Route(req, res).setup()
 				)
 			}
 		} else {

@@ -6,30 +6,46 @@ import logger from "./logger"
 
 const queue: number[] = []
 
-export type iRoute<T = any> = new (req: Request, res: Response) => Route<T>
+export type iRoute = new (req: Request, res: Response) => Route
 
-export abstract class Route<T = any> {
-	constructor(protected readonly req: Request, protected readonly res: Response) {
+export abstract class Route<BV = any, QV = any> {
+	constructor(protected readonly req: Request, protected readonly res: Response) {}
+
+	setup() {
 		queue.push(queue.length === 0 ? 1 : queue.at(-1)! + 1)
 		const rid = `{#${queue.at(-1)!}}`
 
 		logger.http!(`Opening ${rid}`, this.req.method, this.req.url, this.req.body)
 
-		if (this.validator) {
-			const { success, errors } = validate(this.req.body, this.validator)
+		if (this.bodyValidator) {
+			const { success, errors } = validate(this.req.body, this.bodyValidator)
 			if (!success) {
-				this.res.status(400).send(errors)
+				this.res.status(400).send({
+					message: "Body Validation Errors",
+					errors
+				})
 				return
 			}
 		}
 
-		let handle = this.handle
-
-		for (const Middleware of this.middleware.reverse()) {
-			this.handle = () => new Middleware(req, res).handle(handle)
+		if (this.queryValidator) {
+			const { success, errors } = validate(this.req.query, this.queryValidator)
+			if (!success) {
+				this.res.status(400).send({
+					message: "Query Validation Errors",
+					errors
+				})
+				return
+			}
 		}
 
-		this.handle()
+		let handle = this.handle.bind(this)
+
+		for (const Middleware of this.middleware.reverse()) {
+			handle = () => new Middleware(this.req, this.res).handle(handle)
+		}
+
+		handle()
 			.catch(err => {
 				logger.error(err)
 				this.res.status(500).send(err)
@@ -41,18 +57,20 @@ export abstract class Route<T = any> {
 			})
 	}
 
-	validator: Validator<T> | undefined
+	bodyValidator: Validator<BV> | undefined
+
+	queryValidator: Validator<QV> | undefined
 
 	middleware: iMiddleware[] = []
 
 	abstract handle(): Promise<void>
 
-	body(): T {
-		return this.req.body as T
+	get body(): BV {
+		return this.req.body as BV
 	}
 
-	get query() {
-		return this.req.query as Record<string, string>
+	get query(): QV {
+		return this.req.query as unknown as QV
 	}
 
 	get params() {
@@ -60,19 +78,11 @@ export abstract class Route<T = any> {
 	}
 
 	respond(data: any, status = 200) {
-		this.res.send({
-			data,
-			status
-		})
+		this.res.status(status).send(data)
 	}
 
 	throw(message: string, status = 400) {
-		this.res.send({
-			data: {
-				message
-			},
-			status
-		})
+		this.res.status(status).send({ message })
 	}
 
 	redirect(url: string) {
@@ -88,19 +98,11 @@ export abstract class Middleware {
 	abstract handle(next: NextFunction): Promise<void>
 
 	respond(data: any, status = 200) {
-		this.res.send({
-			data,
-			status
-		})
+		this.res.status(status).send(data)
 	}
 
 	throw(message: string, status = 400) {
-		this.res.send({
-			data: {
-				message
-			},
-			status
-		})
+		this.res.status(status).send({ message })
 	}
 
 	redirect(url: string) {
