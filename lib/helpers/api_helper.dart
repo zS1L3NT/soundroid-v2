@@ -6,7 +6,7 @@ import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class ApiHelper {
-  static bool inDevelopment = true;
+  static bool inDevelopment = false;
 
   static String get host => inDevelopment ? "http://localhost:5190" : "http://soundroid.zectan.com";
 
