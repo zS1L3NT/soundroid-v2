@@ -7,7 +7,7 @@ import { Route } from "../setup"
 
 export class GET extends Route {
 	async handle() {
-		const query = this.query.query?.toString() || ""
+		const query = `${this.query.query}`.trim() || ""
 
 		const promises = await Promise.all([
 			ytmusic.searchSongs(query),
@@ -49,8 +49,19 @@ export class GET extends Route {
 			)
 		)
 
-		await searchesColl.add(
-			new Search(usersColl.doc("jnbZI9qOLtVsehqd6ICcw584ED93"), query, Timestamp.now())
-		)
+		const snap = (
+			await searchesColl
+				.where("userRef", "==", usersColl.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
+				.where("query", "==", query)
+				.get()
+		).docs[0]
+
+		if (snap) {
+			await snap.ref.update({ timestamp: Timestamp.now() })
+		} else {
+			await searchesColl.add(
+				new Search(usersColl.doc("jnbZI9qOLtVsehqd6ICcw584ED93"), query, Timestamp.now())
+			)
+		}
 	}
 }
