@@ -1,4 +1,7 @@
-import { ytmusic } from "../apis"
+import { Timestamp } from "firebase-admin/firestore"
+
+import { searchesColl, usersColl, ytmusic } from "../apis"
+import Search from "../models/Search"
 import Track from "../models/Track"
 import { Route } from "../setup"
 
@@ -44,6 +47,10 @@ export class GET extends Route {
 					albums: [] as Track[]
 				}
 			)
+		)
+
+		await searchesColl.add(
+			new Search(usersColl.doc("jnbZI9qOLtVsehqd6ICcw584ED93"), query, Timestamp.now())
 		)
 	}
 }
