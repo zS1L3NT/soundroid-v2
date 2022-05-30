@@ -23,9 +23,10 @@ class SearchSuggestionItem extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 16),
+          padding: const EdgeInsets.all(4),
           child: Row(
             children: [
+              const SizedBox(width: 12),
               const Icon(Icons.search_rounded, color: Colors.black87),
               const SizedBox(width: 16),
               Expanded(

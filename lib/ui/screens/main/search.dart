@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/models/search.dart';
+import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/ui/widgets/main/search/recent_item.dart';
 import 'package:soundroid/ui/widgets/main/search/search_suggestion_item.dart';
@@ -13,30 +16,64 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final _searchesStream = Search.collection
+      .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
+      .orderBy("timestamp", descending: true)
+      .limit(10)
+      .snapshots();
+
   @override
   Widget build(BuildContext context) {
-    final search = context.watch<SearchProvider>();
-    return search.isLoading
+    final searchProvider = context.watch<SearchProvider>();
+    return searchProvider.isLoading
         ? const Center(child: CircularProgressIndicator())
-        : ListView.builder(
-            itemCount: search.results != null
-                ? search.results!["tracks"]!.length + search.results!["albums"]!.length
-                : search.query.isEmpty
-                    ? 0
-                    : search.suggestions?.length ?? 0,
-            itemBuilder: (context, index) {
-              if (search.results != null) {
-                final item = [...search.results!["tracks"]!, ...search.results!["albums"]!][index];
-                return AppListItem.fromSearchResult(item, onTap: () {});
-              }
+        : searchProvider.results != null
+            ? ListView.builder(
+                itemCount: searchProvider.results!["tracks"]!.length +
+                    searchProvider.results!["albums"]!.length,
+                itemBuilder: (context, index) {
+                  final results = [
+                    ...searchProvider.results!["tracks"]!,
+                    ...searchProvider.results!["albums"]!
+                  ];
+                  return AppListItem.fromSearchResult(
+                    results[index],
+                    onTap: () {},
+                  );
+                },
+              )
+            : searchProvider.query.isEmpty
+                ? StreamBuilder<QuerySnapshot<Search>>(
+                    stream: _searchesStream,
+                    builder: (context, snap) {
+                      if (snap.hasError) {
+                        debugPrint(snap.error.toString());
+                        return const Center(
+                          child: Text("Something went wrong"),
+                        );
+                      }
 
-              if (search.query.isEmpty) {
-                return const RecentItem(text: "");
-              }
+                      if (snap.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-              final suggestion = search.suggestions![index];
-              return SearchSuggestionItem(text: suggestion);
-            },
-          );
+                      return ListView.builder(
+                        itemCount: snap.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          return RecentItem(text: snap.data!.docs[index].data().query);
+                        },
+                      );
+                    },
+                  )
+                : ListView.builder(
+                    itemCount: searchProvider.suggestions?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return SearchSuggestionItem(
+                        text: searchProvider.suggestions![index],
+                      );
+                    },
+                  );
   }
 }

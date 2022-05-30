@@ -64,16 +64,19 @@ class _SearchAppBarState extends State<SearchAppBar> {
         ],
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            final searchProvider = context.read<SearchProvider>();
-            searchProvider.query = "";
-            searchProvider.results = null;
-            _controller.clear();
-          },
-          icon: const Icon(Icons.clear_rounded),
-          splashRadius: 20,
-        )
+        context.watch<SearchProvider>().query != ""
+            ? IconButton(
+                onPressed: () {
+                  final searchProvider = context.read<SearchProvider>();
+                  searchProvider.query = "";
+                  searchProvider.results = null;
+                  _controller.clear();
+                },
+                icon: const Icon(Icons.clear_rounded),
+                splashRadius: 20,
+              )
+            : const SizedBox(),
+        const SizedBox(width: 4)
       ],
       elevation: 10,
     );
