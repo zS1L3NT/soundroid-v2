@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:soundroid/models/search_result.dart';
+import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class ApiHelper {
   static bool inDevelopment = false;
 
-  static String get host => inDevelopment ? "http://localhost:5190" : "http://soundroid.zectan.com";
+  static String get host =>
+      inDevelopment ? "http://localhost:5190/api" : "http://soundroid.zectan.com/api";
 
   static Future<List<Map<String, dynamic>>> fetchFeed() async {
     final response = await get(Uri.parse("$host/feed"));
@@ -25,8 +27,7 @@ class ApiHelper {
     final response = await get(Uri.parse("$host/suggestions?query=${searchProvider.query}"));
 
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body)["data"];
-      return data.map((item) => item as String).toList();
+      return jsonDecode(response.body).cast<String>();
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch search suggestions");
@@ -40,7 +41,7 @@ class ApiHelper {
 
     searchProvider.isLoading = false;
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body)["data"];
+      Map<String, dynamic> data = jsonDecode(response.body);
       return <String, List<SearchResult>>{
         "tracks": data["tracks"]!
             .map((tracks) => SearchResult.fromJson(Map.from(tracks)))
@@ -54,6 +55,17 @@ class ApiHelper {
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch search results");
+    }
+  }
+
+  static Future<List<String>> fetchLyrics(Track track) async {
+    final response = await get(Uri.parse("$host/lyrics?query=${track.title} IU"));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body).cast<String>();
+    } else {
+      debugPrint(response.body);
+      throw Exception("Failed to fetch lyrics");
     }
   }
 }
