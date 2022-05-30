@@ -1,17 +1,17 @@
-class Track {
+class SearchResult {
   final String id;
   final String title;
   final List<String> artistIds;
   final String thumbnail;
 
-  Track({
+  SearchResult({
     required this.id,
     required this.title,
     required this.artistIds,
     required this.thumbnail,
   });
 
-  Track.fromJson(Map<String, dynamic> json)
+  SearchResult.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         title = json["title"],
         artistIds = json["artistIds"].cast<String>(),

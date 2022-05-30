@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/helpers/api_helper.dart';
+import 'package:soundroid/models/search_result.dart';
 
 class SearchProvider with ChangeNotifier {
   TextEditingController _textEditingController = TextEditingController();
   String _query = "";
-  // ignore: prefer_function_declarations_over_variables
-  Function() _onSearch = () {};
+  DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
-  Map<String, List<Map<String, String>>>? _results;
+  List<String>? _suggestions;
+  Map<String, List<SearchResult>>? _results;
 
   TextEditingController get textEditingController => _textEditingController;
   String get query => _query;
-  Function() get onSearch => _onSearch;
+  DateTime get latest => _latest;
   bool get isLoading => _isLoading;
-  Map<String, List<Map<String, String>>>? get results => _results;
+  List<String>? get suggestions => _suggestions;
+  Map<String, List<SearchResult>>? get results => _results;
 
   set textEditingController(TextEditingController textEditingController) {
     _textEditingController = textEditingController;
@@ -24,8 +28,8 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set onSearch(Function() onSearch) {
-    _onSearch = onSearch;
+  set latest(DateTime latest) {
+    _latest = latest;
     notifyListeners();
   }
 
@@ -34,8 +38,27 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set results(Map<String, List<Map<String, String>>>? results) {
+  set suggestions(List<String>? suggestions) {
+    _suggestions = suggestions;
+    notifyListeners();
+  }
+
+  set results(Map<String, List<SearchResult>>? results) {
     _results = results;
     notifyListeners();
+  }
+
+  // This method is moved into the provider so it can be called from multiple places
+  void search(BuildContext context) async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    SearchProvider searchProvider = context.read<SearchProvider>();
+    final dateTime = DateTime.now();
+    searchProvider.suggestions = null;
+
+    final results = await ApiHelper.fetchSearchResults(searchProvider);
+    searchProvider = context.read<SearchProvider>();
+    if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+      searchProvider.results = results;
+    }
   }
 }

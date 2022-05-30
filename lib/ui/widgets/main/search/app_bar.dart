@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class SearchAppBar extends AppBar {
@@ -31,11 +32,20 @@ class _SearchAppBarState extends State<SearchAppBar> {
           Expanded(
             child: TextField(
               controller: _controller,
-              onChanged: (query) {
-                context.read<SearchProvider>().query = query;
-                context.read<SearchProvider>().results = null;
+              onChanged: (query) async {
+                SearchProvider searchProvider = context.read<SearchProvider>();
+                final dateTime = DateTime.now();
+                searchProvider.query = query;
+                searchProvider.results = null;
+
+                final suggestions = await ApiHelper.fetchSearchSuggestions(searchProvider);
+                searchProvider = context.read<SearchProvider>();
+                if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+                  searchProvider.latest = dateTime;
+                  searchProvider.suggestions = suggestions;
+                }
               },
-              onEditingComplete: context.watch<SearchProvider>().onSearch,
+              onEditingComplete: () => context.read<SearchProvider>().search(context),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Search songs or albums...',
@@ -56,8 +66,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
       actions: [
         IconButton(
           onPressed: () {
-            context.read<SearchProvider>().query = "";
-            context.read<SearchProvider>().results = null;
+            final searchProvider = context.read<SearchProvider>();
+            searchProvider.query = "";
+            searchProvider.results = null;
             _controller.clear();
           },
           icon: const Icon(Icons.clear_rounded),

@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class YourPlaylistsSection extends StatefulWidget {
-  const YourPlaylistsSection({Key? key}) : super(key: key);
+class PlaylistsSection extends StatefulWidget {
+  const PlaylistsSection({Key? key}) : super(key: key);
 
   @override
-  State<YourPlaylistsSection> createState() => _YourPlaylistsSectionState();
+  State<PlaylistsSection> createState() => _PlaylistsSectionState();
 }
 
-class _YourPlaylistsSectionState extends State<YourPlaylistsSection> {
+class _PlaylistsSectionState extends State<PlaylistsSection> {
   final _playlists = [
-    Playlist(
-      name: "Korean Songs",
-      userId: "",
-      thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
-      trackIds: [],
-    ),
-    Playlist(
-      name: "IU Best Songs",
-      userId: "",
-      thumbnail:
-          "https://img.i-scmp.com/cdn-cgi/image/fit=contain,width=425,format=auto/sites/default/files/styles/768x768/public/d8/images/methode/2019/05/15/c436a58e-73e5-11e9-b91a-87f62b76a5ee_image_hires_115320.jpg?itok=3c74LGuO&v=1557892405",
-      trackIds: [],
-    ),
-    Playlist(
-      name: "OSTs",
-      userId: "",
-      thumbnail: "https://i.scdn.co/image/ab67616d0000b273a1f0a8d516a2b7448b2ccc8b",
-      trackIds: [],
-    ),
-    Playlist(
-      name: "EDM Songs",
-      userId: "",
-      thumbnail: "https://upload.wikimedia.org/wikipedia/en/d/da/Alan_Walker_-_Faded.png",
-      trackIds: [],
-    )
+    // Playlist(
+    // name: "Korean Songs",
+    // userId: "",
+    // thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
+    // trackIds: [],
+    // ),
+    // Playlist(
+    // name: "IU Best Songs",
+    // userId: "",
+    // thumbnail:
+    // "https://img.i-scmp.com/cdn-cgi/image/fit=contain,width=425,format=auto/sites/default/files/styles/768x768/public/d8/images/methode/2019/05/15/c436a58e-73e5-11e9-b91a-87f62b76a5ee_image_hires_115320.jpg?itok=3c74LGuO&v=1557892405",
+    // trackIds: [],
+    // ),
+    // Playlist(
+    // name: "OSTs",
+    // userId: "",
+    // thumbnail: "https://i.scdn.co/image/ab67616d0000b273a1f0a8d516a2b7448b2ccc8b",
+    // trackIds: [],
+    // ),
+    // Playlist(
+    // name: "EDM Songs",
+    // userId: "",
+    // thumbnail: "https://upload.wikimedia.org/wikipedia/en/d/da/Alan_Walker_-_Faded.png",
+    // trackIds: [],
+    // )
   ];
 
   @override

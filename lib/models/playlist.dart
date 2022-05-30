@@ -1,27 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Playlist {
+  final DocumentReference userRef;
   final String name;
-  final String userId;
   final String thumbnail;
+  final bool favourite;
   final List<String> trackIds;
 
   Playlist({
+    required this.userRef,
     required this.name,
-    required this.userId,
     required this.thumbnail,
+    required this.favourite,
     required this.trackIds,
   });
 
-  static Playlist fromJSON(Map<String, dynamic> json) => Playlist(
-        name: json["name"],
-        userId: json["userId"],
-        thumbnail: json["thumbnail"],
-        trackIds: List<String>.from(json["trackIds"]),
-      );
+  Playlist.fromJson(Map<String, dynamic> json)
+      : userRef = json["userRef"],
+        name = json["name"],
+        thumbnail = json["thumbnail"],
+        favourite = json["favourite"],
+        trackIds = json["trackIds"].cast<String>();
 
-  Map<String, dynamic> toJSON() => <String, dynamic>{
+  Map<String, dynamic> toJson() => {
+        "userRef": userRef,
         "name": name,
-        "userId": userId,
         "thumbnail": thumbnail,
-        "trackIds": List<String>.from(trackIds),
+        "favourite": favourite,
+        "trackIds": trackIds,
       };
 }

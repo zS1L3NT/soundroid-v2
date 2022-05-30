@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/ui/screens/playlist.dart';
@@ -12,54 +13,39 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  final _playlists = [
-    Playlist(
-      name: "Korean Songs",
-      userId: "",
-      thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
-      trackIds: [],
-    ),
-    Playlist(
-      name: "IU Best Songs",
-      userId: "",
-      thumbnail:
-          "https://img.i-scmp.com/cdn-cgi/image/fit=contain,width=425,format=auto/sites/default/files/styles/768x768/public/d8/images/methode/2019/05/15/c436a58e-73e5-11e9-b91a-87f62b76a5ee_image_hires_115320.jpg?itok=3c74LGuO&v=1557892405",
-      trackIds: [],
-    ),
-    Playlist(
-      name: "OSTs",
-      userId: "",
-      thumbnail: "https://i.scdn.co/image/ab67616d0000b273a1f0a8d516a2b7448b2ccc8b",
-      trackIds: [],
-    ),
-    Playlist(
-      name: "EDM Songs",
-      userId: "",
-      thumbnail: "https://upload.wikimedia.org/wikipedia/en/d/da/Alan_Walker_-_Faded.png",
-      trackIds: [],
-    )
-  ];
+  late Stream<QuerySnapshot<Playlist>> _playlistStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _playlistStream = FirebaseFirestore.instance
+        .collection("playlists")
+        .withConverter<Playlist>(
+          fromFirestore: (snap, _) => Playlist.fromJson(snap.data()!),
+          toFirestore: (playlist, _) => playlist.toJson(),
+        )
+        .snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 4),
-          const LikedSongsItem(),
-          ..._playlists
-              .map(
-                (playlist) => AppListItem.fromPlaylist(
-                  playlist,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(PlaylistScreen.routeName);
-                  },
-                ),
-              )
-              .toList(),
-          const SizedBox(height: 4),
-        ],
-      ),
+    return StreamBuilder<QuerySnapshot<Playlist>>(
+      stream: _playlistStream,
+      builder: (context, snap) {
+        return ListView.builder(
+          itemBuilder: (context, index) {
+            if (index == 1) {
+              return const LikedSongsItem();
+            }
+            return AppListItem.fromPlaylist(
+              snap.data!.docs[index - 1].data(),
+              onTap: () {
+                Navigator.of(context).pushNamed(PlaylistScreen.routeName);
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
