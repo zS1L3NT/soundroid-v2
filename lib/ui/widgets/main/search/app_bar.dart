@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/helpers/api_helper.dart';
+import 'package:soundroid/models/search.dart';
+import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class SearchAppBar extends AppBar {
@@ -11,6 +13,42 @@ class SearchAppBar extends AppBar {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
+  void onTextChange(String query) async {
+    SearchProvider searchProvider = context.read<SearchProvider>();
+    final dateTime = DateTime.now();
+    searchProvider.query = query;
+    searchProvider.results = null;
+
+    ApiHelper.fetchSearchSuggestions(searchProvider).then((suggestions) {
+      searchProvider = context.read<SearchProvider>();
+      if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+        searchProvider.latest = dateTime;
+        searchProvider.suggestions = suggestions;
+      }
+    });
+
+    Search.collection
+        .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
+        .where("query", isGreaterThanOrEqualTo: query)
+        .where("query", isLessThanOrEqualTo: query + "~")
+        .get()
+        .then(
+      (recents) {
+        searchProvider = context.read<SearchProvider>();
+        if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+          searchProvider.latest = dateTime;
+          searchProvider.recents = recents.docs.map((doc) => doc.data().query).toList();
+        }
+      },
+    );
+  }
+
+  void onTextClear() {
+    final searchProvider = context.read<SearchProvider>();
+    searchProvider.query = "";
+    searchProvider.results = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -21,19 +59,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           Expanded(
             child: TextField(
               controller: context.read<SearchProvider>().controller,
-              onChanged: (query) async {
-                SearchProvider searchProvider = context.read<SearchProvider>();
-                final dateTime = DateTime.now();
-                searchProvider.query = query;
-                searchProvider.results = null;
-
-                final suggestions = await ApiHelper.fetchSearchSuggestions(searchProvider);
-                searchProvider = context.read<SearchProvider>();
-                if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-                  searchProvider.latest = dateTime;
-                  searchProvider.suggestions = suggestions;
-                }
-              },
+              onChanged: onTextChange,
               onEditingComplete: () => context.read<SearchProvider>().search(context),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -55,11 +81,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       actions: [
         context.watch<SearchProvider>().query != ""
             ? IconButton(
-                onPressed: () {
-                  final searchProvider = context.read<SearchProvider>();
-                  searchProvider.query = "";
-                  searchProvider.results = null;
-                },
+                onPressed: onTextClear,
                 icon: const Icon(Icons.clear_rounded),
                 splashRadius: 20,
               )

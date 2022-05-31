@@ -4,8 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/ui/widgets/main/search/recent_item.dart';
-import 'package:soundroid/ui/widgets/main/search/search_suggestion_item.dart';
+import 'package:soundroid/ui/widgets/main/search/recommendation_item.dart';
 import 'package:soundroid/ui/widgets/app/list_item.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -42,8 +41,22 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 },
               )
-            : searchProvider.query.isEmpty
-                ? StreamBuilder<QuerySnapshot<Search>>(
+            : searchProvider.query != ""
+                ? ListView.builder(
+                    itemCount: searchProvider.recommendations.length,
+                    itemBuilder: (context, index) {
+                      final recommendation = searchProvider.recommendations[index];
+                      switch (recommendation[0]) {
+                        case "recent":
+                          return RecommendationItem.recent(recommendation[1]);
+                        case "suggestion":
+                          return RecommendationItem.suggestion(recommendation[1]);
+                        default:
+                          throw Error();
+                      }
+                    },
+                  )
+                : StreamBuilder<QuerySnapshot<Search>>(
                     stream: _searchesStream,
                     builder: (context, snap) {
                       if (snap.hasError) {
@@ -62,16 +75,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       return ListView.builder(
                         itemCount: snap.data!.docs.length,
                         itemBuilder: (context, index) {
-                          return RecentItem(text: snap.data!.docs[index].data().query);
+                          return RecommendationItem.recent(snap.data!.docs[index].data().query);
                         },
-                      );
-                    },
-                  )
-                : ListView.builder(
-                    itemCount: searchProvider.suggestions?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return SearchSuggestionItem(
-                        text: searchProvider.suggestions![index],
                       );
                     },
                   );
