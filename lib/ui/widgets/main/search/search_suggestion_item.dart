@@ -16,7 +16,7 @@ class SearchSuggestionItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         final searchProvider = context.read<SearchProvider>();
-        searchProvider.textEditingController.text = text;
+        searchProvider.controller.text = text;
         searchProvider.query = text;
         searchProvider.search(context);
       },
@@ -35,9 +35,8 @@ class SearchSuggestionItem extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   final search = context.read<SearchProvider>();
-                  search.textEditingController.text = text;
-                  search.textEditingController.selection =
-                      TextSelection.collapsed(offset: text.length);
+                  search.controller.text = text;
+                  search.controller.selection = TextSelection.collapsed(offset: text.length);
                   search.query = text;
                 },
                 icon: const Icon(Icons.north_west_rounded),

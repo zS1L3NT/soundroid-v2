@@ -16,7 +16,7 @@ class RecentItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         final searchProvider = context.read<SearchProvider>();
-        searchProvider.textEditingController.text = text;
+        searchProvider.controller.text = text;
         searchProvider.query = text;
         searchProvider.search(context);
       },

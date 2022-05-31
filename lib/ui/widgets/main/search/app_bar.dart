@@ -11,17 +11,6 @@ class SearchAppBar extends AppBar {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      context.read<SearchProvider>().textEditingController = _controller;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -31,7 +20,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           const SizedBox(width: 16),
           Expanded(
             child: TextField(
-              controller: _controller,
+              controller: context.read<SearchProvider>().controller,
               onChanged: (query) async {
                 SearchProvider searchProvider = context.read<SearchProvider>();
                 final dateTime = DateTime.now();
@@ -70,7 +59,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   final searchProvider = context.read<SearchProvider>();
                   searchProvider.query = "";
                   searchProvider.results = null;
-                  _controller.clear();
                 },
                 icon: const Icon(Icons.clear_rounded),
                 splashRadius: 20,

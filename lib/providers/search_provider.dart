@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/models/search_result.dart';
 
 class SearchProvider with ChangeNotifier {
-  TextEditingController _textEditingController = TextEditingController();
-  String _query = "";
+  final _textEditingController = TextEditingController();
   DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
   List<String>? _suggestions;
   Map<String, List<SearchResult>>? _results;
 
-  TextEditingController get textEditingController => _textEditingController;
-  String get query => _query;
+  TextEditingController get controller => _textEditingController;
+  String get query => _textEditingController.text;
   DateTime get latest => _latest;
   bool get isLoading => _isLoading;
   List<String>? get suggestions => _suggestions;
   Map<String, List<SearchResult>>? get results => _results;
 
-  set textEditingController(TextEditingController textEditingController) {
-    _textEditingController = textEditingController;
-    notifyListeners();
-  }
-
-  set query(String query) {
-    _query = query;
+  set query(String? query) {
+    if (query == null) {
+      _textEditingController.clear();
+    } else {
+      _textEditingController.text = query;
+      _textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: query.length),
+      );
+    }
     notifyListeners();
   }
 
