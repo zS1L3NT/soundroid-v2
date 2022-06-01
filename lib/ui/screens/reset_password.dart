@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/signin.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/close_app_bar.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
                     labelText: "Password",
-                    prefixIcon: const Icon(Icons.password_rounded),
+                    prefixIcon: const AppIcon(Icons.password_rounded),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -62,16 +63,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     errorStyle: const TextStyle(height: 1),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 4),
-                      child: IconButton(
+                      child: AppIcon(
+                        _areObscure[0] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                         onPressed: () {
                           setState(() {
                             _areObscure[0] = !_areObscure[0];
                           });
                         },
-                        icon: Icon(
-                          _areObscure[0] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                        ),
-                        splashRadius: 20,
                       ),
                     ),
                   ),
@@ -90,7 +88,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password confirmation',
                     labelText: "Confirm Password",
-                    prefixIcon: const Icon(Icons.password_rounded),
+                    prefixIcon: const AppIcon(Icons.password_rounded),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,
@@ -98,16 +96,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     errorStyle: const TextStyle(height: 1),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 4),
-                      child: IconButton(
+                      child: AppIcon(
+                        _areObscure[1] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                         onPressed: () {
                           setState(() {
                             _areObscure[1] = !_areObscure[1];
                           });
                         },
-                        icon: Icon(
-                          _areObscure[1] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                        ),
-                        splashRadius: 20,
                       ),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/playing_provider.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -71,11 +72,9 @@ class _QueueListItemState extends State<QueueListItem> {
         subtitle: AppText.ellipse(widget.track.artistIds.join(", ")),
         trailing: ReorderableDragStartListener(
           index: widget.index,
-          child: IconButton(
+          child: AppIcon.black87(
+            Icons.drag_handle_rounded,
             onPressed: () {},
-            icon: const Icon(Icons.drag_handle_rounded),
-            splashRadius: 20,
-            color: Colors.black,
           ),
         ),
         contentPadding: const EdgeInsets.only(left: 16),

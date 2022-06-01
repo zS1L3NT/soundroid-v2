@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/providers/search_provider.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
 
 class RecommendationItem extends StatelessWidget {
@@ -88,12 +89,13 @@ class RecommendationItem extends StatelessWidget {
           child: Row(
             children: [
               const SizedBox(width: 12),
-              Icon(icon, color: Colors.black87),
+              AppIcon.black87(icon),
               const SizedBox(width: 16),
               Expanded(
                 child: AppText.ellipse(text, fontSize: 18),
               ),
-              IconButton(
+              AppIcon.black87(
+                Icons.north_west_rounded,
                 onPressed: () {
                   final searchProvider = context.read<SearchProvider>();
                   searchProvider.controller.text = text;
@@ -101,9 +103,6 @@ class RecommendationItem extends StatelessWidget {
                       TextSelection.collapsed(offset: text.length);
                   searchProvider.query = text;
                 },
-                icon: const Icon(Icons.north_west_rounded),
-                color: Colors.black.withOpacity(0.7),
-                splashRadius: 20,
               ),
             ],
           ),

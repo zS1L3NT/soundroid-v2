@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 
 class AccountActionsGroup extends StatelessWidget {
   const AccountActionsGroup({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class AccountActionsGroup extends StatelessWidget {
       children: [
         const SizedBox(height: 8),
         SimpleSettingsTile(
-          leading: const Icon(Icons.music_off_rounded, color: Colors.red),
+          leading: AppIcon.red(Icons.music_off_rounded),
           title: "Clear Listening History",
           subtitle: "Clear all of your music listening history",
           onTap: () {
@@ -46,7 +47,7 @@ class AccountActionsGroup extends StatelessWidget {
           },
         ),
         SimpleSettingsTile(
-          leading: const Icon(Icons.search_off_rounded, color: Colors.red),
+          leading: AppIcon.red(Icons.search_off_rounded),
           title: "Clear Search History",
           subtitle: "Clear all of your search history",
           onTap: () {
@@ -81,7 +82,7 @@ class AccountActionsGroup extends StatelessWidget {
           },
         ),
         SimpleSettingsTile(
-          leading: const Icon(Icons.delete_rounded, color: Colors.red),
+          leading: AppIcon.red(Icons.delete_rounded),
           title: "Delete Account Data",
           subtitle:
               "Deletes all of your data from SounDroid's servers, then logs you out of the App",
@@ -122,7 +123,7 @@ class AccountActionsGroup extends StatelessWidget {
           },
         ),
         SimpleSettingsTile(
-          leading: const Icon(Icons.logout_rounded),
+          leading: const AppIcon(Icons.logout_rounded),
           title: "Logout",
           subtitle: "Logout of SounDroid",
           onTap: () {

@@ -4,6 +4,7 @@ import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 
 class SearchAppBar extends AppBar {
   SearchAppBar({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     return AppBar(
       title: Row(
         children: [
-          const Icon(Icons.search_rounded),
+          const AppIcon(Icons.search_rounded),
           const SizedBox(width: 16),
           Expanded(
             child: TextField(
@@ -80,10 +81,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
       ),
       actions: [
         context.watch<SearchProvider>().query != ""
-            ? IconButton(
+            ? AppIcon(
+                Icons.clear_rounded,
                 onPressed: onTextClear,
-                icon: const Icon(Icons.clear_rounded),
-                splashRadius: 20,
               )
             : const SizedBox(),
         const SizedBox(width: 4)

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/main.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key? key}) : super(key: key);
@@ -49,10 +50,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 width: 100,
                 height: 100,
                 color: Theme.of(context).primaryColorLight,
-                child: Icon(
+                child: AppIcon.primaryColorDark(
                   Icons.email_rounded,
+                  context,
                   size: 50,
-                  color: Theme.of(context).primaryColorDark,
                 ),
               ),
             ),

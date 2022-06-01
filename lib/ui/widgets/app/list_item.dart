@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/models/track.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -76,11 +77,9 @@ class AppListItem extends StatelessWidget {
         ),
         title: AppText.ellipse(title),
         subtitle: AppText.ellipse(subtitle),
-        trailing: IconButton(
+        trailing: AppIcon.black87(
+          Icons.more_vert_rounded,
           onPressed: () {},
-          icon: const Icon(Icons.more_vert_rounded),
-          splashRadius: 20,
-          color: Colors.black,
         ),
         contentPadding: const EdgeInsets.only(left: 16),
       ),

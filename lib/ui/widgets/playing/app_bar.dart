@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/playing_provider.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 
 class PlayingAppBar extends AppBar {
   PlayingAppBar({
@@ -29,57 +30,50 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
         ? AppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
-            leading: IconButton(
+            leading: AppIcon.black87(
+              Icons.keyboard_arrow_down_rounded,
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: const Icon(Icons.keyboard_arrow_down_rounded),
-              color: Colors.black,
-              splashRadius: 20,
             ),
             actions: [
-              IconButton(
+              AppIcon(
+                Icons.music_note_rounded,
+                color: getColor(0),
                 onPressed: () {
                   widget.setIndex(0);
                 },
-                icon: const Icon(Icons.music_note_rounded),
-                color: getColor(0),
-                splashRadius: 20,
               ),
-              IconButton(
+              AppIcon(
+                Icons.queue_music_rounded,
+                color: getColor(1),
                 onPressed: () {
                   widget.setIndex(1);
                 },
-                icon: const Icon(Icons.queue_music_rounded),
-                color: getColor(1),
-                splashRadius: 20,
               ),
-              IconButton(
+              AppIcon(
+                Icons.mic_external_on_rounded,
+                color: getColor(2),
                 onPressed: () {
                   widget.setIndex(2);
                 },
-                icon: const Icon(Icons.mic_external_on_rounded),
-                color: getColor(2),
-                splashRadius: 20,
               ),
             ],
           )
         : AppBar(
             backgroundColor: Theme.of(context).primaryColor,
             elevation: 10,
-            leading: IconButton(
+            leading: AppIcon(
+              Icons.close_rounded,
               onPressed: () {
                 context.read<PlayingProvider>().selected = null;
               },
-              icon: const Icon(Icons.close_rounded),
-              splashRadius: 20,
             ),
             title: Text("${selected.length} selected"),
             actions: [
-              IconButton(
+              AppIcon(
+                Icons.remove_circle_rounded,
                 onPressed: () {},
-                icon: const Icon(Icons.remove_circle_rounded),
-                splashRadius: 20,
               ),
             ],
           );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 
 class MainBottomAppBar extends StatelessWidget {
   const MainBottomAppBar({
@@ -33,7 +34,10 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.home_rounded, color: getColor(0)),
+                    AppIcon(
+                      Icons.home_rounded,
+                      color: getColor(0),
+                    ),
                     Text(
                       "Home",
                       style: TextStyle(
@@ -55,7 +59,10 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.search_rounded, color: getColor(1)),
+                    AppIcon(
+                      Icons.search_rounded,
+                      color: getColor(1),
+                    ),
                     Text(
                       "Search",
                       style: TextStyle(
@@ -78,7 +85,10 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.library_music_rounded, color: getColor(2)),
+                    AppIcon(
+                      Icons.library_music_rounded,
+                      color: getColor(2),
+                    ),
                     Text(
                       "Library",
                       style: TextStyle(
@@ -100,7 +110,10 @@ class MainBottomAppBar extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.settings_rounded, color: getColor(3)),
+                    AppIcon(
+                      Icons.settings_rounded,
+                      color: getColor(3),
+                    ),
                     Text(
                       "Settings",
                       style: TextStyle(

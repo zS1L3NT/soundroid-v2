@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
 
 class LikedSongsItem extends StatelessWidget {
@@ -15,10 +16,10 @@ class LikedSongsItem extends StatelessWidget {
             width: 56,
             height: 56,
             color: Theme.of(context).primaryColorLight,
-            child: Icon(
+            child: AppIcon.primaryColorDark(
               Icons.favorite_rounded,
+              context,
               size: 20,
-              color: Theme.of(context).primaryColorDark,
             ),
           ),
         ),

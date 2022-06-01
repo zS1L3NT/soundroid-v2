@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 
 class CloseAppBar extends AppBar {
   CloseAppBar({Key? key}) : super(key: key);
@@ -13,13 +14,11 @@ class _CloseAppBarState extends State<CloseAppBar> {
     return AppBar(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,
-      leading: IconButton(
+      leading: AppIcon.black87(
+        Icons.close_rounded,
         onPressed: () {
           Navigator.of(context).pop();
         },
-        icon: const Icon(Icons.close_rounded),
-        color: Colors.black,
-        splashRadius: 20,
       ),
     );
   }

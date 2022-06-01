@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/forgot_password.dart';
 import 'package:soundroid/ui/screens/main.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/close_app_bar.dart';
 
 class SigninScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       border: OutlineInputBorder(),
                       hintText: 'Enter your email address',
                       labelText: 'Email Address',
-                      prefixIcon: Icon(Icons.email_rounded),
+                      prefixIcon: AppIcon(Icons.email_rounded),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 4,
@@ -79,7 +80,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       border: const OutlineInputBorder(),
                       hintText: 'Enter your password',
                       labelText: "Password",
-                      prefixIcon: const Icon(Icons.password_rounded),
+                      prefixIcon: const AppIcon(Icons.password_rounded),
                       contentPadding: const EdgeInsets.only(
                         top: 4,
                         bottom: 4,
@@ -88,16 +89,13 @@ class _SigninScreenState extends State<SigninScreen> {
                       errorStyle: const TextStyle(height: 1),
                       suffixIcon: Padding(
                         padding: const EdgeInsets.only(right: 4),
-                        child: IconButton(
+                        child: AppIcon(
+                          _isObscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                           onPressed: () {
                             setState(() {
                               _isObscure = !_isObscure;
                             });
                           },
-                          icon: Icon(
-                            _isObscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                          ),
-                          splashRadius: 20,
                         ),
                       ),
                     ),

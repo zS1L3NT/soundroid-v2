@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/reset_password.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/close_app_bar.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
                     labelText: "Email Address",
-                    prefixIcon: Icon(Icons.email_rounded),
+                    prefixIcon: AppIcon(Icons.email_rounded),
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 4,

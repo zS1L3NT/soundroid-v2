@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -46,7 +47,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            Icon(Icons.upload_rounded),
+                            AppIcon(Icons.upload_rounded),
                             Text("Upload Image"),
                           ],
                         ),
@@ -63,7 +64,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   decoration: const InputDecoration(
                     hintText: 'What should we call you?',
                     labelText: 'Display Name',
-                    prefixIcon: Icon(Icons.person_rounded),
+                    prefixIcon: AppIcon(Icons.person_rounded),
                     contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                   ),
                 ),
@@ -78,7 +79,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   },
                   decoration: const InputDecoration(
                     labelText: 'Current Password (optional)',
-                    prefixIcon: Icon(Icons.password_rounded),
+                    prefixIcon: AppIcon(Icons.password_rounded),
                     contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                   ),
                 ),
@@ -90,7 +91,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'New Password',
-                          prefixIcon: Icon(Icons.password_rounded),
+                          prefixIcon: AppIcon(Icons.password_rounded),
                           contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                         ),
                       ),
@@ -102,7 +103,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'New Password Confirmation',
-                          prefixIcon: Icon(Icons.password_rounded),
+                          prefixIcon: AppIcon(Icons.password_rounded),
                           contentPadding: EdgeInsets.fromLTRB(0, 8, 0, 4),
                         ),
                       ),

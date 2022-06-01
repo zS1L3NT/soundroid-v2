@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/app/text.dart';
 
 class CurrentScreen extends StatefulWidget {
@@ -67,11 +68,10 @@ class _CurrentScreenState extends State<CurrentScreen> {
             const Spacer(flex: 2),
             Row(
               children: [
-                IconButton(
+                AppIcon.primaryColor(
+                  Icons.favorite_rounded,
+                  context,
                   onPressed: () {},
-                  icon: const Icon(Icons.favorite_rounded),
-                  color: Theme.of(context).primaryColor,
-                  splashRadius: 20,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -94,11 +94,10 @@ class _CurrentScreenState extends State<CurrentScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                IconButton(
+                AppIcon.primaryColor(
+                  Icons.add_rounded,
+                  context,
                   onPressed: () {},
-                  icon: const Icon(Icons.add_rounded),
-                  color: Theme.of(context).primaryColor,
-                  splashRadius: 20,
                 ),
               ],
             ),
@@ -135,19 +134,18 @@ class _CurrentScreenState extends State<CurrentScreen> {
             const Spacer(),
             Row(
               children: [
-                IconButton(
+                AppIcon.primaryColorLight(
+                  Icons.shuffle_rounded,
+                  context,
                   onPressed: () {},
-                  icon: const Icon(Icons.shuffle_rounded),
-                  color: Theme.of(context).primaryColorLight,
-                  splashRadius: 20,
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.skip_previous_rounded),
-                  color: Theme.of(context).primaryColor,
-                  iconSize: 28,
+                AppIcon.primaryColor(
+                  Icons.skip_previous_rounded,
+                  context,
+                  size: 28,
                   splashRadius: 24,
+                  onPressed: () {},
                 ),
                 const Spacer(),
                 Stack(
@@ -168,40 +166,39 @@ class _CurrentScreenState extends State<CurrentScreen> {
                           ),
                         ],
                       ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.play_arrow_rounded),
-                        color: Theme.of(context).primaryColor,
-                        iconSize: 56,
+                      child: AppIcon.primaryColor(
+                        Icons.play_arrow_rounded,
+                        context,
+                        size: 56,
                         splashRadius: 56,
+                        onPressed: () {},
                       ),
                     ),
                   ],
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.skip_next_rounded),
-                  color: Theme.of(context).primaryColor,
-                  iconSize: 28,
+                AppIcon.primaryColor(
+                  Icons.skip_next_rounded,
+                  context,
+                  size: 28,
                   splashRadius: 24,
+                  onPressed: () {},
                 ),
                 const Spacer(),
-                IconButton(
+                AppIcon.primaryColorLight(
+                  Icons.repeat_rounded,
+                  context,
                   onPressed: () {},
-                  icon: const Icon(Icons.repeat_rounded),
-                  color: Theme.of(context).primaryColorLight,
-                  splashRadius: 20,
                 ),
               ],
             ),
             const Spacer(flex: 3),
             Row(
               children: [
-                Icon(
+                AppIcon.primaryColor(
                   Icons.volume_down_rounded,
+                  context,
                   size: 20,
-                  color: Theme.of(context).primaryColor,
                 ),
                 SliderTheme(
                   data: const SliderThemeData(
@@ -220,10 +217,10 @@ class _CurrentScreenState extends State<CurrentScreen> {
                     ),
                   ),
                 ),
-                Icon(
+                AppIcon.primaryColorLight(
                   Icons.volume_up_rounded,
+                  context,
                   size: 20,
-                  color: Theme.of(context).primaryColor,
                 ),
               ],
             ),

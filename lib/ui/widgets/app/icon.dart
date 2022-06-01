@@ -1,45 +1,133 @@
 import 'package:flutter/material.dart';
 
-class AppIcon extends StatefulWidget {
+class AppIcon extends StatelessWidget {
   const AppIcon(
     this.icon, {
     Key? key,
     this.onPressed,
-    this.color = Colors.black87,
+    this.color,
     this.size = 24,
     this.splashRadius = 20,
   }) : super(key: key);
 
   final IconData icon;
 
-  final Function()? onPressed;
-
-  final Color color;
+  final Color? color;
 
   final double size;
 
   final double splashRadius;
 
-  @override
-  State<AppIcon> createState() => _AppIconState();
-}
+  final Function()? onPressed;
 
-class _AppIconState extends State<AppIcon> {
+  static AppIcon primaryColor(
+    IconData icon,
+    BuildContext context, {
+    double size = 24,
+    double splashRadius = 20,
+    Function()? onPressed,
+  }) {
+    return AppIcon(
+      icon,
+      color: Theme.of(context).primaryColor,
+      size: size,
+      splashRadius: splashRadius,
+      onPressed: onPressed,
+    );
+  }
+
+  static AppIcon primaryColorLight(
+    IconData icon,
+    BuildContext context, {
+    double size = 24,
+    double splashRadius = 20,
+    Function()? onPressed,
+  }) {
+    return AppIcon(
+      icon,
+      color: Theme.of(context).primaryColorLight,
+      size: size,
+      splashRadius: splashRadius,
+      onPressed: onPressed,
+    );
+  }
+
+  static AppIcon primaryColorDark(
+    IconData icon,
+    BuildContext context, {
+    double size = 24,
+    double splashRadius = 20,
+    Function()? onPressed,
+  }) {
+    return AppIcon(
+      icon,
+      color: Theme.of(context).primaryColorDark,
+      size: size,
+      splashRadius: splashRadius,
+      onPressed: onPressed,
+    );
+  }
+
+  static AppIcon white(
+    IconData icon, {
+    double size = 24,
+    double splashRadius = 20,
+    Function()? onPressed,
+  }) {
+    return AppIcon(
+      icon,
+      color: Colors.white,
+      size: size,
+      splashRadius: splashRadius,
+      onPressed: onPressed,
+    );
+  }
+
+  static AppIcon black87(
+    IconData icon, {
+    double size = 24,
+    double splashRadius = 20,
+    Function()? onPressed,
+  }) {
+    return AppIcon(
+      icon,
+      color: Colors.black87,
+      size: size,
+      splashRadius: splashRadius,
+      onPressed: onPressed,
+    );
+  }
+
+  static AppIcon red(
+    IconData icon, {
+    double size = 24,
+    double splashRadius = 20,
+    Function()? onPressed,
+  }) {
+    return AppIcon(
+      icon,
+      color: Colors.red,
+      size: size,
+      splashRadius: splashRadius,
+      onPressed: onPressed,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.onPressed != null) {
+    if (onPressed != null) {
       return IconButton(
-        onPressed: widget.onPressed,
-        icon: Icon(widget.icon),
-        color: widget.color,
-        iconSize: widget.size,
-        splashRadius: widget.splashRadius,
+        onPressed: onPressed,
+        icon: Icon(icon),
+        color: color,
+        iconSize: size,
+        splashRadius: splashRadius,
       );
     }
     return Icon(
-      widget.icon,
-      size: widget.size,
-      color: widget.color,
+      icon,
+      size: size,
+      color: color,
     );
   }
 }
