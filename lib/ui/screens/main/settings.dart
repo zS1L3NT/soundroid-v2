@@ -4,9 +4,14 @@ import 'package:soundroid/ui/screens/main/settings/profile.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   Widget buildProfileTile() {
     return SimpleSettingsTile(
       leading: ClipRRect(
@@ -26,7 +31,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildClearListeningHistoryTile(BuildContext context) {
+  Widget buildClearListeningHistoryTile() {
     return SimpleSettingsTile(
       leading: AppIcon.red(Icons.music_off_rounded),
       title: "Clear Listening History",
@@ -64,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildClearSearchHistoryTile(BuildContext context) {
+  Widget buildClearSearchHistoryTile() {
     return SimpleSettingsTile(
       leading: AppIcon.red(Icons.search_off_rounded),
       title: "Clear Search History",
@@ -102,7 +107,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDeleteAccountDataTile(BuildContext context) {
+  Widget buildDeleteAccountDataTile() {
     return SimpleSettingsTile(
       leading: AppIcon.red(Icons.delete_rounded),
       title: "Delete Account Data",
@@ -145,7 +150,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLogoutTile(BuildContext context) {
+  Widget buildLogoutTile() {
     return SimpleSettingsTile(
       leading: const AppIcon(Icons.logout_rounded),
       title: "Logout",
@@ -200,10 +205,10 @@ class SettingsScreen extends StatelessWidget {
           title: "Account Actions",
           children: [
             const SizedBox(height: 8),
-            buildClearListeningHistoryTile(context),
-            buildClearSearchHistoryTile(context),
-            buildDeleteAccountDataTile(context),
-            buildLogoutTile(context),
+            buildClearListeningHistoryTile(),
+            buildClearSearchHistoryTile(),
+            buildDeleteAccountDataTile(),
+            buildLogoutTile(),
           ],
         ),
       ],
