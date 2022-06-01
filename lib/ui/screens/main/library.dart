@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/ui/screens/playlist.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
-import 'package:soundroid/ui/widgets/app/list_item.dart';
-import 'package:soundroid/ui/widgets/app/text.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({Key? key}) : super(key: key);

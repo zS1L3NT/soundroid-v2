@@ -4,7 +4,7 @@ import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/ui/screens/playing/current.dart';
 import 'package:soundroid/ui/screens/playing/lyrics.dart';
 import 'package:soundroid/ui/screens/playing/queue.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 
 class PlayingScreen extends StatefulWidget {
   const PlayingScreen({Key? key}) : super(key: key);

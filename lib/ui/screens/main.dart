@@ -6,7 +6,7 @@ import 'package:soundroid/ui/screens/main/library.dart';
 import 'package:soundroid/ui/screens/main/settings.dart';
 import 'package:soundroid/ui/screens/main/search.dart';
 import 'package:soundroid/ui/screens/playing.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:soundroid/utils/route_transition.dart';
 
 class MainScreen extends StatefulWidget {

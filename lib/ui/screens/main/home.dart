@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/helpers/api_helper.dart';
-import 'package:soundroid/ui/widgets/app/text.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 // 1) Your playlists

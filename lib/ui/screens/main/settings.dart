@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:soundroid/ui/screens/main/settings/profile.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class SettingsScreen extends StatelessWidget {

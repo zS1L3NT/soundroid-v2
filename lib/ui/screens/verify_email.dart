@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/main.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key? key}) : super(key: key);

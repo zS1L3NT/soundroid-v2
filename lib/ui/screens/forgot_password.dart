@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/reset_password.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:soundroid/ui/widgets/close_app_bar.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/playing_provider.dart';
-import 'package:soundroid/ui/widgets/app/icon.dart';
-import 'package:soundroid/ui/widgets/app/text.dart';
+import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class QueueScreen extends StatefulWidget {
