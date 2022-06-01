@@ -21,64 +21,81 @@ class _SearchScreenState extends State<SearchScreen> {
       .limit(10)
       .snapshots();
 
+  Widget buildRecents(SearchProvider searchProvider) {
+    return StreamBuilder<QuerySnapshot<Search>>(
+      stream: _searchesStream,
+      builder: (context, snap) {
+        if (snap.hasError) {
+          debugPrint(snap.error.toString());
+          return const Center(
+            child: Text("Something went wrong"),
+          );
+        }
+
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: snap.data!.docs.length,
+          itemBuilder: (context, index) {
+            return RecommendationItem.recent(snap.data!.docs[index].data().query);
+          },
+        );
+      },
+    );
+  }
+
+  Widget buildRecommendations(SearchProvider searchProvider) {
+    return ListView.builder(
+      itemCount: searchProvider.recommendations.length,
+      itemBuilder: (context, index) {
+        final recommendation = searchProvider.recommendations[index];
+        switch (recommendation[0]) {
+          case "recent":
+            return RecommendationItem.recent(recommendation[1]);
+          case "suggestion":
+            return RecommendationItem.suggestion(recommendation[1]);
+          default:
+            throw Error();
+        }
+      },
+    );
+  }
+
+  Widget buildSearchResults(SearchProvider searchProvider) {
+    return ListView.builder(
+      itemCount:
+          searchProvider.results!["tracks"]!.length + searchProvider.results!["albums"]!.length,
+      itemBuilder: (context, index) {
+        final results = [
+          ...searchProvider.results!["tracks"]!,
+          ...searchProvider.results!["albums"]!
+        ];
+        return AppListItem.fromSearchResult(
+          results[index],
+          onTap: () {},
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchProvider = context.watch<SearchProvider>();
-    return searchProvider.isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : searchProvider.results != null
-            ? ListView.builder(
-                itemCount: searchProvider.results!["tracks"]!.length +
-                    searchProvider.results!["albums"]!.length,
-                itemBuilder: (context, index) {
-                  final results = [
-                    ...searchProvider.results!["tracks"]!,
-                    ...searchProvider.results!["albums"]!
-                  ];
-                  return AppListItem.fromSearchResult(
-                    results[index],
-                    onTap: () {},
-                  );
-                },
-              )
-            : searchProvider.query != ""
-                ? ListView.builder(
-                    itemCount: searchProvider.recommendations.length,
-                    itemBuilder: (context, index) {
-                      final recommendation = searchProvider.recommendations[index];
-                      switch (recommendation[0]) {
-                        case "recent":
-                          return RecommendationItem.recent(recommendation[1]);
-                        case "suggestion":
-                          return RecommendationItem.suggestion(recommendation[1]);
-                        default:
-                          throw Error();
-                      }
-                    },
-                  )
-                : StreamBuilder<QuerySnapshot<Search>>(
-                    stream: _searchesStream,
-                    builder: (context, snap) {
-                      if (snap.hasError) {
-                        debugPrint(snap.error.toString());
-                        return const Center(
-                          child: Text("Something went wrong"),
-                        );
-                      }
-
-                      if (snap.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      return ListView.builder(
-                        itemCount: snap.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          return RecommendationItem.recent(snap.data!.docs[index].data().query);
-                        },
-                      );
-                    },
-                  );
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeIn,
+      child: searchProvider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : searchProvider.results != null
+              ? buildSearchResults(searchProvider)
+              : searchProvider.query != ""
+                  ? buildRecommendations(searchProvider)
+                  : buildRecents(searchProvider),
+    );
   }
 }
