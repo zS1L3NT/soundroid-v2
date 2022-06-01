@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:soundroid/models/search.dart';
 
 class User {
   final String name;
