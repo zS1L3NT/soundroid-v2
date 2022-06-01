@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/ui/screens/playlist.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
 import 'package:soundroid/ui/widgets/app/list_item.dart';
-import 'package:soundroid/ui/widgets/main/library/liked_songs_item.dart';
+import 'package:soundroid/ui/widgets/app/text.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({Key? key}) : super(key: key);
@@ -27,6 +28,30 @@ class _LibraryScreenState extends State<LibraryScreen> {
         .snapshots();
   }
 
+  Widget buildLikedSongs() {
+    return InkWell(
+      onTap: () {},
+      child: ListTile(
+        leading: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          child: Container(
+            width: 56,
+            height: 56,
+            color: Theme.of(context).primaryColorLight,
+            child: AppIcon.primaryColorDark(
+              Icons.favorite_rounded,
+              context,
+              size: 20,
+            ),
+          ),
+        ),
+        title: AppText.ellipse("Liked Songs"),
+        subtitle: AppText.ellipse("3 tracks"),
+        contentPadding: const EdgeInsets.only(left: 16),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Playlist>>(
@@ -35,7 +60,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         return ListView.builder(
           itemBuilder: (context, index) {
             if (index == 1) {
-              return const LikedSongsItem();
+              return buildLikedSongs();
             }
             return AppListItem.fromPlaylist(
               snap.data!.docs[index - 1].data(),
@@ -46,6 +71,23 @@ class _LibraryScreenState extends State<LibraryScreen> {
           },
         );
       },
+    );
+  }
+}
+
+class LibraryAppBar extends AppBar {
+  LibraryAppBar({Key? key}) : super(key: key);
+
+  @override
+  State<LibraryAppBar> createState() => _LibraryAppBarState();
+}
+
+class _LibraryAppBarState extends State<LibraryAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: const Text("Library"),
+      elevation: 10,
     );
   }
 }
