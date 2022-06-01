@@ -11,6 +11,12 @@ class Listen {
     required this.timestamp,
   });
 
+  static CollectionReference<Listen> collection =
+      FirebaseFirestore.instance.collection("listens").withConverter(
+            fromFirestore: (snap, _) => Listen.fromJson(snap.data()!),
+            toFirestore: (listen, _) => listen.toJson(),
+          );
+
   Listen.fromJson(Map<String, dynamic> json)
       : userRef = json["userRef"],
         trackIds = json["trackIds"].cast<String>(),

@@ -1,30 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:soundroid/helpers/api_helper.dart';
+import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/search_result.dart';
 
 class SearchProvider with ChangeNotifier {
-  TextEditingController _textEditingController = TextEditingController();
-  String _query = "";
+  final _textEditingController = TextEditingController();
   DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
-  List<String>? _suggestions;
+  List<DocumentSnapshot<Search>> _recents = [];
+  List<String> _suggestions = [];
   Map<String, List<SearchResult>>? _results;
 
-  TextEditingController get textEditingController => _textEditingController;
-  String get query => _query;
+  TextEditingController get controller => _textEditingController;
+
+  String get query => _textEditingController.text;
+
   DateTime get latest => _latest;
+
   bool get isLoading => _isLoading;
-  List<String>? get suggestions => _suggestions;
+
+  List<Map<String, dynamic>> get recommendations => [
+        ..._recents.map(
+          (r) => {
+            "type": "recent",
+            "data": r.data()!.query,
+            "ref": r.reference,
+          },
+        ),
+        ..._suggestions
+            .where(
+              (s) => _recents.indexWhere((r) => r.data()!.query == s) < 0,
+            )
+            .map(
+              (s) => {
+                "type": "suggestion",
+                "data": s,
+              },
+            ),
+      ];
+
   Map<String, List<SearchResult>>? get results => _results;
 
-  set textEditingController(TextEditingController textEditingController) {
-    _textEditingController = textEditingController;
-    notifyListeners();
-  }
-
-  set query(String query) {
-    _query = query;
+  set query(String? query) {
+    if (query == null) {
+      _textEditingController.clear();
+    } else {
+      _textEditingController.text = query;
+      _textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: query.length),
+      );
+    }
     notifyListeners();
   }
 
@@ -38,7 +64,12 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set suggestions(List<String>? suggestions) {
+  set recents(List<DocumentSnapshot<Search>> recents) {
+    _recents = recents;
+    notifyListeners();
+  }
+
+  set suggestions(List<String> suggestions) {
     _suggestions = suggestions;
     notifyListeners();
   }
@@ -51,14 +82,12 @@ class SearchProvider with ChangeNotifier {
   // This method is moved into the provider so it can be called from multiple places
   void search(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode());
-    SearchProvider searchProvider = context.read<SearchProvider>();
     final dateTime = DateTime.now();
-    searchProvider.suggestions = null;
+    _suggestions = [];
 
-    final results = await ApiHelper.fetchSearchResults(searchProvider);
-    searchProvider = context.read<SearchProvider>();
-    if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-      searchProvider.results = results;
+    final results = await ApiHelper.fetchSearchResults(this);
+    if (dateTime.isAfter(latest) || dateTime == latest) {
+      _results = results;
     }
   }
 }

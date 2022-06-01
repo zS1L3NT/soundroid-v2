@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/helpers/api_helper.dart';
+import 'package:soundroid/models/search.dart';
+import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
 class SearchAppBar extends AppBar {
@@ -11,15 +13,40 @@ class SearchAppBar extends AppBar {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  final _controller = TextEditingController();
+  void onTextChange(String query) async {
+    SearchProvider searchProvider = context.read<SearchProvider>();
+    final dateTime = DateTime.now();
+    searchProvider.query = query;
+    searchProvider.results = null;
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      context.read<SearchProvider>().textEditingController = _controller;
+    ApiHelper.fetchSearchSuggestions(searchProvider).then((suggestions) {
+      searchProvider = context.read<SearchProvider>();
+      if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+        searchProvider.latest = dateTime;
+        searchProvider.suggestions = suggestions;
+      }
     });
+
+    Search.collection
+        .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
+        .where("query", isGreaterThanOrEqualTo: query)
+        .where("query", isLessThanOrEqualTo: query + "~")
+        .get()
+        .then(
+      (recents) {
+        searchProvider = context.read<SearchProvider>();
+        if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+          searchProvider.latest = dateTime;
+          searchProvider.recents = recents.docs;
+        }
+      },
+    );
+  }
+
+  void onTextClear() {
+    final searchProvider = context.read<SearchProvider>();
+    searchProvider.query = "";
+    searchProvider.results = null;
   }
 
   @override
@@ -27,24 +54,12 @@ class _SearchAppBarState extends State<SearchAppBar> {
     return AppBar(
       title: Row(
         children: [
-          const Icon(Icons.music_note_rounded),
+          const Icon(Icons.search_rounded),
           const SizedBox(width: 16),
           Expanded(
             child: TextField(
-              controller: _controller,
-              onChanged: (query) async {
-                SearchProvider searchProvider = context.read<SearchProvider>();
-                final dateTime = DateTime.now();
-                searchProvider.query = query;
-                searchProvider.results = null;
-
-                final suggestions = await ApiHelper.fetchSearchSuggestions(searchProvider);
-                searchProvider = context.read<SearchProvider>();
-                if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-                  searchProvider.latest = dateTime;
-                  searchProvider.suggestions = suggestions;
-                }
-              },
+              controller: context.read<SearchProvider>().controller,
+              onChanged: onTextChange,
               onEditingComplete: () => context.read<SearchProvider>().search(context),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -64,16 +79,14 @@ class _SearchAppBarState extends State<SearchAppBar> {
         ],
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            final searchProvider = context.read<SearchProvider>();
-            searchProvider.query = "";
-            searchProvider.results = null;
-            _controller.clear();
-          },
-          icon: const Icon(Icons.clear_rounded),
-          splashRadius: 20,
-        )
+        context.watch<SearchProvider>().query != ""
+            ? IconButton(
+                onPressed: onTextClear,
+                icon: const Icon(Icons.clear_rounded),
+                splashRadius: 20,
+              )
+            : const SizedBox(),
+        const SizedBox(width: 4)
       ],
       elevation: 10,
     );

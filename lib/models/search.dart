@@ -11,6 +11,12 @@ class Search {
     required this.timestamp,
   });
 
+  static CollectionReference<Search> collection =
+      FirebaseFirestore.instance.collection("searches").withConverter(
+            fromFirestore: (snap, _) => Search.fromJson(snap.data()!),
+            toFirestore: (search, _) => search.toJson(),
+          );
+
   Search.fromJson(Map<String, dynamic> json)
       : userRef = json["userRef"],
         query = json["query"],
