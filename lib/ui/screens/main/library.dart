@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
+import 'package:soundroid/models/user.dart';
 import 'package:soundroid/ui/screens/playlist.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
 
@@ -12,19 +13,9 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  late Stream<QuerySnapshot<Playlist>> _playlistStream;
-
-  @override
-  void initState() {
-    super.initState();
-    _playlistStream = FirebaseFirestore.instance
-        .collection("playlists")
-        .withConverter<Playlist>(
-          fromFirestore: (snap, _) => Playlist.fromJson(snap.data()!),
-          toFirestore: (playlist, _) => playlist.toJson(),
-        )
-        .snapshots();
-  }
+  final _playlistStream = Playlist.collection
+      .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
+      .snapshots();
 
   Widget buildLikedSongs() {
     return InkWell(
@@ -56,8 +47,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
       stream: _playlistStream,
       builder: (context, snap) {
         return ListView.builder(
+          itemCount: (snap.data?.docs.length ?? 0) + 1,
           itemBuilder: (context, index) {
-            if (index == 1) {
+            if (index == 0) {
               return buildLikedSongs();
             }
             return AppListItem.fromPlaylist(
