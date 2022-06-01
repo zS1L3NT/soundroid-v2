@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
+import 'package:soundroid/utils/server.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 // 1) Your playlists
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _futureFeed = ApiHelper.fetchFeed();
+    _futureFeed = Server.fetchFeed();
   }
 
   Widget buildYourPlaylistsSection() {

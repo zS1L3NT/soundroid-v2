@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/search_result.dart';
+import 'package:soundroid/utils/server.dart';
 
 class SearchProvider with ChangeNotifier {
   final _textEditingController = TextEditingController();
@@ -85,7 +85,7 @@ class SearchProvider with ChangeNotifier {
     final dateTime = DateTime.now();
     _suggestions = [];
 
-    final results = await ApiHelper.fetchSearchResults(this);
+    final results = await Server.fetchSearchResults(this);
     if (dateTime.isAfter(latest) || dateTime == latest) {
       _results = results;
     }

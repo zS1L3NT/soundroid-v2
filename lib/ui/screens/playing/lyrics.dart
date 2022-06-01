@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/models/track.dart';
+import 'package:soundroid/utils/server.dart';
 
 class LyricsScreen extends StatefulWidget {
   const LyricsScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class LyricsScreenState extends State<LyricsScreen> {
   void initState() {
     super.initState();
 
-    _futureLyrics = ApiHelper.fetchLyrics(Track(
+    _futureLyrics = Server.fetchLyrics(Track(
       id: "sqgxcCjD04s",
       title: "Strawberry Moon",
       artistIds: ["IU"],

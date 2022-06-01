@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/helpers/api_helper.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
+import 'package:soundroid/utils/server.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -123,7 +123,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     searchProvider.query = query;
     searchProvider.results = null;
 
-    ApiHelper.fetchSearchSuggestions(searchProvider).then((suggestions) {
+    Server.fetchSearchSuggestions(searchProvider).then((suggestions) {
       searchProvider = context.read<SearchProvider>();
       if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
         searchProvider.latest = dateTime;

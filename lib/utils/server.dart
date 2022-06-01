@@ -6,7 +6,7 @@ import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
-class ApiHelper {
+class Server {
   static bool inDevelopment = false;
 
   static String get host =>
