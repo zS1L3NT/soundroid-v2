@@ -30,7 +30,7 @@ class RecommendationItem extends StatelessWidget {
   factory RecommendationItem.suggestion(String text) {
     return RecommendationItem(
       text: text,
-      icon: Icons.search_rounded,
+      icon: Icons.music_note_rounded,
     );
   }
 

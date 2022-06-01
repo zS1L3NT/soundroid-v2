@@ -54,7 +54,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     return AppBar(
       title: Row(
         children: [
-          const Icon(Icons.music_note_rounded),
+          const Icon(Icons.search_rounded),
           const SizedBox(width: 16),
           Expanded(
             child: TextField(
