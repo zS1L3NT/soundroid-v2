@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/utils/server.dart';
 
@@ -16,12 +17,19 @@ class LyricsScreenState extends State<LyricsScreen> {
   void initState() {
     super.initState();
 
-    _futureLyrics = Server.fetchLyrics(Track(
-      id: "sqgxcCjD04s",
-      title: "Strawberry Moon",
-      artistIds: ["IU"],
-      thumbnail: "",
-    ));
+    _futureLyrics = Server.fetchLyrics(
+      Track(
+        id: "sqgxcCjD04s",
+        title: "Strawberry Moon",
+        artists: [
+          Artist(
+            id: "",
+            name: "IU",
+          ),
+        ],
+        thumbnail: "",
+      ),
+    );
   }
 
   @override

@@ -28,7 +28,7 @@ class AppListItem extends StatelessWidget {
   }) {
     return AppListItem(
       title: track.title,
-      subtitle: track.artistIds.join(", "),
+      subtitle: track.artists.map((artist) => artist.name).join(", "),
       image: track.thumbnail,
       onTap: onTap,
     );
@@ -52,7 +52,7 @@ class AppListItem extends StatelessWidget {
   }) {
     return AppListItem(
       title: result.title,
-      subtitle: result.artistIds.join(", "),
+      subtitle: result.artists.map((artist) => artist.name).join(", "),
       image: result.thumbnail,
       onTap: onTap,
     );
