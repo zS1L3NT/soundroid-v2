@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/models/track.dart';
-import 'package:soundroid/ui/widgets/playing/queue/list_item.dart';
+import 'package:soundroid/providers/playing_provider.dart';
+import 'package:soundroid/ui/widgets/app/icon.dart';
+import 'package:soundroid/ui/widgets/app/text.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({Key? key}) : super(key: key);
@@ -140,20 +144,67 @@ class _QueueScreenState extends State<QueueScreen> {
     ),
   ];
 
+  Widget buildQueueItem(Track track) {
+    final selected = context.read<PlayingProvider>().selected;
+
+    return InkWell(
+      onTap: () => onTap(selected, track),
+      onLongPress: () => onLongPress(selected, track),
+      child: ListTile(
+        tileColor: selected != null && selected.contains(track)
+            ? Theme.of(context).highlightColor
+            : Colors.transparent,
+        leading: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          child: FadeInImage.memoryNetwork(
+            fadeInCurve: Curves.decelerate,
+            placeholder: kTransparentImage,
+            image: track.thumbnail,
+            fit: BoxFit.cover,
+            width: 56,
+            height: 56,
+          ),
+        ),
+        title: AppText.ellipse(track.title),
+        subtitle: AppText.ellipse(track.artistIds.join(", ")),
+        trailing: ReorderableDragStartListener(
+          index: _tracks.indexOf(track),
+          child: AppIcon.black87(
+            Icons.drag_handle_rounded,
+            onPressed: () {},
+          ),
+        ),
+        contentPadding: const EdgeInsets.only(left: 16),
+      ),
+    );
+  }
+
+  void onTap(List<Track>? selected, Track track) {
+    if (selected == null) {
+      // Play the song
+    } else {
+      if (selected.contains(track)) {
+        if (selected.length == 1) {
+          context.read<PlayingProvider>().selected = null;
+        } else {
+          context.read<PlayingProvider>().selected = selected.where((t) => t != track).toList();
+        }
+      } else {
+        context.read<PlayingProvider>().selected = selected.toList()..add(track);
+      }
+    }
+  }
+
+  void onLongPress(List<Track>? selected, Track track) {
+    if (selected == null) {
+      context.read<PlayingProvider>().selected = [track];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ReorderableListView(
-      children: _tracks
-          .asMap()
-          .entries
-          .map(
-            (entry) => QueueListItem(
-              key: Key(entry.value.title),
-              index: entry.key,
-              track: entry.value,
-            ),
-          )
-          .toList(),
+      children: _tracks.map(buildQueueItem).toList(),
       onReorder: (int oldIndex, int newIndex) {
         setState(() {
           if (oldIndex < newIndex) {
