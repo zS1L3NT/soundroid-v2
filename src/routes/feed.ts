@@ -109,7 +109,10 @@ export class GET extends Route {
 				new Track(
 					song.videoId,
 					song.name,
-					song.artists.map(artist => artist.artistId),
+					song.artists.map(artist => ({
+						id: artist.artistId,
+						name: artist.name
+					})),
 					song.thumbnails.at(-1)?.url || ""
 				)
 		)
@@ -125,7 +128,10 @@ export class GET extends Route {
 				new Track(
 					song.videoId,
 					song.name,
-					song.artists.map(artist => artist.artistId),
+					song.artists.map(artist => ({
+						id: artist.artistId,
+						name: artist.name
+					})),
 					song.thumbnails.at(-1)?.url || ""
 				)
 		)
@@ -152,14 +158,17 @@ export class GET extends Route {
 
 			const artist = await ytmusic.getArtist(artistId)
 			items.push([
-				new Artist(artist.artistId, artist.name, artist.thumbnails.at(-1)?.url || ""),
+				new Artist(artist.artistId, artist.name),
 				ytmusic.getArtistSongs(artistId).then(songs =>
 					songs.map(
 						song =>
 							new Track(
 								song.videoId,
 								song.name,
-								song.artists.map(artist => artist.artistId),
+								song.artists.map(artist => ({
+									id: artist.artistId,
+									name: artist.name
+								})),
 								song.thumbnails.at(-1)?.url || ""
 							)
 					)

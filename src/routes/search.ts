@@ -25,7 +25,10 @@ export class GET extends Route {
 									{
 										id: result.videoId,
 										title: result.name,
-										artistIds: result.artists.map(artist => artist.artistId),
+										artists: result.artists.map(artist => ({
+											id: artist.artistId,
+											name: artist.name
+										})),
 										thumbnail: result.thumbnails.at(-1)?.url || ""
 									}
 								]
@@ -37,7 +40,10 @@ export class GET extends Route {
 									{
 										id: result.albumId,
 										title: result.name,
-										artistIds: result.artists.map(artist => artist.artistId),
+										artists: result.artists.map(artist => ({
+											id: artist.artistId,
+											name: artist.name
+										})),
 										thumbnail: result.thumbnails.at(-1)?.url || ""
 									}
 								]
