@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/helpers/api_helper.dart';
+import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/search_result.dart';
 
 class SearchProvider with ChangeNotifier {
   final _textEditingController = TextEditingController();
   DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
-  List<String> _recents = [];
+  List<DocumentSnapshot<Search>> _recents = [];
   List<String> _suggestions = [];
   Map<String, List<SearchResult>>? _results;
 
@@ -18,9 +20,24 @@ class SearchProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  List<List<String>> get recommendations => [
-        ..._recents.map((r) => ["recent", r]),
-        ..._suggestions.where((s) => !_recents.contains(s)).map((s) => ["suggestion", s])
+  List<Map<String, dynamic>> get recommendations => [
+        ..._recents.map(
+          (r) => {
+            "type": "recent",
+            "data": r.data()!.query,
+            "ref": r.reference,
+          },
+        ),
+        ..._suggestions
+            .where(
+              (s) => _recents.indexWhere((r) => r.data()!.query == s) < 0,
+            )
+            .map(
+              (s) => {
+                "type": "suggestion",
+                "data": s,
+              },
+            ),
       ];
 
   Map<String, List<SearchResult>>? get results => _results;
@@ -47,7 +64,7 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set recents(List<String> recents) {
+  set recents(List<DocumentSnapshot<Search>> recents) {
     _recents = recents;
     notifyListeners();
   }

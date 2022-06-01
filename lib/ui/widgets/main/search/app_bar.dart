@@ -37,7 +37,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         searchProvider = context.read<SearchProvider>();
         if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
           searchProvider.latest = dateTime;
-          searchProvider.recents = recents.docs.map((doc) => doc.data().query).toList();
+          searchProvider.recents = recents.docs;
         }
       },
     );

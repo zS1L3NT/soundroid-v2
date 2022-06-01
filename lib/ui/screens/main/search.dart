@@ -41,7 +41,11 @@ class _SearchScreenState extends State<SearchScreen> {
         return ListView.builder(
           itemCount: snap.data!.docs.length,
           itemBuilder: (context, index) {
-            return RecommendationItem.recent(snap.data!.docs[index].data().query);
+            final doc = snap.data!.docs[index];
+            return RecommendationItem.recent(
+              doc.data().query,
+              doc.reference,
+            );
           },
         );
       },
@@ -53,11 +57,16 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: searchProvider.recommendations.length,
       itemBuilder: (context, index) {
         final recommendation = searchProvider.recommendations[index];
-        switch (recommendation[0]) {
+        switch (recommendation["type"]) {
           case "recent":
-            return RecommendationItem.recent(recommendation[1]);
+            return RecommendationItem.recent(
+              recommendation["data"],
+              recommendation["ref"],
+            );
           case "suggestion":
-            return RecommendationItem.suggestion(recommendation[1]);
+            return RecommendationItem.suggestion(
+              recommendation["data"],
+            );
           default:
             throw Error();
         }
