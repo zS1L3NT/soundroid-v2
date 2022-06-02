@@ -1,12 +1,17 @@
+import { OBJECT, STRING } from "validate-any"
 import ytdl from "ytdl-core"
 
 import { Route } from "../setup"
 
-export class GET extends Route {
+export class GET extends Route<any, { videoId: string }> {
+	override queryValidator = OBJECT({
+		videoId: STRING()
+	})
+
 	async handle() {
 		try {
 			this.redirect(
-				(await ytdl.getInfo(this.query.videoId?.toString() || "")).formats
+				(await ytdl.getInfo(this.query.videoId)).formats
 					.filter(f => f.container === "webm")
 					.filter(f => f.mimeType?.startsWith("audio"))
 					.filter(f => f.audioBitrate !== undefined)

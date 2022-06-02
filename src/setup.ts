@@ -8,7 +8,7 @@ const queue: number[] = []
 
 export type iRoute = new (req: Request, res: Response) => Route
 
-export abstract class Route<BV = any, QV = any> {
+export abstract class Route<BV = {}, QV = {}> {
 	constructor(protected readonly req: Request, protected readonly res: Response) {}
 
 	setup() {

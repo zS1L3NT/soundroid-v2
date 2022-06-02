@@ -1,11 +1,16 @@
 import { Timestamp } from "firebase-admin/firestore"
+import { OBJECT, STRING } from "validate-any"
 
 import { searchesColl, usersColl, ytmusic } from "../apis"
 import Search from "../models/Search"
 import Track from "../models/Track"
 import { Route } from "../setup"
 
-export class GET extends Route {
+export class GET extends Route<any, { query: string }> {
+	override queryValidator = OBJECT({
+		query: STRING()
+	})
+
 	async handle() {
 		const query = `${this.query.query}`.trim() || ""
 

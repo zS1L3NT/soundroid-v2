@@ -1,10 +1,15 @@
 import axios from "axios"
 import googleIt from "google-it"
 import { useTry } from "no-try"
+import { OBJECT, STRING } from "validate-any"
 
 import { Route } from "../setup"
 
-export class GET extends Route {
+export class GET extends Route<any, { query: string }> {
+	override queryValidator = OBJECT({
+		query: STRING()
+	})
+
 	async handle() {
 		const results = await googleIt({
 			query: `${this.query.query} site:genius.com`,
