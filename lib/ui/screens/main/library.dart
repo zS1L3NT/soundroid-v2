@@ -73,11 +73,70 @@ class LibraryAppBar extends AppBar {
 }
 
 class _LibraryAppBarState extends State<LibraryAppBar> {
+  void handleAddPlaylist(String name) {
+    Playlist.collection.add(
+      Playlist(
+        userRef: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"),
+        name: name,
+        thumbnail: "",
+        favourite: false,
+        trackIds: [],
+      ),
+    );
+    Navigator.of(context).pop();
+  }
+
+  void handleAddPlaylistDialog() {
+    String name = "";
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("New Playlist"),
+              content: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    name = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: "Playlist Name",
+                ),
+                autofocus: true,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: name.isNotEmpty ? () => handleAddPlaylist(name) : null,
+                  child: const Text("Create"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text("Library"),
       elevation: 10,
+      actions: [
+        AppIcon.white(
+          Icons.add_rounded,
+          onPressed: handleAddPlaylistDialog,
+        ),
+      ],
     );
   }
 }
