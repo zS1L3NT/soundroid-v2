@@ -4,7 +4,6 @@ import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({Key? key}) : super(key: key);
@@ -258,16 +257,10 @@ class _QueueScreenState extends State<QueueScreen> {
         tileColor: selected != null && selected.contains(track)
             ? Theme.of(context).highlightColor
             : Colors.transparent,
-        leading: ClipRRect(
+        leading: AppImage.network(
+          track.thumbnail,
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          child: FadeInImage.memoryNetwork(
-            fadeInCurve: Curves.decelerate,
-            placeholder: kTransparentImage,
-            image: track.thumbnail,
-            fit: BoxFit.cover,
-            width: 56,
-            height: 56,
-          ),
+          size: 56,
         ),
         title: AppText.ellipse(track.title),
         subtitle: AppText.ellipse(track.artists.map((artist) => artist.name).join(", ")),

@@ -213,11 +213,9 @@ class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
             ),
             child: Padding(
               padding: const EdgeInsets.all(1.5),
-              child: ClipRRect(
+              child: AppImage.network(
+                "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
                 borderRadius: const BorderRadius.all(Radius.circular(30)),
-                child: Image.network(
-                  "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
-                ),
               ),
             ),
           ),

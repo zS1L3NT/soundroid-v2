@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/ui/screens/main.dart';
 import 'package:soundroid/ui/screens/signin.dart';
 import 'package:soundroid/ui/screens/signup.dart';
+import 'package:soundroid/ui/widgets/app_image.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -23,10 +24,9 @@ class AuthScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 32),
-                    Image.asset(
+                    AppImage.asset(
                       "assets/images/icon.png",
-                      width: 128,
-                      height: 128,
+                      size: 128,
                     ),
                     const Text(
                       "SounDroid",
@@ -77,7 +77,7 @@ class AuthScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(
+                        AppImage.asset(
                           "assets/images/google-icon.png",
                           height: 21,
                         ),

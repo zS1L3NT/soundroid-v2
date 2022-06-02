@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:soundroid/ui/screens/main/settings/profile.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -14,16 +13,10 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   Widget buildProfileTile() {
     return SimpleSettingsTile(
-      leading: ClipRRect(
+      leading: AppImage.network(
+        "https://wiki.d-addicts.com/images/4/4c/IU.jpg",
         borderRadius: BorderRadius.circular(20),
-        child: FadeInImage.memoryNetwork(
-          fadeInCurve: Curves.decelerate,
-          placeholder: kTransparentImage,
-          image: "https://wiki.d-addicts.com/images/4/4c/IU.jpg",
-          fit: BoxFit.cover,
-          width: 40,
-          height: 40,
-        ),
+        size: 40,
       ),
       title: "Zechariah Tan",
       subtitle: "2100326D@student.tp.edu.sg",

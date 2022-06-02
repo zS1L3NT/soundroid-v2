@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -29,16 +28,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   children: [
-                    ClipRRect(
+                    AppImage.network(
+                      "https://wiki.d-addicts.com/images/4/4c/IU.jpg",
                       borderRadius: BorderRadius.circular(32),
-                      child: FadeInImage.memoryNetwork(
-                        fadeInCurve: Curves.decelerate,
-                        placeholder: kTransparentImage,
-                        image: "https://wiki.d-addicts.com/images/4/4c/IU.jpg",
-                        fit: BoxFit.cover,
-                        width: 64,
-                        height: 64,
-                      ),
+                      size: 64,
                     ),
                     const SizedBox(width: 16),
                     Expanded(

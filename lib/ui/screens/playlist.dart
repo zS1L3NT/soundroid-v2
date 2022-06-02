@@ -7,7 +7,6 @@ import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({Key? key}) : super(key: key);
@@ -358,16 +357,10 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    ClipRRect(
+                    AppImage.network(
+                      playlist.thumbnail,
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      child: FadeInImage.memoryNetwork(
-                        fadeInCurve: Curves.decelerate,
-                        placeholder: kTransparentImage,
-                        image: playlist.thumbnail,
-                        fit: BoxFit.cover,
-                        width: 128,
-                        height: 128,
-                      ),
+                      size: 128,
                     ),
                     const SizedBox(width: 16),
                     Expanded(

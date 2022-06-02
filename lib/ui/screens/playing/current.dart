@@ -59,7 +59,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
+                child: AppImage.network(
                   "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
                 ),
               ),

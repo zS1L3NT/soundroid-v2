@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:soundroid/utils/server.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 // 1) Your playlists
 // 2) Tracks that you've been listening to a lot
@@ -50,29 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: Row(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                    ),
-                    child: ShaderMask(
-                      shaderCallback: (rectangle) => const LinearGradient(
-                        colors: [Colors.black, Colors.transparent],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: [0.5, 1.0],
-                      ).createShader(rectangle),
-                      blendMode: BlendMode.dstIn,
-                      child: FadeInImage.memoryNetwork(
-                        fadeInCurve: Curves.decelerate,
-                        placeholder: kTransparentImage,
-                        image: playlist.thumbnail,
-                        fit: BoxFit.cover,
-                        width: 60,
-                        height: 60,
-                      ),
-                    ),
-                  ),
+                  AppImage.networkPlaylistFade(playlist.thumbnail),
                   const SizedBox(width: 12),
                   Expanded(
                     child: AppText.marquee(playlist.name),
@@ -117,16 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 125,
                   child: Column(
                     children: [
-                      ClipRRect(
+                      AppImage.network(
+                        track.thumbnail,
                         borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        child: FadeInImage.memoryNetwork(
-                          fadeInCurve: Curves.decelerate,
-                          placeholder: kTransparentImage,
-                          image: track.thumbnail,
-                          fit: BoxFit.cover,
-                          width: 125,
-                          height: 125,
-                        ),
+                        size: 128,
                       ),
                       const SizedBox(height: 6),
                       AppText.marquee(
@@ -191,16 +162,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              ClipRRect(
+              AppImage.network(
+                section["artist"]["picture"],
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
-                child: FadeInImage.memoryNetwork(
-                  fadeInCurve: Curves.decelerate,
-                  placeholder: kTransparentImage,
-                  image: section["artist"]["picture"],
-                  fit: BoxFit.cover,
-                  width: 48,
-                  height: 48,
-                ),
+                size: 48,
               ),
               const SizedBox(width: 12),
               const Text(

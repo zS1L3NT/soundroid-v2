@@ -150,7 +150,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
+                          AppImage.asset(
                             "assets/images/google-icon.png",
                             height: 21,
                           ),

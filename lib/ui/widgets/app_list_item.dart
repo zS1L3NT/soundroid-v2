@@ -3,7 +3,6 @@ import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class AppListItem extends StatelessWidget {
   const AppListItem({
@@ -22,7 +21,7 @@ class AppListItem extends StatelessWidget {
 
   final Function() onTap;
 
-  static AppListItem fromTrack(
+  factory AppListItem.fromTrack(
     Track track, {
     required Function() onTap,
   }) {
@@ -34,7 +33,7 @@ class AppListItem extends StatelessWidget {
     );
   }
 
-  static AppListItem fromPlaylist(
+  factory AppListItem.fromPlaylist(
     Playlist playlist, {
     required Function() onTap,
   }) {
@@ -46,7 +45,7 @@ class AppListItem extends StatelessWidget {
     );
   }
 
-  static AppListItem fromSearchResult(
+  factory AppListItem.fromSearchResult(
     SearchResult result, {
     required Function() onTap,
   }) {
@@ -63,16 +62,10 @@ class AppListItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: ListTile(
-        leading: ClipRRect(
+        leading: AppImage.network(
+          image,
           borderRadius: const BorderRadius.all(Radius.circular(8)),
-          child: FadeInImage.memoryNetwork(
-            fadeInCurve: Curves.decelerate,
-            placeholder: kTransparentImage,
-            image: image,
-            fit: BoxFit.cover,
-            width: 56,
-            height: 56,
-          ),
+          size: 56,
         ),
         title: AppText.ellipse(title),
         subtitle: AppText.ellipse(subtitle),
