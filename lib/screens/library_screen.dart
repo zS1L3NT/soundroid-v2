@@ -55,7 +55,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
             return AppListItem.fromPlaylist(
               snap.data!.docs[index - 1].data(),
               onTap: () {
-                Navigator.of(context).pushNamed(PlaylistScreen.routeName);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return PlaylistScreen(
+                        playlistId: snap.data!.docs[index - 1].id,
+                      );
+                    },
+                  ),
+                );
               },
             );
           },

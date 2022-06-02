@@ -12,7 +12,6 @@ import 'package:soundroid/screens/auth/signup_screen.dart';
 import 'package:soundroid/screens/auth/verify_email_screen.dart';
 import 'package:soundroid/screens/auth/welcome_screen.dart';
 import 'package:soundroid/screens/main_screen.dart';
-import 'package:soundroid/screens/playlist_screen.dart';
 
 void main() async {
   // Initialize Hive
@@ -58,7 +57,6 @@ class MyApp extends StatelessWidget {
       initialRoute: WelcomeScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
-        PlaylistScreen.routeName: (context) => const PlaylistScreen(),
         WelcomeScreen.routeName: (context) => const WelcomeScreen(),
         SigninScreen.routeName: (context) => const SigninScreen(),
         ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
