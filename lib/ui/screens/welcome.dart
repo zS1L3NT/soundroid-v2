@@ -4,8 +4,8 @@ import 'package:soundroid/ui/screens/signin.dart';
 import 'package:soundroid/ui/screens/signup.dart';
 import 'package:soundroid/ui/widgets/app_image.dart';
 
-class AuthScreen extends StatelessWidget {
-  const AuthScreen({Key? key}) : super(key: key);
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({Key? key}) : super(key: key);
 
   static const routeName = "/auth";
 

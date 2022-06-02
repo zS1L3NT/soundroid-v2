@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/ui/screens/auth.dart';
+import 'package:soundroid/ui/screens/welcome.dart';
 import 'package:soundroid/ui/screens/forgot_password.dart';
 import 'package:soundroid/ui/screens/main.dart';
 import 'package:soundroid/ui/screens/playlist.dart';
@@ -55,11 +55,11 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: AuthScreen.routeName,
+      initialRoute: WelcomeScreen.routeName,
       routes: {
         MainScreen.routeName: (context) => const MainScreen(),
         PlaylistScreen.routeName: (context) => const PlaylistScreen(),
-        AuthScreen.routeName: (context) => const AuthScreen(),
+        WelcomeScreen.routeName: (context) => const WelcomeScreen(),
         SigninScreen.routeName: (context) => const SigninScreen(),
         ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
         ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
