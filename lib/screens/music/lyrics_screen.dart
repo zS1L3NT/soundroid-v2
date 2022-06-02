@@ -7,10 +7,10 @@ class LyricsScreen extends StatefulWidget {
   const LyricsScreen({Key? key}) : super(key: key);
 
   @override
-  State<LyricsScreen> createState() => LyricsScreenState();
+  State<LyricsScreen> createState() => _LyricsScreenState();
 }
 
-class LyricsScreenState extends State<LyricsScreen> {
+class _LyricsScreenState extends State<LyricsScreen> {
   late Future<List<String>> _futureLyrics;
 
   @override

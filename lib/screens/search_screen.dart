@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/user.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/ui/widgets/app_widgets.dart';
 import 'package:soundroid/utils/server.dart';
+import 'package:soundroid/widgets/app_widgets.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);

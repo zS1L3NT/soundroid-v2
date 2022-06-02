@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/playing_provider.dart';
-import 'package:soundroid/ui/screens/playing/current.dart';
-import 'package:soundroid/ui/screens/playing/lyrics.dart';
-import 'package:soundroid/ui/screens/playing/queue.dart';
-import 'package:soundroid/ui/widgets/app_widgets.dart';
+import 'package:soundroid/screens/music/current_screen.dart';
+import 'package:soundroid/screens/music/lyrics_screen.dart';
+import 'package:soundroid/screens/music/queue_screen.dart';
+import 'package:soundroid/widgets/app_widgets.dart';
 
 class PlayingScreen extends StatefulWidget {
   const PlayingScreen({Key? key}) : super(key: key);

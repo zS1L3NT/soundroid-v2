@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/ui/screens/verify_email.dart';
-import 'package:soundroid/ui/widgets/app_widgets.dart';
+import 'package:soundroid/screens/auth/verify_email_screen.dart';
 import 'package:soundroid/utils/route_transition.dart';
-import 'package:soundroid/ui/widgets/close_app_bar.dart';
+import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/close_app_bar.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);

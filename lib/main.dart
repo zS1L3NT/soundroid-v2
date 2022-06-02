@@ -5,14 +5,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/ui/screens/welcome.dart';
-import 'package:soundroid/ui/screens/forgot_password.dart';
-import 'package:soundroid/ui/screens/main.dart';
-import 'package:soundroid/ui/screens/playlist.dart';
-import 'package:soundroid/ui/screens/reset_password.dart';
-import 'package:soundroid/ui/screens/signin.dart';
-import 'package:soundroid/ui/screens/signup.dart';
-import 'package:soundroid/ui/screens/verify_email.dart';
+import 'package:soundroid/screens/auth/forgot_password_screen.dart';
+import 'package:soundroid/screens/auth/reset_password_screen.dart';
+import 'package:soundroid/screens/auth/signin_screen.dart';
+import 'package:soundroid/screens/auth/signup_screen.dart';
+import 'package:soundroid/screens/auth/verify_email_screen.dart';
+import 'package:soundroid/screens/auth/welcome_screen.dart';
+import 'package:soundroid/screens/main_screen.dart';
+import 'package:soundroid/screens/playlist_screen.dart';
 
 void main() async {
   // Initialize Hive

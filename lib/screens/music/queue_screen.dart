@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/playing_provider.dart';
-import 'package:soundroid/ui/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/app_widgets.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({Key? key}) : super(key: key);

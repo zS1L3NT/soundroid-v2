@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/ui/screens/main.dart';
-import 'package:soundroid/ui/screens/signin.dart';
-import 'package:soundroid/ui/screens/signup.dart';
-import 'package:soundroid/ui/widgets/app_image.dart';
+import 'package:soundroid/screens/auth/signin_screen.dart';
+import 'package:soundroid/screens/auth/signup_screen.dart';
+import 'package:soundroid/screens/main_screen.dart';
+import 'package:soundroid/widgets/app_image.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);

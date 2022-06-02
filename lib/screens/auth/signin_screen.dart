@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/ui/screens/forgot_password.dart';
-import 'package:soundroid/ui/screens/main.dart';
-import 'package:soundroid/ui/widgets/app_widgets.dart';
-import 'package:soundroid/ui/widgets/close_app_bar.dart';
+import 'package:soundroid/screens/auth/forgot_password_screen.dart';
+import 'package:soundroid/screens/main_screen.dart';
+import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/close_app_bar.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/models/track.dart';
-import 'package:soundroid/ui/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/app_widgets.dart';
 
 class AppListItem extends StatelessWidget {
   const AppListItem({
