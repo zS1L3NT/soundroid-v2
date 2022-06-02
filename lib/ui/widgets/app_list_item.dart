@@ -17,7 +17,7 @@ class AppListItem extends StatelessWidget {
 
   final String subtitle;
 
-  final String image;
+  final Widget image;
 
   final Function() onTap;
 
@@ -28,7 +28,11 @@ class AppListItem extends StatelessWidget {
     return AppListItem(
       title: track.title,
       subtitle: track.artists.map((artist) => artist.name).join(", "),
-      image: track.thumbnail,
+      image: AppImage.network(
+        track.thumbnail,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        size: 56,
+      ),
       onTap: onTap,
     );
   }
@@ -40,7 +44,21 @@ class AppListItem extends StatelessWidget {
     return AppListItem(
       title: playlist.name,
       subtitle: "${playlist.trackIds.length} tracks",
-      image: playlist.thumbnail,
+      image: playlist.thumbnail != null
+          ? AppImage.network(
+              playlist.thumbnail!,
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              size: 56,
+            )
+          : Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+              ),
+              child: const AppIcon(Icons.music_note_rounded),
+            ),
       onTap: onTap,
     );
   }
@@ -52,7 +70,11 @@ class AppListItem extends StatelessWidget {
     return AppListItem(
       title: result.title,
       subtitle: result.artists.map((artist) => artist.name).join(", "),
-      image: result.thumbnail,
+      image: AppImage.network(
+        result.thumbnail,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        size: 56,
+      ),
       onTap: onTap,
     );
   }
@@ -62,11 +84,7 @@ class AppListItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: ListTile(
-        leading: AppImage.network(
-          image,
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          size: 56,
-        ),
+        leading: image,
         title: AppText.ellipse(title),
         subtitle: AppText.ellipse(subtitle),
         trailing: AppIcon.black87(

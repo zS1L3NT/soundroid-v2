@@ -78,8 +78,9 @@ class _LibraryAppBarState extends State<LibraryAppBar> {
       Playlist(
         userRef: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"),
         name: name,
-        thumbnail: "",
+        thumbnail: null,
         favourite: false,
+        download: false,
         trackIds: [],
       ),
     );

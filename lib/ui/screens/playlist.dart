@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:indexed/indexed.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
+import 'package:soundroid/models/user.dart';
 import 'package:soundroid/ui/widgets/app_widgets.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -19,10 +19,11 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   final _playlist = Playlist(
-    userRef: FirebaseFirestore.instance.collection("-").doc("-"),
+    userRef: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"),
     name: "Korean Songs",
     thumbnail: "https://thebiaslistcom.files.wordpress.com/2020/11/gfriend-mago.jpg",
     favourite: true,
+    download: false,
     trackIds: [],
   );
 
@@ -357,11 +358,24 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    AppImage.network(
-                      playlist.thumbnail,
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      size: 128,
-                    ),
+                    playlist.thumbnail != null
+                        ? AppImage.network(
+                            playlist.thumbnail!,
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
+                            size: 128,
+                          )
+                        : Container(
+                            width: 128,
+                            height: 128,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
+                            ),
+                            child: const AppIcon(
+                              Icons.music_note_rounded,
+                              size: 40,
+                            ),
+                          ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Material(
