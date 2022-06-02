@@ -4,8 +4,9 @@ export default class Playlist {
 	constructor(
 		public userRef: DocumentReference,
 		public name: string,
-		public thumbnail: string,
+		public thumbnail: string | null,
 		public favourite: boolean,
+		public download: boolean,
 		public trackIds: string[]
 	) {}
 
@@ -15,6 +16,7 @@ export default class Playlist {
 			name: listen.name,
 			thumbnail: listen.thumbnail,
 			favourite: listen.favourite,
+			download: listen.download,
 			trackIds: listen.trackIds
 		}),
 		fromFirestore: snap =>
@@ -23,6 +25,7 @@ export default class Playlist {
 				snap.get("name"),
 				snap.get("thumbnail"),
 				snap.get("favourite"),
+				snap.get("download"),
 				snap.get("trackIds")
 			)
 	}
