@@ -43,7 +43,13 @@ class AppImage extends StatefulWidget {
               );
             },
             errorWidget: (context, url, error) {
-              return const AppIcon(Icons.error);
+              return Container(
+                color: const Color.fromARGB(255, 255, 220, 220),
+                child: const AppIcon(
+                  Icons.error_rounded,
+                  color: Color(0xFFBA000D),
+                ),
+              );
             },
             fadeInCurve: Curves.decelerate,
             fadeInDuration: const Duration(milliseconds: 300),
@@ -80,7 +86,13 @@ class AppImage extends StatefulWidget {
             );
           },
           errorWidget: (context, url, error) {
-            return const AppIcon(Icons.error);
+            return Container(
+              color: const Color.fromARGB(255, 255, 220, 220),
+              child: const AppIcon(
+                Icons.error_rounded,
+                color: Color(0xFFBA000D),
+              ),
+            );
           },
           fadeInCurve: Curves.decelerate,
           fadeInDuration: const Duration(milliseconds: 300),
