@@ -33,13 +33,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showDialog(
           context: context,
           builder: (dialogContext) => AlertDialog(
-            title: const Text(
-              "Your music listening history will be cleared",
-            ),
-            content: const Text(
-              "Are you sure you want to clear your music listening history? SounDroid's song recommendations will not work as well after this.",
-              style: TextStyle(fontSize: 15),
-            ),
+            title: const Text("Clear Listening History?"),
+            content: const Text("Song recommendations will not work after this."),
             actions: [
               TextButton(
                 onPressed: () {},
@@ -71,13 +66,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showDialog(
           context: context,
           builder: (dialogContext) => AlertDialog(
-            title: const Text(
-              "Your search history will be cleared",
-            ),
-            content: const Text(
-              "Are you sure you want to clear your music listening history?",
-              style: TextStyle(fontSize: 15),
-            ),
+            title: const Text("Clear Search History?"),
+            content: const Text("You won't see anything in your search history after this."),
             actions: [
               TextButton(
                 onPressed: () {},
@@ -109,14 +99,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showDialog(
           context: context,
           builder: (dialogContext) => AlertDialog(
-            title: const Text(
-              "Your account data will be deleted",
-              style: TextStyle(color: Colors.red),
-            ),
-            content: const Text(
-              "Are you sure you want to delete all your account data? This action is irreversable!",
-              style: TextStyle(fontSize: 15),
-            ),
+            title: const Text("Delete Account Data?"),
+            content: const Text("You will be logged out and your account will be deleted!"),
             actions: [
               TextButton(
                 onPressed: () {
@@ -152,11 +136,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showDialog(
           context: context,
           builder: (dialogContext) => AlertDialog(
-            title: const Text("You will be logged out"),
-            content: const Text(
-              'Are you sure you want to log out of SounDroid? Any music playing will be stopped.',
-              style: TextStyle(fontSize: 15),
-            ),
+            title: const Text("Logout"),
+            content: const Text('Any music playing will be stopped.'),
             actions: [
               TextButton(
                 onPressed: () {

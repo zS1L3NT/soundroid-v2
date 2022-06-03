@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:soundroid/screens/main_screen.dart';
+import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
@@ -23,9 +23,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     Timer(const Duration(seconds: 1), checkCooldown);
 
     // ! Remove after prototyping stage
-    Timer(const Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
-    });
+    // Timer(const Duration(seconds: 5), () {
+    // Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+    // });
   }
 
   void checkCooldown() {
@@ -58,12 +58,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            const Text(
+            Text(
               "Check your email",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextTheme.authHeader.copyWith(fontSize: 24),
             ),
             const SizedBox(height: 8),
             const SizedBox(
@@ -71,6 +68,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               child: Text(
                 "We have sent a verification link to your email. Click the link to veify your email address.",
                 textAlign: TextAlign.center,
+                style: AppTextTheme.authBody,
               ),
             ),
             const Spacer(),
@@ -85,23 +83,13 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   : null,
               child: Text(
                 "Resend verification email${_cooldown > 0 ? " in ${_cooldown}s" : ""}",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
               ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pushReplacementNamed("/auth");
               },
-              child: const Text(
-                "Sign in another way",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              child: const Text("Sign in another way"),
             ),
             const SizedBox(height: 32),
           ],

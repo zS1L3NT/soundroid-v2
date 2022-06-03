@@ -242,10 +242,7 @@ class RecommendationItem extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.red),
-                ),
+                child: const Text("Cancel"),
               ),
               ElevatedButton(
                 onPressed: () => deleteSearch(context),

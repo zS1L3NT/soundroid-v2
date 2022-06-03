@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/screens/auth/signin_screen.dart';
 import 'package:soundroid/screens/auth/signup_screen.dart';
 import 'package:soundroid/screens/main_screen.dart';
@@ -30,21 +31,14 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     const Text(
                       "SounDroid",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTextTheme.welcomeAppName,
                     ),
                     FractionallySizedBox(
                       widthFactor: 0.5,
                       child: Text(
                         "The Free Spotify Alternative",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black.withOpacity(0.6),
-                        ),
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                     ),
                   ],

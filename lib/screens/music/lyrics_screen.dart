@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/utils/server.dart';
@@ -45,10 +46,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
               return Center(
                 child: Text(
                   lyric,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    height: 2,
-                  ),
+                  style: AppTextTheme.lyrics,
                 ),
               );
             },

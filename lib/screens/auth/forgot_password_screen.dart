@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/screens/auth/reset_password_screen.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 import 'package:soundroid/widgets/close_app_bar.dart';
@@ -32,18 +33,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               children: [
                 const Text(
                   "Password Recovery",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextTheme.authHeader,
                 ),
                 const SizedBox(height: 8),
                 const Text(
                   "Enter the email address associated with your account and we'll send an email with instructions to reset your password",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextTheme.authBody,
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
@@ -78,8 +73,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           builder: (dialogContext) => AlertDialog(
                             title: const Text("Check your mail"),
                             content: const Text(
-                              "We have sent you an email containing the instructions to reset your password",
-                              style: TextStyle(fontSize: 15),
+                              "Check your email for instructions to reset your password",
                             ),
                             actions: [
                               ElevatedButton(
@@ -97,12 +91,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ); //).then((_) => Navigator.of(context).pop());
                       }
                     },
-                    child: const Text(
-                      "Send Instructions",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: const Text("Send Instructions"),
                   ),
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/screens/auth/verify_email_screen.dart';
 import 'package:soundroid/utils/route_transition.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
@@ -34,18 +35,12 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 const Text(
                   "Create your account",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextTheme.authHeader,
                 ),
                 const SizedBox(height: 8),
                 const Text(
                   "Sign up to start listening to your favourite songs on SounDroid",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTextTheme.authBody,
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
@@ -139,12 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         );
                       }
                     },
-                    child: const Text(
-                      "Register",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: const Text("Register"),
                   ),
                 ),
               ],
