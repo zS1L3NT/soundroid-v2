@@ -47,7 +47,10 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: const MainFloatingMusicButton(),
-      body: _screens[_index],
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: _screens[_index],
+      ),
     );
   }
 }
@@ -65,117 +68,44 @@ class MainBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(int index) {
-      return this.index == index ? Theme.of(context).primaryColor : Colors.grey;
-    }
-
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: SizedBox(
         height: kBottomNavigationBarHeight,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Expanded(
-              child: MaterialButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setIndex(0);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppIcon(
-                      Icons.home_rounded,
-                      color: getColor(0),
-                    ),
-                    Text(
-                      "Home",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: getColor(0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            AppIcon(
+              Icons.home_rounded,
+              color: index == 0 ? Theme.of(context).primaryColor : null,
+              onPressed: () {
+                setIndex(0);
+              },
             ),
-            Expanded(
-              child: MaterialButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setIndex(1);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppIcon(
-                      Icons.search_rounded,
-                      color: getColor(1),
-                    ),
-                    Text(
-                      "Search",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: getColor(1),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            AppIcon(
+              Icons.search_rounded,
+              color: index == 1 ? Theme.of(context).primaryColor : null,
+              onPressed: () {
+                setIndex(1);
+              },
             ),
-            const Expanded(child: SizedBox()),
-            Expanded(
-              child: MaterialButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setIndex(2);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppIcon(
-                      Icons.library_music_rounded,
-                      color: getColor(2),
-                    ),
-                    Text(
-                      "Library",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: getColor(2),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            const SizedBox(
+              width: 48,
             ),
-            Expanded(
-              child: MaterialButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setIndex(3);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppIcon(
-                      Icons.settings_rounded,
-                      color: getColor(3),
-                    ),
-                    Text(
-                      "Settings",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: getColor(3),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            AppIcon(
+              Icons.library_music_rounded,
+              color: index == 2 ? Theme.of(context).primaryColor : null,
+              onPressed: () {
+                setIndex(2);
+              },
+            ),
+            AppIcon(
+              Icons.settings_rounded,
+              color: index == 3 ? Theme.of(context).primaryColor : null,
+              onPressed: () {
+                setIndex(3);
+              },
             ),
           ],
         ),
