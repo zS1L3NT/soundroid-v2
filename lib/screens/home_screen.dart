@@ -238,7 +238,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text("SounDroid"),
-      elevation: 10,
     );
   }
 }

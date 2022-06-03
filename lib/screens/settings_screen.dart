@@ -221,7 +221,6 @@ class _SettingsAppBarState extends State<SettingsAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text("Settings"),
-      elevation: 10,
     );
   }
 }

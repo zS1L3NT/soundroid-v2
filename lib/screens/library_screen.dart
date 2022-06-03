@@ -139,7 +139,6 @@ class _LibraryAppBarState extends State<LibraryAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text("Library"),
-      elevation: 10,
       actions: [
         AppIcon.white(
           Icons.add_rounded,

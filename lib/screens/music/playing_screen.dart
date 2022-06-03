@@ -93,7 +93,6 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
           )
         : AppBar(
             backgroundColor: Theme.of(context).primaryColor,
-            elevation: 10,
             leading: AppIcon(
               Icons.close_rounded,
               onPressed: () {

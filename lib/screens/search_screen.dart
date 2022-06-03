@@ -191,7 +191,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
             : const SizedBox(),
         const SizedBox(width: 4)
       ],
-      elevation: 10,
     );
   }
 }
