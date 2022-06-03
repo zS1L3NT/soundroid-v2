@@ -22,14 +22,14 @@ class AppListItem extends StatelessWidget {
   final Function() onTap;
 
   factory AppListItem.fromTrack(
-    Track track, {
+    Track? track, {
     required Function() onTap,
   }) {
     return AppListItem(
-      title: track.title,
-      subtitle: track.artists.map((artist) => artist.name).join(", "),
+      title: track?.title ?? "...",
+      subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
       image: AppImage.network(
-        track.thumbnail,
+        track?.thumbnail,
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         size: 56,
       ),
