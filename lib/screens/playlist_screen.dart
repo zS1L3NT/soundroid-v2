@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:indexed/indexed.dart';
 import 'package:soundroid/models/playlist.dart';
+import 'package:soundroid/models/track.dart';
+import 'package:soundroid/utils/server.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -46,15 +48,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 ),
               ),
               const SliverPadding(padding: EdgeInsets.only(top: 8)),
-              // SliverList(
-              // delegate: SliverChildBuilderDelegate(
-              // (_, int index) => AppListItem.fromTrack(
-              // _tracks[index],
-              // onTap: () {},
-              // ),
-              // childCount: _tracks.length,
-              // ),
-              // ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, int index) {
+                    final trackId = snap.data!.data()!.trackIds[index];
+                    return TrackItem(
+                      key: ValueKey(trackId),
+                      trackId: trackId,
+                    );
+                  },
+                  childCount: snap.data?.data()?.trackIds.length ?? 0,
+                ),
+              ),
               const SliverPadding(padding: EdgeInsets.only(top: 8)),
             ],
           ),
@@ -233,4 +238,40 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+}
+
+class TrackItem extends StatefulWidget {
+  const TrackItem({
+    Key? key,
+    required this.trackId,
+  }) : super(key: key);
+
+  final String trackId;
+
+  @override
+  State<TrackItem> createState() => _TrackItemState();
+}
+
+class _TrackItemState extends State<TrackItem> {
+  late Future<Track> _futureTrack = Server.fetchTrack(widget.trackId);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _futureTrack = Server.fetchTrack(widget.trackId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Track>(
+      future: _futureTrack,
+      builder: (context, snap) {
+        return AppListItem.fromTrack(
+          snap.data,
+          onTap: () {},
+        );
+      },
+    );
+  }
 }
