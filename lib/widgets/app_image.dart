@@ -63,7 +63,7 @@ class AppImage extends StatefulWidget {
   }
 
   factory AppImage.network(
-    String url, {
+    String? url, {
     double? size,
     double? width,
     double? height,
@@ -72,33 +72,46 @@ class AppImage extends StatefulWidget {
     return AppImage(
       borderRadius: borderRadius,
       child: (context) {
-        return CachedNetworkImage(
-          imageUrl: url,
-          placeholder: (context, url) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                width: size ?? width,
-                height: size ?? height,
-                color: Colors.black,
-              ),
-            );
-          },
-          errorWidget: (context, url, error) {
-            return Container(
-              color: const Color.fromARGB(255, 255, 220, 220),
-              child: const AppIcon(
-                Icons.error_rounded,
-                color: Color(0xFFBA000D),
-              ),
-            );
-          },
-          fadeInCurve: Curves.decelerate,
-          fadeInDuration: const Duration(milliseconds: 300),
-          fit: BoxFit.cover,
-          width: size ?? width,
-          height: size ?? height,
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: url != null
+              ? CachedNetworkImage(
+                  imageUrl: url,
+                  placeholder: (context, url) {
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: size ?? width,
+                        height: size ?? height,
+                        color: Colors.black,
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, error) {
+                    return Container(
+                      color: const Color.fromARGB(255, 255, 220, 220),
+                      child: const AppIcon(
+                        Icons.error_rounded,
+                        color: Color(0xFFBA000D),
+                      ),
+                    );
+                  },
+                  fadeInCurve: Curves.decelerate,
+                  fadeInDuration: const Duration(milliseconds: 300),
+                  fit: BoxFit.cover,
+                  width: size ?? width,
+                  height: size ?? height,
+                )
+              : Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: size ?? width,
+                    height: size ?? height,
+                    color: Colors.black,
+                  ),
+                ),
         );
       },
     );
