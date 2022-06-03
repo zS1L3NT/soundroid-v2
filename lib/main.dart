@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/models/artist.dart';
+import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/playing_provider.dart';
 import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/screens/auth/forgot_password_screen.dart';
@@ -16,6 +18,11 @@ import 'package:soundroid/screens/main_screen.dart';
 void main() async {
   // Initialize Hive
   await Hive.initFlutter();
+
+  Hive.registerAdapter(ArtistAdapter());
+  Hive.registerAdapter(TrackAdapter());
+  await Hive.openBox<Artist>("artists");
+  await Hive.openBox<Track>("tracks");
 
   // Initialize Firebase
   await Firebase.initializeApp();

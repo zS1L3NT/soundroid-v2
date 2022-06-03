@@ -68,4 +68,21 @@ class Server {
       throw Exception("Failed to fetch lyrics");
     }
   }
+
+  static Future<Track> fetchTrack(String id) async {
+    if (Track.box.containsKey(id)) {
+      return Track.box.get(id)!;
+    }
+
+    final response = await get(Uri.parse("$host/track?id=$id"));
+
+    if (response.statusCode == 200) {
+      final track = Track.fromJson(jsonDecode(response.body));
+      Track.box.put(id, track);
+      return track;
+    } else {
+      debugPrint(response.body);
+      throw Exception("Failed to fetch track");
+    }
+  }
 }
