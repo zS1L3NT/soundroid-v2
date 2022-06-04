@@ -21,6 +21,15 @@ class AppTextTheme {
     fontWeight: FontWeight.bold,
   );
 
+  static const musicTitle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const musicArtists = TextStyle(
+    fontSize: 17,
+  );
+
   static const musicTime = TextStyle(
     fontSize: 12,
   );
@@ -28,5 +37,15 @@ class AppTextTheme {
   static const lyrics = TextStyle(
     fontSize: 18,
     height: 2,
+  );
+
+  static const playlistTitle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const playlistTrackCount = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
   );
 }

@@ -80,14 +80,13 @@ class _CurrentScreenState extends State<CurrentScreen> {
                       AppText.marquee(
                         "Strawberry Moon",
                         width: size.width,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        style: AppTextTheme.musicTitle,
                         textAlign: TextAlign.center,
                       ),
                       AppText.marquee(
                         "IU",
                         width: size.width,
-                        fontSize: 17,
+                        style: AppTextTheme.musicArtists,
                         textAlign: TextAlign.center,
                       ),
                     ],
