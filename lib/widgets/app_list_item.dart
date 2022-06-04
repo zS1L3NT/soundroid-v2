@@ -50,7 +50,7 @@ class AppListItem extends StatelessWidget {
         child: FittedBox(
           fit: BoxFit.cover,
           child: AppImage.network(
-            playlist.thumbnail!,
+            playlist.thumbnail,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             size: 56,
           ),
