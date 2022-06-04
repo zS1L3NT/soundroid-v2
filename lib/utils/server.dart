@@ -10,13 +10,13 @@ class Server {
   static bool inDevelopment = false;
 
   static String get host =>
-      inDevelopment ? "http://localhost:5190/api" : "http://soundroid.zectan.com/api";
+      inDevelopment ? "http://21a1-58-182-54-53.ngrok.io/api" : "http://soundroid.zectan.com/api";
 
   static Future<List<Map<String, dynamic>>> fetchFeed() async {
     final response = await get(Uri.parse("$host/feed"));
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return jsonDecode(response.body).cast<Map<String, dynamic>>();
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch feed");

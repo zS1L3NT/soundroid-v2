@@ -16,6 +16,11 @@ class AppTextTheme {
     fontWeight: FontWeight.w500,
   );
 
+  static const homeHeader = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+  );
+
   static const musicTime = TextStyle(
     fontSize: 12,
   );

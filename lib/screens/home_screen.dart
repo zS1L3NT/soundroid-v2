@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/utils/server.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
@@ -18,15 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Map<String, dynamic>>> _futureFeed;
+  final _futureFeed = Server.fetchFeed();
   final _playlists = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _futureFeed = Server.fetchFeed();
-  }
 
   Widget buildYourPlaylistsSection() {
     return Padding(
@@ -36,10 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             "Your Playlists",
-            style: TextStyle(
+            style: AppTextTheme.homeHeader.copyWith(
               color: Theme.of(context).primaryColor,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 12),
@@ -105,10 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 125,
                       ),
                       AppText.marquee(
-                        track.artistIds,
+                        track.artists.map((artist) => artist.name).join(", "),
                         width: 125,
-                        fontSize: 14,
-                        extraHeight: 8,
                       ),
                     ],
                   ),
@@ -130,10 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             section["title"],
-            style: TextStyle(
+            style: AppTextTheme.homeHeader.copyWith(
               color: Theme.of(context).primaryColor,
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -141,11 +129,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             section["description"],
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w300,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: Theme.of(context).primaryColor),
           ),
         ),
         const SizedBox(height: 12),
@@ -163,26 +150,25 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             children: [
               AppImage.network(
-                section["artist"]["picture"],
+                null,
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
                 size: 48,
               ),
               const SizedBox(width: 12),
-              const Text(
-                "More from ",
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                section["artist"]["name"],
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "More from",
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  Text(
+                    section["artist"]["name"],
+                    style: AppTextTheme.homeHeader.copyWith(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],
               )
             ],
           ),
