@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/screens/auth/forgot_password_screen.dart';
 import 'package:soundroid/screens/main_screen.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
@@ -37,18 +36,17 @@ class _SigninScreenState extends State<SigninScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Welcome back",
-                    style: AppTextTheme.authHeader,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     "Sign In with your data that you entered during your registration",
-                    style: AppTextTheme.authBody,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(height: 32),
                   TextFormField(
-                    style: const TextStyle(fontSize: 15),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your email address',
@@ -70,7 +68,6 @@ class _SigninScreenState extends State<SigninScreen> {
                   const SizedBox(height: 16),
                   TextFormField(
                     obscureText: _isObscure,
-                    style: const TextStyle(fontSize: 15),
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: 'Enter your password',

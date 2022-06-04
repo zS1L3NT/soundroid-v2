@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/utils/server.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
@@ -30,9 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             "Your Playlists",
-            style: AppTextTheme.homeHeader.copyWith(
-              color: Theme.of(context).primaryColor,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .headline3
+                ?.copyWith(color: Theme.of(context).primaryColor),
           ),
           const SizedBox(height: 12),
           for (final playlist in _playlists) ...[
@@ -120,9 +120,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             section["title"],
-            style: AppTextTheme.homeHeader.copyWith(
-              color: Theme.of(context).primaryColor,
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .headline3
+                ?.copyWith(color: Theme.of(context).primaryColor),
           ),
         ),
         Padding(
@@ -164,9 +165,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     section["artist"]["name"],
-                    style: AppTextTheme.homeHeader.copyWith(
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3
+                        ?.copyWith(color: Theme.of(context).primaryColor),
                   )
                 ],
               )

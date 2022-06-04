@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
 class CurrentScreen extends StatefulWidget {
@@ -80,13 +79,13 @@ class _CurrentScreenState extends State<CurrentScreen> {
                       AppText.marquee(
                         "Strawberry Moon",
                         width: size.width,
-                        style: AppTextTheme.musicTitle,
+                        style: Theme.of(context).textTheme.headline4,
                         textAlign: TextAlign.center,
                       ),
                       AppText.marquee(
                         "IU",
                         width: size.width,
-                        style: AppTextTheme.musicArtists,
+                        style: Theme.of(context).textTheme.subtitle1,
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -103,9 +102,9 @@ class _CurrentScreenState extends State<CurrentScreen> {
             const Spacer(flex: 3),
             Row(
               children: [
-                const Text(
+                Text(
                   "2:21",
-                  style: AppTextTheme.musicTime,
+                  style: Theme.of(context).textTheme.caption,
                 ),
                 SliderTheme(
                   data: const SliderThemeData(
@@ -124,9 +123,9 @@ class _CurrentScreenState extends State<CurrentScreen> {
                     ),
                   ),
                 ),
-                const Text(
+                Text(
                   "3:39",
-                  style: AppTextTheme.musicTime,
+                  style: Theme.of(context).textTheme.caption,
                 ),
               ],
             ),

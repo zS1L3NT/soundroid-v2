@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/screens/auth/reset_password_screen.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 import 'package:soundroid/widgets/close_app_bar.dart';
@@ -31,18 +30,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Password Recovery",
-                  style: AppTextTheme.authHeader,
+                  style: Theme.of(context).textTheme.headline2,
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "Enter the email address associated with your account and we'll send an email with instructions to reset your password",
-                  style: AppTextTheme.authBody,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
-                  style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',

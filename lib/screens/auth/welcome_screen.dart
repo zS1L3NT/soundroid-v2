@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/screens/auth/signin_screen.dart';
 import 'package:soundroid/screens/auth/signup_screen.dart';
 import 'package:soundroid/screens/main_screen.dart';
@@ -29,9 +28,9 @@ class WelcomeScreen extends StatelessWidget {
                       "assets/images/icon.png",
                       size: 128,
                     ),
-                    const Text(
+                    Text(
                       "SounDroid",
-                      style: AppTextTheme.welcomeAppName,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     FractionallySizedBox(
                       widthFactor: 0.5,

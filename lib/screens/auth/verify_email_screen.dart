@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
@@ -60,15 +59,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             const SizedBox(height: 32),
             Text(
               "Check your email",
-              style: AppTextTheme.authHeader.copyWith(fontSize: 24),
+              style: Theme.of(context).textTheme.headline2?.copyWith(fontSize: 24),
             ),
             const SizedBox(height: 8),
-            const SizedBox(
+            SizedBox(
               width: 300,
               child: Text(
                 "We have sent a verification link to your email. Click the link to veify your email address.",
                 textAlign: TextAlign.center,
-                style: AppTextTheme.authBody,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             const Spacer(),

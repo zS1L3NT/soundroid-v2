@@ -57,6 +57,37 @@ class MyApp extends StatelessWidget {
           800: Color.fromRGBO(18, 109, 255, 0.9),
           900: Color.fromRGBO(18, 109, 255, 1)
         }),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+          headline2: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+          headline3: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+          headline4: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+          headline5: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
+          ),
+          caption: TextStyle(
+            fontSize: 12,
+            color: Colors.black87,
+          ),
+        ),
         backgroundColor: const Color(0xFF222222),
         fontFamily: "Poppins",
       ),

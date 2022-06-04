@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:indexed/indexed.dart';
-import 'package:soundroid/constants/app_text_theme.dart';
 import 'package:soundroid/models/playlist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/utils/server.dart';
@@ -118,11 +117,11 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                   AppText.marquee(
                     playlist?.name ?? "...",
                     extraHeight: 12,
-                    style: AppTextTheme.playlistTitle,
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                   AppText.marquee(
                     "${playlist?.trackIds.length ?? "..."} tracks",
-                    style: AppTextTheme.playlistTrackCount,
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                   const SizedBox(height: 8),
                   Row(
