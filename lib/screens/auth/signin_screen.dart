@@ -36,24 +36,17 @@ class _SigninScreenState extends State<SigninScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Welcome back",
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     "Sign In with your data that you entered during your registration",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(height: 32),
                   TextFormField(
-                    style: const TextStyle(fontSize: 15),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your email address',
@@ -75,7 +68,6 @@ class _SigninScreenState extends State<SigninScreen> {
                   const SizedBox(height: 16),
                   TextFormField(
                     obscureText: _isObscure,
-                    style: const TextStyle(fontSize: 15),
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: 'Enter your password',
@@ -119,12 +111,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           );
                         }
                       },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
+                      child: const Text("Login"),
                     ),
                   ),
                   const SizedBox(height: 12),

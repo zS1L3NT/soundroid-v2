@@ -5,65 +5,59 @@ import 'package:marquee/marquee.dart';
 class AppText extends StatelessWidget {
   const AppText({
     Key? key,
-    required this.child,
+    required this.builder,
   }) : super(key: key);
 
-  final Widget Function(BuildContext) child;
+  final Widget Function(BuildContext) builder;
 
   static Widget marquee(
     String text, {
     double width = double.infinity,
     double extraHeight = 9,
-    double fontSize = 16,
-    FontWeight fontWeight = FontWeight.normal,
+    TextStyle? style,
     TextAlign textAlign = TextAlign.left,
-    Color? color,
     double blankSpace = 30.0,
     double velocity = 30.0,
     Duration startAfter = const Duration(seconds: 3),
     Duration pauseAfterRound = const Duration(seconds: 3),
   }) {
     return AppText(
-      child: (context) => SizedBox(
-        width: width,
-        height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
-        child: AutoSizeText(
-          text,
-          minFontSize: fontSize,
-          maxFontSize: fontSize,
-          textAlign: textAlign,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: fontWeight,
-            color: color,
-          ),
-          overflowReplacement: ShaderMask(
-            shaderCallback: (rectangle) => LinearGradient(
-              colors: [
-                Colors.transparent,
-                color ?? Colors.black,
-                color ?? Colors.black,
-                Colors.transparent
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: const [0, 0.01, 0.9, 1.0],
-            ).createShader(rectangle),
-            child: Marquee(
-              text: text,
-              style: TextStyle(
-                fontSize: fontSize,
-                fontWeight: fontWeight,
-                color: color,
+      builder: (context) {
+        final textStyle = style ?? Theme.of(context).textTheme.bodyText2!;
+        final fontSize = textStyle.fontSize ?? 14;
+        return SizedBox(
+          width: width,
+          height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
+          child: AutoSizeText(
+            text,
+            minFontSize: fontSize,
+            maxFontSize: fontSize,
+            textAlign: textAlign,
+            style: style,
+            overflowReplacement: ShaderMask(
+              shaderCallback: (rectangle) => LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  textStyle.color ?? Colors.black,
+                  textStyle.color ?? Colors.black,
+                  Colors.transparent
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: const [0, 0.01, 0.9, 1.0],
+              ).createShader(rectangle),
+              child: Marquee(
+                text: text,
+                style: style,
+                blankSpace: blankSpace,
+                velocity: velocity,
+                startAfter: startAfter,
+                pauseAfterRound: pauseAfterRound,
               ),
-              blankSpace: blankSpace,
-              velocity: velocity,
-              startAfter: startAfter,
-              pauseAfterRound: pauseAfterRound,
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -71,31 +65,29 @@ class AppText extends StatelessWidget {
     String text, {
     double width = double.infinity,
     double extraHeight = 9,
-    double fontSize = 16,
-    FontWeight fontWeight = FontWeight.normal,
+    TextStyle? style,
     TextAlign textAlign = TextAlign.left,
-    Color? color,
   }) {
     return AppText(
-      child: (context) => SizedBox(
-        width: width,
-        height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: fontWeight,
-            color: color,
+      builder: (context) {
+        final textStyle = style ?? Theme.of(context).textTheme.bodyText2!;
+        final fontSize = textStyle.fontSize ?? 14;
+        return SizedBox(
+          width: width,
+          height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
+          child: Text(
+            text,
+            style: style,
+            textAlign: textAlign,
+            overflow: TextOverflow.ellipsis,
           ),
-          textAlign: textAlign,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return child(context);
+    return builder(context);
   }
 }

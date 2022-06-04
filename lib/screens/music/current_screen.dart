@@ -79,14 +79,13 @@ class _CurrentScreenState extends State<CurrentScreen> {
                       AppText.marquee(
                         "Strawberry Moon",
                         width: size.width,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        style: Theme.of(context).textTheme.headline4,
                         textAlign: TextAlign.center,
                       ),
                       AppText.marquee(
                         "IU",
                         width: size.width,
-                        fontSize: 17,
+                        style: Theme.of(context).textTheme.subtitle1,
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -103,9 +102,9 @@ class _CurrentScreenState extends State<CurrentScreen> {
             const Spacer(flex: 3),
             Row(
               children: [
-                const Text(
+                Text(
                   "2:21",
-                  style: TextStyle(fontSize: 12),
+                  style: Theme.of(context).textTheme.caption,
                 ),
                 SliderTheme(
                   data: const SliderThemeData(
@@ -124,9 +123,9 @@ class _CurrentScreenState extends State<CurrentScreen> {
                     ),
                   ),
                 ),
-                const Text(
+                Text(
                   "3:39",
-                  style: TextStyle(fontSize: 12),
+                  style: Theme.of(context).textTheme.caption,
                 ),
               ],
             ),

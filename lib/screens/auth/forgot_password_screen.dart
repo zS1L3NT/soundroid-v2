@@ -30,24 +30,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Password Recovery",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "Enter the email address associated with your account and we'll send an email with instructions to reset your password",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
-                  style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
@@ -78,8 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           builder: (dialogContext) => AlertDialog(
                             title: const Text("Check your mail"),
                             content: const Text(
-                              "We have sent you an email containing the instructions to reset your password",
-                              style: TextStyle(fontSize: 15),
+                              "Check your email for instructions to reset your password",
                             ),
                             actions: [
                               ElevatedButton(
@@ -97,12 +89,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ); //).then((_) => Navigator.of(context).pop());
                       }
                     },
-                    child: const Text(
-                      "Send Instructions",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: const Text("Send Instructions"),
                   ),
                 ),
               ],

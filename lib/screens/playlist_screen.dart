@@ -117,13 +117,11 @@ class PlaylistHeader extends SliverPersistentHeaderDelegate {
                   AppText.marquee(
                     playlist?.name ?? "...",
                     extraHeight: 12,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                   AppText.marquee(
                     "${playlist?.trackIds.length ?? "..."} tracks",
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                   const SizedBox(height: 8),
                   Row(

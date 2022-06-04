@@ -32,24 +32,17 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Create your account",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "Sign up to start listening to your favourite songs on SounDroid",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
-                  style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your name',
@@ -70,7 +63,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
@@ -92,7 +84,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   obscureText: _isObscure,
-                  style: const TextStyle(fontSize: 15),
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
@@ -139,12 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         );
                       }
                     },
-                    child: const Text(
-                      "Register",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: const Text("Register"),
                   ),
                 ),
               ],

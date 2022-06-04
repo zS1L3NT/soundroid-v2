@@ -32,25 +32,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Password Recovery",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "Enter the email address associated with your account and we'll send an email with instructions to reset your password",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
                   obscureText: _areObscure[0],
-                  style: const TextStyle(fontSize: 15),
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password',
@@ -83,7 +76,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   obscureText: _areObscure[1],
-                  style: const TextStyle(fontSize: 15),
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter your password confirmation',
@@ -125,8 +117,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           builder: (dialogContext) => AlertDialog(
                             title: const Text("Password reset!"),
                             content: const Text(
-                              "You have successfully reset your password. Please use your new password when logging into your account.",
-                              style: TextStyle(fontSize: 15),
+                              "Please use your new password when logging into your account.",
                             ),
                             actions: [
                               ElevatedButton(
@@ -146,12 +137,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         );
                       }
                     },
-                    child: const Text(
-                      "Send Instructions",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: const Text("Send Instructions"),
                   ),
                 ),
               ],
