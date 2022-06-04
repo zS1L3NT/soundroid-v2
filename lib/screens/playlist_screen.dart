@@ -42,20 +42,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               SliverAppBar(
                 pinned: true,
                 stretch: true,
-                expandedHeight: MediaQuery.of(context).size.width * 0.75,
+                expandedHeight: MediaQuery.of(context).size.width * 0.8,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: AppText.marquee(
-                    playlist?.name ?? "...",
-                    textAlign: TextAlign.center,
-                    extraHeight: 12,
-                    style: Theme.of(context).textTheme.headline3?.copyWith(color: Colors.white),
-                  ),
-                  titlePadding: const EdgeInsets.only(
-                    right: 48,
-                    bottom: 8,
-                    left: 56,
-                  ),
-                  expandedTitleScale: 1,
                   stretchModes: const [StretchMode.zoomBackground],
                   background: Image.network(
                     playlist!.thumbnail!,
@@ -73,19 +61,49 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   ),
                 ],
               ),
-              SliverPadding(
-                padding: const EdgeInsets.only(top: 8),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, int index) {
-                      final trackId = snap.data!.data()!.trackIds[index];
-                      return TrackItem(
-                        key: ValueKey(trackId),
-                        trackId: trackId,
-                      );
-                    },
-                    childCount: snap.data?.data()?.trackIds.length ?? 0,
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: AppText.marquee(
+                              playlist.name,
+                              extraHeight: 13,
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                          ),
+                          AppIcon(
+                            Icons.favorite_rounded,
+                            onPressed: () {},
+                          ),
+                          AppIcon(
+                            Icons.download_done_rounded,
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                      const Divider()
+                    ],
+                  ),
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, int index) {
+                    final trackId = snap.data!.data()!.trackIds[index];
+                    return TrackItem(
+                      key: ValueKey(trackId),
+                      trackId: trackId,
+                    );
+                  },
+                  childCount: snap.data?.data()?.trackIds.length ?? 0,
                 ),
               ),
             ],
