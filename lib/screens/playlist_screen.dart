@@ -21,12 +21,22 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   late Stream<DocumentSnapshot<Playlist>> _playlistStream;
+  final _scrollController = ScrollController();
+  bool _isCollapsed = false;
 
   @override
   void initState() {
     super.initState();
 
     _playlistStream = Playlist.collection.doc(widget.playlistId).snapshots();
+    _scrollController.addListener(() {
+      final isCollapsed = _scrollController.offset > (200 + MediaQuery.of(context).padding.top);
+      if (isCollapsed != _isCollapsed) {
+        setState(() {
+          _isCollapsed = isCollapsed;
+        });
+      }
+    });
   }
 
   @override
@@ -38,10 +48,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         return Scaffold(
           body: CustomScrollView(
             physics: const BouncingScrollPhysics(),
+            controller: _scrollController,
             slivers: [
               SliverAppBar(
                 pinned: true,
                 stretch: true,
+                title: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: _isCollapsed ? Text(playlist?.name ?? "...") : const SizedBox(),
+                ),
                 expandedHeight: MediaQuery.of(context).size.width * 0.8,
                 flexibleSpace: FlexibleSpaceBar(
                   stretchModes: const [StretchMode.zoomBackground],
@@ -55,9 +70,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   onPressed: () {},
                 ),
                 actions: [
-                  AppIcon(
-                    Icons.edit_rounded,
-                    onPressed: () {},
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: _isCollapsed
+                        ? AppIcon(
+                            Icons.edit_rounded,
+                            onPressed: () {},
+                          )
+                        : const SizedBox(),
                   ),
                 ],
               ),
