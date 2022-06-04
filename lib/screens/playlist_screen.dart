@@ -60,9 +60,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 expandedHeight: MediaQuery.of(context).size.width * 0.8,
                 flexibleSpace: FlexibleSpaceBar(
                   stretchModes: const [StretchMode.zoomBackground],
-                  background: Image.network(
-                    playlist!.thumbnail!,
+                  background: FittedBox(
                     fit: BoxFit.cover,
+                    child: AppImage.network(
+                      playlist?.thumbnail,
+                      errorIconPadding: 24,
+                    ),
                   ),
                 ),
                 leading: AppIcon(
@@ -94,7 +97,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         children: [
                           Expanded(
                             child: AppText.marquee(
-                              playlist.name,
+                              playlist?.name ?? "...",
                               extraHeight: 13,
                               style: Theme.of(context).textTheme.headline3,
                             ),

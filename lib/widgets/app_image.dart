@@ -67,6 +67,7 @@ class AppImage extends StatefulWidget {
     double? size,
     double? width,
     double? height,
+    double errorIconPadding = 0,
     BorderRadius borderRadius = BorderRadius.zero,
   }) {
     return AppImage(
@@ -91,9 +92,12 @@ class AppImage extends StatefulWidget {
                   errorWidget: (context, url, error) {
                     return Container(
                       color: const Color.fromARGB(255, 255, 220, 220),
-                      child: const AppIcon(
-                        Icons.error_rounded,
-                        color: Color(0xFFBA000D),
+                      child: Padding(
+                        padding: EdgeInsets.all(errorIconPadding),
+                        child: const AppIcon(
+                          Icons.error_rounded,
+                          color: Color(0xFFBA000D),
+                        ),
                       ),
                     );
                   },
