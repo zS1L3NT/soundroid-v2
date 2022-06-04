@@ -52,14 +52,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
             if (index == 0) {
               return buildLikedSongs();
             }
+            final doc = snap.data!.docs[index - 1];
             return AppListItem.fromPlaylist(
-              snap.data!.docs[index - 1].data(),
+              doc.id,
+              doc.data(),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return PlaylistScreen(
-                        playlistId: snap.data!.docs[index - 1].id,
+                        playlistId: doc.id,
+                        thumbnail: doc.data().thumbnail!,
                       );
                     },
                   ),

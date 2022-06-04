@@ -38,27 +38,24 @@ class AppListItem extends StatelessWidget {
   }
 
   factory AppListItem.fromPlaylist(
+    String playlistId,
     Playlist playlist, {
     required Function() onTap,
   }) {
     return AppListItem(
       title: playlist.name,
       subtitle: "${playlist.trackIds.length} tracks",
-      image: playlist.thumbnail != null
-          ? AppImage.network(
-              playlist.thumbnail!,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              size: 56,
-            )
-          : Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-              ),
-              child: const AppIcon(Icons.music_note_rounded),
-            ),
+      image: Hero(
+        tag: "playlist_$playlistId",
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: AppImage.network(
+            playlist.thumbnail!,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            size: 56,
+          ),
+        ),
+      ),
       onTap: onTap,
     );
   }

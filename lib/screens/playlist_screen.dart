@@ -9,9 +9,12 @@ class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({
     Key? key,
     required this.playlistId,
+    required this.thumbnail,
   }) : super(key: key);
 
   final String playlistId;
+
+  final String thumbnail;
 
   static const routeName = "/playlist";
 
@@ -57,14 +60,20 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   duration: const Duration(milliseconds: 300),
                   child: _isCollapsed ? Text(playlist?.name ?? "...") : const SizedBox(),
                 ),
-                expandedHeight: MediaQuery.of(context).size.width * 0.8,
+                expandedHeight: MediaQuery.of(context).size.width,
                 flexibleSpace: FlexibleSpaceBar(
                   stretchModes: const [StretchMode.zoomBackground],
-                  background: FittedBox(
-                    fit: BoxFit.cover,
-                    child: AppImage.network(
-                      playlist?.thumbnail,
-                      errorIconPadding: 24,
+                  background: Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: Hero(
+                        tag: "playlist_${widget.playlistId}",
+                        child: AppImage.network(
+                          widget.thumbnail,
+                          errorIconPadding: 24,
+                        ),
+                      ),
                     ),
                   ),
                 ),
