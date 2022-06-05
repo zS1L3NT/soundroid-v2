@@ -22,6 +22,7 @@ class PlaylistScreen extends StatefulWidget {
 class _PlaylistScreenState extends State<PlaylistScreen> {
   late Stream<DocumentSnapshot<Playlist>> _playlistStream;
   final _scrollController = ScrollController();
+  bool _isHeroComplete = false;
   bool _isCollapsed = false;
 
   @override
@@ -222,7 +223,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: Builder(
                       builder: (context) {
-                        final thumbnail = widget.document.data().thumbnail;
+                        final thumbnail = _isHeroComplete
+                            ? playlist?.thumbnail
+                            : widget.document.data().thumbnail;
+                        _isHeroComplete = true;
+
                         final hero = Hero(
                           tag: "playlist_${widget.document.id}",
                           child: AppImage.network(
