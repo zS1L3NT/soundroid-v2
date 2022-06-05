@@ -61,8 +61,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   MaterialPageRoute(
                     builder: (context) {
                       return PlaylistScreen(
-                        playlistId: doc.id,
-                        thumbnail: doc.data().thumbnail,
+                        document: doc,
                       );
                     },
                   ),

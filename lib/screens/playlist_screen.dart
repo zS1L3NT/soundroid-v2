@@ -8,13 +8,10 @@ import 'package:soundroid/widgets/app_widgets.dart';
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({
     Key? key,
-    required this.playlistId,
-    required this.thumbnail,
+    required this.document,
   }) : super(key: key);
 
-  final String playlistId;
-
-  final String? thumbnail;
+  final QueryDocumentSnapshot<Playlist> document;
 
   static const routeName = "/playlist";
 
@@ -31,7 +28,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
 
-    _playlistStream = Playlist.collection.doc(widget.playlistId).snapshots();
+    _playlistStream = Playlist.collection.doc(widget.document.id).snapshots();
     _scrollController.addListener(() {
       final isCollapsed = _scrollController.offset > (200 + MediaQuery.of(context).padding.top);
       if (isCollapsed != _isCollapsed) {
@@ -46,7 +43,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   void onEditClick() {}
 
-  void onFavouriteClick() {}
+  void onFavouriteClick(bool isFavourite) {
+    widget.document.reference.update({
+      "favourite": !isFavourite,
+    });
+  }
 
   void onDownloadClick() {}
 
@@ -75,14 +76,15 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: Builder(
                       builder: (context) {
+                        final thumbnail = widget.document.data().thumbnail;
                         final hero = Hero(
-                          tag: "playlist_${widget.playlistId}",
+                          tag: "playlist_${widget.document.id}",
                           child: AppImage.network(
-                            widget.thumbnail,
+                            thumbnail,
                             errorIconPadding: 24,
                           ),
                         );
-                        if (widget.thumbnail == null) {
+                        if (thumbnail == null) {
                           return hero;
                         }
                         return FittedBox(
@@ -133,7 +135,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: playlist.favourite ? Theme.of(context).primaryColor : null,
-                                  onPressed: onFavouriteClick,
+                                  onPressed: () => onFavouriteClick(playlist.favourite),
                                 )
                               : const Padding(
                                   padding: EdgeInsets.all(16),
