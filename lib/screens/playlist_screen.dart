@@ -43,7 +43,92 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     Navigator.of(context).pop();
   }
 
-  void onEditClick() {}
+  void onMenuClick() {}
+
+  void onReorderClick() {}
+
+  void onChangePictureClick() {}
+
+  void onRenameClick() {
+    Future.delayed(Duration.zero, () {
+      String name = "";
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("Rename Playlist"),
+              content: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    name = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  hintText: "Playlist Name",
+                ),
+                autofocus: true,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: name.isNotEmpty
+                      ? () {
+                          widget.document.reference.update({"name": name});
+                          Navigator.of(context).pop();
+                        }
+                      : null,
+                  child: const Text("Rename"),
+                ),
+              ],
+            );
+          });
+        },
+      );
+    });
+  }
+
+  void onDeletePlaylistClick() {
+    Future.delayed(Duration.zero, () {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Delete playlist"),
+            content: const Text("Are you sure you want to delete this playlist?"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              ElevatedButton(
+                child: const Text("Delete"),
+                onPressed: () {
+                  widget.document.reference.delete();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    });
+  }
 
   void onFavouriteClick(bool isFavourite) {
     widget.document.reference.update({
@@ -102,9 +187,56 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   onPressed: onBackClick,
                 ),
                 actions: [
-                  AppIcon(
-                    Icons.edit_rounded,
-                    onPressed: onEditClick,
+                  PopupMenuButton(
+                    child: IconButton(
+                      icon: AppIcon.white(Icons.more_vert_rounded),
+                      onPressed: null,
+                    ),
+                    offset: const Offset(0, 55),
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          child: Row(
+                            children: [
+                              AppIcon.black87(Icons.swap_vert_rounded),
+                              const SizedBox(width: 16),
+                              const Text("Reorder songs"),
+                            ],
+                          ),
+                          onTap: onReorderClick,
+                        ),
+                        PopupMenuItem(
+                          child: Row(
+                            children: [
+                              AppIcon.black87(Icons.camera_alt_rounded),
+                              const SizedBox(width: 16),
+                              const Text("Change picture"),
+                            ],
+                          ),
+                          onTap: onChangePictureClick,
+                        ),
+                        PopupMenuItem(
+                          child: Row(
+                            children: [
+                              AppIcon.black87(Icons.edit_rounded),
+                              const SizedBox(width: 16),
+                              const Text("Rename"),
+                            ],
+                          ),
+                          onTap: onRenameClick,
+                        ),
+                        PopupMenuItem(
+                          child: Row(
+                            children: [
+                              AppIcon.black87(Icons.delete_rounded),
+                              const SizedBox(width: 16),
+                              const Text("Delete"),
+                            ],
+                          ),
+                          onTap: onDeletePlaylistClick,
+                        ),
+                      ];
+                    },
                   ),
                 ],
               ),
