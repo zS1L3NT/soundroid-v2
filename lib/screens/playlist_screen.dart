@@ -102,14 +102,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   onPressed: onBackClick,
                 ),
                 actions: [
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: _isCollapsed
-                        ? AppIcon(
-                            Icons.edit_rounded,
-                            onPressed: onEditClick,
-                          )
-                        : const SizedBox(),
+                  AppIcon(
+                    Icons.edit_rounded,
+                    onPressed: onEditClick,
                   ),
                 ],
               ),
