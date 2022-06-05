@@ -42,6 +42,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     });
   }
 
+  void onBackClick() {}
+
+  void onEditClick() {}
+
+  void onFavouriteClick() {}
+
+  void onDownloadClick() {}
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot<Playlist>>(
@@ -119,14 +127,44 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               style: Theme.of(context).textTheme.headline3,
                             ),
                           ),
-                          AppIcon(
-                            Icons.favorite_rounded,
-                            onPressed: () {},
-                          ),
-                          AppIcon(
-                            Icons.download_done_rounded,
-                            onPressed: () {},
-                          ),
+                          playlist != null
+                              ? AppIcon(
+                                  playlist.favourite
+                                      ? Icons.favorite_rounded
+                                      : Icons.favorite_border_rounded,
+                                  color: playlist.favourite ? Theme.of(context).primaryColor : null,
+                                  onPressed: onFavouriteClick,
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                          playlist != null
+                              ? AppIcon(
+                                  playlist.download
+                                      ? Icons.download_done_rounded
+                                      : Icons.download_rounded,
+                                  color: playlist.download ? Theme.of(context).primaryColor : null,
+                                  onPressed: onDownloadClick,
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                       const Divider()
