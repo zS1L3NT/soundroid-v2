@@ -47,7 +47,66 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   void onReorderClick() {}
 
-  void onChangePictureClick() {}
+  void onChangePictureClick() {
+    Future.delayed(Duration.zero, () {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text("Change picture"),
+            children: [
+              SimpleDialogOption(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
+                ),
+                onPressed: () {},
+                child: Row(
+                  children: const [
+                    Icon(Icons.image_rounded),
+                    SizedBox(width: 16),
+                    Text("Choose from gallery"),
+                  ],
+                ),
+              ),
+              SimpleDialogOption(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
+                ),
+                onPressed: () {},
+                child: Row(
+                  children: const [
+                    Icon(Icons.photo_camera_rounded),
+                    SizedBox(width: 16),
+                    Text("Take a picture"),
+                  ],
+                ),
+              ),
+              if (widget.document.data().thumbnail != null)
+                SimpleDialogOption(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 14,
+                  ),
+                  onPressed: () {
+                    widget.document.reference.update({"thumbnail": null});
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(Icons.delete_rounded),
+                      SizedBox(width: 16),
+                      Text("Remove picture"),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
+      );
+    });
+  }
 
   void onRenameClick() {
     Future.delayed(Duration.zero, () {
@@ -130,9 +189,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     });
   }
 
-  void onFavouriteClick(bool isFavourite) {
+  void onFavouriteClick() {
     widget.document.reference.update({
-      "favourite": !isFavourite,
+      "favourite": !widget.document.data().favourite,
     });
   }
 
@@ -264,7 +323,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: playlist.favourite ? Theme.of(context).primaryColor : null,
-                                  onPressed: () => onFavouriteClick(playlist.favourite),
+                                  onPressed: onFavouriteClick,
                                 )
                               : const Padding(
                                   padding: EdgeInsets.all(16),
