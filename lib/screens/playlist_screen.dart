@@ -39,7 +39,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     });
   }
 
-  void onBackClick() {}
+  void onBackClick() {
+    Navigator.of(context).pop();
+  }
 
   void onEditClick() {}
 
@@ -97,7 +99,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 ),
                 leading: AppIcon(
                   Icons.arrow_back_rounded,
-                  onPressed: () {},
+                  onPressed: onBackClick,
                 ),
                 actions: [
                   AnimatedSwitcher(
@@ -105,7 +107,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     child: _isCollapsed
                         ? AppIcon(
                             Icons.edit_rounded,
-                            onPressed: () {},
+                            onPressed: onEditClick,
                           )
                         : const SizedBox(),
                   ),
