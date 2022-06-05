@@ -62,7 +62,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     builder: (context) {
                       return PlaylistScreen(
                         playlistId: doc.id,
-                        thumbnail: doc.data().thumbnail!,
+                        thumbnail: doc.data().thumbnail,
                       );
                     },
                   ),

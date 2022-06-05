@@ -14,7 +14,7 @@ class PlaylistScreen extends StatefulWidget {
 
   final String playlistId;
 
-  final String thumbnail;
+  final String? thumbnail;
 
   static const routeName = "/playlist";
 
@@ -65,15 +65,23 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   stretchModes: const [StretchMode.zoomBackground],
                   background: Container(
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: Hero(
-                        tag: "playlist_${widget.playlistId}",
-                        child: AppImage.network(
-                          widget.thumbnail,
-                          errorIconPadding: 24,
-                        ),
-                      ),
+                    child: Builder(
+                      builder: (context) {
+                        final hero = Hero(
+                          tag: "playlist_${widget.playlistId}",
+                          child: AppImage.network(
+                            widget.thumbnail,
+                            errorIconPadding: 24,
+                          ),
+                        );
+                        if (widget.thumbnail == null) {
+                          return hero;
+                        }
+                        return FittedBox(
+                          fit: BoxFit.cover,
+                          child: hero,
+                        );
+                      },
                     ),
                   ),
                 ),
