@@ -19,12 +19,6 @@ class Playlist {
     required this.trackIds,
   });
 
-  static CollectionReference<Playlist> collection =
-      FirebaseFirestore.instance.collection("playlists").withConverter<Playlist>(
-            fromFirestore: (snap, _) => Playlist.fromJson(snap.data()!),
-            toFirestore: (playlist, _) => playlist.toJson(),
-          );
-
   Playlist.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         userRef = json["userRef"],

@@ -6,14 +6,14 @@ import 'package:soundroid/models/search_result.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/search_provider.dart';
 
-class Server {
-  static bool inDevelopment = false;
+class ApiRepository {
+  final _inDevelopment = false;
 
-  static String get host =>
-      inDevelopment ? "http://21a1-58-182-54-53.ngrok.io/api" : "http://soundroid.zectan.com/api";
+  String get _host =>
+      _inDevelopment ? "http://21a1-58-182-54-53.ngrok.io/api" : "http://soundroid.zectan.com/api";
 
-  static Future<List<Map<String, dynamic>>> fetchFeed() async {
-    final response = await get(Uri.parse("$host/feed"));
+  Future<List<Map<String, dynamic>>> fetchFeed() async {
+    final response = await get(Uri.parse("$_host/feed"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body).cast<Map<String, dynamic>>();
@@ -23,8 +23,8 @@ class Server {
     }
   }
 
-  static Future<List<String>> fetchSearchSuggestions(SearchProvider searchProvider) async {
-    final response = await get(Uri.parse("$host/suggestions?query=${searchProvider.query}"));
+  Future<List<String>> fetchSearchSuggestions(SearchProvider searchProvider) async {
+    final response = await get(Uri.parse("$_host/suggestions?query=${searchProvider.query}"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body).cast<String>();
@@ -34,10 +34,9 @@ class Server {
     }
   }
 
-  static Future<Map<String, List<SearchResult>>> fetchSearchResults(
-      SearchProvider searchProvider) async {
+  Future<Map<String, List<SearchResult>>> fetchSearchResults(SearchProvider searchProvider) async {
     searchProvider.isLoading = true;
-    final response = await get(Uri.parse("$host/search?query=${searchProvider.query}"));
+    final response = await get(Uri.parse("$_host/search?query=${searchProvider.query}"));
 
     searchProvider.isLoading = false;
     if (response.statusCode == 200) {
@@ -58,8 +57,8 @@ class Server {
     }
   }
 
-  static Future<List<String>> fetchLyrics(Track track) async {
-    final response = await get(Uri.parse("$host/lyrics?query=${track.title} IU"));
+  Future<List<String>> fetchLyrics(Track track) async {
+    final response = await get(Uri.parse("$_host/lyrics?query=${track.title} IU"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body).cast<String>();
@@ -69,12 +68,12 @@ class Server {
     }
   }
 
-  static Future<Track> fetchTrack(String id) async {
+  Future<Track> fetchTrack(String id) async {
     if (Track.box.containsKey(id)) {
       return Track.box.get(id)!;
     }
 
-    final response = await get(Uri.parse("$host/track?id=$id"));
+    final response = await get(Uri.parse("$_host/track?id=$id"));
 
     if (response.statusCode == 200) {
       final track = Track.fromJson(jsonDecode(response.body));
