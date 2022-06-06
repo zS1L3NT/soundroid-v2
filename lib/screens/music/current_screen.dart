@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 
@@ -11,6 +11,8 @@ class CurrentScreen extends StatefulWidget {
 }
 
 class _CurrentScreenState extends State<CurrentScreen> {
+  final _player = AudioPlayer();
+  final _queue = ConcatenatingAudioSource(children: []);
   Color? _color;
   double _progress = 0.5;
   double _volume = 1;
@@ -25,13 +27,45 @@ class _CurrentScreenState extends State<CurrentScreen> {
       ),
     ).then((palette) => setState(() => _color = palette.colors.first));
 
-    final player = AudioPlayer();
-    player.play("http://soundroid.zectan.com/download?videoId=sqgxcCjD04s").then((result) {
-      print("Result: $result");
-    }).catchError((error) {
-      print("Error: $error");
-    });
+    _player.setAudioSource(_queue);
+    _queue.add(
+      AudioSource.uri(
+        Uri.parse("http://soundroid.zectan.com/api/download?videoId=sqgxcCjD04s"),
+      ),
+    );
   }
+
+  void onRepeatClick() {
+    switch (_player.loopMode) {
+      case LoopMode.off:
+        _player.setLoopMode(LoopMode.all);
+        break;
+      case LoopMode.all:
+        _player.setLoopMode(LoopMode.one);
+        break;
+      case LoopMode.one:
+        _player.setLoopMode(LoopMode.off);
+        break;
+    }
+  }
+
+  void onSkipBackClick() {
+    _player.seekToPrevious();
+  }
+
+  void onPlayPauseClick() async {
+    if (_player.playing) {
+      await _player.pause();
+    } else {
+      await _player.play();
+    }
+  }
+
+  void onSkipNextClick() {
+    _player.seekToNext();
+  }
+
+  void onShuffleClick() {}
 
   @override
   Widget build(BuildContext context) {
@@ -132,10 +166,26 @@ class _CurrentScreenState extends State<CurrentScreen> {
             const Spacer(),
             Row(
               children: [
-                AppIcon.primaryColorLight(
-                  Icons.shuffle_rounded,
-                  context,
-                  onPressed: () {},
+                StreamBuilder<bool>(
+                  stream: _player.shuffleModeEnabledStream,
+                  builder: (context, snap) {
+                    switch (snap.data) {
+                      case true:
+                        return AppIcon.primaryColorDark(
+                          Icons.shuffle_rounded,
+                          context,
+                          onPressed: onShuffleClick,
+                        );
+                      case false:
+                        return AppIcon.primaryColorLight(
+                          Icons.shuffle_rounded,
+                          context,
+                          onPressed: onShuffleClick,
+                        );
+                      default:
+                        return AppIcon.loading();
+                    }
+                  },
                 ),
                 const Spacer(),
                 AppIcon.primaryColor(
@@ -143,7 +193,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
                   context,
                   size: 28,
                   splashRadius: 24,
-                  onPressed: () {},
+                  onPressed: onSkipBackClick,
                 ),
                 const Spacer(),
                 Stack(
@@ -169,7 +219,7 @@ class _CurrentScreenState extends State<CurrentScreen> {
                         context,
                         size: 56,
                         splashRadius: 56,
-                        onPressed: () {},
+                        onPressed: onPlayPauseClick,
                       ),
                     ),
                   ],
@@ -180,13 +230,35 @@ class _CurrentScreenState extends State<CurrentScreen> {
                   context,
                   size: 28,
                   splashRadius: 24,
-                  onPressed: () {},
+                  onPressed: onSkipNextClick,
                 ),
                 const Spacer(),
-                AppIcon.primaryColorLight(
-                  Icons.repeat_rounded,
-                  context,
-                  onPressed: () {},
+                StreamBuilder<LoopMode>(
+                  stream: _player.loopModeStream,
+                  builder: (context, snap) {
+                    switch (snap.data) {
+                      case LoopMode.off:
+                        return AppIcon.primaryColorLight(
+                          Icons.repeat_rounded,
+                          context,
+                          onPressed: onRepeatClick,
+                        );
+                      case LoopMode.all:
+                        return AppIcon.primaryColorDark(
+                          Icons.repeat_rounded,
+                          context,
+                          onPressed: onRepeatClick,
+                        );
+                      case LoopMode.one:
+                        return AppIcon.primaryColorDark(
+                          Icons.repeat_one_rounded,
+                          context,
+                          onPressed: onRepeatClick,
+                        );
+                      default:
+                        return AppIcon.loading();
+                    }
+                  },
                 ),
               ],
             ),

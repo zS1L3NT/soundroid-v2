@@ -20,6 +20,25 @@ class AppIcon extends StatelessWidget {
 
   final Function()? onPressed;
 
+  static Widget loading({
+    double padding = 16,
+    double size = 16,
+    double strokeWidth = 2,
+    Color? color,
+  }) {
+    return Padding(
+      padding: EdgeInsets.all(padding),
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CircularProgressIndicator(
+          strokeWidth: strokeWidth,
+          color: color,
+        ),
+      ),
+    );
+  }
+
   static AppIcon primaryColor(
     IconData icon,
     BuildContext context, {

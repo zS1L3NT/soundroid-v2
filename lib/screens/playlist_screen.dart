@@ -330,16 +330,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   color: playlist.favourite ? Theme.of(context).primaryColor : null,
                                   onPressed: onFavouriteClick,
                                 )
-                              : const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                              : AppIcon.loading(
+                                  color: Colors.black,
                                 ),
                           playlist != null
                               ? AppIcon(
@@ -349,17 +341,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                   color: playlist.download ? Theme.of(context).primaryColor : null,
                                   onPressed: onDownloadClick,
                                 )
-                              : const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
+                              : AppIcon.loading(
+                                  color: Colors.black,
+                                )
                         ],
                       ),
                       const Divider()
