@@ -67,6 +67,20 @@ class _CurrentScreenState extends State<CurrentScreen> {
 
   void onShuffleClick() {}
 
+  String formatDuration(Duration? duration) {
+    if (duration == null) {
+      return "??:??";
+    }
+
+    final minutes = "${duration.inMinutes % 60}".padLeft(2, "0");
+    final seconds = "${duration.inSeconds % 60}".padLeft(2, "0");
+
+    if (duration.inHours > 0) {
+      return "${duration.inHours}:$minutes:$seconds";
+    }
+    return "$minutes:$seconds";
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -136,9 +150,14 @@ class _CurrentScreenState extends State<CurrentScreen> {
             const Spacer(flex: 3),
             Row(
               children: [
-                Text(
-                  "2:21",
-                  style: Theme.of(context).textTheme.caption,
+                StreamBuilder<Duration>(
+                  stream: _player.positionStream,
+                  builder: (context, snap) {
+                    return Text(
+                      formatDuration(snap.data),
+                      style: Theme.of(context).textTheme.caption,
+                    );
+                  },
                 ),
                 SliderTheme(
                   data: const SliderThemeData(
@@ -157,9 +176,14 @@ class _CurrentScreenState extends State<CurrentScreen> {
                     ),
                   ),
                 ),
-                Text(
-                  "3:39",
-                  style: Theme.of(context).textTheme.caption,
+                StreamBuilder<Duration?>(
+                  stream: _player.durationStream,
+                  builder: (context, snap) {
+                    return Text(
+                      formatDuration(snap.data),
+                      style: Theme.of(context).textTheme.caption,
+                    );
+                  },
                 ),
               ],
             ),
