@@ -84,8 +84,10 @@ class LibraryAppBar extends AppBar {
 
 class _LibraryAppBarState extends State<LibraryAppBar> {
   void handleAddPlaylist(String name) {
-    Playlist.collection.add(
+    final doc = Playlist.collection.doc();
+    doc.set(
       Playlist(
+        id: doc.id,
         userRef: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"),
         name: name,
         thumbnail: null,
