@@ -1,11 +1,13 @@
-class User {
+import 'package:equatable/equatable.dart';
+
+class User extends Equatable {
   final String name;
   final String email;
   final String picture;
   final bool verified;
   final List<String> likedTrackIds;
 
-  User({
+  const User({
     required this.name,
     required this.email,
     required this.picture,
@@ -27,4 +29,13 @@ class User {
         'verified': verified,
         'likedTrackIds': likedTrackIds,
       };
+
+  @override
+  List<Object?> get props => [
+        name,
+        email,
+        picture,
+        verified,
+        likedTrackIds,
+      ];
 }
