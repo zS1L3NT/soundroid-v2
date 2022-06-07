@@ -1,0 +1,12 @@
+name: search_repository
+description: Dart package which manages searches.
+publish_to: none
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+  
+dependencies: 
+  authentication_repository:
+    path: ../authentication_repository
+  cloud_firestore: ^3.1.17
+  equatable: ^2.0.3

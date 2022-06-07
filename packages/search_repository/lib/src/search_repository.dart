@@ -1,17 +1,18 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:soundroid/models/search.dart';
-import 'package:soundroid/repositories/users_repository.dart';
 
-class SearchesRepository {
-  final _usersRepo = UsersRepository();
+import 'models/models.dart';
+
+class SearchRepository {
+  final _authenticationRepo = AuthenticationRepository();
   final _collection = FirebaseFirestore.instance.collection("searches").withConverter<Search>(
         fromFirestore: (snap, _) => Search.fromJson(snap.data()!),
         toFirestore: (search, _) => search.toJson(),
       );
 
-  Stream<List<Search>> searches() {
+  Stream<List<Search>> getSearches() {
     return _collection
-        .where("userRef", isEqualTo: _usersRepo.currentUserRef)
+        .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
         .snapshots()
         .map((snap) => snap.docs.map((doc) => doc.data()).toList());
   }
