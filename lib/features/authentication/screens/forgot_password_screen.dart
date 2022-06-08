@@ -6,7 +6,11 @@ import 'package:soundroid/widgets/close_app_bar.dart';
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
-  static const routeName = "/forgot_password";
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const ForgotPasswordScreen(),
+    );
+  }
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();

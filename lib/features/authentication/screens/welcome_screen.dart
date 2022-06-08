@@ -7,7 +7,11 @@ import 'package:soundroid/widgets/app_image.dart';
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
-  static const routeName = "/auth";
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const WelcomeScreen(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

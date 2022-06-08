@@ -12,7 +12,11 @@ import 'package:soundroid/widgets/app_widgets.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  static const routeName = "/main";
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const MainScreen(),
+    );
+  }
 
   @override
   State<MainScreen> createState() => _MainScreenState();

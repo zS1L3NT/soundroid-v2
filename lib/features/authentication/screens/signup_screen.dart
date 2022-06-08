@@ -7,7 +7,11 @@ import 'package:soundroid/widgets/close_app_bar.dart';
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
-  static const routeName = "/signup";
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const SignupScreen(),
+    );
+  }
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();

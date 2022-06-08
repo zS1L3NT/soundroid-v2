@@ -13,7 +13,11 @@ class PlaylistScreen extends StatefulWidget {
 
   final QueryDocumentSnapshot<Playlist> document;
 
-  static const routeName = "/playlist";
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const PlaylistScreen(),
+    );
+  }
 
   @override
   State<PlaylistScreen> createState() => _PlaylistScreenState();

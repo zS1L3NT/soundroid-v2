@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/features/authentication/screens/welcome_screen.dart';
 import 'package:soundroid/models/artist.dart';
 import 'package:soundroid/models/track.dart';
 import 'package:soundroid/providers/playing_provider.dart';
@@ -92,16 +93,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
       ),
       scrollBehavior: AppScrollBehavior(),
-      initialRoute: WelcomeScreen.routeName,
-      routes: {
-        MainScreen.routeName: (context) => const MainScreen(),
-        WelcomeScreen.routeName: (context) => const WelcomeScreen(),
-        SigninScreen.routeName: (context) => const SigninScreen(),
-        ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
-        ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
-        SignupScreen.routeName: (context) => const SignupScreen(),
-        VerifyEmailScreen.routeName: (context) => const VerifyEmailScreen(),
-      },
+      home: const WelcomeScreen(),
     );
   }
 }

@@ -6,7 +6,11 @@ import 'package:soundroid/widgets/app_widgets.dart';
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key? key}) : super(key: key);
 
-  static const routeName = "/verify_email";
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const VerifyEmailScreen(),
+    );
+  }
 
   @override
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
