@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
-import 'package:soundroid/screens/profile_screen.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/features/settings/settings.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);

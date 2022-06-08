@@ -23,6 +23,8 @@ class PlaylistRepository {
     return _collection.doc(id).snapshots().map((doc) => doc.data());
   }
 
+  String get newId => _collection.doc().id;
+
   Future<void> addPlaylist(Playlist playlist) {
     return _collection.add(playlist);
   }

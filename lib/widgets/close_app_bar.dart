@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class CloseAppBar extends AppBar {
   CloseAppBar({Key? key}) : super(key: key);

@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/features/search/providers/search_provider.dart';
-import 'package:soundroid/models/search.dart';
-import 'package:soundroid/models/user.dart';
-import 'package:soundroid/utils/server.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:search_repository/search_repository.dart';
+import 'package:soundroid/features/search/search.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -15,14 +13,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _searchesStream = Search.collection
-      .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
-      .orderBy("timestamp", descending: true)
-      .limit(10)
-      .snapshots();
+  late Stream<List<Search>> _searchesStream;
 
-  Widget buildRecents(SearchProvider searchProvider) {
-    return StreamBuilder<QuerySnapshot<Search>>(
+  Widget buildRecentSuggestionss(SearchProvider searchProvider) {
+    return StreamBuilder<List<Search>>(
       stream: _searchesStream,
       builder: (context, snap) {
         if (snap.hasError) {
@@ -32,19 +26,20 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         }
 
-        if (snap.connectionState == ConnectionState.waiting) {
+        if (!snap.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
         return ListView.builder(
-          itemCount: snap.data!.docs.length,
+          itemCount: snap.data!.length,
           itemBuilder: (context, index) {
-            final doc = snap.data!.docs[index];
-            return RecommendationItem.recent(
-              doc.data().query,
-              doc.reference,
+            return SuggestionItem(
+              suggestion: Suggestion(
+                type: SuggestionType.recent,
+                text: snap.data![index].query,
+              ),
             );
           },
         );
@@ -52,41 +47,33 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget buildRecommendations(SearchProvider searchProvider) {
+  Widget buildApiSuggestions(SearchProvider searchProvider) {
     return ListView.builder(
-      itemCount: searchProvider.recommendations.length,
+      itemCount: searchProvider.suggestions.length,
       itemBuilder: (context, index) {
-        final recommendation = searchProvider.recommendations[index];
-        switch (recommendation["type"]) {
-          case "recent":
-            return RecommendationItem.recent(
-              recommendation["data"],
-              recommendation["ref"],
-            );
-          case "suggestion":
-            return RecommendationItem.suggestion(
-              recommendation["data"],
-            );
-          default:
-            throw Error();
-        }
+        return SuggestionItem(
+          suggestion: searchProvider.suggestions[index],
+        );
       },
     );
   }
 
   Widget buildSearchResults(SearchProvider searchProvider) {
     return ListView.builder(
-      itemCount:
-          searchProvider.results!["tracks"]!.length + searchProvider.results!["albums"]!.length,
+      itemCount: searchProvider.results!.tracks.length + searchProvider.results!.albums.length,
       itemBuilder: (context, index) {
-        final results = [
-          ...searchProvider.results!["tracks"]!,
-          ...searchProvider.results!["albums"]!
-        ];
-        return AppListItem.fromSearchResult(
-          results[index],
-          onTap: () {},
-        );
+        final results = [...searchProvider.results!.tracks, ...searchProvider.results!.albums];
+        final result = results[index];
+
+        if (result is Track) {
+          return AppListItem.fromTrack(result, onTap: () {});
+        }
+
+        if (result is Album) {
+          return AppListItem.fromAlbum(result, onTap: () {});
+        }
+
+        throw Error();
       },
     );
   }
@@ -103,8 +90,8 @@ class _SearchScreenState extends State<SearchScreen> {
           : searchProvider.results != null
               ? buildSearchResults(searchProvider)
               : searchProvider.query != ""
-                  ? buildRecommendations(searchProvider)
-                  : buildRecents(searchProvider),
+                  ? buildApiSuggestions(searchProvider)
+                  : buildRecentSuggestionss(searchProvider),
     );
   }
 }
@@ -123,28 +110,28 @@ class _SearchAppBarState extends State<SearchAppBar> {
     searchProvider.query = query;
     searchProvider.results = null;
 
-    Server.fetchSearchSuggestions(searchProvider).then((suggestions) {
-      searchProvider = context.read<SearchProvider>();
-      if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-        searchProvider.latest = dateTime;
-        searchProvider.suggestions = suggestions;
-      }
-    });
+    // Server.fetchSearchSuggestions(searchProvider).then((suggestions) {
+    // searchProvider = context.read<SearchProvider>();
+    // if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+    // searchProvider.latest = dateTime;
+    // searchProvider.suggestions = suggestions;
+    // }
+    // });
 
-    Search.collection
-        .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
-        .where("query", isGreaterThanOrEqualTo: query)
-        .where("query", isLessThanOrEqualTo: query + "~")
-        .get()
-        .then(
-      (recents) {
-        searchProvider = context.read<SearchProvider>();
-        if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-          searchProvider.latest = dateTime;
-          searchProvider.recents = recents.docs;
-        }
-      },
-    );
+    // Search.collection
+    // .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
+    // .where("query", isGreaterThanOrEqualTo: query)
+    // .where("query", isLessThanOrEqualTo: query + "~")
+    // .get()
+    // .then(
+    // (recents) {
+    // searchProvider = context.read<SearchProvider>();
+    // if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+    // searchProvider.latest = dateTime;
+    // searchProvider.recents = recents.docs;
+    // }
+    // },
+    // );
   }
 
   void onTextClear() {
@@ -195,34 +182,22 @@ class _SearchAppBarState extends State<SearchAppBar> {
   }
 }
 
-class RecommendationItem extends StatelessWidget {
-  const RecommendationItem({
+class SuggestionItem extends StatelessWidget {
+  SuggestionItem({
     Key? key,
-    required this.text,
-    required this.icon,
-    this.searchRef,
-  }) : super(key: key);
+    required Suggestion suggestion,
+  })  : text = suggestion.text,
+        type = suggestion.type,
+        icon = suggestion.type == SuggestionType.recent
+            ? Icons.history_rounded
+            : Icons.music_note_rounded,
+        super(key: key);
 
   final String text;
 
   final IconData icon;
 
-  final DocumentReference<Search>? searchRef;
-
-  factory RecommendationItem.recent(String text, DocumentReference<Search> searchRef) {
-    return RecommendationItem(
-      text: text,
-      icon: Icons.history_rounded,
-      searchRef: searchRef,
-    );
-  }
-
-  factory RecommendationItem.suggestion(String text) {
-    return RecommendationItem(
-      text: text,
-      icon: Icons.music_note_rounded,
-    );
-  }
+  final SuggestionType type;
 
   void onClick(BuildContext context) {
     final searchProvider = context.read<SearchProvider>();
@@ -232,7 +207,7 @@ class RecommendationItem extends StatelessWidget {
   }
 
   void onLongClick(BuildContext context) {
-    if (searchRef != null) {
+    if (type == SuggestionType.recent) {
       showDialog(
         context: context,
         builder: (context) {
@@ -259,7 +234,7 @@ class RecommendationItem extends StatelessWidget {
   }
 
   void deleteSearch(BuildContext context) async {
-    searchRef!.delete();
+    // searchRef!.delete();
     Navigator.of(context).pop();
   }
 

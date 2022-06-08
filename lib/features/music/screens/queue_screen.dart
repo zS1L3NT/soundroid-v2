@@ -1,9 +1,8 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/providers/playing_provider.dart';
-import 'package:soundroid/models/artist.dart';
-import 'package:soundroid/models/track.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends State<QueueScreen> {
-  final _tracks = [
+  final _tracks = const [
     Track(
       id: "",
       title: "MAGO",

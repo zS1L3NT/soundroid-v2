@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/features/home/screens/main_screen.dart';
-import 'package:soundroid/screens/auth/forgot_password_screen.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
-import 'package:soundroid/widgets/close_app_bar.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({Key? key}) : super(key: key);
@@ -109,8 +108,8 @@ class _SigninScreenState extends State<SigninScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            MainScreen.routeName,
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MainScreen.route(),
                             (_) => false,
                           );
                         }
@@ -131,8 +130,8 @@ class _SigninScreenState extends State<SigninScreen> {
                   const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        MainScreen.routeName,
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MainScreen.route(),
                         (_) => false,
                       );
                     },
@@ -163,7 +162,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(ForgotPasswordScreen.routeName);
+                        Navigator.of(context).push(ForgotPasswordScreen.route());
                       },
                       child: const Text("Forgot your password?"),
                     ),

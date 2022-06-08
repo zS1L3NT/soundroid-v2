@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/screens/auth/signin_screen.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
-import 'package:soundroid/widgets/close_app_bar.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -135,10 +133,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               ),
                             ],
                           ),
-                        ).then(
-                          (_) => Navigator.of(context)
-                              .popUntil((route) => route.settings.name == SigninScreen.routeName),
-                        );
+                        ).then((_) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        });
                       }
                     },
                     child: const Text("Send Instructions"),

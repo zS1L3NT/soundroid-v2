@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class CurrentScreen extends StatefulWidget {
   const CurrentScreen({Key? key}) : super(key: key);

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key? key}) : super(key: key);
@@ -90,7 +91,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed("/auth");
+                Navigator.of(context).pushReplacement(WelcomeScreen.route());
               },
               child: const Text("Sign in another way"),
             ),

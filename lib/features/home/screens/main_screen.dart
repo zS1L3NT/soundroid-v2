@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:soundroid/features/home/screens/home_screen.dart';
-import 'package:soundroid/features/playlists/screens/library_screen.dart';
-import 'package:soundroid/features/search/screens/search_screen.dart';
-import 'package:soundroid/screens/music/playing_screen.dart';
-import 'package:soundroid/screens/settings_screen.dart';
-import 'package:soundroid/utils/route_transition.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/features/home/home.dart';
+import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:soundroid/features/search/search.dart';
+import 'package:soundroid/features/settings/settings.dart';
+import 'package:soundroid/utils/utils.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);

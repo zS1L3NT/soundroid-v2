@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/screens/auth/reset_password_screen.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
-import 'package:soundroid/widgets/close_app_bar.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -81,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               ElevatedButton(
                                 onPressed: () {
                                   // Navigator.of(dialogContext).pop();
-                                  Navigator.of(context).pushNamed(ResetPasswordScreen.routeName);
+                                  Navigator.of(context).push(ResetPasswordScreen.route());
                                 },
                                 child: const Text(
                                   "Ok",

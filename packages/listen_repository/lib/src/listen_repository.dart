@@ -22,7 +22,7 @@ class ListensRepository {
         )
         .limit(1)
         .snapshots()
-        .map((snap) => snap.docs[0].data());
+        .map((snap) => snap.docs.first.data());
   }
 
   Future<void> addListen(Listen listen) {
@@ -35,6 +35,6 @@ class ListensRepository {
         .where("timestamp", isEqualTo: listen.timestamp)
         .limit(1)
         .get()
-        .then((snap) => snap.docs[0].reference.update(listen.toJson()));
+        .then((snap) => snap.docs.first.reference.update(listen.toJson()));
   }
 }

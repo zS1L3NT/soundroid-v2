@@ -1,6 +1,6 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:soundroid/utils/server.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 // 1) Your playlists
 // 2) Tracks that you've been listening to a lot
@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _futureFeed = Server.fetchFeed();
+  late Future<List<FeedSection>> _futureFeed;
   final _playlists = [];
 
   Widget buildYourPlaylistsSection() {
@@ -112,14 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildTrackSection(Map<String, dynamic> section) {
+  Widget buildTrackSection(TrackSection section) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            section["title"],
+            section.title,
             style: Theme.of(context)
                 .textTheme
                 .headline3
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            section["description"],
+            section.description,
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge
@@ -137,12 +137,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        buildHorizontalTrack(section["items"]),
+        buildHorizontalTrack(section.items),
       ],
     );
   }
 
-  Widget buildArtistSection(Map<String, dynamic> section) {
+  Widget buildArtistSection(ArtistSection section) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
-                    section["artist"]["name"],
+                    section.artist.name,
                     style: Theme.of(context)
                         .textTheme
                         .headline3
@@ -176,34 +176,44 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        buildHorizontalTrack(section["items"]),
+        buildHorizontalTrack(section.items),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
+    return FutureBuilder<List<FeedSection>>(
       future: _futureFeed,
       builder: (context, snap) {
+        if (snap.hasError) {
+          return Center(
+            child: Text('Error: ${snap.error}'),
+          );
+        }
+
+        if (!snap.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
         return ListView.builder(
-          itemCount: (snap.data?.length ?? 0) + 1,
+          itemCount: snap.data!.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
               return buildYourPlaylistsSection();
             }
-            if (snap.hasError) {
-              return Text('Error, ${snap.error}');
-            }
+
             final section = snap.data![index - 1];
-            switch (section["type"]) {
-              case "track":
-                return buildTrackSection(section);
-              case "artist":
-                return buildArtistSection(section);
+            switch (section.type) {
+              case SectionType.track:
+                return buildTrackSection(section as TrackSection);
+              case SectionType.artist:
+                return buildArtistSection(section as ArtistSection);
               default:
                 return Text(
-                  "Unknown section type: " + section["type"],
+                  "Unknown section type: ${section.type}",
                   style: const TextStyle(color: Colors.red),
                 );
             }

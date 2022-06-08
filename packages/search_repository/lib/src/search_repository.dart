@@ -16,4 +16,12 @@ class SearchRepository {
         .snapshots()
         .map((snap) => snap.docs.map((doc) => doc.data()).toList());
   }
+
+  Future<void> deleteSearch(String text) {
+    return _collection
+        .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
+        .where("query", isEqualTo: text)
+        .get()
+        .then((snap) => snap.docs.first.reference.delete());
+  }
 }

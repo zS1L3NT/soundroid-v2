@@ -1,16 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:soundroid/models/search.dart';
-import 'package:soundroid/models/search_result.dart';
-import 'package:soundroid/utils/server.dart';
+import 'package:soundroid/features/search/search.dart';
 
 class SearchProvider with ChangeNotifier {
   final _textEditingController = TextEditingController();
   DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
-  List<DocumentSnapshot<Search>> _recents = [];
-  List<String> _suggestions = [];
-  Map<String, List<SearchResult>>? _results;
+  List<String> _recentSuggestions = [];
+  List<String> _apiSuggestions = [];
+  SearchResults? _results;
 
   TextEditingController get controller => _textEditingController;
 
@@ -20,27 +18,22 @@ class SearchProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  List<Map<String, dynamic>> get recommendations => [
-        ..._recents.map(
-          (r) => {
-            "type": "recent",
-            "data": r.data()!.query,
-            "ref": r.reference,
-          },
+  List<Suggestion> get suggestions => [
+        ..._recentSuggestions.map(
+          (suggestion) => Suggestion(
+            type: SuggestionType.recent,
+            text: suggestion,
+          ),
         ),
-        ..._suggestions
-            .where(
-              (s) => _recents.indexWhere((r) => r.data()!.query == s) < 0,
-            )
-            .map(
-              (s) => {
-                "type": "suggestion",
-                "data": s,
-              },
+        ..._apiSuggestions.where((suggestion) => !_recentSuggestions.contains(suggestion)).map(
+              (suggestions) => Suggestion(
+                type: SuggestionType.api,
+                text: suggestions,
+              ),
             ),
       ];
 
-  Map<String, List<SearchResult>>? get results => _results;
+  SearchResults? get results => _results;
 
   set query(String? query) {
     if (query == null) {
@@ -64,30 +57,30 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set recents(List<DocumentSnapshot<Search>> recents) {
-    _recents = recents;
+  set recentSuggestions(List<String> recentSuggestions) {
+    _recentSuggestions = recentSuggestions;
     notifyListeners();
   }
 
-  set suggestions(List<String> suggestions) {
-    _suggestions = suggestions;
+  set apiSuggestions(List<String> apiSuggestions) {
+    _apiSuggestions = apiSuggestions;
     notifyListeners();
   }
 
-  set results(Map<String, List<SearchResult>>? results) {
+  set results(SearchResults? results) {
     _results = results;
     notifyListeners();
   }
 
   // This method is moved into the provider so it can be called from multiple places
   void search(BuildContext context) async {
-    FocusScope.of(context).requestFocus(FocusNode());
-    final dateTime = DateTime.now();
-    _suggestions = [];
-
-    final results = await Server.fetchSearchResults(this);
-    if (dateTime.isAfter(latest) || dateTime == latest) {
-      _results = results;
-    }
+    // FocusScope.of(context).requestFocus(FocusNode());
+    // final dateTime = DateTime.now();
+    // _apiSuggestions = [];
+//
+    // final results = await Server.fetchSearchResults(this);
+    // if (dateTime.isAfter(latest) || dateTime == latest) {
+    // _results = results;
+    // }
   }
 }

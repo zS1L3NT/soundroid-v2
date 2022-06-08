@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:soundroid/features/home/screens/main_screen.dart';
-import 'package:soundroid/screens/auth/signin_screen.dart';
-import 'package:soundroid/screens/auth/signup_screen.dart';
-import 'package:soundroid/widgets/app_image.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -51,7 +50,7 @@ class WelcomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(SignupScreen.routeName);
+                    Navigator.of(context).push(SignupScreen.route());
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(12),
@@ -64,8 +63,8 @@ class WelcomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      MainScreen.routeName,
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MainScreen.route(),
                       (_) => false,
                     );
                   },
@@ -96,7 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 32),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(SigninScreen.routeName);
+                    Navigator.of(context).push(SigninScreen.route());
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

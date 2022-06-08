@@ -1,28 +1,18 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/features/authentication/screens/welcome_screen.dart';
-import 'package:soundroid/models/artist.dart';
-import 'package:soundroid/models/track.dart';
-import 'package:soundroid/providers/playing_provider.dart';
-import 'package:soundroid/providers/search_provider.dart';
-import 'package:soundroid/screens/auth/forgot_password_screen.dart';
-import 'package:soundroid/screens/auth/reset_password_screen.dart';
-import 'package:soundroid/screens/auth/signin_screen.dart';
-import 'package:soundroid/screens/auth/signup_screen.dart';
-import 'package:soundroid/screens/auth/verify_email_screen.dart';
-import 'package:soundroid/screens/auth/welcome_screen.dart';
-import 'package:soundroid/screens/main_screen.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/features/search/search.dart';
 
 void main() async {
   // Initialize Hive
   await Hive.initFlutter();
 
-  Hive.registerAdapter(ArtistAdapter());
   Hive.registerAdapter(TrackAdapter());
-  await Hive.openBox<Artist>("artists");
   await Hive.openBox<Track>("tracks");
 
   // Initialize Firebase

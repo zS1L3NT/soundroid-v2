@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:soundroid/features/playlists/screens/playlist_screen.dart';
-import 'package:soundroid/models/playlist.dart';
-import 'package:soundroid/models/user.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:playlist_repository/playlist_repository.dart';
+import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({Key? key}) : super(key: key);
@@ -13,9 +11,7 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  final _playlistStream = Playlist.collection
-      .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
-      .snapshots();
+  late Stream<List<Playlist>> _playlistStream;
 
   Widget buildLikedSongs() {
     return InkWell(
@@ -43,25 +39,36 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Playlist>>(
+    return StreamBuilder<List<Playlist>>(
       stream: _playlistStream,
       builder: (context, snap) {
+        if (snap.hasError) {
+          return Center(
+            child: Text("Error: ${snap.error}"),
+          );
+        }
+
+        if (!snap.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
         return ListView.builder(
-          itemCount: (snap.data?.docs.length ?? 0) + 1,
+          itemCount: snap.data!.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
               return buildLikedSongs();
             }
-            final doc = snap.data!.docs[index - 1];
+            final playlist = snap.data![index - 1];
             return AppListItem.fromPlaylist(
-              doc.id,
-              doc.data(),
+              playlist,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
                       return PlaylistScreen(
-                        document: doc,
+                        playlist: playlist,
                       );
                     },
                   ),
@@ -84,18 +91,15 @@ class LibraryAppBar extends AppBar {
 
 class _LibraryAppBarState extends State<LibraryAppBar> {
   void handleAddPlaylist(String name) {
-    final doc = Playlist.collection.doc();
-    doc.set(
-      Playlist(
-        id: doc.id,
-        userRef: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"),
-        name: name,
-        thumbnail: null,
-        favourite: false,
-        download: false,
-        trackIds: [],
-      ),
-    );
+    // final playlist = Playlist(
+    // id: _playlistRepo.newId,
+    // userRef: _authenticationRepo.currentUserId,
+    // name: name,
+    // thumbnail: null,
+    // favourite: false,
+    // download: false,
+    // trackIds: [],
+    // );
     Navigator.of(context).pop();
   }
 

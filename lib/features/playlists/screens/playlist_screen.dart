@@ -1,21 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:soundroid/models/playlist.dart';
-import 'package:soundroid/models/track.dart';
-import 'package:soundroid/utils/server.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:playlist_repository/playlist_repository.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class PlaylistScreen extends StatefulWidget {
   const PlaylistScreen({
     Key? key,
-    required this.document,
+    required this.playlist,
   }) : super(key: key);
 
-  final QueryDocumentSnapshot<Playlist> document;
+  final Playlist playlist;
 
-  static Route route() {
+  static Route route(Playlist playlist) {
     return MaterialPageRoute(
-      builder: (_) => const PlaylistScreen(),
+      builder: (_) => PlaylistScreen(
+        playlist: playlist,
+      ),
     );
   }
 
@@ -24,7 +24,7 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
-  late Stream<DocumentSnapshot<Playlist>> _playlistStream;
+  late Stream<Playlist?> _playlistStream;
   final _scrollController = ScrollController();
   bool _isHeroComplete = false;
   bool _isCollapsed = false;
@@ -33,7 +33,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
 
-    _playlistStream = Playlist.collection.doc(widget.document.id).snapshots();
     _scrollController.addListener(() {
       final isCollapsed = _scrollController.offset > (200 + MediaQuery.of(context).padding.top);
       if (isCollapsed != _isCollapsed) {
@@ -88,14 +87,14 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   ],
                 ),
               ),
-              if (widget.document.data().thumbnail != null)
+              if (widget.playlist.thumbnail != null)
                 SimpleDialogOption(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 14,
                   ),
                   onPressed: () {
-                    widget.document.reference.update({"thumbnail": null});
+                    // widget.document.reference.update({"thumbnail": null});
                     Navigator.of(context).pop();
                   },
                   child: Row(
@@ -144,7 +143,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 ElevatedButton(
                   onPressed: name.isNotEmpty
                       ? () {
-                          widget.document.reference.update({"name": name});
+                          // widget.document.reference.update({"name": name});
                           Navigator.of(context).pop();
                         }
                       : null,
@@ -179,7 +178,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               ElevatedButton(
                 child: const Text("Delete"),
                 onPressed: () {
-                  widget.document.reference.delete();
+                  // widget.document.reference.delete();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
@@ -195,19 +194,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   void onFavouriteClick() {
-    widget.document.reference.update({
-      "favourite": !widget.document.data().favourite,
-    });
+    // widget.document.reference.update({
+    // "favourite": !widget.playlist.favourite,
+    // });
   }
 
   void onDownloadClick() {}
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot<Playlist>>(
+    return StreamBuilder<Playlist?>(
       stream: _playlistStream,
       builder: (context, snap) {
-        final playlist = snap.data?.data();
+        final playlist = snap.data;
         return Scaffold(
           body: CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -227,13 +226,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: Builder(
                       builder: (context) {
-                        final thumbnail = _isHeroComplete
-                            ? playlist?.thumbnail
-                            : widget.document.data().thumbnail;
+                        final thumbnail =
+                            _isHeroComplete ? playlist?.thumbnail : widget.playlist.thumbnail;
                         _isHeroComplete = true;
 
                         final hero = Hero(
-                          tag: "playlist_${widget.document.id}",
+                          tag: "playlist_${widget.playlist.id}",
                           child: AppImage.network(
                             thumbnail,
                             errorIconPadding: 24,
@@ -358,13 +356,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, int index) {
-                    final trackId = snap.data!.data()!.trackIds[index];
+                    final trackId = snap.data!.trackIds[index];
                     return TrackItem(
                       key: ValueKey(trackId),
                       trackId: trackId,
                     );
                   },
-                  childCount: snap.data?.data()?.trackIds.length ?? 0,
+                  childCount: snap.data?.trackIds.length ?? 0,
                 ),
               ),
             ],
@@ -388,14 +386,7 @@ class TrackItem extends StatefulWidget {
 }
 
 class _TrackItemState extends State<TrackItem> {
-  late Future<Track> _futureTrack = Server.fetchTrack(widget.trackId);
-
-  @override
-  void initState() {
-    super.initState();
-
-    _futureTrack = Server.fetchTrack(widget.trackId);
-  }
+  late Future<Track> _futureTrack;
 
   @override
   Widget build(BuildContext context) {
