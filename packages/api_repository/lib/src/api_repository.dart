@@ -7,14 +7,28 @@ import 'package:http/http.dart';
 import 'models/models.dart';
 
 class ApiRepository {
-  String get _host => "http://soundroid.zectan.com/api";
-  final _trackBox = Hive.box<Track>('tracks');
+  const ApiRepository({
+    required this.trackBox,
+  });
 
-  Future<List<Map<String, dynamic>>> fetchFeed() async {
+  final Box<Track> trackBox;
+
+  String get _host => "http://soundroid.zectan.com/api";
+
+  Future<List<FeedSection>> fetchFeed() async {
     final response = await get(Uri.parse("$_host/feed"));
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body).cast<Map<String, dynamic>>();
+      return (jsonDecode(response.body) as List).map((section) {
+        switch (section["type"]) {
+          case "track":
+            return TrackSection.fromJson(section);
+          case "artist":
+            return ArtistSection.fromJson(section);
+          default:
+            throw UnsupportedError("Unsupported section type: ${section.type}");
+        }
+      }).toList();
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch feed");
@@ -32,21 +46,11 @@ class ApiRepository {
     }
   }
 
-  Future<Map<String, List<SearchResult>>> fetchSearchResults(String query) async {
+  Future<SearchResults> fetchSearchResults(String query) async {
     final response = await get(Uri.parse("$_host/search?query=$query"));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
-      return <String, List<SearchResult>>{
-        "tracks": data["tracks"]!
-            .map((tracks) => SearchResult.fromJson(Map.from(tracks)))
-            .toList()
-            .cast<SearchResult>(),
-        "albums": data["albums"]!
-            .map((albums) => SearchResult.fromJson(Map.from(albums)))
-            .toList()
-            .cast<SearchResult>(),
-      };
+      return SearchResults.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch search results");
@@ -65,15 +69,15 @@ class ApiRepository {
   }
 
   Future<Track> fetchTrack(String id) async {
-    if (_trackBox.containsKey(id)) {
-      return _trackBox.get(id)!;
+    if (trackBox.containsKey(id)) {
+      return trackBox.get(id)!;
     }
 
     final response = await get(Uri.parse("$_host/track?id=$id"));
 
     if (response.statusCode == 200) {
       final track = Track.fromJson(jsonDecode(response.body));
-      _trackBox.put(id, track);
+      trackBox.put(id, track);
       return track;
     } else {
       debugPrint(response.body);

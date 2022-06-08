@@ -1,19 +1,12 @@
 import 'models.dart';
 
-class SearchResult {
+class Album {
   final String id;
   final String title;
   final List<Artist> artists;
   final String thumbnail;
 
-  SearchResult({
-    required this.id,
-    required this.title,
-    required this.artists,
-    required this.thumbnail,
-  });
-
-  SearchResult.fromJson(Map<String, dynamic> json)
+  Album.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         title = json["title"],
         artists = json["artists"]
