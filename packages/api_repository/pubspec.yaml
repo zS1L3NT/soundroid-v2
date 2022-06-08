@@ -1,0 +1,12 @@
+name: api_repository
+description: Dart package which manages api requests.
+publish_to: none
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+dependencies: 
+  flutter: 
+    sdk: flutter
+    version: ^0.0.0
+  hive: ^2.2.1
+  http: ^0.13.4
