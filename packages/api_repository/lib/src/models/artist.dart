@@ -1,13 +1,18 @@
-class Artist {
-  final String id;
-  final String name;
+import 'package:json_annotation/json_annotation.dart';
 
-  Artist({
+part 'artist.g.dart';
+
+@JsonSerializable()
+class Artist {
+  const Artist({
     required this.id,
     required this.name,
   });
 
-  Artist.fromJson(Map<String, dynamic> json)
-      : id = json["id"],
-        name = json["name"];
+  final String id;
+
+  final String name;
+
+  factory Artist.fromJson(Map<String, dynamic> json) => _$ArtistFromJson(json);
+  Map<String, dynamic> toJson() => _$ArtistToJson(this);
 }

@@ -1,11 +1,20 @@
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'models.dart';
 
 part 'track.g.dart';
 
 @HiveType(typeId: 0)
+@JsonSerializable()
 class Track {
+  const Track({
+    required this.id,
+    required this.title,
+    required this.artists,
+    required this.thumbnail,
+  });
+
   @HiveField(0)
   final String id;
   @HiveField(1)
@@ -15,20 +24,6 @@ class Track {
   @HiveField(3)
   final String thumbnail;
 
-  Track({
-    required this.id,
-    required this.title,
-    required this.artists,
-    required this.thumbnail,
-  });
-
-  Track.fromJson(Map<String, dynamic> json)
-      : id = json["id"],
-        title = json["title"],
-        artists = json["artists"]
-            .cast<Map<String, dynamic>>()
-            .map(Artist.fromJson)
-            .toList()
-            .cast<Artist>(),
-        thumbnail = json["thumbnail"];
+  factory Track.fromJson(Map<String, dynamic> json) => _$TrackFromJson(json);
+  Map<String, dynamic> toJson() => _$TrackToJson(this);
 }

@@ -1,9 +1,20 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'models.dart';
 
-abstract class FeedSection {
-  abstract final String type;
+part 'feed_section.g.dart';
+
+@JsonEnum()
+enum SectionType {
+  track,
+  artist,
 }
 
+abstract class FeedSection {
+  abstract final SectionType type;
+}
+
+@JsonSerializable()
 class TrackSection extends FeedSection {
   TrackSection({
     required this.type,
@@ -13,7 +24,7 @@ class TrackSection extends FeedSection {
   });
 
   @override
-  final String type;
+  final SectionType type;
 
   final String title;
 
@@ -21,13 +32,11 @@ class TrackSection extends FeedSection {
 
   final List<Track> items;
 
-  TrackSection.fromJson(Map<String, dynamic> json)
-      : type = json["type"],
-        title = json["title"],
-        description = json["description"],
-        items = json["items"].map((item) => Track.fromJson(item)).toList().cast<Track>();
+  factory TrackSection.fromJson(Map<String, dynamic> json) => _$TrackSectionFromJson(json);
+  Map<String, dynamic> toJson() => _$TrackSectionToJson(this);
 }
 
+@JsonSerializable()
 class ArtistSection extends FeedSection {
   ArtistSection({
     required this.type,
@@ -36,14 +45,12 @@ class ArtistSection extends FeedSection {
   });
 
   @override
-  final String type;
+  final SectionType type;
 
   final Artist artist;
 
   final List<Track> items;
 
-  ArtistSection.fromJson(Map<String, dynamic> json)
-      : type = json["type"],
-        artist = Artist.fromJson(json["artist"]),
-        items = json["items"].map((item) => Track.fromJson(item)).toList().cast<Track>();
+  factory ArtistSection.fromJson(Map<String, dynamic> json) => _$ArtistSectionFromJson(json);
+  Map<String, dynamic> toJson() => _$ArtistSectionToJson(this);
 }

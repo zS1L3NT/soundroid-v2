@@ -48,3 +48,23 @@ class TrackAdapter extends TypeAdapter<Track> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Track _$TrackFromJson(Map<String, dynamic> json) => Track(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      artists: (json['artists'] as List<dynamic>)
+          .map((e) => Artist.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      thumbnail: json['thumbnail'] as String,
+    );
+
+Map<String, dynamic> _$TrackToJson(Track instance) => <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'artists': instance.artists,
+      'thumbnail': instance.thumbnail,
+    };
