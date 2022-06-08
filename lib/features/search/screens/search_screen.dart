@@ -15,6 +15,13 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   late Stream<List<Search>> _searchesStream;
 
+  @override
+  initState() {
+    super.initState();
+
+    _searchesStream = context.read<SearchRepository>().getSearches();
+  }
+
   Widget buildRecentSuggestionss(SearchProvider searchProvider) {
     return StreamBuilder<List<Search>>(
       stream: _searchesStream,
@@ -110,28 +117,23 @@ class _SearchAppBarState extends State<SearchAppBar> {
     searchProvider.query = query;
     searchProvider.results = null;
 
-    // Server.fetchSearchSuggestions(searchProvider).then((suggestions) {
-    // searchProvider = context.read<SearchProvider>();
-    // if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-    // searchProvider.latest = dateTime;
-    // searchProvider.suggestions = suggestions;
-    // }
-    // });
+    context.read<ApiRepository>().getSearchSuggestions(query).then((apiSuggestions) {
+      searchProvider = context.read<SearchProvider>();
+      if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+        searchProvider.latest = dateTime;
+        searchProvider.apiSuggestions = apiSuggestions;
+      }
+    });
 
-    // Search.collection
-    // .where("userRef", isEqualTo: User.collection.doc("jnbZI9qOLtVsehqd6ICcw584ED93"))
-    // .where("query", isGreaterThanOrEqualTo: query)
-    // .where("query", isLessThanOrEqualTo: query + "~")
-    // .get()
-    // .then(
-    // (recents) {
-    // searchProvider = context.read<SearchProvider>();
-    // if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-    // searchProvider.latest = dateTime;
-    // searchProvider.recents = recents.docs;
-    // }
-    // },
-    // );
+    context.read<SearchRepository>().getRecentSearches(query).then(
+      (recentSuggestions) {
+        searchProvider = context.read<SearchProvider>();
+        if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
+          searchProvider.latest = dateTime;
+          searchProvider.recentSuggestions = recentSuggestions;
+        }
+      },
+    );
   }
 
   void onTextClear() {
@@ -234,7 +236,7 @@ class SuggestionItem extends StatelessWidget {
   }
 
   void deleteSearch(BuildContext context) async {
-    // searchRef!.delete();
+    context.read<SearchRepository>().deleteSearch(text);
     Navigator.of(context).pop();
   }
 

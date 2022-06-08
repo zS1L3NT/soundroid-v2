@@ -1,5 +1,7 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -12,6 +14,13 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends State<LibraryScreen> {
   late Stream<List<Playlist>> _playlistStream;
+
+  @override
+  initState() {
+    super.initState();
+
+    _playlistStream = context.read<PlaylistRepository>().getPlaylists();
+  }
 
   Widget buildLikedSongs() {
     return InkWell(
@@ -91,15 +100,17 @@ class LibraryAppBar extends AppBar {
 
 class _LibraryAppBarState extends State<LibraryAppBar> {
   void handleAddPlaylist(String name) {
-    // final playlist = Playlist(
-    // id: _playlistRepo.newId,
-    // userRef: _authenticationRepo.currentUserId,
-    // name: name,
-    // thumbnail: null,
-    // favourite: false,
-    // download: false,
-    // trackIds: [],
-    // );
+    context.read<PlaylistRepository>().addPlaylist(
+          Playlist(
+            id: context.read<PlaylistRepository>().newId,
+            userRef: context.read<AuthenticationRepository>().currentUserRef,
+            name: name,
+            thumbnail: null,
+            favourite: false,
+            download: false,
+            trackIds: [],
+          ),
+        );
     Navigator.of(context).pop();
   }
 

@@ -15,7 +15,7 @@ class ApiRepository {
 
   String get _host => "http://soundroid.zectan.com/api";
 
-  Future<List<FeedSection>> fetchFeed() async {
+  Future<List<FeedSection>> getFeed() async {
     final response = await get(Uri.parse("$_host/feed"));
 
     if (response.statusCode == 200) {
@@ -35,7 +35,7 @@ class ApiRepository {
     }
   }
 
-  Future<List<String>> fetchSearchSuggestions(String query) async {
+  Future<List<String>> getSearchSuggestions(String query) async {
     final response = await get(Uri.parse("$_host/suggestions?query=$query"));
 
     if (response.statusCode == 200) {
@@ -46,7 +46,7 @@ class ApiRepository {
     }
   }
 
-  Future<SearchResults> fetchSearchResults(String query) async {
+  Future<SearchResults> getSearchResults(String query) async {
     final response = await get(Uri.parse("$_host/search?query=$query"));
 
     if (response.statusCode == 200) {
@@ -57,7 +57,7 @@ class ApiRepository {
     }
   }
 
-  Future<List<String>> fetchLyrics(Track track) async {
+  Future<List<String>> getLyrics(Track track) async {
     final response = await get(Uri.parse("$_host/lyrics?query=${track.title} IU"));
 
     if (response.statusCode == 200) {
@@ -68,7 +68,7 @@ class ApiRepository {
     }
   }
 
-  Future<Track> fetchTrack(String id) async {
+  Future<Track> getTrack(String id) async {
     if (trackBox.containsKey(id)) {
       return trackBox.get(id)!;
     }

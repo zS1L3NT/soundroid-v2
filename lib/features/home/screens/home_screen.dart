@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 // 1) Your playlists
@@ -20,6 +21,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<FeedSection>> _futureFeed;
   final _playlists = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _futureFeed = context.read<ApiRepository>().getFeed();
+  }
 
   Widget buildYourPlaylistsSection() {
     return Padding(

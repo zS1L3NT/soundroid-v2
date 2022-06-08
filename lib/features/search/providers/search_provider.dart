@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/search/search.dart';
 
 class SearchProvider with ChangeNotifier {
@@ -74,13 +75,13 @@ class SearchProvider with ChangeNotifier {
 
   // This method is moved into the provider so it can be called from multiple places
   void search(BuildContext context) async {
-    // FocusScope.of(context).requestFocus(FocusNode());
-    // final dateTime = DateTime.now();
-    // _apiSuggestions = [];
-//
-    // final results = await Server.fetchSearchResults(this);
-    // if (dateTime.isAfter(latest) || dateTime == latest) {
-    // _results = results;
-    // }
+    FocusScope.of(context).requestFocus(FocusNode());
+    final dateTime = DateTime.now();
+    _apiSuggestions = [];
+
+    final results = await context.read<ApiRepository>().getSearchResults(query);
+    if (dateTime.isAfter(latest) || dateTime == latest) {
+      _results = results;
+    }
   }
 }

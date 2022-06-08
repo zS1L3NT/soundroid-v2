@@ -1,6 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void initState() {
     super.initState();
 
+    _playlistStream = context.read<PlaylistRepository>().getPlaylist(widget.playlist.id);
     _scrollController.addListener(() {
       final isCollapsed = _scrollController.offset > (200 + MediaQuery.of(context).padding.top);
       if (isCollapsed != _isCollapsed) {
@@ -94,7 +96,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     vertical: 14,
                   ),
                   onPressed: () {
-                    // widget.document.reference.update({"thumbnail": null});
+                    context.read<PlaylistRepository>().updatePlaylist(
+                      widget.playlist.id,
+                      {"thumbnail": null},
+                    );
                     Navigator.of(context).pop();
                   },
                   child: Row(
@@ -143,7 +148,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 ElevatedButton(
                   onPressed: name.isNotEmpty
                       ? () {
-                          // widget.document.reference.update({"name": name});
+                          context.read<PlaylistRepository>().updatePlaylist(
+                            widget.playlist.id,
+                            {"name": name},
+                          );
                           Navigator.of(context).pop();
                         }
                       : null,
@@ -178,7 +186,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               ElevatedButton(
                 child: const Text("Delete"),
                 onPressed: () {
-                  // widget.document.reference.delete();
+                  context.read<PlaylistRepository>().deletePlaylist(widget.playlist.id);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
@@ -194,9 +202,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   void onFavouriteClick() {
-    // widget.document.reference.update({
-    // "favourite": !widget.playlist.favourite,
-    // });
+    context.read<PlaylistRepository>().updatePlaylist(
+      widget.playlist.id,
+      {"favourite": !widget.playlist.favourite},
+    );
   }
 
   void onDownloadClick() {}
@@ -387,6 +396,13 @@ class TrackItem extends StatefulWidget {
 
 class _TrackItemState extends State<TrackItem> {
   late Future<Track> _futureTrack;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _futureTrack = context.read<ApiRepository>().getTrack(widget.trackId);
+  }
 
   @override
   Widget build(BuildContext context) {

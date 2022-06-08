@@ -29,11 +29,11 @@ class PlaylistRepository {
     return _collection.add(playlist);
   }
 
-  Future<void> updatePlaylist(Playlist playlist) {
-    return _collection.doc(playlist.id).update(playlist.toJson());
+  Future<void> updatePlaylist(String id, Map<String, dynamic> data) {
+    return _collection.doc(id).update(data);
   }
 
-  Future<void> deletePlaylist(Playlist playlist) {
-    return _collection.doc(playlist.id).delete();
+  Future<void> deletePlaylist(String id) {
+    return _collection.doc(id).delete();
   }
 }

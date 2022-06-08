@@ -1,4 +1,6 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LyricsScreen extends StatefulWidget {
   const LyricsScreen({Key? key}) : super(key: key);
@@ -9,6 +11,25 @@ class LyricsScreen extends StatefulWidget {
 
 class _LyricsScreenState extends State<LyricsScreen> {
   late Future<List<String>> _futureLyrics;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _futureLyrics = context.read<ApiRepository>().getLyrics(
+          const Track(
+            id: "",
+            title: "Lilac",
+            artists: [
+              Artist(
+                id: "",
+                name: "IU",
+              ),
+            ],
+            thumbnail: "",
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
