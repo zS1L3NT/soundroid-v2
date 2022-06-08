@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/features/settings/settings.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -113,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed("/auth");
+                  Navigator.of(context).pushReplacement(WelcomeScreen.route());
                 },
                 child: const Text("Delete Data"),
                 style: ButtonStyle(
@@ -150,7 +151,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed("/auth");
+                  Navigator.of(context).pushReplacement(WelcomeScreen.route());
                 },
                 child: const Text("Logout"),
                 style: ButtonStyle(

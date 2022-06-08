@@ -28,7 +28,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
     // ! Remove after prototyping stage
     // Timer(const Duration(seconds: 5), () {
-    // Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+    // Navigator.of(context).pushReplacement(MainScreen.route());
     // });
   }
 
