@@ -16,6 +16,7 @@ void main() async {
   // Initialize Hive
   await Hive.initFlutter();
 
+  Hive.registerAdapter(ArtistAdapter());
   Hive.registerAdapter(TrackAdapter());
   final trackBox = await Hive.openBox<Track>("tracks");
 

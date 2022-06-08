@@ -17,10 +17,13 @@ class Track {
 
   @HiveField(0)
   final String id;
+
   @HiveField(1)
   final String title;
+
   @HiveField(2)
   final List<Artist> artists;
+
   @HiveField(3)
   final String thumbnail;
 
