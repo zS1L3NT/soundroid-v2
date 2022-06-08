@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:soundroid/screens/home_screen.dart';
-import 'package:soundroid/screens/library_screen.dart';
+import 'package:soundroid/features/home/screens/home_screen.dart';
+import 'package:soundroid/features/playlists/screens/library_screen.dart';
+import 'package:soundroid/features/search/screens/search_screen.dart';
 import 'package:soundroid/screens/music/playing_screen.dart';
-import 'package:soundroid/screens/search_screen.dart';
 import 'package:soundroid/screens/settings_screen.dart';
 import 'package:soundroid/utils/route_transition.dart';
 import 'package:soundroid/widgets/app_widgets.dart';

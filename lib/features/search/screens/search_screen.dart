@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/features/search/providers/search_provider.dart';
 import 'package:soundroid/models/search.dart';
 import 'package:soundroid/models/user.dart';
-import 'package:soundroid/providers/search_provider.dart';
 import 'package:soundroid/utils/server.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 

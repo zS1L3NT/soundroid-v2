@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/features/home/screens/main_screen.dart';
 import 'package:soundroid/screens/auth/signin_screen.dart';
 import 'package:soundroid/screens/auth/signup_screen.dart';
-import 'package:soundroid/screens/main_screen.dart';
 import 'package:soundroid/widgets/app_image.dart';
 
 class WelcomeScreen extends StatelessWidget {

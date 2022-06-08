@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/providers/playing_provider.dart';
+import 'package:soundroid/features/music/providers/playing_provider.dart';
 import 'package:soundroid/screens/music/current_screen.dart';
 import 'package:soundroid/screens/music/lyrics_screen.dart';
 import 'package:soundroid/screens/music/queue_screen.dart';

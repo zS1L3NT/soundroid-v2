@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/features/home/screens/main_screen.dart';
 import 'package:soundroid/screens/auth/forgot_password_screen.dart';
-import 'package:soundroid/screens/main_screen.dart';
 import 'package:soundroid/widgets/app_widgets.dart';
 import 'package:soundroid/widgets/close_app_bar.dart';
 
