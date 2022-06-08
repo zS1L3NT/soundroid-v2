@@ -1,4 +1,4 @@
-import 'package:soundroid/models/artist.dart';
+import 'models.dart';
 
 class SearchResult {
   final String id;

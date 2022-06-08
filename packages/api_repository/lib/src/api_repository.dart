@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart';
-import 'package:soundroid/models/search_result.dart';
-import 'package:soundroid/models/track.dart';
-import 'package:soundroid/providers/search_provider.dart';
+
+import 'models/models.dart';
 
 class ApiRepository {
-  final _inDevelopment = false;
-
-  String get _host =>
-      _inDevelopment ? "http://21a1-58-182-54-53.ngrok.io/api" : "http://soundroid.zectan.com/api";
+  String get _host => "http://soundroid.zectan.com/api";
+  final _trackBox = Hive.box<Track>('tracks');
 
   Future<List<Map<String, dynamic>>> fetchFeed() async {
     final response = await get(Uri.parse("$_host/feed"));
@@ -23,8 +21,8 @@ class ApiRepository {
     }
   }
 
-  Future<List<String>> fetchSearchSuggestions(SearchProvider searchProvider) async {
-    final response = await get(Uri.parse("$_host/suggestions?query=${searchProvider.query}"));
+  Future<List<String>> fetchSearchSuggestions(String query) async {
+    final response = await get(Uri.parse("$_host/suggestions?query=$query"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body).cast<String>();
@@ -34,11 +32,9 @@ class ApiRepository {
     }
   }
 
-  Future<Map<String, List<SearchResult>>> fetchSearchResults(SearchProvider searchProvider) async {
-    searchProvider.isLoading = true;
-    final response = await get(Uri.parse("$_host/search?query=${searchProvider.query}"));
+  Future<Map<String, List<SearchResult>>> fetchSearchResults(String query) async {
+    final response = await get(Uri.parse("$_host/search?query=$query"));
 
-    searchProvider.isLoading = false;
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       return <String, List<SearchResult>>{
@@ -69,15 +65,15 @@ class ApiRepository {
   }
 
   Future<Track> fetchTrack(String id) async {
-    if (Track.box.containsKey(id)) {
-      return Track.box.get(id)!;
+    if (_trackBox.containsKey(id)) {
+      return _trackBox.get(id)!;
     }
 
     final response = await get(Uri.parse("$_host/track?id=$id"));
 
     if (response.statusCode == 200) {
       final track = Track.fromJson(jsonDecode(response.body));
-      Track.box.put(id, track);
+      _trackBox.put(id, track);
       return track;
     } else {
       debugPrint(response.body);
