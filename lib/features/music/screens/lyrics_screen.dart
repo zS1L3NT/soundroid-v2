@@ -48,11 +48,13 @@ class _LyricsScreenState extends State<LyricsScreen> {
           return ListView.builder(
             itemCount: snap.data!.length,
             itemBuilder: (context, index) {
-              return Text(
-                snap.data![index],
-                style: const TextStyle(
-                  fontSize: 18,
-                  height: 2,
+              return Center(
+                child: Text(
+                  snap.data![index],
+                  style: const TextStyle(
+                    fontSize: 18,
+                    height: 2,
+                  ),
                 ),
               );
             },

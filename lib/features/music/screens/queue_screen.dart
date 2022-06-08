@@ -250,6 +250,7 @@ class _QueueScreenState extends State<QueueScreen> {
     final selected = context.read<PlayingProvider>().selected;
 
     return InkWell(
+      key: ValueKey(track.title),
       onTap: () => onTap(selected, track),
       onLongPress: () => onLongPress(selected, track),
       child: ListTile(

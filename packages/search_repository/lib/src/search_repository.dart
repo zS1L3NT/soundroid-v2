@@ -13,6 +13,8 @@ class SearchRepository {
   Stream<List<Search>> getSearches() {
     return _collection
         .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
+        .orderBy("timestamp", descending: true)
+        .limit(10)
         .snapshots()
         .map((snap) => snap.docs.map((doc) => doc.data()).toList());
   }

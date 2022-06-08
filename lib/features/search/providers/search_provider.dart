@@ -53,11 +53,6 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set isLoading(bool isLoading) {
-    _isLoading = isLoading;
-    notifyListeners();
-  }
-
   set recentSuggestions(List<String> recentSuggestions) {
     _recentSuggestions = recentSuggestions;
     notifyListeners();
@@ -78,10 +73,14 @@ class SearchProvider with ChangeNotifier {
     FocusScope.of(context).requestFocus(FocusNode());
     final dateTime = DateTime.now();
     _apiSuggestions = [];
+    _isLoading = true;
+    notifyListeners();
 
     final results = await context.read<ApiRepository>().getSearchResults(query);
     if (dateTime.isAfter(latest) || dateTime == latest) {
+      _isLoading = false;
       _results = results;
+      notifyListeners();
     }
   }
 }
