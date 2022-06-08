@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'models/models.dart';
 
-class ListensRepository {
+class ListenRepository {
   final _authenticationRepo = AuthenticationRepository();
   final _collection = FirebaseFirestore.instance.collection("listens").withConverter<Listen>(
         fromFirestore: (snap, _) => Listen.fromJson(snap.data()!),
