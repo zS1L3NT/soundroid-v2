@@ -46,49 +46,43 @@ class WelcomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(SignupScreen.route());
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Text("Sign Up with Email"),
-                  ),
+              FullSizedButton(
+                onPressed: () {
+                  Navigator.of(context).push(SignupScreen.route());
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Text("Sign Up with Email"),
                 ),
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MainScreen.route(),
-                      (_) => false,
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AppImage.asset(
-                          "assets/images/google-icon.png",
-                          height: 21,
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          "Sign Up with Google",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MainScreen.route(),
+                    (_) => false,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppImage.asset(
+                        "assets/images/google-icon.png",
+                        height: 21,
+                      ),
+                      const SizedBox(width: 8),
+                      const Text(
+                        "Sign Up with Google",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white, // background
-                    onPrimary: Colors.grey[300], // foreground
-                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white, // background
+                  onPrimary: Colors.grey[300], // foreground
                 ),
               ),
               Padding(

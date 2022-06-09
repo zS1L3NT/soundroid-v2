@@ -16,7 +16,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _form = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             vertical: 8,
           ),
           child: Form(
-            key: _formKey,
+            key: _form,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -63,37 +63,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (dialogContext) => AlertDialog(
-                            title: const Text("Check your mail"),
-                            content: const Text(
-                              "Check your email for instructions to reset your password",
-                            ),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Navigator.of(dialogContext).pop();
-                                  Navigator.of(context).push(ResetPasswordScreen.route());
-                                },
-                                child: const Text(
-                                  "Ok",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ); //).then((_) => Navigator.of(context).pop());
-                      }
-                    },
-                    child: const Text("Send Instructions"),
-                  ),
+                FullSizedButton(
+                  onPressed: () {
+                    if (_form.currentState!.validate()) {
+                      AppAlertDialog(
+                        title: "Check your email",
+                        description: "Check your email for instructions to reset your password",
+                        onClose: () {
+                          Navigator.of(context).push(ResetPasswordScreen.route());
+                        },
+                      ).show(context);
+                    }
+                  },
+                  child: const Text("Send Instructions"),
                 ),
               ],
             ),

@@ -17,8 +17,10 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final _formKey = GlobalKey<FormState>();
-  bool _isObscure = true;
+  final _form = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
             vertical: 8,
           ),
           child: Form(
-            key: _formKey,
+            key: _form,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -46,6 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
+                  controller: _nameController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your name',
@@ -66,6 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
@@ -85,56 +89,25 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  obscureText: _isObscure,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'Enter your password',
-                    labelText: "Password",
-                    prefixIcon: const AppIcon(Icons.password_rounded),
-                    contentPadding: const EdgeInsets.only(
-                      top: 4,
-                      bottom: 4,
-                      left: 12,
-                    ),
-                    errorStyle: const TextStyle(height: 1),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: AppIcon(
-                        _isObscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                        onPressed: () {
-                          setState(() {
-                            _isObscure = !_isObscure;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password cannot be empty!';
-                    }
-                    return null;
-                  },
+                PasswordFormField(
+                  controller: _passwordController,
+                  name: "Password",
+                  placeholder: "Enter your password",
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          RouteTransition.slide(
-                            const VerifyEmailScreen(),
-                            from: const Offset(0.5, 0),
-                          ),
-                          (_) => false,
-                        );
-                      }
-                    },
-                    child: const Text("Register"),
-                  ),
+                FullSizedButton(
+                  onPressed: () {
+                    if (_form.currentState!.validate()) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        RouteTransition.slide(
+                          const VerifyEmailScreen(),
+                          from: const Offset(0.5, 0),
+                        ),
+                        (_) => false,
+                      );
+                    }
+                  },
+                  child: const Text("Register"),
                 ),
               ],
             ),

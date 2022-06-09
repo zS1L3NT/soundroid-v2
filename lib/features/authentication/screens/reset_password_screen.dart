@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -15,9 +16,9 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  final _areObscure = [true, true];
+  final _form = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             vertical: 8,
           ),
           child: Form(
-            key: _formKey,
+            key: _form,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,103 +45,39 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 32),
-                TextFormField(
-                  obscureText: _areObscure[0],
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'Enter your password',
-                    labelText: "Password",
-                    prefixIcon: const AppIcon(Icons.password_rounded),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                    errorStyle: const TextStyle(height: 1),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: AppIcon(
-                        _areObscure[0] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                        onPressed: () {
-                          setState(() {
-                            _areObscure[0] = !_areObscure[0];
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password cannot be empty!';
-                    }
-                    return null;
-                  },
+                PasswordFormField(
+                  controller: _passwordController,
+                  name: "Password",
+                  placeholder: "Enter your password",
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  obscureText: _areObscure[1],
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'Enter your password confirmation',
-                    labelText: "Confirm Password",
-                    prefixIcon: const AppIcon(Icons.password_rounded),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                    errorStyle: const TextStyle(height: 1),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: AppIcon(
-                        _areObscure[1] ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                        onPressed: () {
-                          setState(() {
-                            _areObscure[1] = !_areObscure[1];
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                PasswordFormField(
+                  controller: _passwordConfirmController,
+                  name: "Confirm Password",
+                  placeholder: "Enter your password again",
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password confirmation cannot be empty!';
+                    if (value != _passwordController.text) {
+                      return "Passwords don't match";
                     }
+
                     return null;
                   },
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (dialogContext) => AlertDialog(
-                            title: const Text("Password reset!"),
-                            content: const Text(
-                              "Please use your new password when logging into your account.",
-                            ),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: const Text(
-                                  "Ok",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ).then((_) {
+                FullSizedButton(
+                  child: const Text("Reset Password"),
+                  onPressed: () {
+                    if (_form.currentState!.validate()) {
+                      AppAlertDialog(
+                        title: "Password reset!",
+                        description: "Please use your new password when logging into your account.",
+                        onClose: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
-                        });
-                      }
-                    },
-                    child: const Text("Send Instructions"),
-                  ),
+                        },
+                      );
+                    }
+                  },
                 ),
               ],
             ),
