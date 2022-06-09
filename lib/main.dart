@@ -27,7 +27,11 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SearchProvider()),
-        ChangeNotifierProvider(create: (_) => PlayingProvider()),
+        ChangeNotifierProvider(create: (_) {
+          final playingProvider = PlayingProvider();
+          playingProvider.player.setAudioSource(playingProvider.queue);
+          return playingProvider;
+        }),
       ],
       child: MultiRepositoryProvider(
         providers: [
