@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class AppImage extends StatefulWidget {
   const AppImage({

@@ -1,8 +1,7 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:soundroid/models/playlist.dart';
-import 'package:soundroid/models/search_result.dart';
-import 'package:soundroid/models/track.dart';
-import 'package:soundroid/widgets/app_widgets.dart';
+import 'package:playlist_repository/playlist_repository.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class AppListItem extends StatelessWidget {
   const AppListItem({
@@ -36,9 +35,23 @@ class AppListItem extends StatelessWidget {
       onTap: onTap,
     );
   }
+  factory AppListItem.fromAlbum(
+    Album album, {
+    required Function() onTap,
+  }) {
+    return AppListItem(
+      title: album.title,
+      subtitle: album.artists.map((artist) => artist.name).join(", "),
+      image: AppImage.network(
+        album.thumbnail,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        size: 56,
+      ),
+      onTap: onTap,
+    );
+  }
 
   factory AppListItem.fromPlaylist(
-    String playlistId,
     Playlist playlist, {
     required Function() onTap,
   }) {
@@ -46,7 +59,7 @@ class AppListItem extends StatelessWidget {
       title: playlist.name,
       subtitle: "${playlist.trackIds.length} tracks",
       image: Hero(
-        tag: "playlist_$playlistId",
+        tag: "playlist_${playlist.id}",
         child: FittedBox(
           fit: BoxFit.cover,
           child: AppImage.network(
@@ -55,22 +68,6 @@ class AppListItem extends StatelessWidget {
             size: 56,
           ),
         ),
-      ),
-      onTap: onTap,
-    );
-  }
-
-  factory AppListItem.fromSearchResult(
-    SearchResult result, {
-    required Function() onTap,
-  }) {
-    return AppListItem(
-      title: result.title,
-      subtitle: result.artists.map((artist) => artist.name).join(", "),
-      image: AppImage.network(
-        result.thumbnail,
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        size: 56,
       ),
       onTap: onTap,
     );
