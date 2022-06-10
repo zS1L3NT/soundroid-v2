@@ -42,7 +42,13 @@ class _PositionSliderState extends State<PositionSlider> {
                 SizedBox(
                   width: 40,
                   child: Text(
-                    formatDuration(position),
+                    formatDuration(
+                      _slidePosition != null && duration != null
+                          ? Duration(
+                              milliseconds: (duration.inMilliseconds * _slidePosition!).toInt(),
+                            )
+                          : position,
+                    ),
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
