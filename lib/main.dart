@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:listen_repository/listen_repository.dart';
+import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:search_repository/search_repository.dart';
@@ -22,6 +23,9 @@ void main() async {
 
   // Initialize Firebase
   await Firebase.initializeApp();
+
+  // Initialize Perfect Volume Control
+  PerfectVolumeControl.hideUI = true;
 
   runApp(
     MultiProvider(
