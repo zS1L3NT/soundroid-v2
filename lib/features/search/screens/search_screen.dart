@@ -16,7 +16,7 @@ class SearchScreen extends StatelessWidget {
       child: searchProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : searchProvider.results != null
-              ? const SearchResultsWidget()
+              ? SearchResultsWidget(results: searchProvider.results!)
               : searchProvider.query != ""
                   ? const ApiSuggestions()
                   : const RecentSuggestions(),
