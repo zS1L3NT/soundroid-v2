@@ -249,6 +249,7 @@ class _QueueScreenState extends State<QueueScreen> {
     return ReorderableListView(
       children: _tracks
           .map((track) => QueueItem(
+                key: ValueKey(track.title),
                 track: track,
                 index: _tracks.indexOf(track),
               ))

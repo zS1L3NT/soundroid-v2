@@ -50,7 +50,6 @@ class QueueItem extends StatelessWidget {
     final selected = context.select<PlayingProvider, List<Track>?>((provider) => provider.selected);
 
     return InkWell(
-      key: ValueKey(track.title),
       onTap: () => handleTap(context, selected, track),
       onLongPress: () => handleLongPress(context, selected, track),
       child: ListTile(
