@@ -28,10 +28,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   late final _playlistStream = context.read<PlaylistRepository>().getPlaylist(widget.playlist.id);
   final _controller = ScrollController();
 
-  void onFavouriteClick() {
+  void onFavouriteClick(bool favourite) {
     context.read<PlaylistRepository>().updatePlaylist(
       widget.playlist.id,
-      {"favourite": !widget.playlist.favourite},
+      {"favourite": !favourite},
     );
   }
 
@@ -77,7 +77,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: playlist.favourite ? Theme.of(context).primaryColor : null,
-                                  onPressed: onFavouriteClick,
+                                  onPressed: () => onFavouriteClick(playlist.favourite),
                                 )
                               : AppIcon.loading(color: Colors.black),
                           playlist != null
