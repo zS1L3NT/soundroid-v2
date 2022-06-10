@@ -30,34 +30,17 @@ class SuggestionItem extends StatelessWidget {
 
   void onLongClick(BuildContext context) {
     if (type == SuggestionType.recent) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Delete this search?"),
-            content: const Text("This search record will be deleted."),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Cancel"),
-              ),
-              ElevatedButton(
-                onPressed: () => deleteSearch(context),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith((_) => Colors.red),
-                ),
-                child: const Text("Delete"),
-              ),
-            ],
-          );
+      AppConfirmDialog(
+        title: "Delete this search?",
+        description: "This search record will be deleted.",
+        confirmText: "Delete",
+        isDanger: true,
+        onConfirm: () {
+          context.read<SearchRepository>().deleteSearch(text);
+          Navigator.of(context).pop();
         },
-      );
+      ).show(context);
     }
-  }
-
-  void deleteSearch(BuildContext context) async {
-    context.read<SearchRepository>().deleteSearch(text);
-    Navigator.of(context).pop();
   }
 
   @override

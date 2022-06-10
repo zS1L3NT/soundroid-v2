@@ -36,29 +36,13 @@ class SettingsScreen extends StatelessWidget {
               title: "Clear Listening History",
               subtitle: "Clear all of your music listening history",
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: const Text("Clear Listening History?"),
-                    content: const Text("Song recommendations will not work after this."),
-                    actions: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text("Clear"),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                AppConfirmDialog(
+                  title: "Clear Listening History?",
+                  description: "Song recommendations will not work after this.",
+                  confirmText: "Clear",
+                  isDanger: true,
+                  onConfirm: () {},
+                ).show(context);
               },
             ),
             SimpleSettingsTile(
@@ -66,30 +50,13 @@ class SettingsScreen extends StatelessWidget {
               title: "Clear Search History",
               subtitle: "Clear all of your search history",
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: const Text("Clear Search History?"),
-                    content:
-                        const Text("You won't see anything in your search history after this."),
-                    actions: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text("Clear"),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                AppConfirmDialog(
+                  title: "Clear Search History?",
+                  description: "You won't see anything in your search history after this.",
+                  confirmText: "Clear",
+                  isDanger: true,
+                  onConfirm: () {},
+                ).show(context);
               },
             ),
             SimpleSettingsTile(
@@ -98,33 +65,13 @@ class SettingsScreen extends StatelessWidget {
               subtitle:
                   "Deletes all of your data from SounDroid's servers, then logs you out of the App",
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: const Text("Delete Account Data?"),
-                    content: const Text("You will be logged out and your account will be deleted!"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(dialogContext).pop();
-                        },
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(WelcomeScreen.route());
-                        },
-                        child: const Text("Delete Data"),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                AppConfirmDialog(
+                  title: "Delete Account Data?",
+                  description: "You will be logged out and your account will be deleted!",
+                  confirmText: "Delete Data",
+                  isDanger: true,
+                  onConfirm: () {},
+                ).show(context);
               },
             ),
             SimpleSettingsTile(
@@ -132,33 +79,15 @@ class SettingsScreen extends StatelessWidget {
               title: "Logout",
               subtitle: "Logout of SounDroid",
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: const Text("Logout"),
-                    content: const Text('Any music playing will be stopped.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(dialogContext).pop();
-                        },
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(WelcomeScreen.route());
-                        },
-                        child: const Text("Logout"),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                AppConfirmDialog(
+                  title: "Logout",
+                  description: "Any music playing will be stopped.",
+                  confirmText: "Logout",
+                  isDanger: true,
+                  onConfirm: () {
+                    Navigator.of(context).pushReplacement(WelcomeScreen.route());
+                  },
+                ).show(context);
               },
             ),
           ],
