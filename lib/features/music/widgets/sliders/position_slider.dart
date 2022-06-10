@@ -11,7 +11,7 @@ class PositionSlider extends StatefulWidget {
 
 class _PositionSliderState extends State<PositionSlider> {
   late final _player = context.read<PlayingProvider>().player;
-  double _progress = 0.5;
+  double? _slidePosition;
 
   String formatDuration(Duration? duration) {
     if (duration == null) {
@@ -29,44 +29,62 @@ class _PositionSliderState extends State<PositionSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        StreamBuilder<Duration>(
+    return StreamBuilder<Duration?>(
+      stream: _player.durationStream,
+      builder: (context, snap) {
+        final duration = snap.data;
+        return StreamBuilder<Duration>(
           stream: _player.positionStream,
           builder: (context, snap) {
-            return Text(
-              formatDuration(snap.data),
-              style: Theme.of(context).textTheme.caption,
+            final position = snap.data;
+            return Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                  child: Text(
+                    formatDuration(position),
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+                SliderTheme(
+                  data: const SliderThemeData(
+                    trackHeight: 2,
+                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8),
+                    overlayShape: RoundSliderOverlayShape(overlayRadius: 8),
+                  ),
+                  child: Expanded(
+                    child: Slider.adaptive(
+                      value: _slidePosition ??
+                          (position != null && duration != null
+                              ? position.inSeconds / duration.inSeconds
+                              : 0),
+                      onChanged: (position) {
+                        setState(() => _slidePosition = position);
+                      },
+                      onChangeEnd: (position) {
+                        _player.seek(
+                          Duration(
+                            milliseconds: ((duration?.inMilliseconds ?? 0) * position).toInt(),
+                          ),
+                        );
+                        setState(() => _slidePosition = null);
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 40,
+                  child: Text(
+                    formatDuration(duration),
+                    style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
             );
           },
-        ),
-        SliderTheme(
-          data: const SliderThemeData(
-            trackHeight: 2,
-            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8),
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 16),
-          ),
-          child: Expanded(
-            child: Slider.adaptive(
-              value: _progress,
-              onChanged: (progress) {
-                setState(() {
-                  _progress = progress;
-                });
-              },
-            ),
-          ),
-        ),
-        StreamBuilder<Duration?>(
-          stream: _player.durationStream,
-          builder: (context, snap) {
-            return Text(
-              formatDuration(snap.data),
-              style: Theme.of(context).textTheme.caption,
-            );
-          },
-        ),
-      ],
+        );
+      },
     );
   }
 }
