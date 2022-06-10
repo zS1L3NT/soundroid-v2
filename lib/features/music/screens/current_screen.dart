@@ -1,5 +1,5 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
@@ -25,9 +25,18 @@ class _CurrentScreenState extends State<CurrentScreen> {
       ),
     ).then((palette) => setState(() => _color = palette.colors.first));
 
-    context.read<PlayingProvider>().queue.add(
-          AudioSource.uri(
-            Uri.parse("http://soundroid.zectan.com/api/download?videoId=sqgxcCjD04s"),
+    context.read<PlayingProvider>().queue.addTrack(
+          Track(
+            id: "sqgxcCjD04s",
+            title: "Strawberry Moon",
+            artists: [
+              const Artist(
+                id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
+                name: "IU",
+              ),
+            ],
+            thumbnail:
+                "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
           ),
         );
   }

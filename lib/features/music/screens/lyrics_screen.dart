@@ -11,11 +11,11 @@ class LyricsScreen extends StatefulWidget {
 
 class _LyricsScreenState extends State<LyricsScreen> {
   late final _futureLyrics = context.read<ApiRepository>().getLyrics(
-        const Track(
+        Track(
           id: "",
           title: "Lilac",
           artists: [
-            Artist(
+            const Artist(
               id: "",
               name: "IU",
             ),

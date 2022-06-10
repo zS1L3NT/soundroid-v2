@@ -10,11 +10,11 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends State<QueueScreen> {
-  final _tracks = const [
+  final _tracks = [
     Track(
       id: "",
       title: "MAGO",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "GFRIEND",
@@ -26,7 +26,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "LA DI DA",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "EVERGLOW",
@@ -37,7 +37,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Voltage",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "ITZY",
@@ -48,7 +48,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Odd Eye",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "Dreamcatcher",
@@ -60,7 +60,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Ven Para",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "Weeekly",
@@ -71,7 +71,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Black Mamba",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "aespa",
@@ -82,7 +82,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "WA DA DA",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "Kep1er",
@@ -93,7 +93,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "TOMBOY",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "(G)I-DLE",
@@ -104,7 +104,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Why Not?",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "LOONA",
@@ -116,7 +116,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Step Back",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "GOT the beat",
@@ -127,7 +127,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "PLAYING WITH FIRE",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "BLACKPINK",
@@ -138,7 +138,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "PTT (Paint The Town)",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "LOONA",
@@ -149,7 +149,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "D-D-DANCE",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "IZ*ONE",
@@ -160,7 +160,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "LOCO",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "ITZY",
@@ -171,7 +171,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Not Shy",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "ITZY",
@@ -182,7 +182,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "WANNABE",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "ITZY",
@@ -194,7 +194,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "달라달라 (DALLA DALLA)",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "ITZY",
@@ -206,7 +206,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "SO BAD",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "STAYC",
@@ -217,7 +217,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "Rollin'",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "Brave Girls",
@@ -229,7 +229,7 @@ class _QueueScreenState extends State<QueueScreen> {
     Track(
       id: "",
       title: "SMILEY(Feat. BIBI)",
-      artists: [
+      artists: const [
         Artist(
           id: "",
           name: "YENA",
