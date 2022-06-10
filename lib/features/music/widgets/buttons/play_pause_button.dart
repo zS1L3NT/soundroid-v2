@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
-import 'package:soundroid/widgets/widgets.dart';
 
 class PlayPauseButton extends StatefulWidget {
   const PlayPauseButton({Key? key}) : super(key: key);
@@ -10,14 +9,34 @@ class PlayPauseButton extends StatefulWidget {
   State<PlayPauseButton> createState() => _PlayPauseButtonState();
 }
 
-class _PlayPauseButtonState extends State<PlayPauseButton> {
+class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProviderStateMixin {
   late final _player = context.read<PlayingProvider>().player;
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 400),
+    reverseDuration: const Duration(milliseconds: 400),
+  );
 
-  void handleClick() async {
+  @override
+  void initState() {
+    super.initState();
+
+    _player.playingStream.listen((playing) {
+      if (mounted) {
+        if (playing) {
+          _controller.forward();
+        } else {
+          _controller.reverse();
+        }
+      }
+    });
+  }
+
+  void handleClick() {
     if (_player.playing) {
-      await _player.pause();
+      _player.pause();
     } else {
-      await _player.play();
+      _player.play();
     }
   }
 
@@ -26,6 +45,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
     return Stack(
       children: [
         Container(
+          padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(64),
@@ -41,11 +61,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
               ),
             ],
           ),
-          child: AppIcon.primaryColor(
-            Icons.play_arrow_rounded,
-            context,
-            size: 56,
-            splashRadius: 56,
+          child: IconButton(
+            icon: AnimatedIcon(
+              icon: AnimatedIcons.play_pause,
+              progress: _controller,
+            ),
+            color: Theme.of(context).primaryColor,
+            iconSize: 52,
+            splashRadius: 52,
             onPressed: handleClick,
           ),
         ),
