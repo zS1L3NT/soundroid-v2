@@ -1,5 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 
 class QueueScreen extends StatefulWidget {
@@ -10,258 +12,33 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends State<QueueScreen> {
-  final _tracks = [
-    Track(
-      id: "",
-      title: "MAGO",
-      artists: const [
-        Artist(
-          id: "",
-          name: "GFRIEND",
-        ),
-      ],
-      thumbnail:
-          "https://static.wikia.nocookie.net/gfriend/images/5/51/GFriend_Walpurgis_Night_Digital_Cover.jpg/revision/latest?cb=20201109125023",
-    ),
-    Track(
-      id: "",
-      title: "LA DI DA",
-      artists: const [
-        Artist(
-          id: "",
-          name: "EVERGLOW",
-        ),
-      ],
-      thumbnail: "https://kbopped.files.wordpress.com/2020/09/la-di-da.jpg",
-    ),
-    Track(
-      id: "",
-      title: "Voltage",
-      artists: const [
-        Artist(
-          id: "",
-          name: "ITZY",
-        ),
-      ],
-      thumbnail: "https://i.scdn.co/image/ab67616d0000b273aecb87fd2574ad79b05cc024",
-    ),
-    Track(
-      id: "",
-      title: "Odd Eye",
-      artists: const [
-        Artist(
-          id: "",
-          name: "Dreamcatcher",
-        ),
-      ],
-      thumbnail:
-          "https://colorcodedlyrics.com/wp-content/uploads/2021/01/Dreamcatcher-Dystopia-Road-to-Utopia.jpg",
-    ),
-    Track(
-      id: "",
-      title: "Ven Para",
-      artists: const [
-        Artist(
-          id: "",
-          name: "Weeekly",
-        ),
-      ],
-      thumbnail: "https://images.genius.com/63812adc796134af85c3e8146dc016ef.600x600x1.jpg",
-    ),
-    Track(
-      id: "",
-      title: "Black Mamba",
-      artists: const [
-        Artist(
-          id: "",
-          name: "aespa",
-        ),
-      ],
-      thumbnail: "https://upload.wikimedia.org/wikipedia/en/e/e4/Aespa_-_Black_Mamba.png",
-    ),
-    Track(
-      id: "",
-      title: "WA DA DA",
-      artists: const [
-        Artist(
-          id: "",
-          name: "Kep1er",
-        ),
-      ],
-      thumbnail: "https://i.scdn.co/image/ab67616d0000b2732963187314262831fa2baa49",
-    ),
-    Track(
-      id: "",
-      title: "TOMBOY",
-      artists: const [
-        Artist(
-          id: "",
-          name: "(G)I-DLE",
-        ),
-      ],
-      thumbnail: "https://images.genius.com/c5c5b9daef8abffc860437ebd500e555.1000x1000x1.png",
-    ),
-    Track(
-      id: "",
-      title: "Why Not?",
-      artists: const [
-        Artist(
-          id: "",
-          name: "LOONA",
-        ),
-      ],
-      thumbnail:
-          "https://i0.wp.com/colorcodedlyrics.com/wp-content/uploads/2020/09/LOONA-1200.jpg?w=640&ssl=1",
-    ),
-    Track(
-      id: "",
-      title: "Step Back",
-      artists: const [
-        Artist(
-          id: "",
-          name: "GOT the beat",
-        ),
-      ],
-      thumbnail: "https://upload.wikimedia.org/wikipedia/en/b/b0/Got_the_Beat_-_Step_Back.jpg",
-    ),
-    Track(
-      id: "",
-      title: "PLAYING WITH FIRE",
-      artists: const [
-        Artist(
-          id: "",
-          name: "BLACKPINK",
-        ),
-      ],
-      thumbnail: "https://images.genius.com/4cb3a383634155a13f8db8594a79d27d.600x600x1.jpg",
-    ),
-    Track(
-      id: "",
-      title: "PTT (Paint The Town)",
-      artists: const [
-        Artist(
-          id: "",
-          name: "LOONA",
-        ),
-      ],
-      thumbnail: "https://images.genius.com/b17668a45799ad30aadb722111d5124c.300x300x1.jpg",
-    ),
-    Track(
-      id: "",
-      title: "D-D-DANCE",
-      artists: const [
-        Artist(
-          id: "",
-          name: "IZ*ONE",
-        ),
-      ],
-      thumbnail: "https://upload.wikimedia.org/wikipedia/en/8/80/Dddance.jpg",
-    ),
-    Track(
-      id: "",
-      title: "LOCO",
-      artists: const [
-        Artist(
-          id: "",
-          name: "ITZY",
-        ),
-      ],
-      thumbnail: "https://i.ytimg.com/vi/-6gdPbihCNk/maxresdefault.jpg",
-    ),
-    Track(
-      id: "",
-      title: "Not Shy",
-      artists: const [
-        Artist(
-          id: "",
-          name: "ITZY",
-        ),
-      ],
-      thumbnail: "https://upload.wikimedia.org/wikipedia/en/9/9a/Itzy_-_Not_Shy.jpg",
-    ),
-    Track(
-      id: "",
-      title: "WANNABE",
-      artists: const [
-        Artist(
-          id: "",
-          name: "ITZY",
-        ),
-      ],
-      thumbnail:
-          "https://popgasa1.files.wordpress.com/2020/03/81382519_1583735274558_1_600x600.jpg",
-    ),
-    Track(
-      id: "",
-      title: "달라달라 (DALLA DALLA)",
-      artists: const [
-        Artist(
-          id: "",
-          name: "ITZY",
-        ),
-      ],
-      thumbnail:
-          "https://i0.wp.com/colorcodedlyrics.com/wp-content/uploads/2019/02/ITZY-IT%E2%80%99z-Different.jpg?fit=600%2C600&ssl=1",
-    ),
-    Track(
-      id: "",
-      title: "SO BAD",
-      artists: const [
-        Artist(
-          id: "",
-          name: "STAYC",
-        ),
-      ],
-      thumbnail: "https://i.scdn.co/image/ab67616d0000b273bc125f40131dd5869b2ec36c",
-    ),
-    Track(
-      id: "",
-      title: "Rollin'",
-      artists: const [
-        Artist(
-          id: "",
-          name: "Brave Girls",
-        ),
-      ],
-      thumbnail:
-          "https://static.wikia.nocookie.net/kpop/images/0/04/Brave_Girls_Rollin%27_revised_digital_cover_art.png/revision/latest?cb=20210302021641",
-    ),
-    Track(
-      id: "",
-      title: "SMILEY(Feat. BIBI)",
-      artists: const [
-        Artist(
-          id: "",
-          name: "YENA",
-        ),
-        Artist(
-          id: "",
-          name: "BIBI",
-        ),
-      ],
-      thumbnail:
-          "https://seoulbeats.com/wp-content/uploads/2022/01/20220123_seoulbeats_yena_smiley_cover.jpg",
-    ),
-  ];
+  late final _player = context.read<MusicProvider>().player;
+  late final _queue = context.read<MusicProvider>().queue;
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableListView(
-      children: _tracks
-          .map((track) => QueueItem(
-                key: ValueKey(track.title),
-                track: track,
-                index: _tracks.indexOf(track),
-              ))
-          .toList(),
-      onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final Track track = _tracks.removeAt(oldIndex);
-          _tracks.insert(newIndex, track);
-        });
+    return StreamBuilder<List<IndexedAudioSource>?>(
+      stream: _player.sequenceStream,
+      builder: (context, snap) {
+        final tracks = snap.data?.cast<Track>();
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: tracks == null
+              ? const SizedBox()
+              : ReorderableListView(
+                  children: tracks
+                      .map((track) => QueueItem(
+                            key: ValueKey(track.title),
+                            track: track,
+                            index: tracks.indexOf(track),
+                          ))
+                      .toList(),
+                  onReorder: (int oldIndex, int newIndex) {
+                    _queue.move(oldIndex, newIndex);
+                  },
+                ),
+        );
       },
     );
   }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class QueueItem extends StatelessWidget {
+class QueueItem extends StatefulWidget {
   const QueueItem({
     Key? key,
     required this.track,
@@ -15,33 +15,32 @@ class QueueItem extends StatelessWidget {
 
   final int index;
 
-  void handleTap(
-    BuildContext context,
-    List<Track>? selected,
-    Track track,
-  ) {
+  @override
+  State<QueueItem> createState() => _QueueItemState();
+}
+
+class _QueueItemState extends State<QueueItem> {
+  late final _musicProvider = context.read<MusicProvider>();
+
+  void handleTap(List<Track>? selected) {
     if (selected == null) {
       // Play the song
     } else {
-      if (selected.contains(track)) {
+      if (selected.contains(widget.track)) {
         if (selected.length == 1) {
-          context.read<MusicProvider>().selected = null;
+          _musicProvider.selected = null;
         } else {
-          context.read<MusicProvider>().selected = selected.where((t) => t != track).toList();
+          _musicProvider.selected = selected.where((t) => t != widget.track).toList();
         }
       } else {
-        context.read<MusicProvider>().selected = selected.toList()..add(track);
+        _musicProvider.selected = selected.toList()..add(widget.track);
       }
     }
   }
 
-  void handleLongPress(
-    BuildContext context,
-    List<Track>? selected,
-    Track track,
-  ) {
+  void handleLongPress(List<Track>? selected) {
     if (selected == null) {
-      context.read<MusicProvider>().selected = [track];
+      _musicProvider.selected = [widget.track];
     }
   }
 
@@ -50,27 +49,34 @@ class QueueItem extends StatelessWidget {
     final selected = context.select<MusicProvider, List<Track>?>((provider) => provider.selected);
 
     return InkWell(
-      onTap: () => handleTap(context, selected, track),
-      onLongPress: () => handleLongPress(context, selected, track),
-      child: ListTile(
-        tileColor: selected != null && selected.contains(track)
-            ? Theme.of(context).highlightColor
-            : Colors.transparent,
-        leading: AppImage.network(
-          track.thumbnail,
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          size: 56,
-        ),
-        title: AppText.ellipse(track.title),
-        subtitle: AppText.ellipse(track.artists.map((artist) => artist.name).join(", ")),
-        trailing: ReorderableDragStartListener(
-          index: index,
-          child: AppIcon.black87(
-            Icons.drag_handle_rounded,
-            onPressed: () {},
-          ),
-        ),
-        contentPadding: const EdgeInsets.only(left: 16),
+      onTap: () => handleTap(selected),
+      onLongPress: () => handleLongPress(selected),
+      child: StreamBuilder<Track?>(
+        stream: _musicProvider.current,
+        builder: (context, snap) {
+          final current = snap.data;
+          return ListTile(
+            tileColor: selected != null && selected.contains(widget.track)
+                ? Theme.of(context).highlightColor
+                : Colors.transparent,
+            leading: AppImage.network(
+              widget.track.thumbnail,
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              size: 56,
+            ),
+            title: AppText.ellipse(widget.track.title),
+            textColor: widget.track.id == current?.id ? Theme.of(context).primaryColor : null,
+            subtitle: AppText.ellipse(widget.track.artists.map((artist) => artist.name).join(", ")),
+            trailing: ReorderableDragStartListener(
+              index: widget.index,
+              child: AppIcon.black87(
+                Icons.drag_handle_rounded,
+                onPressed: () {},
+              ),
+            ),
+            contentPadding: const EdgeInsets.only(left: 16),
+          );
+        },
       ),
     );
   }
