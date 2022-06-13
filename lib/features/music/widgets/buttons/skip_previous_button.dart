@@ -7,7 +7,13 @@ class SkipPreviousButton extends StatelessWidget {
   const SkipPreviousButton({Key? key}) : super(key: key);
 
   void handleClick(BuildContext context) {
-    context.read<PlayingProvider>().player.seekToPrevious();
+    final player = context.read<PlayingProvider>().player;
+
+    if (player.position.inSeconds >= 2) {
+      player.seek(Duration.zero);
+    } else {
+      player.seekToPrevious();
+    }
   }
 
   @override
