@@ -27,6 +27,5 @@ class QueueAudioSource extends ConcatenatingAudioSource {
   @override
   Track operator [](int index) => this[index];
 
-  @override
-  List<Track> get sequence => children.expand((s) => s.sequence).toList().cast<Track>();
+  List<Track> get tracks => children.cast<Track>();
 }

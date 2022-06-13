@@ -1,6 +1,5 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
@@ -13,32 +12,56 @@ class CurrentScreen extends StatefulWidget {
 }
 
 class _CurrentScreenState extends State<CurrentScreen> {
-  Color? _color;
+  late final _player = context.read<PlayingProvider>().player;
+  late final _queue = context.read<PlayingProvider>().queue;
 
   @override
   void initState() {
     super.initState();
 
-    PaletteGenerator.fromImageProvider(
-      const NetworkImage(
-        "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
-      ),
-    ).then((palette) => setState(() => _color = palette.colors.first));
-
-    context.read<PlayingProvider>().queue.addTrack(
-          Track(
-            id: "sqgxcCjD04s",
-            title: "Strawberry Moon",
-            artists: [
-              const Artist(
-                id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
-                name: "IU",
-              ),
-            ],
-            thumbnail:
-                "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
+    print(_queue.tracks.map((track) => track.title));
+    if (_queue.length > 0) {
+      return;
+    }
+    _queue.addTrack(
+      Track(
+        id: "sqgxcCjD04s",
+        title: "Strawberry Moon",
+        artists: [
+          const Artist(
+            id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
+            name: "IU",
           ),
-        );
+        ],
+        thumbnail: "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
+      ),
+    );
+    _queue.addTrack(
+      Track(
+        id: "v7bnOxV4jAc",
+        title: "Lilac",
+        artists: [
+          const Artist(
+            id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
+            name: "IU",
+          ),
+        ],
+        thumbnail: "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
+      ),
+    );
+    _queue.addTrack(
+      Track(
+        id: "D1PvIWdJ8xo",
+        title: "Blueming",
+        artists: [
+          const Artist(
+            id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
+            name: "IU",
+          ),
+        ],
+        thumbnail: "https://i.imgur.com/evzC1EV.jpg",
+      ),
+    );
   }
 
   @override
@@ -52,59 +75,39 @@ class _CurrentScreenState extends State<CurrentScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
-            Container(
-              width: size.width * 0.7,
-              height: size.width * 0.7,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: _color ?? Colors.transparent,
-                    spreadRadius: 12,
-                    blurRadius: 16,
-                  )
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: AppImage.network(
-                  "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
-                ),
-              ),
-            ),
+            const CoverImage(),
             const Spacer(flex: 2),
             Row(
               children: [
-                AppIcon.primaryColor(
-                  Icons.favorite_rounded,
-                  context,
-                  onPressed: () {},
-                ),
+                const LikeButton(),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Column(
-                    children: [
-                      AppText.marquee(
-                        "Strawberry Moon",
-                        width: size.width,
-                        style: Theme.of(context).textTheme.headline4,
-                        textAlign: TextAlign.center,
-                      ),
-                      AppText.marquee(
-                        "IU",
-                        width: size.width,
-                        style: Theme.of(context).textTheme.subtitle1,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                  child: StreamBuilder<int?>(
+                    stream: _player.currentIndexStream,
+                    builder: (context, snap) {
+                      final current = snap.data != null ? _queue.tracks[snap.data!] : null;
+
+                      return Column(
+                        children: [
+                          AppText.marquee(
+                            current?.title ?? "...",
+                            width: size.width,
+                            style: Theme.of(context).textTheme.headline4,
+                            textAlign: TextAlign.center,
+                          ),
+                          AppText.marquee(
+                            current?.artists.map((artist) => artist.name).join(", ") ?? "...",
+                            width: size.width,
+                            style: Theme.of(context).textTheme.subtitle1,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(width: 8),
-                AppIcon.primaryColor(
-                  Icons.add_rounded,
-                  context,
-                  onPressed: () {},
-                ),
+                const AddToButton(),
               ],
             ),
             const Spacer(flex: 3),

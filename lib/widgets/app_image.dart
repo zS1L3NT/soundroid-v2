@@ -77,6 +77,7 @@ class AppImage extends StatefulWidget {
           duration: const Duration(milliseconds: 500),
           child: url != null
               ? CachedNetworkImage(
+                  key: ValueKey(url),
                   imageUrl: url,
                   placeholder: (context, url) {
                     return Shimmer.fromColors(
