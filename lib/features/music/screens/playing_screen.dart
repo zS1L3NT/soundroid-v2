@@ -1,3 +1,4 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
@@ -11,22 +12,23 @@ class PlayingScreen extends StatefulWidget {
 }
 
 class _PlayingScreenState extends State<PlayingScreen> {
-  final _screens = const [
-    CurrentScreen(),
-    QueueScreen(),
-    LyricsScreen(),
-  ];
-
-  int _index = 0;
+  final _controller = PageController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PlayingAppBar(
-        index: _index,
-        setIndex: (index) => setState(() => _index = index),
+        controller: _controller,
       ),
-      body: _screens[_index],
+      body: PageView(
+        scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
+        controller: _controller,
+        children: const [
+          CurrentScreen(),
+          QueueScreen(),
+          LyricsScreen(),
+        ],
+      ),
     );
   }
 }
@@ -34,75 +36,109 @@ class _PlayingScreenState extends State<PlayingScreen> {
 class PlayingAppBar extends AppBar {
   PlayingAppBar({
     Key? key,
-    required this.index,
-    required this.setIndex,
+    required this.controller,
   }) : super(key: key);
 
-  final int index;
-
-  final Function(int) setIndex;
+  final PageController controller;
 
   @override
   State<PlayingAppBar> createState() => _PlayingAppBarState();
 }
 
 class _PlayingAppBarState extends State<PlayingAppBar> {
+  int _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.controller.addListener(() {
+      final page = widget.controller.page;
+
+      // Whenever the page changes, if the page is < 20% away from snapping,
+      // change the _page variable to change the icon in the appbar.
+      if (page != null && (page % 1 > 0.8 || page % 1 < 0.2)) {
+        final page = widget.controller.page!.round();
+        if (page != _page) {
+          setState(() => _page = widget.controller.page!.round());
+        }
+      }
+    });
+  }
+
   Color getColor(int index) {
-    return widget.index == index ? Theme.of(context).primaryColor : Colors.black;
+    return _page == index ? Theme.of(context).primaryColor : Colors.black;
   }
 
   @override
   Widget build(BuildContext context) {
-    final selected = context.watch<MusicProvider>().selected;
-    return selected == null
-        ? AppBar(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            elevation: 0,
-            leading: AppIcon.black87(
-              Icons.keyboard_arrow_down_rounded,
+    final selected = context.select<MusicProvider, List<Track>?>((provider) => provider.selected);
+
+    if (selected == null) {
+      return StreamBuilder<Object>(builder: (context, snapshot) {
+        return AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0,
+          leading: AppIcon.black87(
+            Icons.keyboard_arrow_down_rounded,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          actions: [
+            AppIcon(
+              Icons.music_note_rounded,
+              color: getColor(0),
               onPressed: () {
-                Navigator.of(context).pop();
+                widget.controller.animateToPage(
+                  0,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOut,
+                );
               },
             ),
-            actions: [
-              AppIcon(
-                Icons.music_note_rounded,
-                color: getColor(0),
-                onPressed: () {
-                  widget.setIndex(0);
-                },
-              ),
-              AppIcon(
-                Icons.queue_music_rounded,
-                color: getColor(1),
-                onPressed: () {
-                  widget.setIndex(1);
-                },
-              ),
-              AppIcon(
-                Icons.mic_external_on_rounded,
-                color: getColor(2),
-                onPressed: () {
-                  widget.setIndex(2);
-                },
-              ),
-            ],
-          )
-        : AppBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            leading: AppIcon(
-              Icons.close_rounded,
+            AppIcon(
+              Icons.queue_music_rounded,
+              color: getColor(1),
               onPressed: () {
-                context.read<MusicProvider>().selected = null;
+                widget.controller.animateToPage(
+                  1,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOut,
+                );
               },
             ),
-            title: Text("${selected.length} selected"),
-            actions: [
-              AppIcon(
-                Icons.remove_circle_rounded,
-                onPressed: () {},
-              ),
-            ],
-          );
+            AppIcon(
+              Icons.mic_external_on_rounded,
+              color: getColor(2),
+              onPressed: () {
+                widget.controller.animateToPage(
+                  2,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOut,
+                );
+              },
+            ),
+          ],
+        );
+      });
+    } else {
+      return AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        leading: AppIcon(
+          Icons.close_rounded,
+          onPressed: () {
+            context.read<MusicProvider>().selected = null;
+          },
+        ),
+        title: Text("${selected.length} selected"),
+        actions: [
+          AppIcon(
+            Icons.remove_circle_rounded,
+            onPressed: () {},
+          ),
+        ],
+      );
+    }
   }
 }
