@@ -14,6 +14,9 @@ class MusicProvider with ChangeNotifier {
 
   QueueAudioSource get queue => _queue;
 
+  Stream<Track?> get current =>
+      _player.currentIndexStream.map((index) => index != null ? _queue.tracks[index] : null);
+
   set selected(List<Track>? selected) {
     _selected = selected;
     notifyListeners();

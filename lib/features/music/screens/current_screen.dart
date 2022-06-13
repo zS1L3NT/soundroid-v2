@@ -82,21 +82,19 @@ class _CurrentScreenState extends State<CurrentScreen> {
                 const LikeButton(),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: StreamBuilder<int?>(
-                    stream: _player.currentIndexStream,
+                  child: StreamBuilder<Track?>(
+                    stream: context.read<MusicProvider>().current,
                     builder: (context, snap) {
-                      final current = snap.data != null ? _queue.tracks[snap.data!] : null;
-
                       return Column(
                         children: [
                           AppText.marquee(
-                            current?.title ?? "...",
+                            snap.data?.title ?? "...",
                             width: size.width,
                             style: Theme.of(context).textTheme.headline4,
                             textAlign: TextAlign.center,
                           ),
                           AppText.marquee(
-                            current?.artists.map((artist) => artist.name).join(", ") ?? "...",
+                            snap.data?.artists.map((artist) => artist.name).join(", ") ?? "...",
                             width: size.width,
                             style: Theme.of(context).textTheme.subtitle1,
                             textAlign: TextAlign.center,

@@ -1,3 +1,4 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +13,6 @@ class LikeButton extends StatefulWidget {
 }
 
 class _LikeButtonState extends State<LikeButton> {
-  late final _player = context.read<MusicProvider>().player;
-  late final _queue = context.read<MusicProvider>().queue;
   late final _userStream = context.read<AuthenticationRepository>().currentUser;
 
   @override
@@ -26,10 +25,10 @@ class _LikeButtonState extends State<LikeButton> {
           return AppIcon.loading();
         }
 
-        return StreamBuilder<int?>(
-          stream: _player.currentIndexStream,
+        return StreamBuilder<Track?>(
+          stream: context.read<MusicProvider>().current,
           builder: (context, snap) {
-            final current = snap.data != null ? _queue.tracks[snap.data!] : null;
+            final current = snap.data;
             if (current == null) {
               return AppIcon.loading();
             }

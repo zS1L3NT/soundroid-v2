@@ -1,29 +1,21 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class CoverImage extends StatefulWidget {
+class CoverImage extends StatelessWidget {
   const CoverImage({Key? key}) : super(key: key);
-
-  @override
-  State<CoverImage> createState() => _CoverImageState();
-}
-
-class _CoverImageState extends State<CoverImage> {
-  late final _player = context.read<MusicProvider>().player;
-  late final _queue = context.read<MusicProvider>().queue;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return StreamBuilder<int?>(
-      stream: _player.currentIndexStream,
+    return StreamBuilder<Track?>(
+      stream: context.read<MusicProvider>().current,
       builder: (context, snap) {
-        final current = snap.data != null ? _queue.tracks[snap.data!] : null;
-
+        final current = snap.data;
         return FutureBuilder<PaletteGenerator>(
           future: PaletteGenerator.fromImageProvider(
             NetworkImage(
