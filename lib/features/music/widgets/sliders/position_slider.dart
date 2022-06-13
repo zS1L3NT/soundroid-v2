@@ -10,7 +10,7 @@ class PositionSlider extends StatefulWidget {
 }
 
 class _PositionSliderState extends State<PositionSlider> {
-  late final _player = context.read<PlayingProvider>().player;
+  late final _player = context.read<MusicProvider>().player;
   double? _slidePosition;
 
   String formatDuration(Duration? duration) {

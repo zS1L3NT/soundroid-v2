@@ -12,8 +12,8 @@ class CurrentScreen extends StatefulWidget {
 }
 
 class _CurrentScreenState extends State<CurrentScreen> {
-  late final _player = context.read<PlayingProvider>().player;
-  late final _queue = context.read<PlayingProvider>().queue;
+  late final _player = context.read<MusicProvider>().player;
+  late final _queue = context.read<MusicProvider>().queue;
 
   @override
   void initState() {

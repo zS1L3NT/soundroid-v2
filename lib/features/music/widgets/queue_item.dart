@@ -25,12 +25,12 @@ class QueueItem extends StatelessWidget {
     } else {
       if (selected.contains(track)) {
         if (selected.length == 1) {
-          context.read<PlayingProvider>().selected = null;
+          context.read<MusicProvider>().selected = null;
         } else {
-          context.read<PlayingProvider>().selected = selected.where((t) => t != track).toList();
+          context.read<MusicProvider>().selected = selected.where((t) => t != track).toList();
         }
       } else {
-        context.read<PlayingProvider>().selected = selected.toList()..add(track);
+        context.read<MusicProvider>().selected = selected.toList()..add(track);
       }
     }
   }
@@ -41,13 +41,13 @@ class QueueItem extends StatelessWidget {
     Track track,
   ) {
     if (selected == null) {
-      context.read<PlayingProvider>().selected = [track];
+      context.read<MusicProvider>().selected = [track];
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final selected = context.select<PlayingProvider, List<Track>?>((provider) => provider.selected);
+    final selected = context.select<MusicProvider, List<Track>?>((provider) => provider.selected);
 
     return InkWell(
       onTap: () => handleTap(context, selected, track),

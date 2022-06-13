@@ -7,7 +7,7 @@ class SkipNextButton extends StatelessWidget {
   const SkipNextButton({Key? key}) : super(key: key);
 
   void handleClick(BuildContext context) {
-    context.read<PlayingProvider>().player.seekToNext();
+    context.read<MusicProvider>().player.seekToNext();
   }
 
   @override

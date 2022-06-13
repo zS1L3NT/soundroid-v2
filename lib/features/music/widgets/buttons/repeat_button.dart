@@ -12,7 +12,7 @@ class RepeatButton extends StatefulWidget {
 }
 
 class _RepeatButtonState extends State<RepeatButton> {
-  late final _player = context.read<PlayingProvider>().player;
+  late final _player = context.read<MusicProvider>().player;
 
   void handleClick() async {
     switch (_player.loopMode) {

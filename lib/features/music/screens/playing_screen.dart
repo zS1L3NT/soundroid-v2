@@ -53,7 +53,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final selected = context.watch<PlayingProvider>().selected;
+    final selected = context.watch<MusicProvider>().selected;
     return selected == null
         ? AppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -93,7 +93,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
             leading: AppIcon(
               Icons.close_rounded,
               onPressed: () {
-                context.read<PlayingProvider>().selected = null;
+                context.read<MusicProvider>().selected = null;
               },
             ),
             title: Text("${selected.length} selected"),

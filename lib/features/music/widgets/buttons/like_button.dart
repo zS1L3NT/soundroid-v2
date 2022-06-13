@@ -12,8 +12,8 @@ class LikeButton extends StatefulWidget {
 }
 
 class _LikeButtonState extends State<LikeButton> {
-  late final _player = context.read<PlayingProvider>().player;
-  late final _queue = context.read<PlayingProvider>().queue;
+  late final _player = context.read<MusicProvider>().player;
+  late final _queue = context.read<MusicProvider>().queue;
   late final _userStream = context.read<AuthenticationRepository>().currentUser;
 
   @override

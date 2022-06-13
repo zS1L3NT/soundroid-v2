@@ -32,9 +32,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) {
-          final playingProvider = PlayingProvider();
-          playingProvider.player.setAudioSource(playingProvider.queue);
-          return playingProvider;
+          final musicProvider = MusicProvider();
+          musicProvider.player.setAudioSource(musicProvider.queue);
+          return musicProvider;
         }),
       ],
       child: MultiRepositoryProvider(

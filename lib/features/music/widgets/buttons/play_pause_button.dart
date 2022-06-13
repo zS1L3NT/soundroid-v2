@@ -10,7 +10,7 @@ class PlayPauseButton extends StatefulWidget {
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProviderStateMixin {
-  late final _player = context.read<PlayingProvider>().player;
+  late final _player = context.read<MusicProvider>().player;
   late final _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 400),

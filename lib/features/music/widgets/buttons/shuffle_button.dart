@@ -11,7 +11,7 @@ class ShuffleButton extends StatefulWidget {
 }
 
 class _ShuffleButtonState extends State<ShuffleButton> {
-  late final _player = context.read<PlayingProvider>().player;
+  late final _player = context.read<MusicProvider>().player;
 
   void handleClick() {}
 

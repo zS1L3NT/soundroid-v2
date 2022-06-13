@@ -12,8 +12,8 @@ class CoverImage extends StatefulWidget {
 }
 
 class _CoverImageState extends State<CoverImage> {
-  late final _player = context.read<PlayingProvider>().player;
-  late final _queue = context.read<PlayingProvider>().queue;
+  late final _player = context.read<MusicProvider>().player;
+  late final _queue = context.read<MusicProvider>().queue;
 
   @override
   Widget build(BuildContext context) {
