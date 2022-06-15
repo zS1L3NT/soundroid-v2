@@ -64,9 +64,20 @@ class _QueueItemState extends State<QueueItem> {
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               size: 56,
             ),
-            title: AppText.ellipse(widget.track.title),
-            textColor: widget.track.id == current?.id ? Theme.of(context).primaryColor : null,
-            subtitle: AppText.ellipse(widget.track.artists.map((artist) => artist.name).join(", ")),
+            title: AppText.ellipse(
+              widget.track.title,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    color: widget.track.id == current?.id ? Theme.of(context).primaryColor : null,
+                    fontWeight: widget.track.id == current?.id ? FontWeight.w600 : null,
+                  ),
+            ),
+            subtitle: AppText.ellipse(
+              widget.track.artists.map((artist) => artist.name).join(", "),
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    color: widget.track.id == current?.id ? Theme.of(context).primaryColor : null,
+                    fontWeight: widget.track.id == current?.id ? FontWeight.w600 : null,
+                  ),
+            ),
             trailing: ReorderableDragStartListener(
               index: widget.index,
               child: AppIcon.black87(
