@@ -1,6 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 
 class LyricsScreen extends StatefulWidget {
   const LyricsScreen({Key? key}) : super(key: key);
@@ -10,45 +11,37 @@ class LyricsScreen extends StatefulWidget {
 }
 
 class _LyricsScreenState extends State<LyricsScreen> {
-  late final _futureLyrics = context.read<ApiRepository>().getLyrics(
-        Track(
-          id: "",
-          title: "Lilac",
-          artists: [
-            const Artist(
-              id: "",
-              name: "IU",
-            ),
-          ],
-          thumbnail: "",
-        ),
-      );
-
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder<List<String>>(
-        future: _futureLyrics,
+      child: StreamBuilder<Track?>(
+        stream: context.read<MusicProvider>().current,
         builder: (context, snap) {
-          if (snap.hasError) {
-            return Text("Error: ${snap.error}");
-          }
+          final current = snap.data;
 
-          if (!snap.hasData) {
-            return const CircularProgressIndicator();
-          }
+          return FutureBuilder<List<String>>(
+            future: current != null ? context.read<ApiRepository>().getLyrics(current) : null,
+            builder: (context, snap) {
+              if (snap.hasError) {
+                return Text("Error: ${snap.error}");
+              }
 
-          return ListView.builder(
-            itemCount: snap.data!.length,
-            itemBuilder: (context, index) {
-              return Center(
-                child: Text(
-                  snap.data![index],
-                  style: const TextStyle(
-                    fontSize: 18,
-                    height: 2,
-                  ),
-                ),
+              if (!snap.hasData) {
+                return const CircularProgressIndicator();
+              }
+
+              return ListView.builder(
+                itemCount: snap.data!.length,
+                itemBuilder: (context, index) {
+                  return Text(
+                    snap.data![index],
+                    style: const TextStyle(
+                      fontSize: 17,
+                      height: 2,
+                    ),
+                    textAlign: TextAlign.center,
+                  );
+                },
               );
             },
           );
