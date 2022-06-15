@@ -1,5 +1,6 @@
 import { OBJECT, STRING } from "validate-any"
 import ytdl from "ytdl-core"
+import logger from "../logger"
 
 import { Route } from "../setup"
 
@@ -18,7 +19,8 @@ export class GET extends Route<any, { videoId: string }> {
 					.sort((a, b) => b.audioBitrate! - a.audioBitrate!)
 					.at(0)?.url!
 			)
-		} catch {
+		} catch (err) {
+			logger.error(err)
 			this.throw("Cannot get download link for this video")
 		}
 	}
