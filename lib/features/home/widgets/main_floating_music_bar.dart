@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,23 +29,23 @@ class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
         height: 64,
         child: Stack(
           children: [
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (_, child) => Transform.rotate(
-                angle: _controller.value * 2 * pi,
-                child: child,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(1.5),
-                child: StreamBuilder<Track?>(
-                  stream: context.watch<MusicProvider>().current,
-                  builder: (context, snap) {
-                    return AppImage.network(
+            Padding(
+              padding: const EdgeInsets.all(1.5),
+              child: StreamBuilder<Track?>(
+                stream: context.watch<MusicProvider>().current,
+                builder: (context, snap) {
+                  if (snap.data != null) {
+                    context.read<MusicProvider>().currentThumbnail = snap.data!.thumbnail;
+                  }
+
+                  return Hero(
+                    tag: "current",
+                    child: AppImage.network(
                       snap.data?.thumbnail,
                       borderRadius: const BorderRadius.all(Radius.circular(30)),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(
