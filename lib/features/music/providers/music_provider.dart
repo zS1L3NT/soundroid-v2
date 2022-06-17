@@ -1,7 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:soundroid/utils/queue_audio_source.dart';
+import 'package:soundroid/utils/utils.dart';
 
 class MusicProvider with ChangeNotifier {
   List<Track>? _selected;
