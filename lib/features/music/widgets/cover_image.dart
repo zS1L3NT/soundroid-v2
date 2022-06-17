@@ -17,12 +17,12 @@ class CoverImage extends StatelessWidget {
       builder: (context, snap) {
         final current = snap.data;
         return FutureBuilder<PaletteGenerator>(
-          future: PaletteGenerator.fromImageProvider(
-            NetworkImage(
-              current?.thumbnail ?? "",
-            ),
-            maximumColorCount: 1,
-          ),
+          future: current?.thumbnail != null
+              ? PaletteGenerator.fromImageProvider(
+                  NetworkImage(current!.thumbnail),
+                  maximumColorCount: 1,
+                )
+              : null,
           builder: (context, snap) {
             return AnimatedContainer(
               duration: const Duration(seconds: 1),
