@@ -2,6 +2,7 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class CurrentScreen extends StatefulWidget {
@@ -11,8 +12,7 @@ class CurrentScreen extends StatefulWidget {
   State<CurrentScreen> createState() => _CurrentScreenState();
 }
 
-class _CurrentScreenState extends State<CurrentScreen> {
-  late final _player = context.read<MusicProvider>().player;
+class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
   late final _queue = context.read<MusicProvider>().queue;
 
   @override

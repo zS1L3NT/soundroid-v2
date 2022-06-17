@@ -2,6 +2,7 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/utils/utils.dart';
 
 class LyricsScreen extends StatefulWidget {
   const LyricsScreen({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class LyricsScreen extends StatefulWidget {
   State<LyricsScreen> createState() => _LyricsScreenState();
 }
 
-class _LyricsScreenState extends State<LyricsScreen> {
+class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
