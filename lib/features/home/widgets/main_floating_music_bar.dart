@@ -5,19 +5,8 @@ import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class MainFloatingMusicButton extends StatefulWidget {
+class MainFloatingMusicButton extends StatelessWidget {
   const MainFloatingMusicButton({Key? key}) : super(key: key);
-
-  @override
-  State<MainFloatingMusicButton> createState() => _MainFloatingMusicButtonState();
-}
-
-class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
-    with SingleTickerProviderStateMixin {
-  late final _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 15),
-  )..repeat();
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +23,6 @@ class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
               child: StreamBuilder<Track?>(
                 stream: context.watch<MusicProvider>().current,
                 builder: (context, snap) {
-                  if (snap.data != null) {
-                    context.read<MusicProvider>().currentThumbnail = snap.data!.thumbnail;
-                  }
-
                   return Hero(
                     tag: "current",
                     child: AppImage.network(

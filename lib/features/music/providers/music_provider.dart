@@ -5,12 +5,21 @@ import 'package:rxdart/rxdart.dart';
 import 'package:soundroid/utils/utils.dart';
 
 class MusicProvider with ChangeNotifier {
-  String _currentThumbnail = "";
+  MusicProvider() {
+    current.listen((current) {
+      if (current != null) {
+        _currentThumbnail = current.thumbnail;
+        notifyListeners();
+      }
+    });
+  }
+
+  String? _currentThumbnail;
   List<Track>? _selected;
   final _player = AudioPlayer();
   final _queue = QueueAudioSource(children: []);
 
-  String get currentThumbnail => _currentThumbnail;
+  String? get currentThumbnail => _currentThumbnail;
 
   List<Track>? get selected => _selected;
 
@@ -23,14 +32,10 @@ class MusicProvider with ChangeNotifier {
         _player.currentIndexStream,
         (sequence, currentIndex) {
           if (sequence == null || currentIndex == null) return null;
+          if (sequence.length <= currentIndex) return null;
           return sequence[currentIndex] as Track?;
         },
       );
-
-  set currentThumbnail(String thumbnail) {
-    _currentThumbnail = thumbnail;
-    notifyListeners();
-  }
 
   set selected(List<Track>? selected) {
     _selected = selected;
