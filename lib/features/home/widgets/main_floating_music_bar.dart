@@ -56,12 +56,10 @@ class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
                 splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
                 borderRadius: const BorderRadius.all(Radius.circular(30)),
                 onTap: () {
-                  final size = MediaQuery.of(context).size;
                   Navigator.of(context).push(
-                    RouteTransition.reveal(
+                    RouteTransition.slide(
                       const PlayingScreen(),
-                      center: Offset(size.width / 2, size.height),
-                      duration: const Duration(milliseconds: 500),
+                      from: const Offset(0, 1),
                     ),
                   );
                 },
