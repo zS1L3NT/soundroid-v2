@@ -16,19 +16,34 @@ class _PlayingScreenState extends State<PlayingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PlayingAppBar(
-        controller: _controller,
+    bool isSwipeDown = false;
+
+    return GestureDetector(
+      child: Scaffold(
+        appBar: PlayingAppBar(
+          controller: _controller,
+        ),
+        body: PageView(
+          scrollBehavior: const ScrollBehavior().copyWith(
+            overscroll: false,
+            physics: const ClampingScrollPhysics(),
+          ),
+          controller: _controller,
+          children: const [
+            CurrentScreen(),
+            QueueScreen(),
+            LyricsScreen(),
+          ],
+        ),
       ),
-      body: PageView(
-        scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
-        controller: _controller,
-        children: const [
-          CurrentScreen(),
-          QueueScreen(),
-          LyricsScreen(),
-        ],
-      ),
+      onPanUpdate: (details) {
+        isSwipeDown = details.delta.dy > 0;
+      },
+      onPanEnd: (action) {
+        if (isSwipeDown) {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 }
