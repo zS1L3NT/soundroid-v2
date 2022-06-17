@@ -1,6 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:soundroid/utils/utils.dart';
 
 class MusicProvider with ChangeNotifier {
@@ -14,8 +15,14 @@ class MusicProvider with ChangeNotifier {
 
   QueueAudioSource get queue => _queue;
 
-  Stream<Track?> get current =>
-      _player.currentIndexStream.map((index) => index != null ? _queue.tracks[index] : null);
+  Stream<Track?> get current => Rx.combineLatest2<List<IndexedAudioSource>?, int?, Track?>(
+        _player.sequenceStream,
+        _player.currentIndexStream,
+        (sequence, currentIndex) {
+          if (sequence == null || currentIndex == null) return null;
+          return sequence[currentIndex] as Track?;
+        },
+      );
 
   set selected(List<Track>? selected) {
     _selected = selected;
