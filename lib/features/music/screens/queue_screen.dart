@@ -35,7 +35,7 @@ class _QueueScreenState extends State<QueueScreen> {
                           ))
                       .toList(),
                   onReorder: (int oldIndex, int newIndex) {
-                    _queue.move(oldIndex, newIndex);
+                    _queue.move(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
                   },
                 ),
         );
