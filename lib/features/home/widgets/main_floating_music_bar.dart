@@ -25,9 +25,14 @@ class MainFloatingMusicButton extends StatelessWidget {
                 builder: (context, snap) {
                   return Hero(
                     tag: "current",
-                    child: AppImage.network(
-                      snap.data?.thumbnail,
-                      borderRadius: const BorderRadius.all(Radius.circular(30)),
+                    child: AnimatedContainer(
+                      duration: const Duration(seconds: 1),
+                      width: 60,
+                      height: 60,
+                      child: AppImage.network(
+                        snap.data?.thumbnail,
+                        borderRadius: const BorderRadius.all(Radius.circular(30)),
+                      ),
                     ),
                   );
                 },
@@ -67,6 +72,7 @@ class MainFloatingMusicButton extends StatelessWidget {
                       RouteTransition.slide(
                         const PlayingScreen(),
                         from: const Offset(0, 1),
+                        duration: const Duration(milliseconds: 500),
                       ),
                     );
                   },
@@ -85,6 +91,7 @@ class MainFloatingMusicButton extends StatelessWidget {
             RouteTransition.slide(
               const PlayingScreen(),
               from: const Offset(0, 1),
+              duration: const Duration(milliseconds: 500),
             ),
           );
         }
