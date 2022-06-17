@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
@@ -34,18 +36,37 @@ class _MainFloatingMusicButtonState extends State<MainFloatingMusicButton>
             ),
             child: Padding(
               padding: const EdgeInsets.all(1.5),
-              child: AppImage.network(
-                "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
+              child: StreamBuilder<Track?>(
+                stream: context.watch<MusicProvider>().current,
+                builder: (context, snap) {
+                  return AppImage.network(
+                    snap.data?.thumbnail,
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  );
+                },
               ),
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: 64,
             height: 64,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              value: 0.5,
+            child: StreamBuilder<Duration?>(
+              stream: context.watch<MusicProvider>().player.durationStream,
+              builder: (context, snap) {
+                final duration = snap.data;
+                return StreamBuilder<Duration>(
+                  stream: context.watch<MusicProvider>().player.positionStream,
+                  builder: (context, snap) {
+                    final position = snap.data;
+                    return CircularProgressIndicator(
+                      strokeWidth: 3,
+                      value: position != null && duration != null
+                          ? position.inSeconds / duration.inSeconds
+                          : 0,
+                    );
+                  },
+                );
+              },
             ),
           ),
           Padding(
