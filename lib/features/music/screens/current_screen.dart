@@ -15,6 +15,8 @@ class CurrentScreen extends StatefulWidget {
 class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final size = MediaQuery.of(context).size;
 
     return Center(

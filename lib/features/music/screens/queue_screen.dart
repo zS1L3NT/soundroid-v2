@@ -18,6 +18,8 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return StreamBuilder<List<IndexedAudioSource>?>(
       stream: _player.sequenceStream,
       builder: (context, snap) {

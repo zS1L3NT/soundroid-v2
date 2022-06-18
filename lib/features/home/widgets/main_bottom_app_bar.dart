@@ -4,13 +4,13 @@ import 'package:soundroid/widgets/widgets.dart';
 class MainBottomAppBar extends StatelessWidget {
   const MainBottomAppBar({
     Key? key,
-    required this.index,
-    required this.setIndex,
+    required this.page,
+    required this.setPage,
   }) : super(key: key);
 
-  final int index;
+  final int page;
 
-  final Function(int) setIndex;
+  final Function(int) setPage;
 
   @override
   Widget build(BuildContext context) {
@@ -24,34 +24,26 @@ class MainBottomAppBar extends StatelessWidget {
           children: [
             AppIcon(
               Icons.home_rounded,
-              color: index == 0 ? Theme.of(context).primaryColor : null,
-              onPressed: () {
-                setIndex(0);
-              },
+              color: page == 0 ? Theme.of(context).primaryColor : null,
+              onPressed: () => setPage(0),
             ),
             AppIcon(
               Icons.search_rounded,
-              color: index == 1 ? Theme.of(context).primaryColor : null,
-              onPressed: () {
-                setIndex(1);
-              },
+              color: page == 1 ? Theme.of(context).primaryColor : null,
+              onPressed: () => setPage(1),
             ),
             const SizedBox(
               width: 48,
             ),
             AppIcon(
               Icons.library_music_rounded,
-              color: index == 2 ? Theme.of(context).primaryColor : null,
-              onPressed: () {
-                setIndex(2);
-              },
+              color: page == 2 ? Theme.of(context).primaryColor : null,
+              onPressed: () => setPage(2),
             ),
             AppIcon(
               Icons.settings_rounded,
-              color: index == 3 ? Theme.of(context).primaryColor : null,
-              onPressed: () {
-                setIndex(3);
-              },
+              color: page == 3 ? Theme.of(context).primaryColor : null,
+              onPressed: () => setPage(3),
             ),
           ],
         ),

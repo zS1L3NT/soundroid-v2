@@ -14,6 +14,8 @@ class LyricsScreen extends StatefulWidget {
 class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Center(
       child: StreamBuilder<Track?>(
         stream: context.read<MusicProvider>().current,

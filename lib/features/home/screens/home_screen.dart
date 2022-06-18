@@ -2,6 +2,7 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/home/home.dart';
+import 'package:soundroid/utils/kept_alive_state.dart';
 
 // 1) Your playlists
 // 2) Tracks that you've been listening to a lot
@@ -18,11 +19,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends KeptAliveState<HomeScreen> {
   late final _futureFeed = context.read<ApiRepository>().getFeed();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return FutureBuilder<List<FeedSection>>(
       future: _futureFeed,
       builder: (context, snap) {

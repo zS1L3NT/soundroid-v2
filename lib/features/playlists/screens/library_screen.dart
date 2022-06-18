@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -11,11 +12,13 @@ class LibraryScreen extends StatefulWidget {
   State<LibraryScreen> createState() => _LibraryScreenState();
 }
 
-class _LibraryScreenState extends State<LibraryScreen> {
+class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
   late final _playlistsStream = context.read<PlaylistRepository>().getPlaylists();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return StreamBuilder<List<Playlist>>(
       stream: _playlistsStream,
       builder: (context, snap) {

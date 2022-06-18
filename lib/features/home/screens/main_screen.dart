@@ -18,37 +18,46 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final _screens = const [
-    HomeScreen(),
-    SearchScreen(),
-    LibraryScreen(),
-    SettingsScreen(),
-  ];
-
-  final _appBars = [
-    HomeAppBar(),
-    SearchAppBar(),
-    LibraryAppBar(),
-    SettingsAppBar(),
-  ];
-
-  int _index = 0;
+  final _controller = PageController();
+  int _page = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
-      appBar: _appBars[_index],
+      appBar: [
+        HomeAppBar(),
+        SearchAppBar(),
+        LibraryAppBar(),
+        SettingsAppBar(),
+      ][_page],
       bottomNavigationBar: MainBottomAppBar(
-        index: _index,
-        setIndex: (index) => setState(() => _index = index),
+        page: _page,
+        setPage: (page) {
+          setState(() => _page = page);
+          _controller.animateToPage(
+            page,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: const MainFloatingMusicButton(),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: _screens[_index],
+      body: PageView(
+        scrollBehavior: const ScrollBehavior().copyWith(
+          overscroll: false,
+          physics: const ClampingScrollPhysics(),
+        ),
+        onPageChanged: (page) => setState(() => _page = page),
+        controller: _controller,
+        children: const [
+          HomeScreen(),
+          SearchScreen(),
+          LibraryScreen(),
+          SettingsScreen(),
+        ],
       ),
     );
   }
