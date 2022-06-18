@@ -22,7 +22,7 @@ export class GET extends Route<any, { videoId: string }> {
 
 			for (const format of allowedFormats) {
 				try {
-					await axios.get(format.url)
+					await axios.get(format.url, { headers: { range: "bytes=0-1" } })
 					return this.redirect(allowedFormats.at(0)?.url!)
 				} catch {
 					continue
