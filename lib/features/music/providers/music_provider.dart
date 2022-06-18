@@ -1,4 +1,5 @@
 import 'package:api_repository/api_repository.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,12 +20,18 @@ class MusicProvider with ChangeNotifier {
     );
   }
 
+  void setup() async {
+    _session = await AudioSession.instance;
+    await _session.configure(const AudioSessionConfiguration.music());
+  }
+
+  late final AudioSession _session;
+  final _player = AudioPlayer();
+  late final QueueAudioSource _queue;
   final ApiRepository _apiRepo;
 
   String? _currentThumbnail;
   List<Track>? _selected;
-  final _player = AudioPlayer();
-  late QueueAudioSource _queue;
 
   String? get currentThumbnail => _currentThumbnail;
 

@@ -12,6 +12,7 @@ dependencies:
   http: ^0.13.4
   json_annotation: ^4.5.0
   just_audio: ^0.9.24
+  just_audio_background: ^0.0.1-beta.5
 
 dev_dependencies: 
   build_runner: ^2.1.11

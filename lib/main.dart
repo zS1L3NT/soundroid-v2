@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:listen_repository/listen_repository.dart';
 import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:playlist_repository/playlist_repository.dart';
@@ -26,6 +27,12 @@ void main() async {
 
   // Initialize Perfect Volume Control
   PerfectVolumeControl.hideUI = true;
+
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.zectan.soundroid.audio',
+    androidNotificationChannelName: 'Music',
+    androidNotificationOngoing: true,
+  );
 
   runApp(
     MultiRepositoryProvider(
@@ -51,6 +58,7 @@ void main() async {
           ChangeNotifierProvider(create: (_) => SearchProvider()),
           ChangeNotifierProvider(create: (context) {
             final musicProvider = MusicProvider(context.read<ApiRepository>());
+            musicProvider.setup();
             musicProvider.player.setAudioSource(musicProvider.queue);
             return musicProvider;
           }),
