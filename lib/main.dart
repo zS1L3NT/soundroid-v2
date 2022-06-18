@@ -28,32 +28,32 @@ void main() async {
   PerfectVolumeControl.hideUI = true;
 
   runApp(
-    MultiProvider(
+    MultiRepositoryProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => SearchProvider()),
-        ChangeNotifierProvider(create: (_) {
-          final musicProvider = MusicProvider();
-          musicProvider.player.setAudioSource(musicProvider.queue);
-          return musicProvider;
-        }),
+        RepositoryProvider<ApiRepository>(
+          create: (_) => ApiRepository(trackBox: trackBox),
+        ),
+        RepositoryProvider<AuthenticationRepository>(
+          create: (_) => AuthenticationRepository(),
+        ),
+        RepositoryProvider<ListenRepository>(
+          create: (_) => ListenRepository(),
+        ),
+        RepositoryProvider<PlaylistRepository>(
+          create: (_) => PlaylistRepository(),
+        ),
+        RepositoryProvider<SearchRepository>(
+          create: (_) => SearchRepository(),
+        ),
       ],
-      child: MultiRepositoryProvider(
+      child: MultiProvider(
         providers: [
-          RepositoryProvider<ApiRepository>(
-            create: (_) => ApiRepository(trackBox: trackBox),
-          ),
-          RepositoryProvider<AuthenticationRepository>(
-            create: (_) => AuthenticationRepository(),
-          ),
-          RepositoryProvider<ListenRepository>(
-            create: (_) => ListenRepository(),
-          ),
-          RepositoryProvider<PlaylistRepository>(
-            create: (_) => PlaylistRepository(),
-          ),
-          RepositoryProvider<SearchRepository>(
-            create: (_) => SearchRepository(),
-          ),
+          ChangeNotifierProvider(create: (_) => SearchProvider()),
+          ChangeNotifierProvider(create: (context) {
+            final musicProvider = MusicProvider(context.read<ApiRepository>());
+            musicProvider.player.setAudioSource(musicProvider.queue);
+            return musicProvider;
+          }),
         ],
         child: const App(),
       ),

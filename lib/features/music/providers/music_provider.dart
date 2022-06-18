@@ -5,19 +5,26 @@ import 'package:rxdart/rxdart.dart';
 import 'package:soundroid/utils/utils.dart';
 
 class MusicProvider with ChangeNotifier {
-  MusicProvider() {
+  MusicProvider(this._apiRepo) {
     current.listen((current) {
       if (current != null) {
         _currentThumbnail = current.thumbnail;
         notifyListeners();
       }
     });
+
+    _queue = QueueAudioSource(
+      children: [],
+      apiRepo: _apiRepo,
+    );
   }
+
+  final ApiRepository _apiRepo;
 
   String? _currentThumbnail;
   List<Track>? _selected;
   final _player = AudioPlayer();
-  final _queue = QueueAudioSource(children: []);
+  late QueueAudioSource _queue;
 
   String? get currentThumbnail => _currentThumbnail;
 
