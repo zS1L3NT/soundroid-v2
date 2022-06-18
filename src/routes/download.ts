@@ -1,7 +1,7 @@
 import { OBJECT, STRING } from "validate-any"
 import ytdl from "ytdl-core"
-import logger from "../logger"
 
+import logger from "../logger"
 import { Route } from "../setup"
 
 export class GET extends Route<any, { videoId: string }> {
@@ -10,18 +10,18 @@ export class GET extends Route<any, { videoId: string }> {
 	})
 
 	async handle() {
-		try {
-			this.redirect(
-				(await ytdl.getInfo(this.query.videoId)).formats
-					.filter(f => f.container === "webm")
-					.filter(f => f.mimeType?.startsWith("audio"))
-					.filter(f => f.audioBitrate !== undefined)
-					.sort((a, b) => b.audioBitrate! - a.audioBitrate!)
-					.at(0)?.url!
-			)
-		} catch (err) {
+		const stream = ytdl("https://youtu.be/" + this.query.videoId, {
+			filter: "audioonly",
+			quality: "highest"
+		})
+
+		this.res.setHeader(
+			"Content-Disposition",
+			`attachment; filename="${this.query.videoId}.webm"`
+		)
+
+		stream.pipe(this.res).on("error", err => {
 			logger.error(err)
-			this.throw("Cannot get download link for this video")
-		}
+		})
 	}
 }
