@@ -17,7 +17,7 @@ class PlayingAppBar extends AppBar {
 }
 
 class _PlayingAppBarState extends State<PlayingAppBar> {
-  int _page = 0;
+  int _page = 1;
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
           ),
           actions: [
             AppIcon(
-              Icons.music_note_rounded,
+              Icons.mic_external_on_rounded,
               color: getColor(0),
               onPressed: () {
                 widget.controller.animateToPage(
@@ -69,7 +69,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
               },
             ),
             AppIcon(
-              Icons.queue_music_rounded,
+              Icons.music_note_rounded,
               color: getColor(1),
               onPressed: () {
                 widget.controller.animateToPage(
@@ -80,7 +80,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
               },
             ),
             AppIcon(
-              Icons.mic_external_on_rounded,
+              Icons.queue_music_rounded,
               color: getColor(2),
               onPressed: () {
                 widget.controller.animateToPage(

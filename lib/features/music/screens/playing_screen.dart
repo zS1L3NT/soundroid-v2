@@ -9,7 +9,7 @@ class PlayingScreen extends StatefulWidget {
 }
 
 class _PlayingScreenState extends State<PlayingScreen> {
-  final _controller = PageController();
+  final _controller = PageController(initialPage: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class _PlayingScreenState extends State<PlayingScreen> {
           ),
           controller: _controller,
           children: const [
+            LyricsScreen(),
             CurrentScreen(),
             QueueScreen(),
-            LyricsScreen(),
           ],
         ),
       ),
