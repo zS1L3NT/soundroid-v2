@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -103,6 +104,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     return TrackItem(
                       key: ValueKey(trackId),
                       trackId: trackId,
+                      onTap: () {
+                        context.read<MusicProvider>().playTrackIds(snap.data!.trackIds, index);
+                      },
                     );
                   },
                   childCount: snap.data?.trackIds.length ?? 0,

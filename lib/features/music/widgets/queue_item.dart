@@ -20,27 +20,26 @@ class QueueItem extends StatefulWidget {
 }
 
 class _QueueItemState extends State<QueueItem> {
-  late final _musicProvider = context.read<MusicProvider>();
-
   void handleTap(List<Track>? selected) {
     if (selected == null) {
-      // Play the song
+      context.read<MusicProvider>().player.seek(const Duration(), index: widget.index);
     } else {
       if (selected.contains(widget.track)) {
         if (selected.length == 1) {
-          _musicProvider.selected = null;
+          context.read<MusicProvider>().selected = null;
         } else {
-          _musicProvider.selected = selected.where((t) => t != widget.track).toList();
+          context.read<MusicProvider>().selected =
+              selected.where((t) => t != widget.track).toList();
         }
       } else {
-        _musicProvider.selected = selected.toList()..add(widget.track);
+        context.read<MusicProvider>().selected = selected.toList()..add(widget.track);
       }
     }
   }
 
   void handleLongPress(List<Track>? selected) {
     if (selected == null) {
-      _musicProvider.selected = [widget.track];
+      context.read<MusicProvider>().selected = [widget.track];
     }
   }
 
@@ -52,7 +51,7 @@ class _QueueItemState extends State<QueueItem> {
       onTap: () => handleTap(selected),
       onLongPress: () => handleLongPress(selected),
       child: StreamBuilder<Track?>(
-        stream: _musicProvider.current,
+        stream: context.watch<MusicProvider>().current,
         builder: (context, snap) {
           final current = snap.data;
           return ListTile(

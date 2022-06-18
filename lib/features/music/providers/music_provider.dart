@@ -48,4 +48,17 @@ class MusicProvider with ChangeNotifier {
     _selected = selected;
     notifyListeners();
   }
+
+  Future<void> playTrackIds(List<String> trackIds, [int from = 0]) async {
+    await _player.stop();
+    await _queue.clear();
+    await _queue.addTracks(
+      await Future.wait<Track>([
+        ...trackIds.sublist(from, trackIds.length),
+        ...trackIds.sublist(0, from)
+      ].map(_apiRepo.getTrack)),
+    );
+    await _player.seek(const Duration());
+    await _player.play();
+  }
 }

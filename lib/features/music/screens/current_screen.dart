@@ -13,57 +13,6 @@ class CurrentScreen extends StatefulWidget {
 }
 
 class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
-  late final _queue = context.read<MusicProvider>().queue;
-
-  @override
-  void initState() {
-    super.initState();
-
-    print(_queue.tracks.map((track) => track.title));
-    if (_queue.length > 0) {
-      return;
-    }
-    _queue.addTrack(
-      Track(
-        id: "sqgxcCjD04s",
-        title: "Strawberry Moon",
-        artists: [
-          const Artist(
-            id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
-            name: "IU",
-          ),
-        ],
-        thumbnail: "https://upload.wikimedia.org/wikipedia/en/c/c0/Strawberry_Moon_IU_cover.jpg",
-      ),
-    );
-    _queue.addTrack(
-      Track(
-        id: "v7bnOxV4jAc",
-        title: "Lilac",
-        artists: [
-          const Artist(
-            id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
-            name: "IU",
-          ),
-        ],
-        thumbnail: "https://upload.wikimedia.org/wikipedia/en/4/41/IU_-_Lilac.png",
-      ),
-    );
-    _queue.addTrack(
-      Track(
-        id: "D1PvIWdJ8xo",
-        title: "Blueming",
-        artists: [
-          const Artist(
-            id: "UCTUR0sVEkD8T5MlSHqgaI_Q",
-            name: "IU",
-          ),
-        ],
-        thumbnail: "https://i.imgur.com/evzC1EV.jpg",
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
