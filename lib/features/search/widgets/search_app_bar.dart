@@ -40,6 +40,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   void onTextClear() {
     final searchProvider = context.read<SearchProvider>();
+    searchProvider.latest = DateTime.now();
+    searchProvider.isLoading = false;
     searchProvider.query = "";
     searchProvider.results = null;
   }

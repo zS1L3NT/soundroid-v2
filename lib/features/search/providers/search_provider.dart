@@ -53,6 +53,11 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  set isLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
+
   set recentSuggestions(List<String> recentSuggestions) {
     _recentSuggestions = recentSuggestions;
     notifyListeners();
