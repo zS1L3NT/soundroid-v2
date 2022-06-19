@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
-import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlaylistSliverAppBar extends SliverAppBar {
@@ -46,6 +46,85 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     Navigator.of(context).pop();
   }
 
+  void onReorderClick() {
+    Navigator.of(context).pop();
+  }
+
+  void onChangePictureClick() {
+    Navigator.of(context).pop();
+    AppBottomSheet(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 8),
+          ListTile(
+            title: const Text("Choose from gallery"),
+            leading: AppIcon.primaryColor(
+              Icons.image_rounded,
+              context,
+            ),
+            onTap: () {},
+          ),
+          ListTile(
+            title: const Text("Take a picture"),
+            leading: AppIcon.primaryColor(
+              Icons.photo_camera_rounded,
+              context,
+            ),
+            onTap: () {},
+          ),
+          if (widget.playlist?.thumbnail != null)
+            ListTile(
+              title: const Text("Remove picture"),
+              leading: AppIcon.primaryColor(
+                Icons.delete_rounded,
+                context,
+              ),
+              onTap: () {
+                context.read<PlaylistRepository>().updatePlaylist(
+                  _playlistId,
+                  {"thumbnail": null},
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    ).show(context);
+  }
+
+  void onRenameClick() {
+    Navigator.of(context).pop();
+    AppTextDialog(
+      title: "Rename Playlist",
+      textFieldName: "Playlist name",
+      confirmText: "Rename",
+      onConfirm: (String name) {
+        context.read<PlaylistRepository>().updatePlaylist(
+          _playlistId,
+          {"name": name},
+        );
+        Navigator.of(context).pop();
+      },
+    ).show(context);
+  }
+
+  void onDeleteClick() {
+    Navigator.of(context).pop();
+    AppConfirmDialog(
+      title: "Delete Playlist",
+      description: "Are you sure you want to delete this playlist?",
+      confirmText: "Delete",
+      isDanger: true,
+      onConfirm: () {
+        context.read<PlaylistRepository>().deletePlaylist(_playlistId);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      },
+    ).show(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -89,10 +168,40 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
         onPressed: onBackClick,
       ),
       actions: [
-        PlaylistPopupMenu(
-          playlistId: _playlistId,
-          hasThumbnail: widget.playlist?.thumbnail != null,
-        ).build(),
+        AppIcon(
+          Icons.more_vert_rounded,
+          onPressed: () {
+            AppBottomSheet(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 8),
+                  ListTile(
+                    title: const Text("Reorder songs"),
+                    leading: AppIcon.primaryColor(Icons.swap_vert_rounded, context),
+                    onTap: onReorderClick,
+                  ),
+                  ListTile(
+                    title: const Text("Change picture"),
+                    leading: AppIcon.primaryColor(Icons.camera_alt_rounded, context),
+                    onTap: onChangePictureClick,
+                  ),
+                  ListTile(
+                    title: const Text("Rename"),
+                    leading: AppIcon.primaryColor(Icons.edit_rounded, context),
+                    onTap: onRenameClick,
+                  ),
+                  ListTile(
+                    title: const Text("Delete"),
+                    leading: AppIcon.primaryColor(Icons.delete_rounded, context),
+                    onTap: onDeleteClick,
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ).show(context);
+          },
+        ),
       ],
     );
   }
