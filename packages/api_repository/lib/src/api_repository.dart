@@ -72,6 +72,17 @@ class ApiRepository {
     }
   }
 
+  Future<List<Track>> getAlbumTracks(String id) async {
+    final response = await get(Uri.parse("$_host/album?id=$id"));
+
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as List).map((track) => Track.fromJson(track)).toList();
+    } else {
+      debugPrint(response.body);
+      throw Exception("Failed to fetch album tracks");
+    }
+  }
+
   Future<Track> getTrack(String id) async {
     if (trackBox.containsKey(id)) {
       return trackBox.get(id)!;

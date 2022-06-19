@@ -2,6 +2,7 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class SearchResultsWidget extends StatelessWidget {
@@ -35,7 +36,17 @@ class SearchResultsWidget extends StatelessWidget {
             if (result is Album) {
               return AppListItem.fromAlbum(
                 result,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return AlbumScreen(
+                          album: result,
+                        );
+                      },
+                    ),
+                  );
+                },
               );
             }
 

@@ -47,10 +47,13 @@ class AppListItem extends StatelessWidget {
     return AppListItem(
       title: album.title,
       subtitle: album.artists.map((artist) => artist.name).join(", "),
-      image: AppImage.network(
-        album.thumbnail,
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        size: 56,
+      image: Hero(
+        tag: "album_${album.id}",
+        child: AppImage.network(
+          album.thumbnail,
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          size: 56,
+        ),
       ),
       onTap: onTap,
       isActive: false,

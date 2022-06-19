@@ -3,7 +3,7 @@ import 'package:playlist_repository/playlist_repository.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class PlaylistSliverAppBar extends StatefulWidget {
+class PlaylistSliverAppBar extends SliverAppBar {
   const PlaylistSliverAppBar({
     Key? key,
     required this.initialPlaylist,
