@@ -58,7 +58,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
           ),
           actions: [
             AppIcon(
-              Icons.mic_external_on_rounded,
+              Icons.queue_music_rounded,
               color: getColor(0),
               onPressed: () {
                 widget.controller.animateToPage(
@@ -80,7 +80,7 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
               },
             ),
             AppIcon(
-              Icons.queue_music_rounded,
+              Icons.mic_external_on_rounded,
               color: getColor(2),
               onPressed: () {
                 widget.controller.animateToPage(
