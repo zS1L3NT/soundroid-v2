@@ -1,7 +1,9 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -58,7 +60,21 @@ class SearchResultsWidget extends StatelessWidget {
                         ListTile(
                           title: const Text("Add to playlist"),
                           leading: AppIcon.primaryColor(Icons.playlist_add_rounded, context),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PlaylistSelectScreen.route(
+                                (playlist) {
+                                  Navigator.of(context).pop();
+                                  context.read<PlaylistRepository>().updatePlaylist(
+                                    playlist.id,
+                                    {
+                                      "trackIds": playlist.trackIds + [result.id],
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         ),
                         ListTile(
                           title: const Text("Add to queue"),
