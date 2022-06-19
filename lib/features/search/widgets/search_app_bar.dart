@@ -16,7 +16,6 @@ class _SearchAppBarState extends State<SearchAppBar> {
   void onTextChange(String query) async {
     SearchProvider searchProvider = context.read<SearchProvider>();
     final dateTime = DateTime.now();
-    searchProvider.query = query;
     searchProvider.results = null;
 
     context.read<ApiRepository>().getSearchSuggestions(query).then((apiSuggestions) {
