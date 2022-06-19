@@ -10,6 +10,7 @@ class AppListItem extends StatelessWidget {
     required this.subtitle,
     required this.image,
     required this.onTap,
+    required this.isActive,
   }) : super(key: key);
 
   final String title;
@@ -20,9 +21,12 @@ class AppListItem extends StatelessWidget {
 
   final Function() onTap;
 
+  final bool isActive;
+
   factory AppListItem.fromTrack(
     Track? track, {
     required Function() onTap,
+    required bool isActive,
   }) {
     return AppListItem(
       title: track?.title ?? "...",
@@ -33,6 +37,7 @@ class AppListItem extends StatelessWidget {
         size: 56,
       ),
       onTap: onTap,
+      isActive: isActive,
     );
   }
   factory AppListItem.fromAlbum(
@@ -48,6 +53,7 @@ class AppListItem extends StatelessWidget {
         size: 56,
       ),
       onTap: onTap,
+      isActive: false,
     );
   }
 
@@ -70,6 +76,7 @@ class AppListItem extends StatelessWidget {
         ),
       ),
       onTap: onTap,
+      isActive: false,
     );
   }
 
@@ -79,8 +86,20 @@ class AppListItem extends StatelessWidget {
       onTap: onTap,
       child: ListTile(
         leading: image,
-        title: AppText.ellipse(title),
-        subtitle: AppText.ellipse(subtitle),
+        title: AppText.ellipse(
+          title,
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                color: isActive ? Theme.of(context).primaryColor : null,
+                fontWeight: isActive ? FontWeight.w600 : null,
+              ),
+        ),
+        subtitle: AppText.ellipse(
+          subtitle,
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                color: isActive ? Theme.of(context).primaryColor : null,
+                fontWeight: isActive ? FontWeight.w600 : null,
+              ),
+        ),
         trailing: AppIcon.black87(
           Icons.more_vert_rounded,
           onPressed: () {},

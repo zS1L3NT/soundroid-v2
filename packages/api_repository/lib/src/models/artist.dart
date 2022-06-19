@@ -19,4 +19,9 @@ class Artist {
 
   factory Artist.fromJson(Map<String, dynamic> json) => _$ArtistFromJson(json);
   Map<String, dynamic> toJson() => _$ArtistToJson(this);
+
+  @override
+  String toString() {
+    return "Artist { $name }";
+  }
 }

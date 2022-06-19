@@ -66,15 +66,15 @@ class _QueueItemState extends State<QueueItem> {
             title: AppText.ellipse(
               widget.track.title,
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    color: widget.track.id == current?.id ? Theme.of(context).primaryColor : null,
-                    fontWeight: widget.track.id == current?.id ? FontWeight.w600 : null,
+                    color: widget.track == current ? Theme.of(context).primaryColor : null,
+                    fontWeight: widget.track == current ? FontWeight.w600 : null,
                   ),
             ),
             subtitle: AppText.ellipse(
               widget.track.artists.map((artist) => artist.name).join(", "),
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: widget.track.id == current?.id ? Theme.of(context).primaryColor : null,
-                    fontWeight: widget.track.id == current?.id ? FontWeight.w600 : null,
+                    color: widget.track == current ? Theme.of(context).primaryColor : null,
+                    fontWeight: widget.track == current ? FontWeight.w600 : null,
                   ),
             ),
             trailing: ReorderableDragStartListener(

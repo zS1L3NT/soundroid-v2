@@ -39,4 +39,12 @@ class Track extends ProgressiveAudioSource {
 
   factory Track.fromJson(Map<String, dynamic> json) => _$TrackFromJson(json);
   Map<String, dynamic> toJson() => _$TrackToJson(this);
+
+  @override
+  bool operator ==(Object other) => other is Track && other.id == id;
+
+  @override
+  String toString() {
+    return "Track { $id; $title; ${artists.join(", ")} }";
+  }
 }
