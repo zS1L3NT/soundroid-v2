@@ -30,7 +30,46 @@ class SearchResultsWidget extends StatelessWidget {
                 onTap: () {
                   context.read<MusicProvider>().playTrackIds([result.id]);
                 },
-                onMoreTap: () {},
+                onMoreTap: () {
+                  AppBottomSheet(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 8),
+                        StreamBuilder<Track?>(
+                          stream: context.read<MusicProvider>().current,
+                          builder: (context, snap) {
+                            return AppListItem.fromTrack(
+                              result,
+                              onTap: () {
+                                context.read<MusicProvider>().playTrackIds([result.id]);
+                                Navigator.of(context).pop();
+                              },
+                              isActive: snap.data == result,
+                            );
+                          },
+                        ),
+                        const Divider(),
+                        ListTile(
+                          title: const Text("Like"),
+                          leading: AppIcon.primaryColor(Icons.favorite_rounded, context),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          title: const Text("Add to playlist"),
+                          leading: AppIcon.primaryColor(Icons.playlist_add_rounded, context),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          title: const Text("Add to queue"),
+                          leading: AppIcon.primaryColor(Icons.queue_music_rounded, context),
+                          onTap: () {},
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                  ).show(context);
+                },
                 isActive: result == snap.data,
               );
             }

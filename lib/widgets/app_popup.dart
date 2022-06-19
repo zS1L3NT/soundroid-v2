@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 
-abstract class AppDialog {
-  abstract final String title;
-  abstract final String? description;
-}
-
-class AppAlertDialog extends AppDialog {
+class AppAlertDialog {
   AppAlertDialog({
     required this.title,
     this.description,
     this.onClose,
   });
 
-  @override
   final String title;
 
-  @override
   final String? description;
 
   final Function()? onClose;
@@ -46,7 +39,7 @@ class AppAlertDialog extends AppDialog {
   }
 }
 
-class AppConfirmDialog extends AppDialog {
+class AppConfirmDialog {
   AppConfirmDialog({
     required this.title,
     this.description,
@@ -57,10 +50,8 @@ class AppConfirmDialog extends AppDialog {
     this.onClose,
   });
 
-  @override
   final String title;
 
-  @override
   final String? description;
 
   final String confirmText;
@@ -108,6 +99,23 @@ class AppConfirmDialog extends AppDialog {
   }
 }
 
+class AppBottomSheet {
+  AppBottomSheet({
+    required this.child,
+  });
+
+  final Widget child;
+
+  void show(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return child;
+      },
+    );
+  }
+}
+
 class AppSelectOption {
   const AppSelectOption({
     required this.title,
@@ -122,17 +130,15 @@ class AppSelectOption {
   final Function() onPressed;
 }
 
-class AppSelectDialog extends AppDialog {
+class AppSelectDialog {
   AppSelectDialog({
     required this.title,
     required this.options,
     this.onClose,
   });
 
-  @override
   final String title;
 
-  @override
   final String? description = null;
 
   final List<AppSelectOption> options;
@@ -169,7 +175,7 @@ class AppSelectDialog extends AppDialog {
   }
 }
 
-class AppTextDialog extends AppDialog {
+class AppTextDialog {
   AppTextDialog({
     required this.title,
     required this.textFieldName,
@@ -178,10 +184,8 @@ class AppTextDialog extends AppDialog {
     this.onClose,
   });
 
-  @override
   final String title;
 
-  @override
   final String? description = null;
 
   final String textFieldName;
