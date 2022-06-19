@@ -32,7 +32,7 @@ class CoverImage extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
-                if (snap.data != null)
+                if (snap.data != null && snap.data!.colors.isNotEmpty)
                   BoxShadow(
                     color: snap.data!.colors.first,
                     spreadRadius: 4,
