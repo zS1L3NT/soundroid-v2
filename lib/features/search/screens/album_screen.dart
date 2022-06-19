@@ -2,6 +2,7 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -54,12 +55,12 @@ class _AlbumScreenState extends State<AlbumScreen> {
               ),
             ),
           ),
-          FutureBuilder<List<Track>>(
-            future: context.read<ApiRepository>().getAlbumTracks(widget.album.id),
+          FutureBuilder<List<String>>(
+            future: context.read<ApiRepository>().getAlbumTrackIds(widget.album.id),
             builder: (context, snap) {
-              final tracks = snap.data;
+              final trackIds = snap.data;
 
-              if (tracks == null) {
+              if (trackIds == null) {
                 return const SliverToBoxAdapter(
                   child: Center(
                     child: CircularProgressIndicator(),
@@ -73,20 +74,14 @@ class _AlbumScreenState extends State<AlbumScreen> {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, int index) {
-                        final track = tracks[index];
-
-                        return AppListItem.fromTrack(
-                          track,
+                        return TrackItem(
+                          trackId: trackIds[index],
                           onTap: () {
-                            context.read<MusicProvider>().playTrackIds(
-                                  tracks.map((track) => track.id).toList(),
-                                  index,
-                                );
+                            context.read<MusicProvider>().playTrackIds(trackIds, index);
                           },
-                          isActive: track == snap.data,
                         );
                       },
-                      childCount: tracks.length,
+                      childCount: trackIds.length,
                     ),
                   );
                 },

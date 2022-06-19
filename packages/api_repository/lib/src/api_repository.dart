@@ -50,6 +50,14 @@ class ApiRepository {
     final response = await get(Uri.parse("$_host/search?query=$query"));
 
     if (response.statusCode == 200) {
+      final searchResults = SearchResults.fromJson(jsonDecode(response.body));
+
+      for (final track in searchResults.tracks) {
+        if (!trackBox.containsKey(track.id)) {
+          trackBox.put(track.id, track);
+        }
+      }
+
       return SearchResults.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
@@ -72,11 +80,11 @@ class ApiRepository {
     }
   }
 
-  Future<List<Track>> getAlbumTracks(String id) async {
+  Future<List<String>> getAlbumTrackIds(String id) async {
     final response = await get(Uri.parse("$_host/album?id=$id"));
 
     if (response.statusCode == 200) {
-      return (jsonDecode(response.body) as List).map((track) => Track.fromJson(track)).toList();
+      return jsonDecode(response.body).cast<String>();
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch album tracks");
