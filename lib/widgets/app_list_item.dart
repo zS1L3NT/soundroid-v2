@@ -9,7 +9,9 @@ class AppListItem extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.image,
+    this.icon,
     required this.onTap,
+    this.onMoreTap,
     required this.isActive,
   }) : super(key: key);
 
@@ -19,13 +21,19 @@ class AppListItem extends StatelessWidget {
 
   final Widget image;
 
+  final IconData? icon;
+
   final Function() onTap;
+
+  final Function()? onMoreTap;
 
   final bool isActive;
 
   factory AppListItem.fromTrack(
     Track? track, {
+    IconData? icon,
     required Function() onTap,
+    Function()? onMoreTap,
     required bool isActive,
   }) {
     return AppListItem(
@@ -36,13 +44,18 @@ class AppListItem extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
         size: 56,
       ),
+      icon: icon,
       onTap: onTap,
+      onMoreTap: onMoreTap,
       isActive: isActive,
     );
   }
+
   factory AppListItem.fromAlbum(
     Album album, {
+    IconData? icon,
     required Function() onTap,
+    Function()? onMoreTap,
   }) {
     return AppListItem(
       title: album.title,
@@ -55,14 +68,18 @@ class AppListItem extends StatelessWidget {
           size: 56,
         ),
       ),
+      icon: icon,
       onTap: onTap,
+      onMoreTap: onMoreTap,
       isActive: false,
     );
   }
 
   factory AppListItem.fromPlaylist(
     Playlist playlist, {
+    IconData? icon,
     required Function() onTap,
+    Function()? onMoreTap,
   }) {
     return AppListItem(
       title: playlist.name,
@@ -78,7 +95,9 @@ class AppListItem extends StatelessWidget {
           ),
         ),
       ),
+      icon: icon,
       onTap: onTap,
+      onMoreTap: onMoreTap,
       isActive: false,
     );
   }
@@ -88,7 +107,38 @@ class AppListItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: ListTile(
-        leading: image,
+        leading: Stack(
+          children: [
+            image,
+            Positioned(
+              right: -5,
+              bottom: -5,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 500),
+                width: icon != null ? 25 : 0,
+                height: icon != null ? 25 : 0,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: icon != null
+                    ? Icon(
+                        icon,
+                        color: Theme.of(context).primaryColor,
+                        size: 16,
+                      )
+                    : const SizedBox(),
+              ),
+            )
+          ],
+        ),
         title: AppText.ellipse(
           title,
           style: Theme.of(context).textTheme.subtitle1!.copyWith(
@@ -103,11 +153,16 @@ class AppListItem extends StatelessWidget {
                 fontWeight: isActive ? FontWeight.w600 : null,
               ),
         ),
-        trailing: AppIcon.black87(
-          Icons.more_vert_rounded,
-          onPressed: () {},
+        trailing: onMoreTap != null
+            ? AppIcon.black87(
+                Icons.more_vert_rounded,
+                onPressed: onMoreTap,
+              )
+            : null,
+        contentPadding: EdgeInsets.only(
+          left: 16,
+          right: onMoreTap != null ? 0 : 16,
         ),
-        contentPadding: const EdgeInsets.only(left: 16),
       ),
     );
   }

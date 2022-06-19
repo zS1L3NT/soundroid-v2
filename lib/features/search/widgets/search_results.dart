@@ -26,9 +26,11 @@ class SearchResultsWidget extends StatelessWidget {
             if (result is Track) {
               return AppListItem.fromTrack(
                 result,
+                icon: Icons.music_note_rounded,
                 onTap: () {
                   context.read<MusicProvider>().playTrackIds([result.id]);
                 },
+                onMoreTap: () {},
                 isActive: result == snap.data,
               );
             }
@@ -36,6 +38,7 @@ class SearchResultsWidget extends StatelessWidget {
             if (result is Album) {
               return AppListItem.fromAlbum(
                 result,
+                icon: Icons.album_rounded,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
