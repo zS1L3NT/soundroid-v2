@@ -25,7 +25,9 @@ class SearchResultsWidget extends StatelessWidget {
             if (result is Track) {
               return AppListItem.fromTrack(
                 result,
-                onTap: () {},
+                onTap: () {
+                  context.read<MusicProvider>().playTrackIds([result.id]);
+                },
                 isActive: result == snap.data,
               );
             }
