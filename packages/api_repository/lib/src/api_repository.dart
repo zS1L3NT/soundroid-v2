@@ -58,7 +58,11 @@ class ApiRepository {
   }
 
   Future<List<String>> getLyrics(Track track) async {
-    final response = await get(Uri.parse("$_host/lyrics?query=${track.title} IU"));
+    final response = await get(
+      Uri.parse(
+        "$_host/lyrics?query=${track.title} ${track.artists.map((artist) => artist.name).join(" ")}",
+      ),
+    );
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body).cast<String>();
