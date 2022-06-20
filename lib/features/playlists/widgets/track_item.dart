@@ -2,6 +2,7 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class TrackItem extends StatelessWidget {
@@ -27,6 +28,7 @@ class TrackItem extends StatelessWidget {
             return AppListItem.fromTrack(
               track,
               onTap: onTap,
+              onMoreTap: track != null ? () => showTrackBottomSheet(context, track) : null,
               isActive: track == snap.data,
             );
           },
