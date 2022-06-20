@@ -1,6 +1,7 @@
 import { OBJECT, STRING } from "validate-any"
 
 import { ytmusic } from "../apis"
+import processThumbnail from "../functions/processThumbnail"
 import { Route } from "../setup"
 
 export class GET extends Route<any, { id: string }> {
@@ -17,10 +18,7 @@ export class GET extends Route<any, { id: string }> {
 				id: artist.artistId,
 				name: artist.name
 			})),
-			thumbnail: (track.thumbnails.at(-1)?.url || "").replace(
-				/w\d+-h\d+/,
-				"w500-h500"
-			)
+			thumbnail: await processThumbnail(track.thumbnails.at(-1)?.url)
 		})
 	}
 }

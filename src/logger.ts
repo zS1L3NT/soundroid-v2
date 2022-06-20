@@ -16,6 +16,6 @@ export default Tracer.colorConsole({
 		error: [colors.red, colors.bold]
 	},
 	preprocess: data => {
-		data.path = data.path.replaceAll("\\", "/").split(/\/(src|dist)\//)[1]!
+		data.path = data.path.replaceAll("\\", "/").split(/web-express-soundroid\//)[1]!
 	}
 })
