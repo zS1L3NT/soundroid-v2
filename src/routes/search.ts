@@ -34,7 +34,10 @@ export class GET extends Route<any, { query: string }> {
 											id: artist.artistId,
 											name: artist.name
 										})),
-										thumbnail: result.thumbnails.at(-1)?.url || ""
+										thumbnail: (result.thumbnails.at(-1)?.url || "").replace(
+											/w\d+-h\d+-l90-rj/,
+											"w500-h500-l90-rj"
+										)
 									}
 								]
 						  }
