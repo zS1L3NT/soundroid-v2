@@ -13,6 +13,7 @@ class AppListItem extends StatelessWidget {
     required this.onTap,
     this.onMoreTap,
     required this.isActive,
+    this.isDisabled = false,
   }) : super(key: key);
 
   final String title;
@@ -28,6 +29,8 @@ class AppListItem extends StatelessWidget {
   final Function()? onMoreTap;
 
   final bool isActive;
+
+  final bool isDisabled;
 
   factory AppListItem.fromTrack(
     Track? track, {
@@ -80,6 +83,7 @@ class AppListItem extends StatelessWidget {
     IconData? icon,
     required Function() onTap,
     Function()? onMoreTap,
+    bool isDisabled = false,
   }) {
     return AppListItem(
       title: playlist.name,
@@ -99,14 +103,17 @@ class AppListItem extends StatelessWidget {
       onTap: onTap,
       onMoreTap: onMoreTap,
       isActive: false,
+      isDisabled: isDisabled,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
+    return Opacity(
+      opacity: isDisabled ? 0.4 : 1,
       child: ListTile(
+        onTap: onTap,
+        enabled: !isDisabled,
         leading: Stack(
           children: [
             image,

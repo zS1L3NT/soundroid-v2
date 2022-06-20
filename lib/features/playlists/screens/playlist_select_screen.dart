@@ -8,15 +8,24 @@ class PlaylistSelectScreen extends StatefulWidget {
   const PlaylistSelectScreen({
     Key? key,
     required this.onSelect,
+    required this.trackId,
   }) : super(key: key);
 
-  static Route route(Function(Playlist) onSelect) {
+  static Route route({
+    required Function(Playlist) onSelect,
+    required String trackId,
+  }) {
     return MaterialPageRoute(
-      builder: (_) => PlaylistSelectScreen(onSelect: onSelect),
+      builder: (_) => PlaylistSelectScreen(
+        onSelect: onSelect,
+        trackId: trackId,
+      ),
     );
   }
 
   final Function(Playlist) onSelect;
+
+  final String trackId;
 
   @override
   State<PlaylistSelectScreen> createState() => _PlaylistSelectScreenState();
@@ -42,6 +51,7 @@ class _PlaylistSelectScreenState extends State<PlaylistSelectScreen> {
                   Navigator.of(context).pop();
                   widget.onSelect(playlist);
                 },
+                isDisabled: playlist.trackIds.contains(widget.trackId),
               );
             },
             itemCount: snap.data?.length ?? 0,

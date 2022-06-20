@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class AppAlertDialog {
   AppAlertDialog({
@@ -238,5 +239,32 @@ class AppTextDialog {
         onClose!();
       }
     });
+  }
+}
+
+class AppSnackBar {
+  AppSnackBar({
+    required this.text,
+    required this.icon,
+  });
+
+  final String text;
+
+  final IconData icon;
+
+  void show(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            AppIcon.white(icon),
+            const SizedBox(width: 16),
+            Text(text),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+    );
   }
 }

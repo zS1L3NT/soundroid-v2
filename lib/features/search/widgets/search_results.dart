@@ -15,6 +15,66 @@ class SearchResultsWidget extends StatelessWidget {
 
   final SearchResults results;
 
+  void showBottomSheet(BuildContext context, Track track) {
+    AppBottomSheet(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 8),
+          StreamBuilder<Track?>(
+            stream: context.read<MusicProvider>().current,
+            builder: (context, snap) {
+              return AppListItem.fromTrack(
+                track,
+                onTap: () {
+                  context.read<MusicProvider>().playTrackIds([track.id]);
+                  Navigator.of(context).pop();
+                },
+                isActive: snap.data == track,
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text("Like"),
+            leading: AppIcon.primaryColor(Icons.favorite_rounded, context),
+            onTap: () {},
+          ),
+          ListTile(
+            title: const Text("Add to playlist"),
+            leading: AppIcon.primaryColor(Icons.playlist_add_rounded, context),
+            onTap: () {
+              Navigator.of(context).push(
+                PlaylistSelectScreen.route(
+                  trackId: track.id,
+                  onSelect: (playlist) async {
+                    Navigator.of(context).pop();
+                    await context.read<PlaylistRepository>().updatePlaylist(
+                      playlist.id,
+                      {
+                        "trackIds": playlist.trackIds + [track.id],
+                      },
+                    );
+                    AppSnackBar(
+                      text: "Added track to playlist",
+                      icon: Icons.playlist_add_check_rounded,
+                    ).show(context);
+                  },
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Add to queue"),
+            leading: AppIcon.primaryColor(Icons.queue_music_rounded, context),
+            onTap: () {},
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    ).show(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Track?>(
@@ -33,58 +93,7 @@ class SearchResultsWidget extends StatelessWidget {
                   context.read<MusicProvider>().playTrackIds([result.id]);
                 },
                 onMoreTap: () {
-                  AppBottomSheet(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(height: 8),
-                        StreamBuilder<Track?>(
-                          stream: context.read<MusicProvider>().current,
-                          builder: (context, snap) {
-                            return AppListItem.fromTrack(
-                              result,
-                              onTap: () {
-                                context.read<MusicProvider>().playTrackIds([result.id]);
-                                Navigator.of(context).pop();
-                              },
-                              isActive: snap.data == result,
-                            );
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          title: const Text("Like"),
-                          leading: AppIcon.primaryColor(Icons.favorite_rounded, context),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: const Text("Add to playlist"),
-                          leading: AppIcon.primaryColor(Icons.playlist_add_rounded, context),
-                          onTap: () {
-                            Navigator.of(context).push(
-                              PlaylistSelectScreen.route(
-                                (playlist) {
-                                  Navigator.of(context).pop();
-                                  context.read<PlaylistRepository>().updatePlaylist(
-                                    playlist.id,
-                                    {
-                                      "trackIds": playlist.trackIds + [result.id],
-                                    },
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        ListTile(
-                          title: const Text("Add to queue"),
-                          leading: AppIcon.primaryColor(Icons.queue_music_rounded, context),
-                          onTap: () {},
-                        ),
-                        const SizedBox(height: 8),
-                      ],
-                    ),
-                  ).show(context);
+                  showBottomSheet(context, result);
                 },
                 isActive: result == snap.data,
               );
