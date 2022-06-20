@@ -31,9 +31,10 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   void onFavouriteClick(bool favourite) {
     context.read<PlaylistRepository>().updatePlaylist(
-      widget.playlist.id,
-      {"favourite": !favourite},
-    );
+          widget.playlist.copyWith.favourite(
+            !widget.playlist.favourite,
+          ),
+        );
   }
 
   void onDownloadClick() {}

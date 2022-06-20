@@ -29,8 +29,8 @@ class PlaylistRepository {
     return _collection.doc(playlist.id).set(playlist);
   }
 
-  Future<void> updatePlaylist(String id, Map<String, dynamic> data) {
-    return _collection.doc(id).update(data);
+  Future<void> updatePlaylist(Playlist playlist) {
+    return _collection.doc(playlist.id).update(playlist.toJson());
   }
 
   Future<void> deletePlaylist(String id) {

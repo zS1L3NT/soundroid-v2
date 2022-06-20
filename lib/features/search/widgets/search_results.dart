@@ -50,11 +50,10 @@ class SearchResultsWidget extends StatelessWidget {
                   onSelect: (playlist) async {
                     Navigator.of(context).pop();
                     await context.read<PlaylistRepository>().updatePlaylist(
-                      playlist.id,
-                      {
-                        "trackIds": playlist.trackIds + [track.id],
-                      },
-                    );
+                          playlist.copyWith.trackIds(
+                            playlist.trackIds + [track.id],
+                          ),
+                        );
                     AppSnackBar(
                       text: "Added track to playlist",
                       icon: Icons.playlist_add_check_rounded,

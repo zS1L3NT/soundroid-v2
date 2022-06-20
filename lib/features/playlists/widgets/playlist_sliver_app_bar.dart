@@ -82,9 +82,8 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
               ),
               onTap: () {
                 context.read<PlaylistRepository>().updatePlaylist(
-                  _playlistId,
-                  {"thumbnail": null},
-                );
+                      (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
+                    );
                 Navigator.of(context).pop();
               },
             ),
@@ -102,9 +101,8 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
       confirmText: "Rename",
       onConfirm: (String name) {
         context.read<PlaylistRepository>().updatePlaylist(
-          _playlistId,
-          {"name": name},
-        );
+              (widget.playlist ?? widget.initialPlaylist).copyWith.name(name),
+            );
         Navigator.of(context).pop();
       },
     ).show(context);
