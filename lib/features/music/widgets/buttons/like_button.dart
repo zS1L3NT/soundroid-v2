@@ -38,7 +38,21 @@ class _LikeButtonState extends State<LikeButton> {
                   ? Icons.favorite_rounded
                   : Icons.favorite_outline_rounded,
               context,
-              onPressed: () {},
+              onPressed: () {
+                if (user.likedTrackIds.contains(current.id)) {
+                  context.read<AuthenticationRepository>().updateUser(
+                        user.copyWith.likedTrackIds(
+                          user.likedTrackIds.where((trackId) => trackId != current.id).toList(),
+                        ),
+                      );
+                } else {
+                  context.read<AuthenticationRepository>().updateUser(
+                        user.copyWith.likedTrackIds(
+                          user.likedTrackIds + [current.id],
+                        ),
+                      );
+                }
+              },
             );
           },
         );
