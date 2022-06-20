@@ -18,8 +18,8 @@ export class GET extends Route<any, { id: string }> {
 				name: artist.name
 			})),
 			thumbnail: (track.thumbnails.at(-1)?.url || "").replace(
-				/w\d+-h\d+-l90-rj/,
-				"w500-h500-l90-rj"
+				/w\d+-h\d+/,
+				"w500-h500"
 			)
 		})
 	}
