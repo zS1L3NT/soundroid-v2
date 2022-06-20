@@ -64,11 +64,19 @@ class SearchResultsWidget extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            title: const Text("Add to queue"),
-            leading: AppIcon.primaryColor(Icons.queue_music_rounded, context),
-            onTap: () {},
-          ),
+          if (!context.read<MusicProvider>().queue.tracks.contains(track))
+            ListTile(
+              title: const Text("Add to queue"),
+              leading: AppIcon.primaryColor(Icons.queue_music_rounded, context),
+              onTap: () async {
+                Navigator.of(context).pop();
+                await context.read<MusicProvider>().queue.addTrack(track);
+                AppSnackBar(
+                  text: "Added track to queue",
+                  icon: Icons.playlist_add_check_rounded,
+                ).show(context);
+              },
+            ),
           const SizedBox(height: 8),
         ],
       ),
