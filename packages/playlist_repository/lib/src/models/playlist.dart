@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
 
-class Playlist {
+part 'playlist.g.dart';
+
+@CopyWith()
+class Playlist extends Equatable {
   final String id;
   final DocumentReference userRef;
   final String name;
@@ -37,4 +42,20 @@ class Playlist {
         "download": download,
         "trackIds": trackIds,
       };
+
+  @override
+  List<Object?> get props => [
+        id,
+        userRef,
+        name,
+        thumbnail,
+        favourite,
+        download,
+        trackIds,
+      ];
+
+  @override
+  String toString() {
+    return "Playlist { $id; ${userRef.id}; $name; $favourite; $download; $trackIds }";
+  }
 }

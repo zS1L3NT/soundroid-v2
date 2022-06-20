@@ -1,3 +1,4 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:just_audio/just_audio.dart';
@@ -7,6 +8,7 @@ import 'models.dart';
 
 part 'track.g.dart';
 
+@CopyWith()
 @HiveType(typeId: 0)
 @JsonSerializable()
 class Track extends ProgressiveAudioSource {

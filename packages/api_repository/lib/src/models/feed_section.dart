@@ -1,3 +1,5 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'models.dart';
@@ -10,10 +12,11 @@ enum SectionType {
   artist,
 }
 
-abstract class FeedSection {
+abstract class FeedSection extends Equatable {
   abstract final SectionType type;
 }
 
+@CopyWith()
 @JsonSerializable()
 class TrackSection extends FeedSection {
   TrackSection({
@@ -34,8 +37,17 @@ class TrackSection extends FeedSection {
 
   factory TrackSection.fromJson(Map<String, dynamic> json) => _$TrackSectionFromJson(json);
   Map<String, dynamic> toJson() => _$TrackSectionToJson(this);
+
+  @override
+  List<Object?> get props => [type, title, description, items];
+
+  @override
+  String toString() {
+    return "TrackSection { $type; $title; $description; ${items.join(", ")} }";
+  }
 }
 
+@CopyWith()
 @JsonSerializable()
 class ArtistSection extends FeedSection {
   ArtistSection({
@@ -53,4 +65,16 @@ class ArtistSection extends FeedSection {
 
   factory ArtistSection.fromJson(Map<String, dynamic> json) => _$ArtistSectionFromJson(json);
   Map<String, dynamic> toJson() => _$ArtistSectionToJson(this);
+
+  @override
+  List<Object?> get props => [
+        type,
+        artist,
+        items,
+      ];
+
+  @override
+  String toString() {
+    return "ArtistSection { $type; $artist; ${items.join(", ")} }";
+  }
 }

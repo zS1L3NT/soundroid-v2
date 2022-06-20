@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
 
-class Listen {
+part 'listen.g.dart';
+
+@CopyWith()
+class Listen extends Equatable {
   final DocumentReference userRef;
   final List<String> trackIds;
   final Timestamp timestamp;
@@ -21,4 +26,16 @@ class Listen {
         "trackIds": trackIds,
         "timestamp": timestamp,
       };
+
+  @override
+  List<Object?> get props => [
+        userRef,
+        trackIds,
+        timestamp,
+      ];
+
+  @override
+  String toString() {
+    return "Listen { ${userRef.id}; $trackIds; ${timestamp.toDate()} }";
+  }
 }

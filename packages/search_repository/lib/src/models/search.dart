@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
 
-class Search {
+part 'search.g.dart';
+
+@CopyWith()
+class Search extends Equatable {
   final DocumentReference userRef;
   final String query;
   final Timestamp timestamp;
@@ -21,4 +26,16 @@ class Search {
         "query": query,
         "timestamp": timestamp,
       };
+
+  @override
+  List<Object?> get props => [
+        userRef,
+        query,
+        timestamp,
+      ];
+
+  @override
+  String toString() {
+    return "Search { ${userRef.id}; $query; ${timestamp.toDate()} }";
+  }
 }
