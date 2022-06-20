@@ -225,7 +225,7 @@ class AppTextDialog {
                   child: const Text("Cancel"),
                 ),
                 ElevatedButton(
-                  onPressed: text.isNotEmpty ? onConfirm(text) : null,
+                  onPressed: text.isNotEmpty ? () => onConfirm(text) : null,
                   child: Text(confirmText),
                 ),
               ],

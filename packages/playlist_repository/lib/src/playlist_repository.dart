@@ -26,7 +26,7 @@ class PlaylistRepository {
   String get newId => _collection.doc().id;
 
   Future<void> addPlaylist(Playlist playlist) {
-    return _collection.add(playlist);
+    return _collection.doc(playlist.id).set(playlist);
   }
 
   Future<void> updatePlaylist(String id, Map<String, dynamic> data) {
