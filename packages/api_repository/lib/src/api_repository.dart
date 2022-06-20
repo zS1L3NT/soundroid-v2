@@ -36,7 +36,7 @@ class ApiRepository {
   }
 
   Future<List<String>> getSearchSuggestions(String query) async {
-    final response = await get(Uri.parse("$_host/suggestions?query=$query"));
+    final response = await get(Uri.parse("$_host/suggestions?query=${Uri.encodeComponent(query)}"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body).cast<String>();
@@ -47,7 +47,7 @@ class ApiRepository {
   }
 
   Future<SearchResults> getSearchResults(String query) async {
-    final response = await get(Uri.parse("$_host/search?query=$query"));
+    final response = await get(Uri.parse("$_host/search?query=${Uri.encodeComponent(query)}"));
 
     if (response.statusCode == 200) {
       final searchResults = SearchResults.fromJson(jsonDecode(response.body));
@@ -68,7 +68,7 @@ class ApiRepository {
   Future<List<String>> getLyrics(Track track) async {
     final response = await get(
       Uri.parse(
-        "$_host/lyrics?query=${track.title} ${track.artists.map((artist) => artist.name).join(" ")}",
+        "$_host/lyrics?query=${Uri.encodeComponent(track.title)} ${Uri.encodeComponent(track.artists.map((artist) => artist.name).join(" "))}",
       ),
     );
 
