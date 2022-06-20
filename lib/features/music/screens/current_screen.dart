@@ -16,7 +16,6 @@ class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     final size = MediaQuery.of(context).size;
 
     return Center(
@@ -41,6 +40,7 @@ class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
                           AppText.marquee(
                             snap.data?.title ?? "...",
                             width: size.width,
+                            extraHeight: 11,
                             style: Theme.of(context).textTheme.headline4,
                             textAlign: TextAlign.center,
                           ),
