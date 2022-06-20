@@ -1,4 +1,5 @@
 import 'package:api_repository/api_repository.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
@@ -35,10 +36,45 @@ class SearchResultsWidget extends StatelessWidget {
             },
           ),
           const Divider(),
-          ListTile(
-            title: const Text("Like"),
-            leading: AppIcon.primaryColor(Icons.favorite_rounded, context),
-            onTap: () {},
+          StreamBuilder<User?>(
+            stream: context.read<AuthenticationRepository>().currentUser,
+            builder: (context, snap) {
+              final user = snap.data;
+              final isLiked = user?.likedTrackIds.contains(track.id);
+
+              return ListTile(
+                title: Text(
+                  isLiked == null
+                      ? ".."
+                      : isLiked
+                          ? "Unlike this track"
+                          : "Like this track",
+                ),
+                leading: isLiked == null
+                    ? AppIcon.loading()
+                    : AppIcon.primaryColor(
+                        isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                        context,
+                      ),
+                onTap: () {
+                  if (user == null) return;
+
+                  if (isLiked!) {
+                    context.read<AuthenticationRepository>().updateUser(
+                          user.copyWith.likedTrackIds(
+                            user.likedTrackIds.where((trackId) => trackId != track.id).toList(),
+                          ),
+                        );
+                  } else {
+                    context.read<AuthenticationRepository>().updateUser(
+                          user.copyWith.likedTrackIds(
+                            user.likedTrackIds + [track.id],
+                          ),
+                        );
+                  }
+                },
+              );
+            },
           ),
           ListTile(
             title: const Text("Add to playlist"),
