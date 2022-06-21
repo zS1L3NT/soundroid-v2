@@ -1,5 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
@@ -73,6 +75,37 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     );
   }
 
+  void onChoosePictureClick() async {
+    final newImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (newImage == null) return;
+
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: newImage.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+    );
+  }
+
+  void onTakePictureClick() async {
+    final newImage = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (newImage == null) return;
+
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: newImage.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+    );
+  }
+
+  void onRemovePictureClick() async {
+    Navigator.of(context).pop();
+    await context.read<PlaylistRepository>().updatePlaylist(
+          (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
+        );
+    AppSnackBar(
+      text: "Removed playlist picture",
+      icon: Icons.check_rounded,
+    ).show(context);
+  }
+
   void onChangePictureClick() {
     Navigator.of(context).pop();
     AppBottomSheet(
@@ -86,7 +119,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
               Icons.image_rounded,
               context,
             ),
-            onTap: () {},
+            onTap: onChoosePictureClick,
           ),
           ListTile(
             title: const Text("Take a picture"),
@@ -94,7 +127,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
               Icons.photo_camera_rounded,
               context,
             ),
-            onTap: () {},
+            onTap: onTakePictureClick,
           ),
           if (widget.playlist?.thumbnail != null)
             ListTile(
@@ -103,16 +136,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
                 Icons.delete_rounded,
                 context,
               ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                await context.read<PlaylistRepository>().updatePlaylist(
-                      (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
-                    );
-                AppSnackBar(
-                  text: "Removed playlist picture",
-                  icon: Icons.check_rounded,
-                ).show(context);
-              },
+              onTap: onRemovePictureClick,
             ),
           const SizedBox(height: 8),
         ],
