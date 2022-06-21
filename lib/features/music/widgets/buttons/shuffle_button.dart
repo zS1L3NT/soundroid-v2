@@ -7,7 +7,9 @@ import 'package:soundroid/widgets/widgets.dart';
 class ShuffleButton extends StatelessWidget {
   const ShuffleButton({Key? key}) : super(key: key);
 
-  void handleClick(AudioPlayer player) {}
+  void handleClick(AudioPlayer player) async {
+    await player.setShuffleModeEnabled(!player.shuffleModeEnabled);
+  }
 
   @override
   Widget build(BuildContext context) {

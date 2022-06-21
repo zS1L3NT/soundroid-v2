@@ -17,33 +17,41 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return StreamBuilder<List<IndexedAudioSource>?>(
-      stream: context.read<MusicProvider>().player.sequenceStream,
+    return StreamBuilder<bool>(
+      stream: context.read<MusicProvider>().player.shuffleModeEnabledStream,
       builder: (context, snap) {
-        final tracks = snap.data?.cast<Track>();
+        final shuffleModeEnabled = snap.data ?? false;
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          child: tracks == null
-              ? const SizedBox()
-              : ReorderableListView.builder(
-                  itemBuilder: (context, index) {
-                    final track = tracks[index];
+        return StreamBuilder<List<IndexedAudioSource>?>(
+          stream: context.read<MusicProvider>().player.sequenceStream,
+          builder: (context, snap) {
+            final tracks = snap.data?.cast<Track>();
+            final shuffleOrder = context.read<MusicProvider>().player.shuffleIndices!;
 
-                    return QueueItem(
-                      key: ValueKey(track.id),
-                      track: track,
-                      index: index,
-                    );
-                  },
-                  itemCount: tracks.length,
-                  onReorder: (int oldIndex, int newIndex) {
-                    context.read<MusicProvider>().queue.move(
-                          oldIndex,
-                          newIndex < oldIndex ? newIndex : newIndex - 1,
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: tracks == null
+                  ? const SizedBox()
+                  : ReorderableListView.builder(
+                      itemBuilder: (context, index) {
+                        final track = tracks[shuffleModeEnabled ? shuffleOrder[index] : index];
+
+                        return QueueItem(
+                          key: ValueKey(track.id),
+                          track: track,
+                          index: index,
                         );
-                  },
-                ),
+                      },
+                      itemCount: tracks.length,
+                      onReorder: (int oldIndex, int newIndex) {
+                        context.read<MusicProvider>().queue.move(
+                              oldIndex,
+                              newIndex < oldIndex ? newIndex : newIndex - 1,
+                            );
+                      },
+                    ),
+            );
+          },
         );
       },
     );
