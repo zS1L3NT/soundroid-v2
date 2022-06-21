@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
   late final _playlistsStream = context.read<PlaylistRepository>().getPlaylists();
+  late final _userStream = context.read<AuthenticationRepository>().currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,39 @@ class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
           itemCount: snap.data!.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return const LikedSongsItem();
+              return ListTile(
+                leading: Hero(
+                  tag: "liked_songs_icon",
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: Container(
+                      width: 56,
+                      height: 56,
+                      color: Theme.of(context).primaryColorLight,
+                      child: AppIcon.primaryColorDark(
+                        Icons.favorite_rounded,
+                        context,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                title: AppText.ellipse("Liked Songs"),
+                subtitle: StreamBuilder<User?>(
+                  stream: _userStream,
+                  builder: (context, snap) {
+                    return AppText.ellipse(
+                      snap.hasData ? "${snap.data!.likedTrackIds.length} tracks" : "...",
+                    );
+                  },
+                ),
+                contentPadding: const EdgeInsets.only(left: 16),
+                onTap: () {
+                  Navigator.of(context).push(
+                    LikedSongsScreen.route(),
+                  );
+                },
+              );
             }
 
             final playlist = snap.data![index - 1];
