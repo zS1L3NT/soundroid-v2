@@ -2,7 +2,6 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
-import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class MainFloatingMusicButton extends StatelessWidget {
@@ -71,11 +70,7 @@ class MainFloatingMusicButton extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                   onTap: () {
                     Navigator.of(context).push(
-                      RouteTransition.slide(
-                        const PlayingScreen(),
-                        from: const Offset(0, 1),
-                        duration: const Duration(milliseconds: 500),
-                      ),
+                      PlayingScreen.route(),
                     );
                   },
                 ),
@@ -90,11 +85,7 @@ class MainFloatingMusicButton extends StatelessWidget {
       onPanEnd: (action) {
         if (isSwipeUp) {
           Navigator.of(context).push(
-            RouteTransition.slide(
-              const PlayingScreen(),
-              from: const Offset(0, 1),
-              duration: const Duration(milliseconds: 500),
-            ),
+            PlayingScreen.route(),
           );
         }
       },

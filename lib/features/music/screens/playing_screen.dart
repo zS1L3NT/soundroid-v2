@@ -4,6 +4,12 @@ import 'package:soundroid/features/music/music.dart';
 class PlayingScreen extends StatefulWidget {
   const PlayingScreen({Key? key}) : super(key: key);
 
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => const PlayingScreen(),
+    );
+  }
+
   @override
   State<PlayingScreen> createState() => _PlayingScreenState();
 }

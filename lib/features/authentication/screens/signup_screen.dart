@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
-import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -99,9 +98,19 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: () {
                     if (_form.currentState!.validate()) {
                       Navigator.of(context).pushAndRemoveUntil(
-                        RouteTransition.slide(
-                          const VerifyEmailScreen(),
-                          from: const Offset(0.5, 0),
+                        PageRouteBuilder(
+                          pageBuilder: (c, anim, anim2) => const VerifyEmailScreen(),
+                          transitionsBuilder: (c, anim, anim2, child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0.5, 0),
+                                end: Offset.zero,
+                              ).animate(anim),
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 200),
+                          reverseTransitionDuration: const Duration(milliseconds: 200),
                         ),
                         (_) => false,
                       );
