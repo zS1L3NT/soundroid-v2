@@ -35,17 +35,19 @@ class AppText extends StatelessWidget {
             textAlign: textAlign,
             style: style,
             overflowReplacement: ShaderMask(
-              shaderCallback: (rectangle) => LinearGradient(
-                colors: [
-                  Colors.transparent,
-                  textStyle.color ?? Colors.black,
-                  textStyle.color ?? Colors.black,
-                  Colors.transparent
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: const [0, 0.01, 0.9, 1.0],
-              ).createShader(rectangle),
+              shaderCallback: (rectangle) {
+                return LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    textStyle.color ?? Colors.black,
+                    textStyle.color ?? Colors.black,
+                    Colors.transparent
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  stops: const [0, 0.01, 0.9, 1.0],
+                ).createShader(rectangle);
+              },
               child: Marquee(
                 text: text,
                 style: style,

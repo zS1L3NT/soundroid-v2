@@ -24,16 +24,12 @@ class _AlbumSliverAppBarState extends State<AlbumSliverAppBar> {
   void initState() {
     super.initState();
 
-    widget.controller.addListener(
-      () {
-        final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
-        if (isCollapsed != _isCollapsed) {
-          setState(() {
-            _isCollapsed = isCollapsed;
-          });
-        }
-      },
-    );
+    widget.controller.addListener(() {
+      final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
+      if (isCollapsed != _isCollapsed) {
+        setState(() => _isCollapsed = isCollapsed);
+      }
+    });
   }
 
   void onBackClick() {

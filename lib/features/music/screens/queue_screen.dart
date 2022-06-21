@@ -13,15 +13,12 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends KeptAliveState<QueueScreen> {
-  late final _player = context.read<MusicProvider>().player;
-  late final _queue = context.read<MusicProvider>().queue;
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return StreamBuilder<List<IndexedAudioSource>?>(
-      stream: _player.sequenceStream,
+      stream: context.read<MusicProvider>().player.sequenceStream,
       builder: (context, snap) {
         final tracks = snap.data?.cast<Track>();
 
@@ -29,16 +26,22 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
           duration: const Duration(milliseconds: 500),
           child: tracks == null
               ? const SizedBox()
-              : ReorderableListView(
-                  children: tracks
-                      .map((track) => QueueItem(
-                            key: ValueKey(track.title),
-                            track: track,
-                            index: tracks.indexOf(track),
-                          ))
-                      .toList(),
+              : ReorderableListView.builder(
+                  itemBuilder: (context, index) {
+                    final track = tracks[index];
+
+                    return QueueItem(
+                      key: ValueKey(track.id),
+                      track: track,
+                      index: index,
+                    );
+                  },
+                  itemCount: tracks.length,
                   onReorder: (int oldIndex, int newIndex) {
-                    _queue.move(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
+                    context.read<MusicProvider>().queue.move(
+                          oldIndex,
+                          newIndex < oldIndex ? newIndex : newIndex - 1,
+                        );
                   },
                 ),
         );

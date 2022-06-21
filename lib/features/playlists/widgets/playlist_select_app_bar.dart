@@ -40,9 +40,7 @@ class _PlaylistSelectAppBarState extends State<PlaylistSelectAppBar> {
       title: const Text("Choose a playlist"),
       leading: AppIcon(
         Icons.close_rounded,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        onPressed: Navigator.of(context).pop,
       ),
       actions: [
         AppIcon.white(

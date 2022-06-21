@@ -34,9 +34,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   void checkCooldown() {
     if (_cooldown > 0) {
-      setState(() {
-        _cooldown--;
-      });
+      setState(() => _cooldown--);
       Timer(const Duration(seconds: 1), checkCooldown);
     }
   }
@@ -78,12 +76,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             const Spacer(),
             TextButton(
               onPressed: _cooldown == 0
-                  ? () {
-                      setState(() {
+                  ? () => setState(() {
                         _cooldown = 60;
                         Timer(const Duration(seconds: 1), checkCooldown);
-                      });
-                    }
+                      })
                   : null,
               child: Text(
                 "Resend verification email${_cooldown > 0 ? " in ${_cooldown}s" : ""}",

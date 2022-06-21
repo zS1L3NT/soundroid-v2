@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class QueueItem extends StatefulWidget {
+class QueueItem extends StatelessWidget {
   const QueueItem({
     Key? key,
     required this.track,
@@ -15,69 +15,64 @@ class QueueItem extends StatefulWidget {
 
   final int index;
 
-  @override
-  State<QueueItem> createState() => _QueueItemState();
-}
+  void handleTap(MusicProvider musicProvider) {
+    final selected = musicProvider.selected;
 
-class _QueueItemState extends State<QueueItem> {
-  void handleTap(List<Track>? selected) {
     if (selected == null) {
-      context.read<MusicProvider>().player.seek(const Duration(), index: widget.index);
+      musicProvider.player.seek(const Duration(), index: index);
     } else {
-      if (selected.contains(widget.track)) {
+      if (selected.contains(track)) {
         if (selected.length == 1) {
-          context.read<MusicProvider>().selected = null;
+          musicProvider.selected = null;
         } else {
-          context.read<MusicProvider>().selected =
-              selected.where((t) => t != widget.track).toList();
+          musicProvider.selected = selected.where((t) => t != track).toList();
         }
       } else {
-        context.read<MusicProvider>().selected = selected.toList()..add(widget.track);
+        musicProvider.selected = selected.toList()..add(track);
       }
     }
   }
 
-  void handleLongPress(List<Track>? selected) {
-    if (selected == null) {
-      context.read<MusicProvider>().selected = [widget.track];
-    }
+  void handleLongPress(MusicProvider musicProvider) {
+    musicProvider.selected ??= [track];
   }
 
   @override
   Widget build(BuildContext context) {
-    final selected = context.select<MusicProvider, List<Track>?>((provider) => provider.selected);
+    final musicProvider = context.read<MusicProvider>();
 
     return StreamBuilder<Track?>(
-      stream: context.watch<MusicProvider>().current,
+      stream: context.read<MusicProvider>().current,
       builder: (context, snap) {
         final current = snap.data;
+
         return ListTile(
-          onTap: () => handleTap(selected),
-          onLongPress: () => handleLongPress(selected),
-          tileColor: selected != null && selected.contains(widget.track)
+          onTap: () => handleTap(musicProvider),
+          onLongPress: () => handleLongPress(musicProvider),
+          tileColor: (musicProvider.selected?.contains(track) ?? false)
               ? Theme.of(context).highlightColor
               : Colors.transparent,
           leading: AppImage.network(
-            widget.track.thumbnail,
+            track.thumbnail,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             size: 56,
           ),
           title: AppText.ellipse(
-            widget.track.title,
+            track.title,
             style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                  color: widget.track == current ? Theme.of(context).primaryColor : null,
-                  fontWeight: widget.track == current ? FontWeight.w600 : null,
+                  color: track == current ? Theme.of(context).primaryColor : null,
+                  fontWeight: track == current ? FontWeight.w600 : null,
                 ),
           ),
           subtitle: AppText.ellipse(
-            widget.track.artists.map((artist) => artist.name).join(", "),
+            track.artists.map((artist) => artist.name).join(", "),
             style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: widget.track == current ? Theme.of(context).primaryColor : null,
-                  fontWeight: widget.track == current ? FontWeight.w600 : null,
+                  color: track == current ? Theme.of(context).primaryColor : null,
+                  fontWeight: track == current ? FontWeight.w600 : null,
                 ),
           ),
           trailing: ReorderableDragStartListener(
-            index: widget.index,
+            index: index,
             child: AppIcon.black87(
               Icons.drag_handle_rounded,
               onPressed: () {},

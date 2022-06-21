@@ -10,7 +10,7 @@ class CoverImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final thumbnail = context.watch<MusicProvider>().currentThumbnail;
+    final thumbnail = context.read<MusicProvider>().currentThumbnail;
 
     return FutureBuilder<PaletteGenerator>(
       future: thumbnail != null

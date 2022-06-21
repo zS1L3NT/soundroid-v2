@@ -37,6 +37,14 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
     });
   }
 
+  void scrollToPage(int page) {
+    widget.controller.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+    );
+  }
+
   Color getColor(int index) {
     return _page == index ? Theme.of(context).primaryColor : Colors.black;
   }
@@ -46,53 +54,31 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
     final selected = context.select<MusicProvider, List<Track>?>((provider) => provider.selected);
 
     if (selected == null) {
-      return StreamBuilder<Object>(builder: (context, snapshot) {
-        return AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          leading: AppIcon.black87(
-            Icons.keyboard_arrow_down_rounded,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+      return AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        leading: AppIcon.black87(
+          Icons.keyboard_arrow_down_rounded,
+          onPressed: Navigator.of(context).pop,
+        ),
+        actions: [
+          AppIcon(
+            Icons.queue_music_rounded,
+            color: getColor(0),
+            onPressed: () => scrollToPage(0),
           ),
-          actions: [
-            AppIcon(
-              Icons.queue_music_rounded,
-              color: getColor(0),
-              onPressed: () {
-                widget.controller.animateToPage(
-                  0,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOut,
-                );
-              },
-            ),
-            AppIcon(
-              Icons.music_note_rounded,
-              color: getColor(1),
-              onPressed: () {
-                widget.controller.animateToPage(
-                  1,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOut,
-                );
-              },
-            ),
-            AppIcon(
-              Icons.mic_external_on_rounded,
-              color: getColor(2),
-              onPressed: () {
-                widget.controller.animateToPage(
-                  2,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOut,
-                );
-              },
-            ),
-          ],
-        );
-      });
+          AppIcon(
+            Icons.music_note_rounded,
+            color: getColor(1),
+            onPressed: () => scrollToPage(1),
+          ),
+          AppIcon(
+            Icons.mic_external_on_rounded,
+            color: getColor(2),
+            onPressed: () => scrollToPage(2),
+          ),
+        ],
+      );
     } else {
       return AppBar(
         backgroundColor: Theme.of(context).primaryColor,

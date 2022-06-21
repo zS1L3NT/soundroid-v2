@@ -14,6 +14,14 @@ class AlbumScreen extends StatefulWidget {
 
   final Album album;
 
+  static Route route(Album album) {
+    return MaterialPageRoute(
+      builder: (_) => AlbumScreen(
+        album: album,
+      ),
+    );
+  }
+
   @override
   State<AlbumScreen> createState() => _AlbumScreenState();
 }

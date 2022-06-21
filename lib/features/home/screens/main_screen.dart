@@ -21,13 +21,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late final _currentStream = context.read<MusicProvider>().current;
   final _controller = PageController();
   int _page = 0;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Track?>(
-      stream: context.read<MusicProvider>().current,
+      stream: _currentStream,
       builder: (context, snap) {
         return Scaffold(
           extendBody: true,

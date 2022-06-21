@@ -20,7 +20,6 @@ class SearchResultsWidget extends StatelessWidget {
       stream: context.read<MusicProvider>().current,
       builder: (context, snap) {
         return ListView.builder(
-          itemCount: results.tracks.length + results.albums.length,
           itemBuilder: (context, index) {
             final result = [...results.tracks, ...results.albums][index];
 
@@ -44,13 +43,7 @@ class SearchResultsWidget extends StatelessWidget {
                 icon: Icons.album_rounded,
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return AlbumScreen(
-                          album: result,
-                        );
-                      },
-                    ),
+                    AlbumScreen.route(result),
                   );
                 },
               );
@@ -58,6 +51,7 @@ class SearchResultsWidget extends StatelessWidget {
 
             throw Error();
           },
+          itemCount: results.tracks.length + results.albums.length,
         );
       },
     );

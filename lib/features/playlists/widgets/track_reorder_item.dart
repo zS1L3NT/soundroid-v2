@@ -21,6 +21,7 @@ class TrackReorderItem extends StatelessWidget {
       stream: context.read<MusicProvider>().current,
       builder: (context, snap) {
         final current = snap.data;
+
         return ListTile(
           leading: AppImage.network(
             track.thumbnail,

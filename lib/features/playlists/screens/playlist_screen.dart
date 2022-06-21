@@ -26,7 +26,6 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
-  late final _playlistStream = context.read<PlaylistRepository>().getPlaylist(widget.playlist.id);
   final _controller = ScrollController();
 
   void onFavouriteClick(bool favourite) {
@@ -41,12 +40,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Playlist?>(
-      stream: _playlistStream,
-      builder: (context, snap) {
-        final playlist = snap.data;
-        return Scaffold(
-          body: CustomScrollView(
+    return Scaffold(
+      body: StreamBuilder<Playlist?>(
+        stream: context.read<PlaylistRepository>().getPlaylist(widget.playlist.id),
+        builder: (context, snap) {
+          final playlist = snap.data;
+
+          return CustomScrollView(
             physics: const BouncingScrollPhysics(),
             controller: _controller,
             slivers: [
@@ -114,9 +114,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 ),
               ),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

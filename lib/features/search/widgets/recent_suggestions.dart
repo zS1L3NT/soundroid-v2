@@ -3,20 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:search_repository/search_repository.dart';
 import 'package:soundroid/features/search/search.dart';
 
-class RecentSuggestions extends StatefulWidget {
+class RecentSuggestions extends StatelessWidget {
   const RecentSuggestions({Key? key}) : super(key: key);
-
-  @override
-  State<RecentSuggestions> createState() => _RecentSuggestionsState();
-}
-
-class _RecentSuggestionsState extends State<RecentSuggestions> {
-  late final _searchesStream = context.read<SearchRepository>().getSearches();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Search>>(
-      stream: _searchesStream,
+      stream: context.read<SearchRepository>().getSearches(),
       builder: (context, snap) {
         if (snap.hasError) {
           debugPrint(snap.error.toString());

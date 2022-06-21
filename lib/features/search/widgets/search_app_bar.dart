@@ -56,7 +56,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
             child: TextField(
               controller: context.read<SearchProvider>().controller,
               onChanged: onTextChange,
-              onEditingComplete: () => context.read<SearchProvider>().search(context),
+              onEditingComplete: () {
+                context.read<SearchProvider>().search(context);
+              },
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Search songs or albums...',

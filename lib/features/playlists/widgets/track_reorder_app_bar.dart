@@ -20,9 +20,7 @@ class _TrackReorderAppBarState extends State<TrackReorderAppBar> {
       title: const Text("Reorder tracks"),
       leading: AppIcon(
         Icons.close_rounded,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        onPressed: Navigator.of(context).pop,
       ),
       actions: [
         AppIcon.white(

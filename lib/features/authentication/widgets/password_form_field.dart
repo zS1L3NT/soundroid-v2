@@ -45,11 +45,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
           padding: const EdgeInsets.only(right: 4),
           child: AppIcon(
             _isObscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-            onPressed: () {
-              setState(() {
-                _isObscure = !_isObscure;
-              });
-            },
+            onPressed: () => setState(() => _isObscure = !_isObscure),
           ),
         ),
       ),

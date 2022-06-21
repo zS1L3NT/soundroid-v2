@@ -66,9 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: TextFormField(
                   onChanged: (password) {
-                    setState(() {
-                      _password = password;
-                    });
+                    setState(() => _password = password);
                   },
                   decoration: const InputDecoration(
                     labelText: 'Current Password (optional)',

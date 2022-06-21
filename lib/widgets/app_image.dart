@@ -22,12 +22,14 @@ class AppImage extends StatefulWidget {
       ),
       child: (context) {
         return ShaderMask(
-          shaderCallback: (rectangle) => const LinearGradient(
-            colors: [Colors.black, Colors.transparent],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            stops: [0.5, 1.0],
-          ).createShader(rectangle),
+          shaderCallback: (rectangle) {
+            return const LinearGradient(
+              colors: [Colors.black, Colors.transparent],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              stops: [0.5, 1.0],
+            ).createShader(rectangle);
+          },
           blendMode: BlendMode.dstIn,
           child: CachedNetworkImage(
             imageUrl: url,

@@ -17,21 +17,21 @@ class AppAlertDialog {
   void show(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: description != null ? Text(description!) : null,
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-              "Ok",
-              style: TextStyle(color: Colors.white),
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: description != null ? Text(description!) : null,
+          actions: [
+            ElevatedButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text(
+                "Ok",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     ).then((_) {
       if (onClose != null) {
         onClose!();
@@ -68,30 +68,30 @@ class AppConfirmDialog {
   void show(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: description != null ? Text(description!) : null,
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              "Cancel",
-              style: isDanger ? const TextStyle(color: Colors.black) : null,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: description != null ? Text(description!) : null,
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: Text(
+                "Cancel",
+                style: isDanger ? const TextStyle(color: Colors.black) : null,
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: onConfirm,
-            child: Text(confirmText),
-            style: isDanger
-                ? ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
-                  )
-                : null,
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: onConfirm,
+              child: Text(confirmText),
+              style: isDanger
+                  ? ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
+                    )
+                  : null,
+            ),
+          ],
+        );
+      },
     ).then((_) {
       if (onClose != null) {
         onClose!();
@@ -149,25 +149,27 @@ class AppSelectDialog {
   void show(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(title),
-        children: options.map((option) {
-          return SimpleDialogOption(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 14,
-            ),
-            onPressed: option.onPressed,
-            child: Row(
-              children: [
-                Icon(option.icon),
-                const SizedBox(width: 16),
-                Text(option.title),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
+      builder: (context) {
+        return SimpleDialog(
+          title: Text(title),
+          children: options.map((option) {
+            return SimpleDialogOption(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 14,
+              ),
+              onPressed: option.onPressed,
+              child: Row(
+                children: [
+                  Icon(option.icon),
+                  const SizedBox(width: 16),
+                  Text(option.title),
+                ],
+              ),
+            );
+          }).toList(),
+        );
+      },
     ).then((_) {
       if (onClose != null) {
         onClose!();
@@ -209,9 +211,7 @@ class AppTextDialog {
               title: Text(title),
               content: TextField(
                 onChanged: (value) {
-                  setState(() {
-                    text = value;
-                  });
+                  setState(() => text = value);
                 },
                 decoration: InputDecoration(
                   hintText: textFieldName,
@@ -220,9 +220,7 @@ class AppTextDialog {
               ),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: Navigator.of(context).pop,
                   child: const Text("Cancel"),
                 ),
                 ElevatedButton(

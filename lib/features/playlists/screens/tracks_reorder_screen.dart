@@ -53,9 +53,7 @@ class _TracksReorderScreenState extends State<TracksReorderScreen> {
               child: AppIcon.white(Icons.delete_rounded),
             ),
             onDismissed: (_) {
-              setState(() {
-                _tracks.removeAt(index);
-              });
+              setState(() => _tracks.removeAt(index));
             },
             child: TrackReorderItem(
               track: _tracks[index],

@@ -20,14 +20,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends KeptAliveState<HomeScreen> {
-  late final _futureFeed = context.read<ApiRepository>().getFeed();
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return FutureBuilder<List<FeedSection>>(
-      future: _futureFeed,
+      future: context.read<ApiRepository>().getFeed(),
       builder: (context, snap) {
         if (snap.hasError) {
           return Center(

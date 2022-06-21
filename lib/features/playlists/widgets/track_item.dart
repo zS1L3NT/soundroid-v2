@@ -22,6 +22,7 @@ class TrackItem extends StatelessWidget {
       future: context.read<ApiRepository>().getTrack(trackId),
       builder: (context, snap) {
         final track = snap.data;
+
         return StreamBuilder<Track?>(
           stream: context.read<MusicProvider>().current,
           builder: (context, snap) {

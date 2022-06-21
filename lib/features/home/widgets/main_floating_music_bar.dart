@@ -19,7 +19,7 @@ class MainFloatingMusicButton extends StatelessWidget {
         child: Stack(
           children: [
             StreamBuilder<Track?>(
-              stream: context.watch<MusicProvider>().current,
+              stream: context.read<MusicProvider>().current,
               builder: (context, snap) {
                 return Padding(
                   padding: const EdgeInsets.all(2),
@@ -42,13 +42,15 @@ class MainFloatingMusicButton extends StatelessWidget {
               width: 64,
               height: 64,
               child: StreamBuilder<Duration?>(
-                stream: context.watch<MusicProvider>().player.durationStream,
+                stream: context.read<MusicProvider>().player.durationStream,
                 builder: (context, snap) {
                   final duration = snap.data;
+
                   return StreamBuilder<Duration>(
-                    stream: context.watch<MusicProvider>().player.positionStream,
+                    stream: context.read<MusicProvider>().player.positionStream,
                     builder: (context, snap) {
                       final position = snap.data;
+
                       return CircularProgressIndicator(
                         strokeWidth: 3,
                         value: position != null && duration != null

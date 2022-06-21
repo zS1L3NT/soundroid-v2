@@ -7,10 +7,12 @@ class RouteTransition {
   }) {
     return PageRouteBuilder(
       pageBuilder: (c, anim, anim2) => page,
-      transitionsBuilder: (c, anim, anim2, child) => FadeTransition(
-        opacity: anim,
-        child: child,
-      ),
+      transitionsBuilder: (c, anim, anim2, child) {
+        return FadeTransition(
+          opacity: anim,
+          child: child,
+        );
+      },
       transitionDuration: duration,
       reverseTransitionDuration: duration,
     );
@@ -24,10 +26,12 @@ class RouteTransition {
   }) {
     return PageRouteBuilder(
       pageBuilder: (c, anim, anim2) => page,
-      transitionsBuilder: (c, anim, anim2, child) => SlideTransition(
-        position: Tween<Offset>(begin: from, end: to).animate(anim),
-        child: child,
-      ),
+      transitionsBuilder: (c, anim, anim2, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: from, end: to).animate(anim),
+          child: child,
+        );
+      },
       transitionDuration: duration,
       reverseTransitionDuration: duration,
     );

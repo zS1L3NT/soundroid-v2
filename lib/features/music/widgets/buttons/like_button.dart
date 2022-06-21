@@ -5,22 +5,16 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class LikeButton extends StatefulWidget {
+class LikeButton extends StatelessWidget {
   const LikeButton({Key? key}) : super(key: key);
-
-  @override
-  State<LikeButton> createState() => _LikeButtonState();
-}
-
-class _LikeButtonState extends State<LikeButton> {
-  late final _userStream = context.read<AuthenticationRepository>().currentUser;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: _userStream,
+      stream: context.read<AuthenticationRepository>().currentUser,
       builder: (context, snap) {
         final user = snap.data;
+
         if (user == null) {
           return AppIcon.loading();
         }
@@ -29,6 +23,7 @@ class _LikeButtonState extends State<LikeButton> {
           stream: context.read<MusicProvider>().current,
           builder: (context, snap) {
             final current = snap.data;
+
             if (current == null) {
               return AppIcon.loading();
             }

@@ -20,16 +20,12 @@ class _LikedSongsSliverAppBarState extends State<LikedSongsSliverAppBar> {
   void initState() {
     super.initState();
 
-    widget.controller.addListener(
-      () {
-        final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
-        if (isCollapsed != _isCollapsed) {
-          setState(() {
-            _isCollapsed = isCollapsed;
-          });
-        }
-      },
-    );
+    widget.controller.addListener(() {
+      final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
+      if (isCollapsed != _isCollapsed) {
+        setState(() => _isCollapsed = isCollapsed);
+      }
+    });
   }
 
   @override
@@ -66,9 +62,7 @@ class _LikedSongsSliverAppBarState extends State<LikedSongsSliverAppBar> {
       ),
       leading: AppIcon(
         Icons.arrow_back_rounded,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        onPressed: Navigator.of(context).pop,
       ),
     );
   }

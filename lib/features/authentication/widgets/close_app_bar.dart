@@ -16,9 +16,7 @@ class _CloseAppBarState extends State<CloseAppBar> {
       elevation: 0,
       leading: AppIcon.black87(
         Icons.close_rounded,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        onPressed: Navigator.of(context).pop,
       ),
     );
   }

@@ -15,17 +15,19 @@ class HorizontalTracks extends StatelessWidget {
     return SizedBox(
       height: 186,
       child: ShaderMask(
-        shaderCallback: (rectangle) => const LinearGradient(
-          colors: [
-            Colors.transparent,
-            Colors.black,
-            Colors.black,
-            Colors.transparent,
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          stops: [0, 0.05, 0.9, 1],
-        ).createShader(rectangle),
+        shaderCallback: (rectangle) {
+          return const LinearGradient(
+            colors: [
+              Colors.transparent,
+              Colors.black,
+              Colors.black,
+              Colors.transparent,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            stops: [0, 0.05, 0.9, 1],
+          ).createShader(rectangle);
+        },
         blendMode: BlendMode.dstIn,
         child: NotificationListener(
           onNotification: (OverscrollIndicatorNotification overscroll) {

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/app_list_item.dart';
 
-class PlaylistSelectScreen extends StatefulWidget {
+class PlaylistSelectScreen extends StatelessWidget {
   const PlaylistSelectScreen({
     Key? key,
     required this.onSelect,
@@ -28,33 +28,31 @@ class PlaylistSelectScreen extends StatefulWidget {
   final String trackId;
 
   @override
-  State<PlaylistSelectScreen> createState() => _PlaylistSelectScreenState();
-}
-
-class _PlaylistSelectScreenState extends State<PlaylistSelectScreen> {
-  late final _playlistsStream = context.read<PlaylistRepository>().getPlaylists();
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PlaylistSelectAppBar(),
       body: StreamBuilder<List<Playlist>>(
-        stream: _playlistsStream,
+        stream: context.read<PlaylistRepository>().getPlaylists(),
         builder: (context, snap) {
-          return ListView.builder(
-            itemBuilder: (context, index) {
-              final playlist = snap.data![index];
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: snap.data == null
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemBuilder: (context, index) {
+                      final playlist = snap.data![index];
 
-              return AppListItem.fromPlaylist(
-                playlist,
-                onTap: () {
-                  Navigator.of(context).pop();
-                  widget.onSelect(playlist);
-                },
-                isDisabled: playlist.trackIds.contains(widget.trackId),
-              );
-            },
-            itemCount: snap.data?.length ?? 0,
+                      return AppListItem.fromPlaylist(
+                        playlist,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          onSelect(playlist);
+                        },
+                        isDisabled: playlist.trackIds.contains(trackId),
+                      );
+                    },
+                    itemCount: snap.data?.length ?? 0,
+                  ),
           );
         },
       ),

@@ -7,7 +7,7 @@ class ApiSuggestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchProvider = context.watch<SearchProvider>();
+    final searchProvider = context.read<SearchProvider>();
 
     return ListView.builder(
       itemCount: searchProvider.suggestions.length,

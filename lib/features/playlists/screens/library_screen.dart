@@ -14,7 +14,6 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
-  late final _playlistsStream = context.read<PlaylistRepository>().getPlaylists();
   late final _userStream = context.read<AuthenticationRepository>().currentUser;
 
   @override
@@ -22,7 +21,7 @@ class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
     super.build(context);
 
     return StreamBuilder<List<Playlist>>(
-      stream: _playlistsStream,
+      stream: context.read<PlaylistRepository>().getPlaylists(),
       builder: (context, snap) {
         if (snap.hasError) {
           return Center(
@@ -80,13 +79,7 @@ class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
               playlist,
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return PlaylistScreen(
-                        playlist: playlist,
-                      );
-                    },
-                  ),
+                  PlaylistScreen.route(playlist),
                 );
               },
             );
