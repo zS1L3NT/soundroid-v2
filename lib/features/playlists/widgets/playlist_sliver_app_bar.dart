@@ -1,6 +1,8 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlaylistSliverAppBar extends SliverAppBar {
@@ -46,8 +48,29 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     Navigator.of(context).pop();
   }
 
-  void onReorderClick() {
+  void onReorderClick() async {
     Navigator.of(context).pop();
+
+    final apiRepo = context.read<ApiRepository>();
+    final trackIds = widget.playlist?.trackIds ?? [];
+    final tracks = await Future.wait(trackIds.map(apiRepo.getTrack));
+
+    Navigator.of(context).push(
+      TracksReorderScreen.route(
+        tracks: tracks,
+        onFinish: (tracks) async {
+          await context.read<PlaylistRepository>().updatePlaylist(
+                (widget.playlist ?? widget.initialPlaylist)
+                    .copyWith
+                    .trackIds(tracks.map((track) => track.id).toList()),
+              );
+          AppSnackBar(
+            text: "Updated playlist order",
+            icon: Icons.check_rounded,
+          ).show(context);
+        },
+      ),
+    );
   }
 
   void onChangePictureClick() {
@@ -80,11 +103,15 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
                 Icons.delete_rounded,
                 context,
               ),
-              onTap: () {
-                context.read<PlaylistRepository>().updatePlaylist(
+              onTap: () async {
+                Navigator.of(context).pop();
+                await context.read<PlaylistRepository>().updatePlaylist(
                       (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
                     );
-                Navigator.of(context).pop();
+                AppSnackBar(
+                  text: "Removed playlist picture",
+                  icon: Icons.check_rounded,
+                ).show(context);
               },
             ),
           const SizedBox(height: 8),
@@ -99,11 +126,15 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
       title: "Rename Playlist",
       textFieldName: "Playlist name",
       confirmText: "Rename",
-      onConfirm: (String name) {
-        context.read<PlaylistRepository>().updatePlaylist(
+      onConfirm: (String name) async {
+        Navigator.of(context).pop();
+        await context.read<PlaylistRepository>().updatePlaylist(
               (widget.playlist ?? widget.initialPlaylist).copyWith.name(name),
             );
-        Navigator.of(context).pop();
+        AppSnackBar(
+          text: "Renamed playlist",
+          icon: Icons.check_rounded,
+        ).show(context);
       },
     ).show(context);
   }
@@ -115,10 +146,14 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
       description: "Are you sure you want to delete this playlist?",
       confirmText: "Delete",
       isDanger: true,
-      onConfirm: () {
-        context.read<PlaylistRepository>().deletePlaylist(_playlistId);
+      onConfirm: () async {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
+        await context.read<PlaylistRepository>().deletePlaylist(_playlistId);
+        AppSnackBar(
+          text: "Deleted playlist",
+          icon: Icons.check_rounded,
+        ).show(context);
       },
     ).show(context);
   }

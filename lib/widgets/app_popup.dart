@@ -246,11 +246,14 @@ class AppSnackBar {
   AppSnackBar({
     required this.text,
     required this.icon,
+    this.color,
   });
 
   final String text;
 
   final IconData icon;
+
+  final Color? color;
 
   void show(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -263,7 +266,7 @@ class AppSnackBar {
           ],
         ),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: color ?? Theme.of(context).primaryColor,
       ),
     );
   }
