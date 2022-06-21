@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -75,24 +77,28 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     );
   }
 
-  void onChoosePictureClick() async {
-    final newImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+  void updatePicture(ImageSource source) async {
+    final newImage = await ImagePicker().pickImage(source: source);
     if (newImage == null) return;
 
     final croppedImage = await ImageCropper().cropImage(
       sourcePath: newImage.path,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
     );
-  }
+    if (croppedImage == null) return;
 
-  void onTakePictureClick() async {
-    final newImage = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (newImage == null) return;
-
-    final croppedImage = await ImageCropper().cropImage(
-      sourcePath: newImage.path,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+    Navigator.of(context).pop();
+    final playlistRepo = context.read<PlaylistRepository>();
+    await playlistRepo.setPicture(_playlistId, File(croppedImage.path));
+    await playlistRepo.updatePlaylist(
+      (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(
+            await playlistRepo.getPicture(_playlistId),
+          ),
     );
+    AppSnackBar(
+      text: "Updated playlist image",
+      icon: Icons.check_rounded,
+    ).show(context);
   }
 
   void onRemovePictureClick() async {
@@ -100,6 +106,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     await context.read<PlaylistRepository>().updatePlaylist(
           (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
         );
+    await context.read<PlaylistRepository>().deletePicture(_playlistId);
     AppSnackBar(
       text: "Removed playlist picture",
       icon: Icons.check_rounded,
@@ -119,7 +126,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
               Icons.image_rounded,
               context,
             ),
-            onTap: onChoosePictureClick,
+            onTap: () => updatePicture(ImageSource.gallery),
           ),
           ListTile(
             title: const Text("Take a picture"),
@@ -127,7 +134,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
               Icons.photo_camera_rounded,
               context,
             ),
-            onTap: onTakePictureClick,
+            onTap: () => updatePicture(ImageSource.camera),
           ),
           if (widget.playlist?.thumbnail != null)
             ListTile(

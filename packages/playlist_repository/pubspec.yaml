@@ -11,6 +11,7 @@ dependencies:
   cloud_firestore: ^3.1.17
   copy_with_extension: ^4.0.0
   equatable: ^2.0.3
+  firebase_storage: ^10.2.18
   flutter: 
     sdk: flutter
 

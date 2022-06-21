@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'models/playlist.dart';
 
 class PlaylistRepository {
+  final _storage = FirebaseStorage.instance;
   final _authenticationRepo = AuthenticationRepository();
   final _collection = FirebaseFirestore.instance.collection("playlists").withConverter<Playlist>(
         fromFirestore: (snap, _) => Playlist.fromJson(snap.data()!),
@@ -35,5 +38,17 @@ class PlaylistRepository {
 
   Future<void> deletePlaylist(String id) {
     return _collection.doc(id).delete();
+  }
+
+  Future<String> getPicture(String id) {
+    return _storage.ref("playlists/$id.png").getDownloadURL();
+  }
+
+  Future<void> setPicture(String id, File file) {
+    return _storage.ref("playlists/$id.png").putFile(file);
+  }
+
+  Future<void> deletePicture(String id) {
+    return _storage.ref("playlists/$id.png").delete();
   }
 }
