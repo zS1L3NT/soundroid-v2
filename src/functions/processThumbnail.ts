@@ -1,4 +1,4 @@
-export default async (url = "") => {
+export default (url = "") => {
 	if (url === "") {
 		return url
 	} else if (url.match(/w\d+-h\d+/)) {

@@ -18,7 +18,7 @@ export class GET extends Route<any, { id: string }> {
 				id: artist.artistId,
 				name: artist.name
 			})),
-			thumbnail: await processThumbnail(track.thumbnails.at(-1)?.url)
+			thumbnail: processThumbnail(track.thumbnails.at(-1)?.url)
 		})
 	}
 }

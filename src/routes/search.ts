@@ -20,28 +20,24 @@ export class GET extends Route<any, { query: string }> {
 		])
 
 		this.respond({
-			tracks: await Promise.all(
-				songs.map(async song => ({
-					id: song.videoId,
-					title: song.name,
-					artists: song.artists.map(artist => ({
-						id: artist.artistId,
-						name: artist.name
-					})),
-					thumbnail: await processThumbnail(song.thumbnails.at(-1)?.url)
-				}))
-			),
-			albums: await Promise.all(
-				albums.map(async album => ({
-					id: album.albumId,
-					title: album.name,
-					artists: album.artists.map(artist => ({
-						id: artist.artistId,
-						name: artist.name
-					})),
-					thumbnail: await processThumbnail(album.thumbnails.at(-1)?.url)
-				}))
-			)
+			tracks: songs.map(song => ({
+				id: song.videoId,
+				title: song.name,
+				artists: song.artists.map(artist => ({
+					id: artist.artistId,
+					name: artist.name
+				})),
+				thumbnail: processThumbnail(song.thumbnails.at(-1)?.url)
+			})),
+			albums: albums.map(album => ({
+				id: album.albumId,
+				title: album.name,
+				artists: album.artists.map(artist => ({
+					id: artist.artistId,
+					name: artist.name
+				})),
+				thumbnail: processThumbnail(album.thumbnails.at(-1)?.url)
+			}))
 		})
 
 		const snap = (
