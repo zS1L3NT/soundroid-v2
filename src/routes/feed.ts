@@ -36,6 +36,12 @@ export class GET extends Route {
 			.sort((a, b) => b[1] - a[1])
 			.map(occurance => occurance[0])
 
+		const response: any[] = []
+		
+		if (this.mostFrequentTrackIds.length < 20) {
+			return this.respond(response)
+		}
+
 		const [mostListenedTracks, leastListenedTracks, recommendedTracks, mostListenedArtists] =
 			await Promise.all([
 				this.getMostListenedTracks(),
@@ -43,8 +49,6 @@ export class GET extends Route {
 				this.getRecommendedTracks(),
 				this.getMostListenedArtists()
 			])
-
-		const response: any[] = []
 
 		if (mostListenedArtists.length) {
 			response.push({
@@ -101,10 +105,6 @@ export class GET extends Route {
 	}
 
 	async getMostListenedTracks() {
-		if (this.mostFrequentTrackIds.length < 20) {
-			return []
-		}
-
 		return (
 			await Promise.all(
 				this.mostFrequentTrackIds.slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
@@ -124,10 +124,6 @@ export class GET extends Route {
 	}
 
 	async getLeastListenedTracks() {
-		if (this.mostFrequentTrackIds.length < 20) {
-			return []
-		}
-
 		return (
 			await Promise.all(
 				this.mostFrequentTrackIds.reverse().slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
