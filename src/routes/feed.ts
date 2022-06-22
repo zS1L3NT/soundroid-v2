@@ -101,6 +101,10 @@ export class GET extends Route {
 	}
 
 	async getMostListenedTracks() {
+		if (this.mostFrequentTrackIds.length < 20) {
+			return []
+		}
+
 		return (
 			await Promise.all(
 				this.mostFrequentTrackIds.slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
