@@ -165,18 +165,21 @@ export class GET extends Route {
 			items.push([
 				new Artist(artist.artistId, artist.name),
 				ytmusic.getArtistSongs(artistId).then(songs =>
-					songs.map(
-						song =>
-							new Track(
-								song.videoId,
-								song.name,
-								song.artists.map(artist => ({
-									id: artist.artistId,
-									name: artist.name
-								})),
-								processThumbnail(song.thumbnails.at(-1)?.url)
-							)
-					)
+					songs
+						.filter((song, i) => !this.mostFrequentTrackIds.includes(song.videoId))
+						.slice(0, 15)
+						.map(
+							song =>
+								new Track(
+									song.videoId,
+									song.name,
+									song.artists.map(artist => ({
+										id: artist.artistId,
+										name: artist.name
+									})),
+									processThumbnail(song.thumbnails.at(-1)?.url)
+								)
+						)
 				)
 			])
 		}
