@@ -1,6 +1,7 @@
 import { DocumentReference } from "firebase-admin/firestore"
 
 import { listensColl, usersColl, ytmusic } from "../apis"
+import processThumbnail from "../functions/processThumbnail"
 import Artist from "../models/Artist"
 import Track from "../models/Track"
 import User from "../models/User"
@@ -63,7 +64,7 @@ export class GET extends Route {
 			})
 		}
 
-		if (mostListenedArtists[0]) {
+		if (mostListenedArtists[0]?.[1].length) {
 			response.push({
 				type: "artist",
 				artist: mostListenedArtists[0][0],
@@ -80,7 +81,7 @@ export class GET extends Route {
 			})
 		}
 
-		if (mostListenedArtists[1]) {
+		if (mostListenedArtists[1]?.[1].length) {
 			response.push({
 				type: "artist",
 				artist: mostListenedArtists[1][0],
@@ -88,7 +89,7 @@ export class GET extends Route {
 			})
 		}
 
-		if (mostListenedArtists[2]) {
+		if (mostListenedArtists[2]?.[1].length) {
 			response.push({
 				type: "artist",
 				artist: mostListenedArtists[2][0],
@@ -113,12 +114,16 @@ export class GET extends Route {
 						id: artist.artistId,
 						name: artist.name
 					})),
-					song.thumbnails.at(-1)?.url || ""
+					processThumbnail(song.thumbnails.at(-1)?.url)
 				)
 		)
 	}
 
 	async getLeastListenedTracks() {
+		if (this.mostFrequentTrackIds.length < 20) {
+			return []
+		}
+
 		return (
 			await Promise.all(
 				this.mostFrequentTrackIds.reverse().slice(0, 10).map(ytmusic.getSong.bind(ytmusic))
@@ -132,7 +137,7 @@ export class GET extends Route {
 						id: artist.artistId,
 						name: artist.name
 					})),
-					song.thumbnails.at(-1)?.url || ""
+					processThumbnail(song.thumbnails.at(-1)?.url)
 				)
 		)
 	}
@@ -169,7 +174,7 @@ export class GET extends Route {
 									id: artist.artistId,
 									name: artist.name
 								})),
-								song.thumbnails.at(-1)?.url || ""
+								processThumbnail(song.thumbnails.at(-1)?.url)
 							)
 					)
 				)
