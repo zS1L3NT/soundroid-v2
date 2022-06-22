@@ -13,7 +13,7 @@ class HorizontalTracks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 186,
+      height: 188,
       child: ShaderMask(
         shaderCallback: (rectangle) {
           return const LinearGradient(

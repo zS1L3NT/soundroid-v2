@@ -31,7 +31,7 @@ class TrackSectionWidget extends StatelessWidget {
             section.description,
             style: Theme.of(context)
                 .textTheme
-                .bodyLarge
+                .bodyMedium
                 ?.copyWith(color: Theme.of(context).primaryColor),
           ),
         ),
