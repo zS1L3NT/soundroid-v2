@@ -2,11 +2,15 @@ import 'package:api_repository/api_repository.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:listen_repository/listen_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:soundroid/utils/utils.dart';
 
 class MusicProvider with ChangeNotifier {
-  MusicProvider(this._apiRepo) {
+  MusicProvider({
+    required this.listenRepo,
+    required this.apiRepo,
+  }) {
     current.listen((current) {
       if (current != null) {
         _currentThumbnail = current.thumbnail;
@@ -16,19 +20,17 @@ class MusicProvider with ChangeNotifier {
 
     _queue = QueueAudioSource(
       children: [],
-      apiRepo: _apiRepo,
+      apiRepo: apiRepo,
     );
-  }
 
-  void setup() async {
-    _session = await AudioSession.instance;
-    await _session.configure(const AudioSessionConfiguration.music());
+    _setupListenTracker();
   }
 
   late final AudioSession _session;
   final _player = AudioPlayer();
   late final QueueAudioSource _queue;
-  final ApiRepository _apiRepo;
+  final ListenRepository listenRepo;
+  final ApiRepository apiRepo;
 
   String? _currentThumbnail;
   List<Track>? _selected;
@@ -56,15 +58,47 @@ class MusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setup() async {
+    _session = await AudioSession.instance;
+    await _session.configure(const AudioSessionConfiguration.music());
+  }
+
+  void _setupListenTracker() {
+    bool stored = false;
+    Track? track;
+    Duration listened = Duration.zero;
+    Duration prevPosition = Duration.zero;
+
+    _player.createPositionStream().listen((position) {
+      if (position < const Duration(milliseconds: 500)) {
+        stored = false;
+        listened = Duration.zero;
+      }
+
+      final difference = position - prevPosition;
+      if (difference > Duration.zero && difference < const Duration(seconds: 1)) {
+        listened += difference;
+        if (listened > const Duration(seconds: 30) && !stored && track != null) {
+          stored = true;
+          listenRepo.addRecord(track!.id);
+        }
+      }
+
+      prevPosition = position;
+    });
+
+    current.listen((current) => track = current);
+  }
+
   Future<void> playTrackIds(List<String> trackIds, [int from = 0]) async {
     await _player.stop();
-    await _player.seek(const Duration(), index: 0);
+    await _player.seek(Duration.zero, index: 0);
     await _queue.clear();
     await _queue.addTracks(
       await Future.wait<Track>([
         ...trackIds.sublist(from, trackIds.length),
         ...trackIds.sublist(0, from)
-      ].map(_apiRepo.getTrack)),
+      ].map(apiRepo.getTrack)),
     );
     await _player.play();
   }

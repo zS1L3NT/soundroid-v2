@@ -57,7 +57,10 @@ void main() async {
         providers: [
           ChangeNotifierProvider(create: (_) => SearchProvider()),
           ChangeNotifierProvider(create: (context) {
-            final musicProvider = MusicProvider(context.read<ApiRepository>());
+            final musicProvider = MusicProvider(
+              listenRepo: context.read<ListenRepository>(),
+              apiRepo: context.read<ApiRepository>(),
+            );
             musicProvider.setup();
             musicProvider.player.setAudioSource(musicProvider.queue);
             return musicProvider;

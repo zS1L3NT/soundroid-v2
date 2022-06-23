@@ -37,4 +37,34 @@ class ListenRepository {
         .get()
         .then((snap) => snap.docs.first.reference.update(listen.toJson()));
   }
+
+  Future<void> addRecord(String trackId) async {
+    final timestamp = Timestamp.fromDate(
+      DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      ),
+    );
+
+    final snaps = await _collection
+        .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
+        .where("timestamp", isEqualTo: timestamp)
+        .limit(1)
+        .get();
+
+    if (snaps.docs.length == 1) {
+      await snaps.docs.first.reference.update({
+        "trackIds": snaps.docs.first.data().trackIds + [trackId],
+      });
+    } else {
+      await _collection.add(
+        Listen(
+          userRef: _authenticationRepo.currentUserRef,
+          trackIds: [trackId],
+          timestamp: timestamp,
+        ),
+      );
+    }
+  }
 }

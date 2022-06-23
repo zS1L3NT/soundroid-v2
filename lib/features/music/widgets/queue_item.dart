@@ -19,7 +19,7 @@ class QueueItem extends StatelessWidget {
     final selected = musicProvider.selected;
 
     if (selected == null) {
-      musicProvider.player.seek(const Duration(), index: index);
+      musicProvider.player.seek(Duration.zero, index: index);
     } else {
       if (selected.contains(track)) {
         if (selected.length == 1) {
