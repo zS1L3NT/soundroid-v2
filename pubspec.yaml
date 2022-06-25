@@ -60,6 +60,7 @@ dependencies:
   just_audio_background: ^0.0.1-beta.5
   image_picker: ^0.8.5+3
   image_cropper: ^2.0.3
+  great_list_view: ^0.1.4
 
 dev_dependencies:
   flutter_test:

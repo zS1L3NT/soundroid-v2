@@ -176,6 +176,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  diffutil_dart:
+    dependency: transitive
+    description:
+      name: diffutil_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   equatable:
     dependency: transitive
     description:
@@ -317,6 +324,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  great_list_view:
+    dependency: "direct main"
+    description:
+      name: great_list_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   hive:
     dependency: "direct main"
     description:
@@ -805,6 +819,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.2"
+  worker_manager:
+    dependency: transitive
+    description:
+      name: worker_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.6"
   xdg_directories:
     dependency: transitive
     description:
