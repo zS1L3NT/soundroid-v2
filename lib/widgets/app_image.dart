@@ -14,56 +14,6 @@ class AppImage extends StatefulWidget {
 
   final Widget Function(BuildContext) child;
 
-  factory AppImage.networkPlaylistFade(String url) {
-    return AppImage(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(8),
-        bottomLeft: Radius.circular(8),
-      ),
-      child: (context) {
-        return ShaderMask(
-          shaderCallback: (rectangle) {
-            return const LinearGradient(
-              colors: [Colors.black, Colors.transparent],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: [0.5, 1.0],
-            ).createShader(rectangle);
-          },
-          blendMode: BlendMode.dstIn,
-          child: CachedNetworkImage(
-            imageUrl: url,
-            placeholder: (context, url) {
-              return Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  color: Colors.black,
-                ),
-              );
-            },
-            errorWidget: (context, url, error) {
-              return Container(
-                color: const Color.fromARGB(255, 255, 220, 220),
-                child: const AppIcon(
-                  Icons.error_rounded,
-                  color: Color(0xFFBA000D),
-                ),
-              );
-            },
-            fadeInCurve: Curves.decelerate,
-            fadeInDuration: const Duration(milliseconds: 300),
-            fit: BoxFit.cover,
-            width: 60,
-            height: 60,
-          ),
-        );
-      },
-    );
-  }
-
   factory AppImage.network(
     String? url, {
     double? size,

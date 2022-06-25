@@ -8,6 +8,7 @@ part 'playlist.g.dart';
 class Playlist extends Equatable {
   final String id;
   final DocumentReference userRef;
+  final Timestamp? lastPlayed;
   final String name;
   final String? thumbnail;
   final bool favourite;
@@ -17,6 +18,7 @@ class Playlist extends Equatable {
   Playlist({
     required this.id,
     required this.userRef,
+    required this.lastPlayed,
     required this.name,
     required this.thumbnail,
     required this.favourite,
@@ -27,6 +29,7 @@ class Playlist extends Equatable {
   Playlist.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         userRef = json["userRef"],
+        lastPlayed = json["lastPlayed"],
         name = json["name"],
         thumbnail = json["thumbnail"],
         favourite = json["favourite"],
@@ -36,6 +39,7 @@ class Playlist extends Equatable {
   Map<String, dynamic> toJson() => {
         "id": id,
         "userRef": userRef,
+        "lastPlayed": lastPlayed,
         "name": name,
         "thumbnail": thumbnail,
         "favourite": favourite,
@@ -47,6 +51,7 @@ class Playlist extends Equatable {
   List<Object?> get props => [
         id,
         userRef,
+        lastPlayed,
         name,
         thumbnail,
         favourite,
@@ -56,6 +61,6 @@ class Playlist extends Equatable {
 
   @override
   String toString() {
-    return "Playlist { $id; ${userRef.id}; $name; $favourite; $download; $trackIds }";
+    return "Playlist { $id; ${userRef.id}; ${lastPlayed}; $name; $favourite; $download; $trackIds }";
   }
 }

@@ -22,6 +22,7 @@ class _LibraryAppBarState extends State<LibraryAppBar> {
               Playlist(
                 id: context.read<PlaylistRepository>().newId,
                 userRef: context.read<AuthenticationRepository>().currentUserRef,
+                lastPlayed: null,
                 name: name,
                 thumbnail: null,
                 favourite: false,

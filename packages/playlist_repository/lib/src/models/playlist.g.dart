@@ -13,6 +13,8 @@ abstract class _$PlaylistCWProxy {
 
   Playlist id(String id);
 
+  Playlist lastPlayed(Timestamp? lastPlayed);
+
   Playlist name(String name);
 
   Playlist thumbnail(String? thumbnail);
@@ -31,6 +33,7 @@ abstract class _$PlaylistCWProxy {
     bool? download,
     bool? favourite,
     String? id,
+    Timestamp? lastPlayed,
     String? name,
     String? thumbnail,
     List<String>? trackIds,
@@ -52,6 +55,9 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
 
   @override
   Playlist id(String id) => this(id: id);
+
+  @override
+  Playlist lastPlayed(Timestamp? lastPlayed) => this(lastPlayed: lastPlayed);
 
   @override
   Playlist name(String name) => this(name: name);
@@ -78,6 +84,7 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
     Object? download = const $CopyWithPlaceholder(),
     Object? favourite = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
+    Object? lastPlayed = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? thumbnail = const $CopyWithPlaceholder(),
     Object? trackIds = const $CopyWithPlaceholder(),
@@ -96,6 +103,10 @@ class _$PlaylistCWProxyImpl implements _$PlaylistCWProxy {
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String,
+      lastPlayed: lastPlayed == const $CopyWithPlaceholder()
+          ? _value.lastPlayed
+          // ignore: cast_nullable_to_non_nullable
+          : lastPlayed as Timestamp?,
       name: name == const $CopyWithPlaceholder() || name == null
           ? _value.name
           // ignore: cast_nullable_to_non_nullable

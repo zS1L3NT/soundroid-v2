@@ -22,6 +22,7 @@ class _PlaylistSelectAppBarState extends State<PlaylistSelectAppBar> {
               Playlist(
                 id: context.read<PlaylistRepository>().newId,
                 userRef: context.read<AuthenticationRepository>().currentUserRef,
+                lastPlayed: null,
                 name: name,
                 thumbnail: null,
                 favourite: false,

@@ -101,16 +101,20 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, int index) {
-                    final trackId = snap.data!.trackIds[index];
+                    final trackId = playlist!.trackIds[index];
+
                     return TrackItem(
                       key: ValueKey(trackId),
                       trackId: trackId,
                       onTap: () {
-                        context.read<MusicProvider>().playTrackIds(snap.data!.trackIds, index);
+                        context.read<PlaylistRepository>().updatePlaylist(
+                              playlist.copyWith.lastPlayed(PlaylistRepository.now),
+                            );
+                        context.read<MusicProvider>().playTrackIds(playlist.trackIds, index);
                       },
                     );
                   },
-                  childCount: snap.data?.trackIds.length ?? 0,
+                  childCount: playlist?.trackIds.length ?? 0,
                 ),
               ),
             ],

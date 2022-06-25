@@ -43,7 +43,7 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
           itemCount: snap.data!.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return YourPlaylistsSection();
+              return const YourPlaylistsSection();
             }
 
             final section = snap.data![index - 1];

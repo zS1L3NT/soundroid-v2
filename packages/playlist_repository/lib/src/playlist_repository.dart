@@ -22,11 +22,21 @@ class PlaylistRepository {
         .map((snap) => snap.docs.map((doc) => doc.data()).toList());
   }
 
+  Stream<List<Playlist>> getRecentPlaylists() {
+    return _collection
+        .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
+        .orderBy("lastPlayed", descending: true)
+        .snapshots()
+        .map((snap) => snap.docs.map((doc) => doc.data()).toList());
+  }
+
   Stream<Playlist?> getPlaylist(String id) {
     return _collection.doc(id).snapshots().map((doc) => doc.data());
   }
 
   String get newId => _collection.doc().id;
+
+  static Timestamp get now => Timestamp.now();
 
   Future<void> addPlaylist(Playlist playlist) {
     return _collection.doc(playlist.id).set(playlist);
