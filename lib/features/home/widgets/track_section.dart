@@ -36,7 +36,7 @@ class TrackSectionWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        HorizontalTracks(items: section.items),
+        HorizontalTracks(tracks: section.items),
       ],
     );
   }

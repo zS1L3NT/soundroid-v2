@@ -21,9 +21,9 @@ class ArtistSectionWidget extends StatelessWidget {
           child: Row(
             children: [
               AppImage.network(
-                null,
-                borderRadius: const BorderRadius.all(Radius.circular(24)),
-                size: 48,
+                "http://soundroid.zectan.com/api/thumbnail?artistId=${section.artist.id}",
+                borderRadius: const BorderRadius.all(Radius.circular(28)),
+                size: 56,
               ),
               const SizedBox(width: 12),
               Column(
@@ -46,7 +46,7 @@ class ArtistSectionWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        HorizontalTracks(items: section.items),
+        HorizontalTracks(tracks: section.items),
       ],
     );
   }

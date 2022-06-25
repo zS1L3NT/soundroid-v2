@@ -34,7 +34,7 @@ class App extends StatelessWidget {
             color: Colors.black87,
           ),
           headline3: TextStyle(
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),
