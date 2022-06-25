@@ -55,7 +55,12 @@ void main() async {
       ],
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => SearchProvider()),
+          ChangeNotifierProvider(create: (context) {
+            return SearchProvider(
+              apiRepo: context.read<ApiRepository>(),
+              searchRepo: context.read<SearchRepository>(),
+            );
+          }),
           ChangeNotifierProvider(create: (context) {
             final musicProvider = MusicProvider(
               listenRepo: context.read<ListenRepository>(),

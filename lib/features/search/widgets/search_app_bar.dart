@@ -1,7 +1,5 @@
-import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:search_repository/search_repository.dart';
 import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -13,36 +11,11 @@ class SearchAppBar extends AppBar {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  void onTextChange(String query) async {
-    SearchProvider searchProvider = context.read<SearchProvider>();
-    final dateTime = DateTime.now();
-    searchProvider.results = null;
+  @override
+  void initState() {
+    super.initState();
 
-    context.read<ApiRepository>().getSearchSuggestions(query).then((apiSuggestions) {
-      searchProvider = context.read<SearchProvider>();
-      if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-        searchProvider.latest = dateTime;
-        searchProvider.apiSuggestions = apiSuggestions;
-      }
-    });
-
-    context.read<SearchRepository>().getRecentSearches(query).then(
-      (recentSuggestions) {
-        searchProvider = context.read<SearchProvider>();
-        if (dateTime.isAfter(searchProvider.latest) || dateTime == searchProvider.latest) {
-          searchProvider.latest = dateTime;
-          searchProvider.recentSuggestions = recentSuggestions;
-        }
-      },
-    );
-  }
-
-  void onTextClear() {
-    final searchProvider = context.read<SearchProvider>();
-    searchProvider.latest = DateTime.now();
-    searchProvider.isLoading = false;
-    searchProvider.query = "";
-    searchProvider.results = null;
+    context.read<SearchProvider>().handleTextChange(null);
   }
 
   @override
@@ -55,7 +28,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           Expanded(
             child: TextField(
               controller: context.read<SearchProvider>().controller,
-              onChanged: onTextChange,
+              onChanged: context.read<SearchProvider>().handleTextChange,
               onEditingComplete: () {
                 context.read<SearchProvider>().search(context);
               },
@@ -80,7 +53,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         context.watch<SearchProvider>().query != ""
             ? AppIcon(
                 Icons.clear_rounded,
-                onPressed: onTextClear,
+                onPressed: () => context.read<SearchProvider>().query = "",
               )
             : const SizedBox(),
         const SizedBox(width: 4)

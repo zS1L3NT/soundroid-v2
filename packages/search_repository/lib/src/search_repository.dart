@@ -24,6 +24,7 @@ class SearchRepository {
         .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
         .where("query", isGreaterThanOrEqualTo: query)
         .where("query", isLessThanOrEqualTo: query + "~")
+        .limit(10)
         .get()
         .then((snap) => snap.docs.map((doc) => doc.data().query).toList());
   }

@@ -1,9 +1,17 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:search_repository/search_repository.dart';
 import 'package:soundroid/features/search/search.dart';
 
 class SearchProvider with ChangeNotifier {
+  SearchProvider({
+    required this.apiRepo,
+    required this.searchRepo,
+  });
+
+  final ApiRepository apiRepo;
+  final SearchRepository searchRepo;
+
   final _textEditingController = TextEditingController();
   DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   bool _isLoading = false;
@@ -45,7 +53,8 @@ class SearchProvider with ChangeNotifier {
         TextPosition(offset: query.length),
       );
     }
-    notifyListeners();
+
+    handleTextChange(query ?? "");
   }
 
   set latest(DateTime latest) {
@@ -73,6 +82,40 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void handleTextChange(String? query) async {
+    final dateTime = DateTime.now();
+    _results = null;
+
+    if (query == "") {
+      _isLoading = false;
+    }
+
+    if (query != null) {
+      if (query != "") {
+        apiRepo.getSearchSuggestions(query).then((apiSuggestions) {
+          if (dateTime.isAfter(_latest) || dateTime == _latest) {
+            _latest = dateTime;
+            _apiSuggestions = apiSuggestions;
+            notifyListeners();
+          }
+        });
+      } else {
+        _apiSuggestions = [];
+      }
+      notifyListeners();
+    }
+
+    searchRepo.getRecentSearches(query ?? "").then(
+      (recentSuggestions) {
+        if (dateTime.isAfter(_latest) || dateTime == _latest) {
+          _latest = dateTime;
+          _recentSuggestions = recentSuggestions;
+          notifyListeners();
+        }
+      },
+    );
+  }
+
   // This method is moved into the provider so it can be called from multiple places
   void search(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode());
@@ -81,7 +124,7 @@ class SearchProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final results = await context.read<ApiRepository>().getSearchResults(query);
+    final results = await apiRepo.getSearchResults(query);
     if (dateTime.isAfter(latest) || dateTime == latest) {
       _isLoading = false;
       _results = results;
