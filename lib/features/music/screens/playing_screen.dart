@@ -33,9 +33,9 @@ class _PlayingScreenState extends State<PlayingScreen> {
           ),
           controller: _controller,
           children: const [
-            QueueScreen(),
-            CurrentScreen(),
             LyricsScreen(),
+            CurrentScreen(),
+            QueueScreen(),
           ],
         ),
       ),

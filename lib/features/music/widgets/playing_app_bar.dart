@@ -1,7 +1,4 @@
-import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlayingAppBar extends AppBar {
@@ -51,51 +48,30 @@ class _PlayingAppBarState extends State<PlayingAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final selected = context.select<MusicProvider, List<Track>?>((provider) => provider.selected);
-
-    if (selected == null) {
-      return AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-        leading: AppIcon.black87(
-          Icons.keyboard_arrow_down_rounded,
-          onPressed: Navigator.of(context).pop,
+    return AppBar(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      elevation: 0,
+      leading: AppIcon.black87(
+        Icons.keyboard_arrow_down_rounded,
+        onPressed: Navigator.of(context).pop,
+      ),
+      actions: [
+        AppIcon(
+          Icons.mic_external_on_rounded,
+          color: getColor(0),
+          onPressed: () => scrollToPage(0),
         ),
-        actions: [
-          AppIcon(
-            Icons.queue_music_rounded,
-            color: getColor(0),
-            onPressed: () => scrollToPage(0),
-          ),
-          AppIcon(
-            Icons.music_note_rounded,
-            color: getColor(1),
-            onPressed: () => scrollToPage(1),
-          ),
-          AppIcon(
-            Icons.mic_external_on_rounded,
-            color: getColor(2),
-            onPressed: () => scrollToPage(2),
-          ),
-        ],
-      );
-    } else {
-      return AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        leading: AppIcon(
-          Icons.close_rounded,
-          onPressed: () {
-            context.read<MusicProvider>().selected = null;
-          },
+        AppIcon(
+          Icons.music_note_rounded,
+          color: getColor(1),
+          onPressed: () => scrollToPage(1),
         ),
-        title: Text("${selected.length} selected"),
-        actions: [
-          AppIcon(
-            Icons.remove_circle_rounded,
-            onPressed: () {},
-          ),
-        ],
-      );
-    }
+        AppIcon(
+          Icons.queue_music_rounded,
+          color: getColor(2),
+          onPressed: () => scrollToPage(2),
+        ),
+      ],
+    );
   }
 }

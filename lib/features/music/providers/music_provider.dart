@@ -32,14 +32,6 @@ class MusicProvider with ChangeNotifier {
   String? _currentThumbnail;
   String? get currentThumbnail => _currentThumbnail;
 
-  List<Track>? _selected;
-  List<Track>? get selected => _selected;
-
-  set selected(List<Track>? selected) {
-    _selected = selected;
-    notifyListeners();
-  }
-
   Stream<Track?> get current => Rx.combineLatest2<List<IndexedAudioSource>?, int?, Track?>(
         _player.sequenceStream,
         _player.currentIndexStream,
