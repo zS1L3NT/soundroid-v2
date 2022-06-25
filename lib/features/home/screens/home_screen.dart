@@ -24,38 +24,46 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return FutureBuilder<List<FeedSection>>(
-      future: context.read<ApiRepository>().getFeed(),
-      builder: (context, snap) {
-        if (snap.hasError) {
-          return Center(
-            child: Text('Error: ${snap.error}'),
+    return RefreshIndicator(
+      onRefresh: () => Future(() => setState(() {})),
+      child: FutureBuilder<List<FeedSection>>(
+        future: context.read<ApiRepository>().getFeed(),
+        builder: (context, snap) {
+          if (snap.hasError && snap.connectionState == ConnectionState.done) {
+            return Center(
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  Text('Error: ${snap.error}'),
+                ],
+              ),
+            );
+          }
+
+          if (snap.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: snap.data!.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const YourPlaylistsSection();
+              }
+
+              final section = snap.data![index - 1];
+              switch (section.type) {
+                case SectionType.track:
+                  return TrackSectionWidget(section: section as TrackSection);
+                case SectionType.artist:
+                  return ArtistSectionWidget(section: section as ArtistSection);
+              }
+            },
           );
-        }
-
-        if (!snap.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        return ListView.builder(
-          itemCount: snap.data!.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return const YourPlaylistsSection();
-            }
-
-            final section = snap.data![index - 1];
-            switch (section.type) {
-              case SectionType.track:
-                return TrackSectionWidget(section: section as TrackSection);
-              case SectionType.artist:
-                return ArtistSectionWidget(section: section as ArtistSection);
-            }
-          },
-        );
-      },
+        },
+      ),
     );
   }
 }
