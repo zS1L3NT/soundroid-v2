@@ -1,4 +1,5 @@
 import 'package:api_repository/api_repository.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,11 @@ void main() async {
               listenRepo: context.read<ListenRepository>(),
               apiRepo: context.read<ApiRepository>(),
             );
-            musicProvider.setup();
+
+            AudioSession.instance.then((session) {
+              session.configure(const AudioSessionConfiguration.music());
+            });
+
             musicProvider.player.setAudioSource(musicProvider.queue);
             return musicProvider;
           }),

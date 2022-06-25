@@ -1,5 +1,4 @@
 import 'package:api_repository/api_repository.dart';
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:listen_repository/listen_repository.dart';
@@ -18,30 +17,28 @@ class MusicProvider with ChangeNotifier {
       }
     });
 
-    _queue = QueueAudioSource(
-      children: [],
-      apiRepo: apiRepo,
-    );
-
     _setupListenTracker();
   }
 
-  late final AudioSession _session;
-  final _player = AudioPlayer();
-  late final QueueAudioSource _queue;
   final ListenRepository listenRepo;
   final ApiRepository apiRepo;
 
-  String? _currentThumbnail;
-  List<Track>? _selected;
-
-  String? get currentThumbnail => _currentThumbnail;
-
-  List<Track>? get selected => _selected;
-
+  final _player = AudioPlayer();
   AudioPlayer get player => _player;
 
+  late final _queue = QueueAudioSource(children: [], apiRepo: apiRepo);
   QueueAudioSource get queue => _queue;
+
+  String? _currentThumbnail;
+  String? get currentThumbnail => _currentThumbnail;
+
+  List<Track>? _selected;
+  List<Track>? get selected => _selected;
+
+  set selected(List<Track>? selected) {
+    _selected = selected;
+    notifyListeners();
+  }
 
   Stream<Track?> get current => Rx.combineLatest2<List<IndexedAudioSource>?, int?, Track?>(
         _player.sequenceStream,
@@ -52,16 +49,6 @@ class MusicProvider with ChangeNotifier {
           return sequence[currentIndex] as Track?;
         },
       );
-
-  set selected(List<Track>? selected) {
-    _selected = selected;
-    notifyListeners();
-  }
-
-  void setup() async {
-    _session = await AudioSession.instance;
-    await _session.configure(const AudioSessionConfiguration.music());
-  }
 
   void _setupListenTracker() {
     bool stored = false;

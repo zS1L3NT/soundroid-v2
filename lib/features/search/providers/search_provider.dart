@@ -13,20 +13,40 @@ class SearchProvider with ChangeNotifier {
   final SearchRepository searchRepo;
 
   final _textEditingController = TextEditingController();
-  DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
-  bool _isLoading = false;
-  List<String> _recentSuggestions = [];
-  List<String> _apiSuggestions = [];
-  SearchResults? _results;
-
   TextEditingController get controller => _textEditingController;
-
   String get query => _textEditingController.text;
 
+  set query(String? query) {
+    if (query == null) {
+      _textEditingController.clear();
+    } else {
+      _textEditingController.text = query;
+      _textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: query.length),
+      );
+    }
+
+    handleTextChange(query ?? "");
+  }
+
+  DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
   DateTime get latest => _latest;
 
+  set latest(DateTime latest) {
+    _latest = latest;
+    notifyListeners();
+  }
+
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  set isLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
+
+  List<String> _recentSuggestions = [];
+  List<String> _apiSuggestions = [];
   List<Suggestion> get suggestions => [
         ..._recentSuggestions.map(
           (suggestion) => Suggestion(
@@ -42,31 +62,6 @@ class SearchProvider with ChangeNotifier {
             ),
       ];
 
-  SearchResults? get results => _results;
-
-  set query(String? query) {
-    if (query == null) {
-      _textEditingController.clear();
-    } else {
-      _textEditingController.text = query;
-      _textEditingController.selection = TextSelection.fromPosition(
-        TextPosition(offset: query.length),
-      );
-    }
-
-    handleTextChange(query ?? "");
-  }
-
-  set latest(DateTime latest) {
-    _latest = latest;
-    notifyListeners();
-  }
-
-  set isLoading(bool isLoading) {
-    _isLoading = isLoading;
-    notifyListeners();
-  }
-
   set recentSuggestions(List<String> recentSuggestions) {
     _recentSuggestions = recentSuggestions;
     notifyListeners();
@@ -76,6 +71,9 @@ class SearchProvider with ChangeNotifier {
     _apiSuggestions = apiSuggestions;
     notifyListeners();
   }
+
+  SearchResults? _results;
+  SearchResults? get results => _results;
 
   set results(SearchResults? results) {
     _results = results;
