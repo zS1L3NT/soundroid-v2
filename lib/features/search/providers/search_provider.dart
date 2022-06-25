@@ -80,30 +80,27 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void handleTextChange(String? query) async {
+  void handleTextChange(String query) async {
     final dateTime = DateTime.now();
     _results = null;
 
     if (query == "") {
+      _latest = dateTime;
       _isLoading = false;
-    }
-
-    if (query != null) {
-      if (query != "") {
-        apiRepo.getSearchSuggestions(query).then((apiSuggestions) {
-          if (dateTime.isAfter(_latest) || dateTime == _latest) {
-            _latest = dateTime;
-            _apiSuggestions = apiSuggestions;
-            notifyListeners();
-          }
-        });
-      } else {
-        _apiSuggestions = [];
-      }
+      _apiSuggestions = [];
       notifyListeners();
+      return;
     }
 
-    searchRepo.getRecentSearches(query ?? "").then(
+    apiRepo.getSearchSuggestions(query).then((apiSuggestions) {
+      if (dateTime.isAfter(_latest) || dateTime == _latest) {
+        _latest = dateTime;
+        _apiSuggestions = apiSuggestions;
+        notifyListeners();
+      }
+    });
+
+    searchRepo.getRecentSearches(query).then(
       (recentSuggestions) {
         if (dateTime.isAfter(_latest) || dateTime == _latest) {
           _latest = dateTime;

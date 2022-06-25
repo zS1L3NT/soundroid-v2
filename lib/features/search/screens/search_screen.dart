@@ -24,7 +24,9 @@ class _SearchScreenState extends KeptAliveState<SearchScreen> {
           ? const Center(child: CircularProgressIndicator())
           : searchProvider.results != null
               ? SearchResultsWidget(results: searchProvider.results!)
-              : const Suggestions(),
+              : searchProvider.query != ""
+                  ? const ApiSuggestions()
+                  : const RecentSuggestions(),
     );
   }
 }

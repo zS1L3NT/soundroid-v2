@@ -3,14 +3,14 @@ import 'package:great_list_view/great_list_view.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/search/search.dart';
 
-class Suggestions extends StatefulWidget {
-  const Suggestions({Key? key}) : super(key: key);
+class ApiSuggestions extends StatefulWidget {
+  const ApiSuggestions({Key? key}) : super(key: key);
 
   @override
-  State<Suggestions> createState() => _SuggestionsState();
+  State<ApiSuggestions> createState() => _ApiSuggestionsState();
 }
 
-class _SuggestionsState extends State<Suggestions> {
+class _ApiSuggestionsState extends State<ApiSuggestions> {
   final _controller = AnimatedListController();
 
   @override

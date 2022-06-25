@@ -12,13 +12,6 @@ class SearchAppBar extends AppBar {
 
 class _SearchAppBarState extends State<SearchAppBar> {
   @override
-  void initState() {
-    super.initState();
-
-    context.read<SearchProvider>().handleTextChange(null);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Row(
