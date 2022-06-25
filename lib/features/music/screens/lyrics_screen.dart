@@ -33,18 +33,24 @@ class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
                 return const CircularProgressIndicator();
               }
 
-              return ListView.builder(
-                itemCount: snap.data!.length,
-                itemBuilder: (context, index) {
-                  return Text(
-                    snap.data![index],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      height: 2,
-                    ),
-                    textAlign: TextAlign.center,
-                  );
-                },
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: ListView.separated(
+                  itemCount: snap.data!.length,
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemBuilder: (context, index) {
+                    return Text(
+                      snap.data![index],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        height: 2,
+                      ),
+                      textAlign: TextAlign.center,
+                    );
+                  },
+                ),
               );
             },
           );
