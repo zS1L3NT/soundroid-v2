@@ -26,7 +26,7 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
           stream: context.read<MusicProvider>().player.sequenceStream,
           builder: (context, snap) {
             final tracks = snap.data?.cast<Track>();
-            final shuffleOrder = context.read<MusicProvider>().player.shuffleIndices!;
+            final shuffleOrder = context.watch<MusicProvider>().player.shuffleIndices!;
 
             return AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),

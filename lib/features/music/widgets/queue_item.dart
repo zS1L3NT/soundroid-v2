@@ -39,10 +39,10 @@ class QueueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final musicProvider = context.read<MusicProvider>();
+    final musicProvider = context.watch<MusicProvider>();
 
     return StreamBuilder<Track?>(
-      stream: context.read<MusicProvider>().current,
+      stream: musicProvider.current,
       builder: (context, snap) {
         final current = snap.data;
 
