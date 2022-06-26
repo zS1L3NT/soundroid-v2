@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+/// A helper class for building an Icon or IconButton widget
+///
+/// ### Rationale
+/// - I repeatedly type the [IconButton.splashRadius] property on IconButtons
+/// - I wanted to toggle between [Icon] and [IconButton] with much more ease
+/// - It gets irritating to type "Icon" 3 times when making an [IconButton]
+/// - I wanted a some convenience methods for setting the color of an Icon
+/// - I wanted somewhere to store code for a loading Icon
 class AppIcon extends StatelessWidget {
   const AppIcon(
     this.icon, {
@@ -10,16 +18,27 @@ class AppIcon extends StatelessWidget {
     this.splashRadius = 20,
   }) : super(key: key);
 
+  /// The Icon to display
   final IconData icon;
 
+  /// The color of the [icon]
   final Color? color;
 
+  /// The size of the [icon]
   final double size;
 
+  /// The splash radius of the IconButton.
+  ///
+  /// This property only affects the AppIcon if the [onPressed] property is set.
   final double splashRadius;
 
+  /// The click callback of the IconButton
+  ///
+  /// Setting this property will automatically make [AppIcon] render an [IconButton]
+  /// and set it's [onPressed] property to this value.
   final Function()? onPressed;
 
+  /// Render a [CircularProgressIndicator] that looks like an [Icon]
   static Widget loading({
     double padding = 16,
     double size = 16,
@@ -96,7 +115,7 @@ class AppIcon extends StatelessWidget {
     );
   }
 
-  static AppIcon white(
+  factory AppIcon.white(
     IconData icon, {
     double size = 24,
     double splashRadius = 20,
@@ -111,7 +130,7 @@ class AppIcon extends StatelessWidget {
     );
   }
 
-  static AppIcon black87(
+  factory AppIcon.black87(
     IconData icon, {
     double size = 24,
     double splashRadius = 20,
@@ -126,7 +145,7 @@ class AppIcon extends StatelessWidget {
     );
   }
 
-  static AppIcon red(
+  factory AppIcon.red(
     IconData icon, {
     double size = 24,
     double splashRadius = 20,

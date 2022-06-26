@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
+// This file contains various helper classes for building popups
+//
+// ### Rationale
+// - Building popups in flutter requires a lot of code
+// - Many dialogs look very similar, except the text in them
+
+/// A helper class for building an Alert Dialog.
+///
+/// An Alert Dialog contains
+/// - A title
+/// - A description
+/// - A button showing "Ok" to close the Dialog
 class AppAlertDialog {
-  AppAlertDialog({
+  const AppAlertDialog({
     required this.title,
     this.description,
     this.onClose,
   });
 
+  /// The title of the dialog
   final String title;
 
+  /// The description of the dialog
   final String? description;
 
+  /// The function that is called when this Dialog is closed, if any
   final Function()? onClose;
 
   void show(BuildContext context) {
@@ -41,7 +56,7 @@ class AppAlertDialog {
 }
 
 class AppConfirmDialog {
-  AppConfirmDialog({
+  const AppConfirmDialog({
     required this.title,
     this.description,
     required this.confirmText,
@@ -101,7 +116,7 @@ class AppConfirmDialog {
 }
 
 class AppBottomSheet {
-  AppBottomSheet({
+  const AppBottomSheet({
     required this.child,
   });
 
@@ -132,7 +147,7 @@ class AppSelectOption {
 }
 
 class AppSelectDialog {
-  AppSelectDialog({
+  const AppSelectDialog({
     required this.title,
     required this.options,
     this.onClose,
@@ -179,7 +194,7 @@ class AppSelectDialog {
 }
 
 class AppTextDialog {
-  AppTextDialog({
+  const AppTextDialog({
     required this.title,
     required this.textFieldName,
     required this.confirmText,
@@ -241,7 +256,7 @@ class AppTextDialog {
 }
 
 class AppSnackBar {
-  AppSnackBar({
+  const AppSnackBar({
     required this.text,
     required this.icon,
     this.color,
