@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/utils/kept_alive_state.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
       child: FutureBuilder<List<FeedSection>>(
         future: context.read<ApiRepository>().getFeed(),
         builder: (context, snap) {
+          final sections = snap.data;
+
           if (snap.hasError && snap.connectionState == ConnectionState.done) {
             return Center(
               child: ListView(
@@ -46,20 +49,29 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
             );
           }
 
-          return ListView.builder(
-            itemCount: snap.data!.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return const YourPlaylistsSection();
-              }
+          return StreamBuilder<List<Playlist>>(
+            stream: context.read<PlaylistRepository>().getRecentPlaylists(),
+            builder: (context, snap) {
+              final playlists = snap.data;
 
-              final section = snap.data![index - 1];
-              switch (section.type) {
-                case SectionType.track:
-                  return TrackSectionWidget(section: section as TrackSection);
-                case SectionType.artist:
-                  return ArtistSectionWidget(section: section as ArtistSection);
-              }
+              return ListView.builder(
+                itemCount: sections!.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return YourPlaylistsSection(
+                      playlists: playlists,
+                    );
+                  }
+
+                  final section = sections[index - 1];
+                  switch (section.type) {
+                    case SectionType.track:
+                      return TrackSectionWidget(section: section as TrackSection);
+                    case SectionType.artist:
+                      return ArtistSectionWidget(section: section as ArtistSection);
+                  }
+                },
+              );
             },
           );
         },
