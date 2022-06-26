@@ -9,6 +9,8 @@ class MainFloatingMusicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final durationStream = context.read<MusicProvider>().player.durationStream;
+    final positionStream = context.read<MusicProvider>().player.positionStream;
     bool isSwipeUp = false;
 
     return GestureDetector(
@@ -30,7 +32,7 @@ class MainFloatingMusicButton extends StatelessWidget {
                       height: 60,
                       child: AppImage.network(
                         snap.data?.thumbnail,
-                        borderRadius: const BorderRadius.all(Radius.circular(30)),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                   ),
@@ -41,12 +43,12 @@ class MainFloatingMusicButton extends StatelessWidget {
               width: 64,
               height: 64,
               child: StreamBuilder<Duration?>(
-                stream: context.read<MusicProvider>().player.durationStream,
+                stream: durationStream,
                 builder: (context, snap) {
                   final duration = snap.data;
 
                   return StreamBuilder<Duration>(
-                    stream: context.read<MusicProvider>().player.positionStream,
+                    stream: positionStream,
                     builder: (context, snap) {
                       final position = snap.data;
 
@@ -67,7 +69,7 @@ class MainFloatingMusicButton extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  borderRadius: BorderRadius.circular(30),
                   onTap: () {
                     Navigator.of(context).push(
                       PlayingScreen.route(),

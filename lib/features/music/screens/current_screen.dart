@@ -16,11 +16,13 @@ class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final size = MediaQuery.of(context).size;
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: 32),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.05,
+          vertical: 32,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -39,14 +41,14 @@ class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
                         children: [
                           AppText.marquee(
                             snap.data?.title ?? "...",
-                            width: size.width,
+                            width: double.infinity,
                             extraHeight: 11,
                             style: Theme.of(context).textTheme.headline4,
                             textAlign: TextAlign.center,
                           ),
                           AppText.marquee(
                             snap.data?.artists.map((artist) => artist.name).join(", ") ?? "...",
-                            width: size.width,
+                            width: double.infinity,
                             style: Theme.of(context).textTheme.subtitle1,
                             textAlign: TextAlign.center,
                           ),

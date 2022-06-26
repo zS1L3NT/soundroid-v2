@@ -9,8 +9,8 @@ class CoverImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final thumbnail = context.watch<MusicProvider>().currentThumbnail;
+    final size = MediaQuery.of(context).size.width * 0.7;
 
     return FutureBuilder<PaletteGenerator>(
       future: thumbnail != null
@@ -27,8 +27,8 @@ class CoverImage extends StatelessWidget {
           tag: "current",
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
-            width: size.width * 0.7,
-            height: size.width * 0.7,
+            width: size,
+            height: size,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               boxShadow: [

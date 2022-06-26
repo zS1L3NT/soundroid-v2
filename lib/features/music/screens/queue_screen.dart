@@ -13,17 +13,21 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends KeptAliveState<QueueScreen> {
+  late final _shuffleModeEnabledStream =
+      context.read<MusicProvider>().player.shuffleModeEnabledStream;
+  late final _sequenceStream = context.read<MusicProvider>().player.sequenceStream;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return StreamBuilder<bool>(
-      stream: context.read<MusicProvider>().player.shuffleModeEnabledStream,
+      stream: _shuffleModeEnabledStream,
       builder: (context, snap) {
         final shuffleModeEnabled = snap.data ?? false;
 
         return StreamBuilder<List<IndexedAudioSource>?>(
-          stream: context.read<MusicProvider>().player.sequenceStream,
+          stream: _sequenceStream,
           builder: (context, snap) {
             final tracks = snap.data?.cast<Track>();
             final shuffleOrder = context.watch<MusicProvider>().player.shuffleIndices!;

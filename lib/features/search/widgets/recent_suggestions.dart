@@ -4,18 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:search_repository/search_repository.dart';
 import 'package:soundroid/features/search/search.dart';
 
-class RecentSuggestions extends StatefulWidget {
+class RecentSuggestions extends StatelessWidget {
   const RecentSuggestions({Key? key}) : super(key: key);
 
   @override
-  State<RecentSuggestions> createState() => _RecentSuggestionsState();
-}
-
-class _RecentSuggestionsState extends State<RecentSuggestions> {
-  final _controller = AnimatedListController();
-
-  @override
   Widget build(BuildContext context) {
+    final controller = AnimatedListController();
+
     return StreamBuilder<List<Search>>(
       stream: context.read<SearchRepository>().getSearches(),
       builder: (context, snap) {
@@ -34,7 +29,7 @@ class _RecentSuggestionsState extends State<RecentSuggestions> {
 
         return AutomaticAnimatedListView<Search>(
           list: snap.data!,
-          listController: _controller,
+          listController: controller,
           animator: const DefaultAnimatedListAnimator(
             dismissIncomingDuration: Duration(milliseconds: 300),
             resizeDuration: Duration(milliseconds: 300),

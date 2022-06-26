@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 
-class LikedSongsScreen extends StatefulWidget {
+class LikedSongsScreen extends StatelessWidget {
   const LikedSongsScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -14,14 +14,9 @@ class LikedSongsScreen extends StatefulWidget {
   }
 
   @override
-  State<LikedSongsScreen> createState() => _LikedSongsScreenState();
-}
-
-class _LikedSongsScreenState extends State<LikedSongsScreen> {
-  final _controller = ScrollController();
-
-  @override
   Widget build(BuildContext context) {
+    final controller = ScrollController();
+
     return Scaffold(
       body: StreamBuilder<User?>(
         stream: context.read<AuthenticationRepository>().currentUser,
@@ -30,10 +25,10 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
-            controller: _controller,
+            controller: controller,
             slivers: [
               LikedSongsSliverAppBar(
-                controller: _controller,
+                controller: controller,
               ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -54,6 +49,7 @@ class _LikedSongsScreenState extends State<LikedSongsScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (context, int index) {
                     final trackId = trackIds[index];
+
                     return TrackItem(
                       key: ValueKey(trackId),
                       trackId: trackId,

@@ -10,6 +10,8 @@ class PositionSlider extends StatefulWidget {
 }
 
 class _PositionSliderState extends State<PositionSlider> {
+  late final _durationStream = context.read<MusicProvider>().player.durationStream;
+  late final _positionStream = context.read<MusicProvider>().player.positionStream;
   double? _slidePosition;
 
   String formatDuration(Duration? duration) {
@@ -29,12 +31,12 @@ class _PositionSliderState extends State<PositionSlider> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration?>(
-      stream: context.read<MusicProvider>().player.durationStream,
+      stream: _durationStream,
       builder: (context, snap) {
         final duration = snap.data;
 
         return StreamBuilder<Duration>(
-          stream: context.read<MusicProvider>().player.positionStream,
+          stream: _positionStream,
           builder: (context, snap) {
             final position = snap.data;
 
@@ -65,9 +67,7 @@ class _PositionSliderState extends State<PositionSlider> {
                           (position != null && duration != null
                               ? position.inSeconds / duration.inSeconds
                               : 0),
-                      onChanged: (position) {
-                        setState(() => _slidePosition = position);
-                      },
+                      onChanged: (position) => setState(() => _slidePosition = position),
                       onChangeEnd: (position) {
                         context.read<MusicProvider>().player.seek(
                               Duration(

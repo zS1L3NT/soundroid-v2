@@ -48,7 +48,7 @@ class YourPlaylistsSection extends StatelessWidget {
 
                 return Material(
                   elevation: 8,
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderRadius: BorderRadius.circular(8),
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(

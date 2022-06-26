@@ -10,8 +10,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _form = GlobalKey<FormState>();
-
+  final _formKey = GlobalKey<FormState>();
   String _password = "";
 
   @override
@@ -20,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: "Profile",
       children: [
         Form(
-          key: _form,
+          key: _formKey,
           child: SettingsGroup(
             title: "Update Details",
             children: [

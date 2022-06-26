@@ -10,8 +10,11 @@ class LikeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserStream = context.read<AuthenticationRepository>().currentUser;
+    final currentStream = context.read<MusicProvider>().current;
+
     return StreamBuilder<User?>(
-      stream: context.read<AuthenticationRepository>().currentUser,
+      stream: currentUserStream,
       builder: (context, snap) {
         final user = snap.data;
 
@@ -20,7 +23,7 @@ class LikeButton extends StatelessWidget {
         }
 
         return StreamBuilder<Track?>(
-          stream: context.read<MusicProvider>().current,
+          stream: currentStream,
           builder: (context, snap) {
             final current = snap.data;
 

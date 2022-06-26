@@ -18,13 +18,15 @@ class TrackItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentStream = context.read<MusicProvider>().current;
+
     return FutureBuilder<Track>(
       future: context.read<ApiRepository>().getTrack(trackId),
       builder: (context, snap) {
         final track = snap.data;
 
         return StreamBuilder<Track?>(
-          stream: context.read<MusicProvider>().current,
+          stream: currentStream,
           builder: (context, snap) {
             return AppListItem.fromTrack(
               track,

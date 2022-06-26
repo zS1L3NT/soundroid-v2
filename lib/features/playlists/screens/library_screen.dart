@@ -43,7 +43,7 @@ class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
                 leading: Hero(
                   tag: "liked_songs_icon",
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderRadius: BorderRadius.circular(8),
                     child: Container(
                       width: 56,
                       height: 56,

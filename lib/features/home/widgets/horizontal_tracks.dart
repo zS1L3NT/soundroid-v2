@@ -47,7 +47,7 @@ class HorizontalTracks extends StatelessWidget {
                   children: [
                     AppImage.network(
                       track.thumbnail,
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      borderRadius: BorderRadius.circular(8),
                       size: 128,
                     ),
                     SizedBox(
@@ -57,7 +57,7 @@ class HorizontalTracks extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          borderRadius: BorderRadius.circular(8),
                           onTap: () {
                             context.read<MusicProvider>().playTrackIds([track.id]);
                           },

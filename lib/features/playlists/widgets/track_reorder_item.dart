@@ -25,7 +25,7 @@ class TrackReorderItem extends StatelessWidget {
         return ListTile(
           leading: AppImage.network(
             track.thumbnail,
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            borderRadius: BorderRadius.circular(8),
             size: 56,
           ),
           title: AppText.ellipse(

@@ -5,7 +5,7 @@ import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class PlaylistScreen extends StatefulWidget {
+class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({
     Key? key,
     required this.playlist,
@@ -21,16 +21,9 @@ class PlaylistScreen extends StatefulWidget {
     );
   }
 
-  @override
-  State<PlaylistScreen> createState() => _PlaylistScreenState();
-}
-
-class _PlaylistScreenState extends State<PlaylistScreen> {
-  final _controller = ScrollController();
-
-  void onFavouriteClick(bool favourite) {
+  void onFavouriteClick(BuildContext context, bool favourite) {
     context.read<PlaylistRepository>().updatePlaylist(
-          widget.playlist.copyWith.favourite(
+          playlist.copyWith.favourite(
             !favourite,
           ),
         );
@@ -40,20 +33,22 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = ScrollController();
+
     return Scaffold(
       body: StreamBuilder<Playlist?>(
-        stream: context.read<PlaylistRepository>().getPlaylist(widget.playlist.id),
+        stream: context.read<PlaylistRepository>().getPlaylist(playlist.id),
         builder: (context, snap) {
           final playlist = snap.data;
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
-            controller: _controller,
+            controller: controller,
             slivers: [
               PlaylistSliverAppBar(
-                initialPlaylist: widget.playlist,
+                initialPlaylist: this.playlist,
                 playlist: playlist,
-                controller: _controller,
+                controller: controller,
               ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -79,7 +74,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: playlist.favourite ? Theme.of(context).primaryColor : null,
-                                  onPressed: () => onFavouriteClick(playlist.favourite),
+                                  onPressed: () => onFavouriteClick(context, playlist.favourite),
                                 )
                               : AppIcon.loading(color: Colors.black),
                           playlist != null

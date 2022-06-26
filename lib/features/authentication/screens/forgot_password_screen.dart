@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
+class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -12,14 +12,9 @@ class ForgotPasswordScreen extends StatefulWidget {
   }
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
-}
-
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _form = GlobalKey<FormState>();
-
-  @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -29,7 +24,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             vertical: 8,
           ),
           child: Form(
-            key: _form,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -65,7 +60,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 const SizedBox(height: 24),
                 FullSizedButton(
                   onPressed: () {
-                    if (_form.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       AppAlertDialog(
                         title: "Check your email",
                         description: "Check your email for instructions to reset your password",

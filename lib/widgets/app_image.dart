@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class AppImage extends StatefulWidget {
+class AppImage extends StatelessWidget {
   const AppImage({
     Key? key,
     this.borderRadius = BorderRadius.zero,
-    required this.child,
+    required this.builder,
   }) : super(key: key);
 
   final BorderRadius borderRadius;
 
-  final Widget Function(BuildContext) child;
+  final Widget Function(BuildContext) builder;
 
   factory AppImage.network(
     String? url, {
@@ -24,7 +24,7 @@ class AppImage extends StatefulWidget {
   }) {
     return AppImage(
       borderRadius: borderRadius,
-      child: (context) {
+      builder: (context) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           child: url != null
@@ -83,7 +83,7 @@ class AppImage extends StatefulWidget {
   }) {
     return AppImage(
       borderRadius: borderRadius,
-      child: (context) {
+      builder: (context) {
         return Image.asset(
           asset,
           width: size ?? width,
@@ -94,15 +94,10 @@ class AppImage extends StatefulWidget {
   }
 
   @override
-  State<AppImage> createState() => _AppImageState();
-}
-
-class _AppImageState extends State<AppImage> {
-  @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: widget.borderRadius,
-      child: widget.child(context),
+      borderRadius: borderRadius,
+      child: builder(context),
     );
   }
 }

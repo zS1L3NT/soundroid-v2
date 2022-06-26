@@ -21,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends KeptAliveState<HomeScreen> {
+  late final _playlistsStream = context.read<PlaylistRepository>().getRecentPlaylists();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -50,7 +52,7 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
           }
 
           return StreamBuilder<List<Playlist>>(
-            stream: context.read<PlaylistRepository>().getRecentPlaylists(),
+            stream: _playlistsStream,
             builder: (context, snap) {
               final playlists = snap.data;
 

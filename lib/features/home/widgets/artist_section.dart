@@ -22,7 +22,7 @@ class ArtistSectionWidget extends StatelessWidget {
             children: [
               AppImage.network(
                 "http://soundroid.zectan.com/api/thumbnail?artistId=${section.artist.id}",
-                borderRadius: const BorderRadius.all(Radius.circular(28)),
+                borderRadius: BorderRadius.circular(28),
                 size: 56,
               ),
               const SizedBox(width: 12),

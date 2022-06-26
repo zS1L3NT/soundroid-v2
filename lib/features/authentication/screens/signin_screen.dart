@@ -3,7 +3,7 @@ import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class SigninScreen extends StatefulWidget {
+class SigninScreen extends StatelessWidget {
   const SigninScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -13,16 +13,11 @@ class SigninScreen extends StatefulWidget {
   }
 
   @override
-  State<SigninScreen> createState() => _SigninScreenState();
-}
-
-class _SigninScreenState extends State<SigninScreen> {
-  final _form = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -36,7 +31,7 @@ class _SigninScreenState extends State<SigninScreen> {
               vertical: 8,
             ),
             child: Form(
-              key: _form,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,7 +46,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   ),
                   const SizedBox(height: 32),
                   TextFormField(
-                    controller: _emailController,
+                    controller: emailController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your email address',
@@ -72,14 +67,14 @@ class _SigninScreenState extends State<SigninScreen> {
                   ),
                   const SizedBox(height: 16),
                   PasswordFormField(
-                    controller: _passwordController,
+                    controller: passwordController,
                     name: "Password",
                     placeholder: "Enter your password",
                   ),
                   const SizedBox(height: 24),
                   FullSizedButton(
                     onPressed: () {
-                      if (_form.currentState!.validate()) {
+                      if (formKey.currentState!.validate()) {
                         Navigator.of(context).pushAndRemoveUntil(
                           MainScreen.route(),
                           (_) => false,

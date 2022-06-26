@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends StatelessWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -12,17 +12,12 @@ class SignupScreen extends StatefulWidget {
   }
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
-}
-
-class _SignupScreenState extends State<SignupScreen> {
-  final _form = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -32,7 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
             vertical: 8,
           ),
           child: Form(
-            key: _form,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,7 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
-                  controller: _nameController,
+                  controller: nameController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your name',
@@ -68,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: _emailController,
+                  controller: emailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
@@ -89,14 +84,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 16),
                 PasswordFormField(
-                  controller: _passwordController,
+                  controller: passwordController,
                   name: "Password",
                   placeholder: "Enter your password",
                 ),
                 const SizedBox(height: 24),
                 FullSizedButton(
                   onPressed: () {
-                    if (_form.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       Navigator.of(context).pushAndRemoveUntil(
                         PageRouteBuilder(
                           pageBuilder: (c, anim, anim2) => const VerifyEmailScreen(),

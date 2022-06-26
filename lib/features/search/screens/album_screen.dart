@@ -6,7 +6,7 @@ import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class AlbumScreen extends StatefulWidget {
+class AlbumScreen extends StatelessWidget {
   const AlbumScreen({
     Key? key,
     required this.album,
@@ -23,22 +23,18 @@ class AlbumScreen extends StatefulWidget {
   }
 
   @override
-  State<AlbumScreen> createState() => _AlbumScreenState();
-}
-
-class _AlbumScreenState extends State<AlbumScreen> {
-  final _controller = ScrollController();
-
-  @override
   Widget build(BuildContext context) {
+    final currentStream = context.read<MusicProvider>().current;
+    final controller = ScrollController();
+
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
-        controller: _controller,
+        controller: controller,
         slivers: [
           AlbumSliverAppBar(
-            album: widget.album,
-            controller: _controller,
+            album: album,
+            controller: controller,
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -49,12 +45,12 @@ class _AlbumScreenState extends State<AlbumScreen> {
               child: Column(
                 children: [
                   AppText.marquee(
-                    widget.album.title,
+                    album.title,
                     extraHeight: 13,
                     style: Theme.of(context).textTheme.headline3,
                   ),
                   AppText.marquee(
-                    widget.album.artists.map((artist) => artist.name).join(", "),
+                    album.artists.map((artist) => artist.name).join(", "),
                     extraHeight: 13,
                     style: Theme.of(context).textTheme.headline3,
                   ),
@@ -64,7 +60,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
             ),
           ),
           FutureBuilder<List<String>>(
-            future: context.read<ApiRepository>().getAlbumTrackIds(widget.album.id),
+            future: context.read<ApiRepository>().getAlbumTrackIds(album.id),
             builder: (context, snap) {
               final trackIds = snap.data;
 
@@ -77,7 +73,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
               }
 
               return StreamBuilder<Track?>(
-                stream: context.read<MusicProvider>().current,
+                stream: currentStream,
                 builder: (context, snap) {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(

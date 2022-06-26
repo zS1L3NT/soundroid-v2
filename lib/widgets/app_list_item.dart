@@ -44,7 +44,7 @@ class AppListItem extends StatelessWidget {
       subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
       image: AppImage.network(
         track?.thumbnail,
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        borderRadius: BorderRadius.circular(8),
         size: 56,
       ),
       icon: icon,
@@ -67,7 +67,7 @@ class AppListItem extends StatelessWidget {
         tag: "album_${album.id}",
         child: AppImage.network(
           album.thumbnail,
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          borderRadius: BorderRadius.circular(8),
           size: 56,
         ),
       ),
@@ -94,7 +94,7 @@ class AppListItem extends StatelessWidget {
           fit: BoxFit.cover,
           child: AppImage.network(
             playlist.thumbnail,
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            borderRadius: BorderRadius.circular(8),
             size: 56,
           ),
         ),
@@ -126,7 +126,7 @@ class AppListItem extends StatelessWidget {
                 height: icon != null ? 25 : 0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
