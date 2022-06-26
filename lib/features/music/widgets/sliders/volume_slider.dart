@@ -33,7 +33,6 @@ class _VolumeSliderState extends State<VolumeSlider> {
       children: [
         AppIcon.primaryColor(
           Icons.volume_down_rounded,
-          context,
           size: 20,
         ),
         SliderTheme(
@@ -63,7 +62,6 @@ class _VolumeSliderState extends State<VolumeSlider> {
         ),
         AppIcon.primaryColorDark(
           Icons.volume_up_rounded,
-          context,
           size: 20,
         ),
       ],

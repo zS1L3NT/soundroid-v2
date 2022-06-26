@@ -45,7 +45,6 @@ void showTrackBottomSheet(BuildContext context, Track track) {
                   ? AppIcon.loading()
                   : AppIcon.primaryColor(
                       isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                      context,
                     ),
               onTap: () {
                 if (user == null) return;
@@ -69,7 +68,7 @@ void showTrackBottomSheet(BuildContext context, Track track) {
         ),
         ListTile(
           title: const Text("Add to playlist"),
-          leading: AppIcon.primaryColor(Icons.playlist_add_rounded, context),
+          leading: AppIcon.primaryColor(Icons.playlist_add_rounded),
           onTap: () {
             Navigator.of(context).push(
               PlaylistSelectScreen.route(
@@ -93,7 +92,7 @@ void showTrackBottomSheet(BuildContext context, Track track) {
         if (!context.read<MusicProvider>().queue.tracks.contains(track))
           ListTile(
             title: const Text("Add to queue"),
-            leading: AppIcon.primaryColor(Icons.queue_music_rounded, context),
+            leading: AppIcon.primaryColor(Icons.queue_music_rounded),
             onTap: () async {
               Navigator.of(context).pop();
               await context.read<MusicProvider>().queue.addTrack(track);

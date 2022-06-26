@@ -22,13 +22,11 @@ class ShuffleButton extends StatelessWidget {
           case true:
             return AppIcon.primaryColorDark(
               Icons.shuffle_rounded,
-              context,
               onPressed: () => handleClick(player),
             );
           case false:
             return AppIcon.primaryColorLight(
               Icons.shuffle_rounded,
-              context,
               onPressed: () => handleClick(player),
             );
           default:

@@ -14,7 +14,6 @@ class SkipNextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppIcon.primaryColor(
       Icons.skip_next_rounded,
-      context,
       size: 28,
       splashRadius: 24,
       onPressed: () => handleClick(context),

@@ -118,27 +118,18 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
           const SizedBox(height: 8),
           ListTile(
             title: const Text("Choose from gallery"),
-            leading: AppIcon.primaryColor(
-              Icons.image_rounded,
-              context,
-            ),
+            leading: AppIcon.primaryColor(Icons.image_rounded),
             onTap: () => updatePicture(ImageSource.gallery),
           ),
           ListTile(
             title: const Text("Take a picture"),
-            leading: AppIcon.primaryColor(
-              Icons.photo_camera_rounded,
-              context,
-            ),
+            leading: AppIcon.primaryColor(Icons.photo_camera_rounded),
             onTap: () => updatePicture(ImageSource.camera),
           ),
           if (widget.playlist?.thumbnail != null)
             ListTile(
               title: const Text("Remove picture"),
-              leading: AppIcon.primaryColor(
-                Icons.delete_rounded,
-                context,
-              ),
+              leading: AppIcon.primaryColor(Icons.delete_rounded),
               onTap: onRemovePictureClick,
             ),
           const SizedBox(height: 8),
@@ -238,22 +229,22 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
                   const SizedBox(height: 8),
                   ListTile(
                     title: const Text("Reorder songs"),
-                    leading: AppIcon.primaryColor(Icons.swap_vert_rounded, context),
+                    leading: AppIcon.primaryColor(Icons.swap_vert_rounded),
                     onTap: onReorderClick,
                   ),
                   ListTile(
                     title: const Text("Change picture"),
-                    leading: AppIcon.primaryColor(Icons.camera_alt_rounded, context),
+                    leading: AppIcon.primaryColor(Icons.camera_alt_rounded),
                     onTap: onChangePictureClick,
                   ),
                   ListTile(
                     title: const Text("Rename"),
-                    leading: AppIcon.primaryColor(Icons.edit_rounded, context),
+                    leading: AppIcon.primaryColor(Icons.edit_rounded),
                     onTap: onRenameClick,
                   ),
                   ListTile(
                     title: const Text("Delete"),
-                    leading: AppIcon.primaryColor(Icons.delete_rounded, context),
+                    leading: AppIcon.primaryColor(Icons.delete_rounded),
                     onTap: onDeleteClick,
                   ),
                   const SizedBox(height: 8),

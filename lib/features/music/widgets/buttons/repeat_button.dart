@@ -32,19 +32,16 @@ class RepeatButton extends StatelessWidget {
           case LoopMode.off:
             return AppIcon.primaryColorLight(
               Icons.repeat_rounded,
-              context,
               onPressed: () => handleClick(player),
             );
           case LoopMode.all:
             return AppIcon.primaryColorDark(
               Icons.repeat_rounded,
-              context,
               onPressed: () => handleClick(player),
             );
           case LoopMode.one:
             return AppIcon.primaryColorDark(
               Icons.repeat_one_rounded,
-              context,
               onPressed: () => handleClick(player),
             );
           default:

@@ -54,7 +54,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 color: Theme.of(context).primaryColorLight,
                 child: AppIcon.primaryColorDark(
                   Icons.email_rounded,
-                  context,
                   size: 50,
                 ),
               ),

@@ -22,7 +22,6 @@ class AddToButton extends StatelessWidget {
 
         return AppIcon.primaryColor(
           Icons.add_rounded,
-          context,
           onPressed: () {
             Navigator.of(context).push(
               PlaylistSelectScreen.route(

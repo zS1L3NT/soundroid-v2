@@ -50,7 +50,6 @@ class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
                       color: Theme.of(context).primaryColorLight,
                       child: AppIcon.primaryColorDark(
                         Icons.favorite_rounded,
-                        context,
                         size: 20,
                       ),
                     ),

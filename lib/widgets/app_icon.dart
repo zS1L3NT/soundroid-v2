@@ -39,51 +39,60 @@ class AppIcon extends StatelessWidget {
     );
   }
 
-  static AppIcon primaryColor(
-    IconData icon,
-    BuildContext context, {
+  static Widget primaryColor(
+    IconData icon, {
     double size = 24,
     double splashRadius = 20,
     Function()? onPressed,
   }) {
-    return AppIcon(
-      icon,
-      color: Theme.of(context).primaryColor,
-      size: size,
-      splashRadius: splashRadius,
-      onPressed: onPressed,
+    return Builder(
+      builder: (context) {
+        return AppIcon(
+          icon,
+          color: Theme.of(context).primaryColor,
+          size: size,
+          splashRadius: splashRadius,
+          onPressed: onPressed,
+        );
+      },
     );
   }
 
-  static AppIcon primaryColorLight(
-    IconData icon,
-    BuildContext context, {
+  static Widget primaryColorLight(
+    IconData icon, {
     double size = 24,
     double splashRadius = 20,
     Function()? onPressed,
   }) {
-    return AppIcon(
-      icon,
-      color: Theme.of(context).primaryColorLight,
-      size: size,
-      splashRadius: splashRadius,
-      onPressed: onPressed,
+    return Builder(
+      builder: (context) {
+        return AppIcon(
+          icon,
+          color: Theme.of(context).primaryColorLight,
+          size: size,
+          splashRadius: splashRadius,
+          onPressed: onPressed,
+        );
+      },
     );
   }
 
-  static AppIcon primaryColorDark(
-    IconData icon,
-    BuildContext context, {
+  static Widget primaryColorDark(
+    IconData icon, {
     double size = 24,
     double splashRadius = 20,
     Function()? onPressed,
   }) {
-    return AppIcon(
-      icon,
-      color: Theme.of(context).primaryColorDark,
-      size: size,
-      splashRadius: splashRadius,
-      onPressed: onPressed,
+    return Builder(
+      builder: (context) {
+        return AppIcon(
+          icon,
+          color: Theme.of(context).primaryColorDark,
+          size: size,
+          splashRadius: splashRadius,
+          onPressed: onPressed,
+        );
+      },
     );
   }
 

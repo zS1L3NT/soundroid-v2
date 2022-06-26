@@ -35,7 +35,6 @@ class LikeButton extends StatelessWidget {
               user.likedTrackIds.contains(current.id)
                   ? Icons.favorite_rounded
                   : Icons.favorite_outline_rounded,
-              context,
               onPressed: () {
                 if (user.likedTrackIds.contains(current.id)) {
                   context.read<AuthenticationRepository>().updateUser(
