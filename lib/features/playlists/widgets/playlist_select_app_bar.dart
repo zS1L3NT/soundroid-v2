@@ -27,7 +27,7 @@ class _PlaylistSelectAppBarState extends State<PlaylistSelectAppBar> {
                 thumbnail: null,
                 favourite: false,
                 download: false,
-                trackIds: [],
+                trackIds: const [],
               ),
             );
         Navigator.of(context).pop();

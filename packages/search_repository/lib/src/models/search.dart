@@ -10,7 +10,7 @@ class Search extends Equatable {
   final String query;
   final Timestamp timestamp;
 
-  Search({
+  const Search({
     required this.userRef,
     required this.query,
     required this.timestamp,

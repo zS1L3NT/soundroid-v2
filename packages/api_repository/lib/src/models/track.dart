@@ -1,4 +1,5 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:just_audio/just_audio.dart';
@@ -44,6 +45,9 @@ class Track extends ProgressiveAudioSource {
 
   @override
   bool operator ==(Object other) => other is Track && other.id == id;
+
+  @override
+  int get hashCode => hashValues(id, title, hashList(artists), thumbnail);
 
   @override
   String toString() {

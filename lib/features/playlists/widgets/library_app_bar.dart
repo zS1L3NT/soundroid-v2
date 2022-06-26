@@ -27,7 +27,7 @@ class _LibraryAppBarState extends State<LibraryAppBar> {
                 thumbnail: null,
                 favourite: false,
                 download: false,
-                trackIds: [],
+                trackIds: const [],
               ),
             );
         Navigator.of(context).pop();

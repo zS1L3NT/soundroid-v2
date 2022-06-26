@@ -10,7 +10,7 @@ class Listen extends Equatable {
   final List<String> trackIds;
   final Timestamp timestamp;
 
-  Listen({
+  const Listen({
     required this.userRef,
     required this.trackIds,
     required this.timestamp,

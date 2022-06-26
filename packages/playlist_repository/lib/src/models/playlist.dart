@@ -15,7 +15,7 @@ class Playlist extends Equatable {
   final bool download;
   final List<String> trackIds;
 
-  Playlist({
+  const Playlist({
     required this.id,
     required this.userRef,
     required this.lastPlayed,
@@ -61,6 +61,6 @@ class Playlist extends Equatable {
 
   @override
   String toString() {
-    return "Playlist { $id; ${userRef.id}; ${lastPlayed}; $name; $favourite; $download; $trackIds }";
+    return "Playlist { $id; ${userRef.id}; $lastPlayed; $name; $favourite; $download; $trackIds }";
   }
 }
