@@ -1,6 +1,6 @@
 import { DocumentReference } from "firebase-admin/firestore"
 
-import { listensColl, usersColl, ytmusic } from "../apis"
+import { listensColl, spotify, usersColl, ytmusic } from "../apis"
 import processThumbnail from "../functions/processThumbnail"
 import Artist from "../models/Artist"
 import Track from "../models/Track"
@@ -37,7 +37,7 @@ export class GET extends Route {
 			.map(occurance => occurance[0])
 
 		const response: any[] = []
-		
+
 		if (this.mostFrequentTrackIds.length < 20) {
 			return this.respond(response)
 		}
@@ -143,7 +143,59 @@ export class GET extends Route {
 	}
 
 	async getRecommendedTracks() {
-		return []
+		try {
+			const ytSongs = await Promise.all(
+				this.mostFrequentTrackIds.slice(0, 5).map(ytmusic.getSong.bind(ytmusic))
+			)
+
+			const spTracks = (
+				await Promise.all(
+					ytSongs.map(async song => {
+						const tracks = await spotify.authenticated(() =>
+							spotify.searchTracks(
+								`${song.name} ${song.artists.map(artist => artist.name).join(" ")}`
+							)
+						)
+
+						return tracks.tracks?.items[0]
+					})
+				)
+			).filter(spTrack => !!spTrack) as SpotifyApi.TrackObjectFull[]
+
+			const spRecommendations = (
+				await spotify.authenticated(() =>
+					spotify.getRecommendations({
+						seed_tracks: spTracks.map(track => track.id).join(",")
+					})
+				)
+			).tracks
+
+			const ytRecommendations = await Promise.all(
+				spRecommendations.map(async track => {
+					const songs = await ytmusic.searchSongs(
+						`${track.name} ${track.artists.map(artist => artist.name).join(" ")}`
+					)
+
+					const song = songs[0]
+
+					return song
+						? new Track(
+								song.videoId,
+								song.name,
+								song.artists.map(artist => ({
+									id: artist.artistId,
+									name: artist.name
+								})),
+								processThumbnail(song.thumbnails.at(-1)?.url)
+						  )
+						: null
+				})
+			)
+
+			return ytRecommendations.filter(ytSong => !!ytSong) as Track[]
+		} catch {
+			return []
+		}
 	}
 
 	async getMostListenedArtists() {
