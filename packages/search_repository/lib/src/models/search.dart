@@ -4,17 +4,25 @@ import 'package:equatable/equatable.dart';
 
 part 'search.g.dart';
 
+/// Search model returned by Firestore
+/// - `@CopyWith`
+/// - `Equatable`
 @CopyWith()
 class Search extends Equatable {
-  final DocumentReference userRef;
-  final String query;
-  final Timestamp timestamp;
-
   const Search({
     required this.userRef,
     required this.query,
     required this.timestamp,
   });
+
+  /// The reference to the user that created the Search
+  final DocumentReference userRef;
+
+  /// The query that was searched for
+  final String query;
+
+  /// The time the Search was created
+  final Timestamp timestamp;
 
   Search.fromJson(Map<String, dynamic> json)
       : userRef = json["userRef"],
