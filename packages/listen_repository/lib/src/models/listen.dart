@@ -4,17 +4,27 @@ import 'package:equatable/equatable.dart';
 
 part 'listen.g.dart';
 
+/// Listen model returned by Firestore
+/// - `@CopyWith`
+/// - `Equatable`
 @CopyWith()
 class Listen extends Equatable {
-  final DocumentReference userRef;
-  final List<String> trackIds;
-  final Timestamp timestamp;
-
   const Listen({
     required this.userRef,
     required this.trackIds,
     required this.timestamp,
   });
+
+  /// The reference to the user who listened to the [trackIds]
+  final DocumentReference userRef;
+
+  /// The IDs of the Tracks the [userRef] listened to on the same day as [timestamp]
+  final List<String> trackIds;
+
+  /// The timestamp of the day the [userRef] listened to the [trackIds]
+  ///
+  /// The time should be `00:00:00`
+  final Timestamp timestamp;
 
   Listen.fromJson(Map<String, dynamic> json)
       : userRef = json["userRef"],
