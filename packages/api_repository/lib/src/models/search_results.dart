@@ -1,11 +1,14 @@
+import 'package:api_repository/src/models/models.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'models.dart';
-
 part 'search_results.g.dart';
 
+/// Search Results model returned by the SounDroid API
+/// - `@CopyWith`
+/// - `@JSONSerializable`
+/// - `Equatable`
 @CopyWith()
 @JsonSerializable()
 class SearchResults extends Equatable {
@@ -14,8 +17,10 @@ class SearchResults extends Equatable {
     required this.albums,
   });
 
+  /// The tracks returned by the Search Results
   final List<Track> tracks;
 
+  /// The albums returned by the Search Results
   final List<Album> albums;
 
   factory SearchResults.fromJson(Map<String, dynamic> json) => _$SearchResultsFromJson(json);

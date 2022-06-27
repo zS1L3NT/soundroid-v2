@@ -1,8 +1,7 @@
+import 'package:api_repository/src/models/models.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'models.dart';
 
 part 'feed_section.g.dart';
 
@@ -13,9 +12,14 @@ enum SectionType {
 }
 
 abstract class FeedSection extends Equatable {
+  /// The type of the section
   abstract final SectionType type;
 }
 
+/// Track Section model returned by the SounDroid API
+/// - `@CopyWith`
+/// - `@JSONSerializable`
+/// - `Equatable`
 @CopyWith()
 @JsonSerializable()
 class TrackSection extends FeedSection {
@@ -29,10 +33,13 @@ class TrackSection extends FeedSection {
   @override
   final SectionType type;
 
+  /// The title of the Track Section
   final String title;
 
+  /// The description of the Track Section
   final String description;
 
+  /// The items in the Track Section
   final List<Track> items;
 
   factory TrackSection.fromJson(Map<String, dynamic> json) => _$TrackSectionFromJson(json);
@@ -47,6 +54,10 @@ class TrackSection extends FeedSection {
   }
 }
 
+/// Artist Section model returned by the SounDroid API
+/// - `@CopyWith`
+/// - `@JSONSerializable`
+/// - `Equatable`
 @CopyWith()
 @JsonSerializable()
 class ArtistSection extends FeedSection {
@@ -59,8 +70,10 @@ class ArtistSection extends FeedSection {
   @override
   final SectionType type;
 
+  /// The artist of the Artist Section
   final Artist artist;
 
+  /// The items in the Artist Section
   final List<Track> items;
 
   factory ArtistSection.fromJson(Map<String, dynamic> json) => _$ArtistSectionFromJson(json);
