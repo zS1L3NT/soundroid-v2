@@ -1,6 +1,13 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:just_audio/just_audio.dart';
 
+/// A helper class that extends [ConcatenatingAudioSource] but casts [AudioSource]s to [Track]s.
+///
+/// The [Track] class already extends [AudioSource]. I want the items in the audio source to
+/// be [Track]s so I can access more metadata about the track when fetching the queue.
+///
+/// This class forces you to add [Track]s to the audio source instead of [AudioSource] and
+/// deprecates methods that add [AudioSource]s to the queue for runtime safety.
 class QueueAudioSource extends ConcatenatingAudioSource {
   QueueAudioSource({
     required List<Track> children,

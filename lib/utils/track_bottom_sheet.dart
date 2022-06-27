@@ -7,6 +7,8 @@ import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
+/// A helper function that shows a bottom sheet with information about
+/// a track and some helper buttons.
 void showTrackBottomSheet(BuildContext context, Track track) {
   AppBottomSheet(
     child: Column(
