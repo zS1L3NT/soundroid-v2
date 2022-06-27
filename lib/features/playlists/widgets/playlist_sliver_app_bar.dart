@@ -143,6 +143,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     AppTextDialog(
       title: "Rename Playlist",
       textFieldName: "Playlist name",
+      initialText: widget.playlist?.name,
       confirmText: "Rename",
       onConfirm: (String name) async {
         Navigator.of(context).pop();

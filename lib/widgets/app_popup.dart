@@ -215,7 +215,7 @@ class AppTextDialog {
   final Function()? onClose;
 
   void show(BuildContext context) {
-    String text = "";
+    final controller = TextEditingController(text: initialText);
 
     showDialog(
       context: context,
@@ -225,9 +225,8 @@ class AppTextDialog {
             return AlertDialog(
               title: Text(title),
               content: TextField(
-                onChanged: (value) {
-                  setState(() => text = value);
-                },
+                controller: controller,
+                onChanged: (_) => setState(() {}),
                 decoration: InputDecoration(
                   hintText: textFieldName,
                 ),
@@ -239,7 +238,7 @@ class AppTextDialog {
                   child: const Text("Cancel"),
                 ),
                 ElevatedButton(
-                  onPressed: text.isNotEmpty ? () => onConfirm(text) : null,
+                  onPressed: controller.text.isNotEmpty ? () => onConfirm(controller.text) : null,
                   child: Text(confirmText),
                 ),
               ],
