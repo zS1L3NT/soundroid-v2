@@ -3,14 +3,11 @@ import 'package:equatable/equatable.dart';
 
 part 'user.g.dart';
 
+/// User model returned by Firestore
+/// - `@CopyWith`
+/// - `Equatable`
 @CopyWith()
 class User extends Equatable {
-  final String name;
-  final String email;
-  final String picture;
-  final bool verified;
-  final List<String> likedTrackIds;
-
   const User({
     required this.name,
     required this.email,
@@ -18,6 +15,21 @@ class User extends Equatable {
     required this.verified,
     required this.likedTrackIds,
   });
+
+  /// The display name of the User
+  final String name;
+
+  /// The email address of the User
+  final String email;
+
+  /// The profile picture of the User
+  final String picture;
+
+  /// Whether the User's email address has been verified
+  final bool verified;
+
+  /// The IDs of the Tracks the User has liked
+  final List<String> likedTrackIds;
 
   User.fromJson(Map<String, dynamic> json)
       : name = json["name"],
