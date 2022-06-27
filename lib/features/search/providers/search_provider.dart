@@ -12,10 +12,15 @@ class SearchProvider with ChangeNotifier {
   final ApiRepository apiRepo;
   final SearchRepository searchRepo;
 
-  final _textEditingController = TextEditingController();
+  /// The [TextEditingController] for the search app bar text field
   TextEditingController get controller => _textEditingController;
+  final _textEditingController = TextEditingController();
+
   String get query => _textEditingController.text;
 
+  /// Changes the text within the search app bar text field.
+  ///
+  /// This method should be used sparingly and not on every key press.
   set query(String? query) {
     if (query == null) {
       _textEditingController.clear();
@@ -29,24 +34,12 @@ class SearchProvider with ChangeNotifier {
     handleTextChange(query ?? "");
   }
 
-  DateTime _latest = DateTime.fromMicrosecondsSinceEpoch(0);
-  DateTime get latest => _latest;
-
-  set latest(DateTime latest) {
-    _latest = latest;
-    notifyListeners();
-  }
-
-  bool _isLoading = false;
+  /// If search results are loading
   bool get isLoading => _isLoading;
+  bool _isLoading = false;
 
-  set isLoading(bool isLoading) {
-    _isLoading = isLoading;
-    notifyListeners();
-  }
-
-  List<String> _recentSuggestions = [];
-  List<String> _apiSuggestions = [];
+  /// A list of suggestions which are aware of what type of suggestion it is
+  /// e.g. API Suggestion (Suggestion from SounDroid API) or Recent Search (Suggestion from the user's recent searches)
   List<Suggestion> get suggestions => [
         ..._recentSuggestions.map(
           (suggestion) => Suggestion(
@@ -54,6 +47,7 @@ class SearchProvider with ChangeNotifier {
             text: suggestion,
           ),
         ),
+        // If the api suggestion is already suggested above, don't suggest it again
         ..._apiSuggestions.where((suggestion) => !_recentSuggestions.contains(suggestion)).map(
               (suggestions) => Suggestion(
                 type: SuggestionType.api,
@@ -61,31 +55,24 @@ class SearchProvider with ChangeNotifier {
               ),
             ),
       ];
+  List<String> _recentSuggestions = [];
+  List<String> _apiSuggestions = [];
 
-  set recentSuggestions(List<String> recentSuggestions) {
-    _recentSuggestions = recentSuggestions;
-    notifyListeners();
-  }
-
-  set apiSuggestions(List<String> apiSuggestions) {
-    _apiSuggestions = apiSuggestions;
-    notifyListeners();
-  }
-
-  SearchResults? _results;
+  /// Search results from the SounDroid API
   SearchResults? get results => _results;
+  SearchResults? _results;
 
-  set results(SearchResults? results) {
-    _results = results;
-    notifyListeners();
-  }
+  /// The date that search suggestion last received new data
+  DateTime _lastChangedAt = DateTime.fromMicrosecondsSinceEpoch(0);
 
   void handleTextChange(String query) async {
-    final dateTime = DateTime.now();
+    /// The date that the current search queries for the [query] was made
+    final changedAt = DateTime.now();
     _results = null;
 
+    // If the query is empty, show the recent searches instead
     if (query == "") {
-      _latest = dateTime;
+      _lastChangedAt = changedAt;
       _isLoading = false;
       _apiSuggestions = [];
       notifyListeners();
@@ -93,37 +80,48 @@ class SearchProvider with ChangeNotifier {
     }
 
     apiRepo.getSearchSuggestions(query).then((apiSuggestions) {
-      if (dateTime.isAfter(_latest) || dateTime == _latest) {
-        _latest = dateTime;
-        _apiSuggestions = apiSuggestions;
-        notifyListeners();
-      }
+      // If when the data comes back and _lastChangedAt is later than changedAt,
+      // this means that a query that happened after this request returned a
+      // value faster than this, rendering this data as useless, therefore we
+      // ignore the data from this api call.
+      if (_lastChangedAt.isAfter(changedAt)) return;
+
+      _apiSuggestions = apiSuggestions;
+      _lastChangedAt = changedAt;
+      notifyListeners();
     });
 
-    searchRepo.getRecentSearches(query).then(
-      (recentSuggestions) {
-        if (dateTime.isAfter(_latest) || dateTime == _latest) {
-          _latest = dateTime;
-          _recentSuggestions = recentSuggestions;
-          notifyListeners();
-        }
-      },
-    );
+    searchRepo.getRecentSearches(query).then((recentSuggestions) {
+      // If when the data comes back and _lastChangedAt is later than changedAt,
+      // this means that a query that happened after this request returned a
+      // value faster than this, rendering this data as useless, therefore we
+      // ignore the data from this api call.
+      if (_lastChangedAt.isAfter(changedAt)) return;
+
+      _recentSuggestions = recentSuggestions;
+      _lastChangedAt = changedAt;
+      notifyListeners();
+    });
   }
 
-  // This method is moved into the provider so it can be called from multiple places
+  /// This method is moved into the provider so it can be called from multiple places
   void search(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode());
-    final dateTime = DateTime.now();
+    final changedAt = DateTime.now();
     _apiSuggestions = [];
     _isLoading = true;
     notifyListeners();
 
     final results = await apiRepo.getSearchResults(query);
-    if (dateTime.isAfter(latest) || dateTime == latest) {
-      _isLoading = false;
-      _results = results;
-      notifyListeners();
-    }
+
+    // If when the data comes back and _lastChangedAt is later than changedAt,
+    // this means that a query that happened after this request returned a
+    // value faster than this, rendering this data as useless, therefore we
+    // ignore the data from this api call.
+    if (_lastChangedAt.isAfter(changedAt)) return;
+
+    _isLoading = false;
+    _results = results;
+    notifyListeners();
   }
 }

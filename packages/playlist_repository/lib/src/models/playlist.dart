@@ -4,17 +4,11 @@ import 'package:equatable/equatable.dart';
 
 part 'playlist.g.dart';
 
+/// Playlist Model returned by Firestore
+/// - `@CopyWith`
+/// - `Equatable`
 @CopyWith()
 class Playlist extends Equatable {
-  final String id;
-  final DocumentReference userRef;
-  final Timestamp? lastPlayed;
-  final String name;
-  final String? thumbnail;
-  final bool favourite;
-  final bool download;
-  final List<String> trackIds;
-
   const Playlist({
     required this.id,
     required this.userRef,
@@ -25,6 +19,30 @@ class Playlist extends Equatable {
     required this.download,
     required this.trackIds,
   });
+
+  /// The ID of the Playlist in Firestore
+  final String id;
+
+  /// The reference to the user that created the Playlist
+  final DocumentReference userRef;
+
+  /// The last time the Playlist was played
+  final Timestamp? lastPlayed;
+
+  /// The name of the Playlist
+  final String name;
+
+  /// The thumbnail of the Playlist, if any
+  final String? thumbnail;
+
+  /// Whether the Playlist is a favourite
+  final bool favourite;
+
+  /// Whether the Playlist should be downloaded
+  final bool download;
+
+  /// The IDs of the Tracks in the Playlist
+  final List<String> trackIds;
 
   Playlist.fromJson(Map<String, dynamic> json)
       : id = json["id"],

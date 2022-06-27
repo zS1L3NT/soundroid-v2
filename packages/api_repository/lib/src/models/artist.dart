@@ -5,6 +5,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'artist.g.dart';
 
+/// Artist model returned by the SounDroid API
+/// - `@CopyWith`
+/// - `@HiveType`
+/// - `@JSONSerializable`
+/// - `Equatable`
 @CopyWith()
 @HiveType(typeId: 1)
 @JsonSerializable()
@@ -14,9 +19,11 @@ class Artist extends Equatable {
     required this.name,
   });
 
+  /// The ID of the Artist from YouTube
   @HiveField(0)
   final String id;
 
+  /// The name of the Artist
   @HiveField(1)
   final String name;
 

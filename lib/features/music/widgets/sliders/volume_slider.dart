@@ -17,8 +17,11 @@ class _VolumeSliderState extends State<VolumeSlider> {
   void initState() {
     super.initState();
 
+    // Fetch the current volume
     PerfectVolumeControl.getVolume().then((volume) {
       setState(() => _volume = volume);
+
+      // Subscribe to the volume changes from the OS
       PerfectVolumeControl.stream.listen((volume) {
         if (mounted && _slideVolume == null) {
           setState(() => _volume = volume);
@@ -44,6 +47,7 @@ class _VolumeSliderState extends State<VolumeSlider> {
           child: Expanded(
             child: _volume != null
                 ? Slider.adaptive(
+                    // If the user is dragging the slider, show the user's slide position instead
                     value: _slideVolume ?? _volume!,
                     onChanged: (volume) {
                       PerfectVolumeControl.setVolume(volume);

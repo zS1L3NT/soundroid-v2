@@ -36,16 +36,14 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
   void initState() {
     super.initState();
 
+    // When the user scrolls past the thumbnail of the playlist
+    // show the title of the playlist in the app bar
     widget.controller.addListener(() {
       final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
       if (isCollapsed != _isCollapsed) {
         setState(() => _isCollapsed = isCollapsed);
       }
     });
-  }
-
-  void onBackClick() {
-    Navigator.of(context).pop();
   }
 
   void onReorderClick() async {
@@ -73,6 +71,9 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     );
   }
 
+  /// Pick an image from the system (gallery or camera),
+  /// crop it to a square and
+  /// store it in Firebase Storage
   void updatePicture(ImageSource source) async {
     final newImage = await ImagePicker().pickImage(source: source);
     if (newImage == null) return;
@@ -143,6 +144,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
     AppTextDialog(
       title: "Rename Playlist",
       textFieldName: "Playlist name",
+      initialText: widget.playlist?.name,
       confirmText: "Rename",
       onConfirm: (String name) async {
         Navigator.of(context).pop();
@@ -192,6 +194,8 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Builder(
             builder: (context) {
+              // Conditionally wrap the thumbnail in with BoxFit.cover.
+              // This is necessary so Hero animations would work correctly.
               final thumbnail =
                   _isHeroComplete ? widget.playlist?.thumbnail : widget.initialPlaylist.thumbnail;
               _isHeroComplete = true;
@@ -216,7 +220,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
       ),
       leading: AppIcon(
         Icons.arrow_back_rounded,
-        onPressed: onBackClick,
+        onPressed: Navigator.of(context).pop,
       ),
       actions: [
         AppIcon(

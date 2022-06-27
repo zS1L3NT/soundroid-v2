@@ -17,6 +17,8 @@ class MainBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Animate the floating action button coming into the navigation bar
+    // The values in the animated containers took me 2 hours of trail and error to figure out
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,

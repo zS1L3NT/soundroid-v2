@@ -55,6 +55,7 @@ class App extends StatelessWidget {
         ),
         backgroundColor: const Color(0xFF222222),
         fontFamily: "Poppins",
+        // For sexy Android 12 overscroll behaviour
         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
       home: const WelcomeScreen(),

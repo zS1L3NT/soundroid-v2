@@ -1,3 +1,4 @@
+import 'package:api_repository/src/models/models.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -5,10 +6,16 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
-import 'models.dart';
-
 part 'track.g.dart';
 
+/// Track model returned by the SounDroid API
+/// - `@CopyWith`
+/// - `@HiveType`
+/// - `@JSONSerializable`
+/// - `ProgressiveAudioSource`
+///
+/// This class extends [ProgressiveAudioSource] so that it can be
+/// added to a music queue as an AudioSource.
 @CopyWith()
 @HiveType(typeId: 0)
 @JsonSerializable()
@@ -28,15 +35,19 @@ class Track extends ProgressiveAudioSource {
           ),
         );
 
+  /// The ID of the Track from YouTube
   @HiveField(0)
   final String id;
 
+  /// The title of the Track
   @HiveField(1)
   final String title;
 
+  /// The artists of the Track
   @HiveField(2)
   final List<Artist> artists;
 
+  /// The thumbnail of the Track
   @HiveField(3)
   final String thumbnail;
 
