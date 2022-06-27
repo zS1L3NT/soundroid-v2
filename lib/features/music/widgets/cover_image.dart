@@ -16,6 +16,7 @@ class CoverImage extends StatelessWidget {
       future: thumbnail != null
           ? Future.delayed(
               const Duration(milliseconds: 500),
+              // Fetch the dominant color in the thumbnail
               () => PaletteGenerator.fromImageProvider(
                 NetworkImage(thumbnail),
                 maximumColorCount: 1,
@@ -33,6 +34,8 @@ class CoverImage extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 if (snap.data != null && snap.data!.colors.isNotEmpty)
+                  // Render the dominant color as a shadow background for the image
+                  // to give the app a more interactive feel
                   BoxShadow(
                     color: snap.data!.colors.first,
                     spreadRadius: 4,

@@ -24,16 +24,14 @@ class _AlbumSliverAppBarState extends State<AlbumSliverAppBar> {
   void initState() {
     super.initState();
 
+    // When the user scrolls past the thumbnail of the album
+    // show the title of the album in the app bar
     widget.controller.addListener(() {
       final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
       if (isCollapsed != _isCollapsed) {
         setState(() => _isCollapsed = isCollapsed);
       }
     });
-  }
-
-  void onBackClick() {
-    Navigator.of(context).pop();
   }
 
   @override
@@ -64,7 +62,7 @@ class _AlbumSliverAppBarState extends State<AlbumSliverAppBar> {
       ),
       leading: AppIcon(
         Icons.arrow_back_rounded,
-        onPressed: onBackClick,
+        onPressed: Navigator.of(context).pop,
       ),
     );
   }

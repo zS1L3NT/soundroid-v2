@@ -27,6 +27,7 @@ class RecentSuggestions extends StatelessWidget {
           );
         }
 
+        // Animated items in the list reordering with this
         return AutomaticAnimatedListView<Search>(
           list: snap.data!,
           listController: controller,

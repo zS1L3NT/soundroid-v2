@@ -28,6 +28,7 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
     super.build(context);
 
     return RefreshIndicator(
+      // Call set state in a Future so that the FutureBuilder will rerender
       onRefresh: () => Future(() => setState(() {})),
       child: FutureBuilder<List<FeedSection>>(
         future: context.read<ApiRepository>().getFeed(),

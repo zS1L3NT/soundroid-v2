@@ -29,14 +29,19 @@ void main() async {
   // Initialize Perfect Volume Control
   PerfectVolumeControl.hideUI = true;
 
+  // Initialize Audio Session
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.zectan.soundroid.audio',
     androidNotificationChannelName: 'Music',
     androidNotificationOngoing: true,
   );
+  (await AudioSession.instance).configure(
+    const AudioSessionConfiguration.music(),
+  );
 
   runApp(
     MultiRepositoryProvider(
+      // Initialize all repositories as providers
       providers: [
         RepositoryProvider<ApiRepository>(
           create: (_) => ApiRepository(trackBox: trackBox),
@@ -55,6 +60,7 @@ void main() async {
         ),
       ],
       child: MultiProvider(
+        // Initialize all providers
         providers: [
           ChangeNotifierProvider(create: (context) {
             return SearchProvider(
@@ -64,13 +70,9 @@ void main() async {
           }),
           ChangeNotifierProvider(create: (context) {
             final musicProvider = MusicProvider(
-              listenRepo: context.read<ListenRepository>(),
               apiRepo: context.read<ApiRepository>(),
+              listenRepo: context.read<ListenRepository>(),
             );
-
-            AudioSession.instance.then((session) {
-              session.configure(const AudioSessionConfiguration.music());
-            });
 
             musicProvider.player.setAudioSource(musicProvider.queue);
             return musicProvider;

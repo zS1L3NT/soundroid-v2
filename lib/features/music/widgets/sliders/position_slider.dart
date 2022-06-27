@@ -12,6 +12,8 @@ class PositionSlider extends StatefulWidget {
 class _PositionSliderState extends State<PositionSlider> {
   late final _durationStream = context.read<MusicProvider>().player.durationStream;
   late final _positionStream = context.read<MusicProvider>().player.positionStream;
+
+  /// The position on the slider that the user is currently touching
   double? _slidePosition;
 
   String formatDuration(Duration? duration) {
@@ -46,6 +48,7 @@ class _PositionSliderState extends State<PositionSlider> {
                   width: 40,
                   child: Text(
                     formatDuration(
+                      // If the user is dragging the slider, show the user's slide position timing instead
                       _slidePosition != null && duration != null
                           ? Duration(
                               milliseconds: (duration.inMilliseconds * _slidePosition!).toInt(),
@@ -63,10 +66,12 @@ class _PositionSliderState extends State<PositionSlider> {
                   ),
                   child: Expanded(
                     child: Slider.adaptive(
+                      // If the user is dragging the slider, show the user's slide position instead
                       value: _slidePosition ??
                           (position != null && duration != null
                               ? position.inSeconds / duration.inSeconds
                               : 0),
+                      // Change the _slidePosition when the user drags the slider
                       onChanged: (position) => setState(() => _slidePosition = position),
                       onChangeEnd: (position) {
                         context.read<MusicProvider>().player.seek(
@@ -74,6 +79,7 @@ class _PositionSliderState extends State<PositionSlider> {
                                 milliseconds: ((duration?.inMilliseconds ?? 0) * position).toInt(),
                               ),
                             );
+                        // Reset the _slidePosition when the user stops dragging
                         setState(() => _slidePosition = null);
                       },
                     ),

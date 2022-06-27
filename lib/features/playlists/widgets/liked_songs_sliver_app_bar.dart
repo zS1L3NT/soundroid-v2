@@ -20,6 +20,8 @@ class _LikedSongsSliverAppBarState extends State<LikedSongsSliverAppBar> {
   void initState() {
     super.initState();
 
+    // When the user scrolls past the liked songs icon
+    // show the words "Liked Songs" in the app bar
     widget.controller.addListener(() {
       final isCollapsed = widget.controller.offset > (200 + MediaQuery.of(context).padding.top);
       if (isCollapsed != _isCollapsed) {

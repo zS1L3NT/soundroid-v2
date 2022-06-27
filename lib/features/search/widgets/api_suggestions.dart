@@ -11,6 +11,7 @@ class ApiSuggestions extends StatelessWidget {
     final searchProvider = context.watch<SearchProvider>();
     final controller = AnimatedListController();
 
+    // Animated items in the list reordering with this
     return AutomaticAnimatedListView<Suggestion>(
       list: searchProvider.suggestions,
       listController: controller,

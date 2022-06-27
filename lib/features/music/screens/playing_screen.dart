@@ -38,6 +38,7 @@ class PlayingScreen extends StatelessWidget {
       },
       onPanEnd: (action) {
         if (isSwipeDown) {
+          // Pop the current screen when I swipe down
           Navigator.of(context).pop();
         }
       },

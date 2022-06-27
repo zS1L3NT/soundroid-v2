@@ -44,7 +44,7 @@ class ApiRepository {
     }
   }
 
-  /// Fetch search suggestions related to a [query] for the currently authenticated user
+  /// Fetch search suggestions related to a [query]
   Future<List<String>> getSearchSuggestions(String query) async {
     final response = await get(Uri.parse("$_host/suggestions?query=${Uri.encodeComponent(query)}"));
 

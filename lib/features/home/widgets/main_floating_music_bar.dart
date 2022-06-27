@@ -86,6 +86,7 @@ class MainFloatingMusicButton extends StatelessWidget {
       },
       onPanEnd: (action) {
         if (isSwipeUp) {
+          // Show the current playing screen when I swipe up
           Navigator.of(context).push(
             PlayingScreen.route(),
           );
