@@ -26,9 +26,10 @@ class AppAlertDialog {
   /// The description of the dialog
   final String? description;
 
-  /// The function that is called when this Dialog is closed, if any
+  /// The function that is called when this dialog is closed, if any
   final Function()? onClose;
 
+  /// Shows the Alert Dialog
   void show(BuildContext context) {
     showDialog(
       context: context,
@@ -55,6 +56,13 @@ class AppAlertDialog {
   }
 }
 
+/// A helper class for building a Confirm Dialog
+///
+/// A Confirm Dialog contains
+/// - A title
+/// - A description
+/// - A cancel button to close the dialog
+/// - An action button to confirm the action
 class AppConfirmDialog {
   const AppConfirmDialog({
     required this.title,
@@ -66,20 +74,28 @@ class AppConfirmDialog {
     this.onClose,
   });
 
+  /// The title of the dialog
   final String title;
 
+  /// The description of the dialog
   final String? description;
 
+  /// The text shown on the confirm button
   final String confirmText;
 
+  /// Whether the confirm button should be colored red
   final bool isDanger;
 
+  /// The function that is called when the cancel button is pressed, if any
   final Function()? onCancel;
 
+  /// The function that is called when the confirm button is pressed
   final Function() onConfirm;
 
+  /// The function that is called when this dialog is closed, if any
   final Function()? onClose;
 
+  /// Shows the Confirm Dialog
   void show(BuildContext context) {
     showDialog(
       context: context,
@@ -115,13 +131,19 @@ class AppConfirmDialog {
   }
 }
 
+/// A helper class for building a Bottom Sheet
+///
+/// A Bottom Sheet is just a popup from the bottom of the screen
+/// on top of the current screen
 class AppBottomSheet {
   const AppBottomSheet({
     required this.child,
   });
 
+  /// The widget to render as the Bottom Sheet
   final Widget child;
 
+  /// Shows the Bottom Sheet
   void show(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -132,6 +154,9 @@ class AppBottomSheet {
   }
 }
 
+/// A helper class for building a Select Dialog
+///
+/// This is a class that defines an option in an [AppSelectDialog]
 class AppSelectOption {
   const AppSelectOption({
     required this.title,
@@ -139,13 +164,21 @@ class AppSelectOption {
     required this.onPressed,
   });
 
+  /// The title of the option
   final String title;
 
+  /// The icon of the option
   final IconData icon;
 
+  /// The function that is called when the option is pressed
   final Function() onPressed;
 }
 
+/// A helper class for building a Select Dialog
+///
+/// A Select Dialog contains
+/// - A title
+/// - A list of options to choose from
 class AppSelectDialog {
   const AppSelectDialog({
     required this.title,
@@ -153,14 +186,18 @@ class AppSelectDialog {
     this.onClose,
   });
 
+  /// The title of the dialog
   final String title;
 
-  final String? description = null;
-
+  /// The options of the dialog
+  ///
+  /// This is a list of [AppSelectOption]
   final List<AppSelectOption> options;
 
+  /// The function that is called when this dialog is closed, if any
   final Function()? onClose;
 
+  /// Shows the Select Dialog
   void show(BuildContext context) {
     showDialog(
       context: context,
@@ -193,39 +230,60 @@ class AppSelectDialog {
   }
 }
 
+/// A helper class for building a Text Dialog
+///
+/// A Text Dialog contains
+/// - A title
+/// - A description
+/// - A text field to enter text
+/// - A cancel button to close the dialog
+/// - An action button to confirm the text
 class AppTextDialog {
   const AppTextDialog({
     required this.title,
     required this.textFieldName,
+    this.initialText,
     required this.confirmText,
-    required this.onConfirm,
     this.onClose,
+    required this.onConfirm,
   });
 
+  /// The title of the dialog
   final String title;
 
-  final String? description = null;
-
+  /// The name of the text field
+  ///
+  /// This would be the legend of the text field
   final String textFieldName;
 
+  /// The text shown initially in the dialog
+  final String? initialText;
+
+  /// The text shown on the confirm button
   final String confirmText;
 
-  final Function(String) onConfirm;
-
+  /// The function that is called when this dialog is closed, if any
   final Function()? onClose;
 
+  /// The function that is called when the confirm button is pressed
+  final Function(String) onConfirm;
+
+  /// Shows the Text Dialog
   void show(BuildContext context) {
     final controller = TextEditingController(text: initialText);
 
     showDialog(
       context: context,
       builder: (context) {
+        // This is needed to rebuild the widget when the text changes
+        // so that the confirm button is only enabled when the text is not empty
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
               title: Text(title),
               content: TextField(
                 controller: controller,
+                // Rerender widget every time the text changes
                 onChanged: (_) => setState(() {}),
                 decoration: InputDecoration(
                   hintText: textFieldName,
@@ -254,6 +312,11 @@ class AppTextDialog {
   }
 }
 
+/// A helper class for building a SnackBar
+///
+/// A SnackBar contains
+/// - An icon
+/// - A line of text
 class AppSnackBar {
   const AppSnackBar({
     required this.text,
@@ -261,12 +324,16 @@ class AppSnackBar {
     this.color,
   });
 
+  /// The text to show in the snackbar
   final String text;
 
+  /// The icon to show in the snackbar
   final IconData icon;
 
+  /// The background color of the snackbar
   final Color? color;
 
+  /// Shows the SnackBar
   void show(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

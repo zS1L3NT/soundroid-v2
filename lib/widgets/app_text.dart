@@ -2,14 +2,26 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
+/// A helper class for building a text widget
+///
+/// ### Rationale
+/// - The default [Text] widget doesn't provide support for text marquee
+/// - I want to abstract away the text marquee code since it is quite lengthy
+/// - I want to toggle between marquee and ellipsis more easily
 class AppText extends StatelessWidget {
   const AppText({
     Key? key,
     required this.builder,
   }) : super(key: key);
 
+  /// The builder function to use to build the text widget
   final Widget Function(BuildContext) builder;
 
+  /// Render the text and apply the marquee effect if the text is too long
+  ///
+  /// [extraHeight] is the extra height given to the AppText. This is needed
+  /// to prevent the [Marquee] widget from accidentally marquee'ing the text
+  /// when the overflow is vertical.
   static Widget marquee(
     String text, {
     double width = double.infinity,
@@ -25,6 +37,7 @@ class AppText extends StatelessWidget {
       builder: (context) {
         final textStyle = style ?? Theme.of(context).textTheme.bodyText2!;
         final fontSize = textStyle.fontSize ?? 14;
+
         return SizedBox(
           width: width,
           height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
@@ -63,6 +76,7 @@ class AppText extends StatelessWidget {
     );
   }
 
+  /// Render the text and apply a ellipsis if the text is too long
   static Widget ellipse(
     String text, {
     double width = double.infinity,
@@ -74,6 +88,7 @@ class AppText extends StatelessWidget {
       builder: (context) {
         final textStyle = style ?? Theme.of(context).textTheme.bodyText2!;
         final fontSize = textStyle.fontSize ?? 14;
+
         return SizedBox(
           width: width,
           height: (fontSize + extraHeight) * MediaQuery.of(context).textScaleFactor,
