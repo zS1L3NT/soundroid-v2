@@ -31,7 +31,7 @@ class AddToButton extends StatelessWidget {
                           playlist.trackIds + [current.id],
                         ),
                       );
-                  AppSnackBar(
+                  const AppSnackBar(
                     text: "Added track to playlist",
                     icon: Icons.playlist_add_check_rounded,
                   ).show(context);

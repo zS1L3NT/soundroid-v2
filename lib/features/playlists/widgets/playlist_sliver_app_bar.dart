@@ -62,7 +62,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
                     .copyWith
                     .trackIds(tracks.map((track) => track.id).toList()),
               );
-          AppSnackBar(
+          const AppSnackBar(
             text: "Updated playlist order",
             icon: Icons.check_rounded,
           ).show(context);
@@ -92,7 +92,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
             await playlistRepo.getPicture(_playlistId),
           ),
     );
-    AppSnackBar(
+    const AppSnackBar(
       text: "Updated playlist image",
       icon: Icons.check_rounded,
     ).show(context);
@@ -104,7 +104,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
           (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
         );
     await context.read<PlaylistRepository>().deletePicture(_playlistId);
-    AppSnackBar(
+    const AppSnackBar(
       text: "Removed playlist picture",
       icon: Icons.check_rounded,
     ).show(context);
@@ -151,7 +151,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
         await context.read<PlaylistRepository>().updatePlaylist(
               (widget.playlist ?? widget.initialPlaylist).copyWith.name(name),
             );
-        AppSnackBar(
+        const AppSnackBar(
           text: "Renamed playlist",
           icon: Icons.check_rounded,
         ).show(context);
@@ -170,7 +170,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         await context.read<PlaylistRepository>().deletePlaylist(_playlistId);
-        AppSnackBar(
+        const AppSnackBar(
           text: "Deleted playlist",
           icon: Icons.check_rounded,
         ).show(context);
