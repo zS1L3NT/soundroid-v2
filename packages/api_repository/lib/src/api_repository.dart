@@ -126,4 +126,16 @@ class ApiRepository {
       throw Exception("Failed to fetch track");
     }
   }
+
+  /// Fetch the content length of a youtube video's audio
+  Future<int> getLength(String trackId) async {
+    final response = await get(Uri.parse("$_host/length?videoId=$trackId"));
+
+    if (response.statusCode == 200) {
+      return int.parse(response.body);
+    } else {
+      debugPrint(response.body);
+      throw Exception("Failed to fetch length");
+    }
+  }
 }

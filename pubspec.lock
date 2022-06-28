@@ -184,7 +184,7 @@ packages:
     source: hosted
     version: "3.0.2"
   diffutil_dart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: diffutil_dart
       url: "https://pub.dartlang.org"
@@ -556,12 +556,12 @@ packages:
     source: hosted
     version: "1.8.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.9"
+    version: "2.0.11"
   path_provider_android:
     dependency: transitive
     description:

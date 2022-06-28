@@ -93,6 +93,12 @@ void main() async {
             musicProvider.player.setAudioSource(musicProvider.queue);
             return musicProvider;
           }),
+          ChangeNotifierProvider(create: (context) {
+            return DownloadManager(
+              apiRepo: context.read<ApiRepository>(),
+              playlistRepo: context.read<PlaylistRepository>(),
+            );
+          })
         ],
         child: const App(),
       ),

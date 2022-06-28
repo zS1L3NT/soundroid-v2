@@ -26,6 +26,13 @@ class _MainScreenState extends State<MainScreen> {
   int _page = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    context.read<DownloadManager>().setup();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<Track?>(
       stream: _currentStream,
