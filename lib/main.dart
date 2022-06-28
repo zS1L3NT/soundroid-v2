@@ -1,6 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +38,21 @@ void main() async {
   );
   (await AudioSession.instance).configure(
     const AudioSessionConfiguration.music(),
+  );
+
+  // Initialize Notification Channels
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'track_download_progress',
+        channelName: 'Track Download Progress',
+        channelDescription: 'Notification channel track download progress',
+        defaultColor: const Color(0xFF126DFF),
+        ledColor: Colors.white,
+        onlyAlertOnce: true,
+      )
+    ],
   );
 
   runApp(
