@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:api_repository/api_repository.dart';
+import 'package:awesome_notifications/android_foreground_service.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -14,6 +16,9 @@ class DownloadManager extends ChangeNotifier {
     required this.playlistRepo,
   });
 
+  final notificationId = 16051993;
+  final notificationChannelKey = "track_download_progress";
+
   final ApiRepository apiRepo;
   final PlaylistRepository playlistRepo;
   late final Directory _directory;
@@ -24,6 +29,9 @@ class DownloadManager extends ChangeNotifier {
   List<String>? get queue => _queue;
   List<String>? _queue;
 
+  /// Last time the download notification was updated
+  DateTime _lastNotificationUpdate = DateTime.fromMillisecondsSinceEpoch(0);
+
   /// The list of tracks currently downloaded
   late final _downloaded =
       _directory.listSync().map((file) => file.path.split("/").last.split(".").first).toList();
@@ -33,11 +41,9 @@ class DownloadManager extends ChangeNotifier {
     if (!_directory.existsSync()) _directory.createSync();
 
     playlistRepo.getDownloadedTrackIds().listen((trackIds) {
-      calculateListDiff(
-        _downloaded + (queue ?? []),
-        trackIds,
-        detectMoves: false,
-      ).getUpdatesWithData().forEach((change) {
+      calculateListDiff(_downloaded + (queue ?? []), trackIds)
+          .getUpdatesWithData()
+          .forEach((change) {
         change.when(
           insert: (_, trackId) {
             download(trackId);
@@ -69,6 +75,18 @@ class DownloadManager extends ChangeNotifier {
     _queue = [trackId];
     notifyListeners();
 
+    apiRepo.getTrack(trackId).then((track) {
+      AndroidForegroundService.startForeground(
+        content: NotificationContent(
+          id: notificationId,
+          channelKey: notificationChannelKey,
+          title: "Downloading ${_queue!.length} tracks",
+          progress: 0,
+          notificationLayout: NotificationLayout.ProgressBar,
+        ),
+      );
+    });
+
     while (true) {
       if (_queue!.isEmpty) break;
 
@@ -89,6 +107,7 @@ class DownloadManager extends ChangeNotifier {
         debugPrint(
           "Downloading $trackId: ${(downloaded / contentLength * 100).toStringAsFixed(2)}%",
         );
+        _updateNotification(trackId, downloaded / contentLength * 100);
 
         chunks.add(chunk);
         downloaded += chunk.length;
@@ -98,6 +117,7 @@ class DownloadManager extends ChangeNotifier {
         debugPrint("Download of $trackId cancelled");
         continue;
       }
+      _updateNotification(trackId, 100);
 
       debugPrint("Saving $trackId...");
       final bytes = Uint8List(contentLength);
@@ -116,5 +136,27 @@ class DownloadManager extends ChangeNotifier {
 
     _queue = null;
     notifyListeners();
+
+    await Future.delayed(const Duration(seconds: 1));
+    AndroidForegroundService.stopForeground();
+  }
+
+  void _updateNotification(String trackId, double percent) {
+    if (DateTime.now().difference(_lastNotificationUpdate).inSeconds < 1) return;
+    _lastNotificationUpdate = DateTime.now();
+
+    apiRepo.getTrack(trackId).then((track) {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: notificationId,
+          channelKey: notificationChannelKey,
+          title: "Downloading ${_queue?.length} tracks",
+          body: "${track.title} - ${track.artists.map((artist) => artist.name).join(", ")} "
+              "(${percent.toStringAsFixed(2)}%)",
+          progress: percent.round(),
+          notificationLayout: NotificationLayout.ProgressBar,
+        ),
+      );
+    });
   }
 }
