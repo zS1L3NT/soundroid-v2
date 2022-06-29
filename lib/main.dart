@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api_repository/api_repository.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:authentication_repository/authentication_repository.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:listen_repository/listen_repository.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +20,10 @@ import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/search/search.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Track.directory = Directory((await getApplicationDocumentsDirectory()).path + "/tracks");
+
   // Initialize Hive
   await Hive.initFlutter();
 
