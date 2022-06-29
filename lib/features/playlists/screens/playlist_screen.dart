@@ -9,14 +9,18 @@ class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({
     Key? key,
     required this.playlist,
+    required this.heroTag,
   }) : super(key: key);
 
   final Playlist playlist;
 
-  static Route route(Playlist playlist) {
+  final String heroTag;
+
+  static Route route(Playlist playlist, String heroTag) {
     return MaterialPageRoute(
       builder: (_) => PlaylistScreen(
         playlist: playlist,
+        heroTag: heroTag,
       ),
     );
   }
@@ -49,6 +53,7 @@ class PlaylistScreen extends StatelessWidget {
                 initialPlaylist: this.playlist,
                 playlist: playlist,
                 controller: controller,
+                heroTag: heroTag,
               ),
               SliverToBoxAdapter(
                 child: Padding(

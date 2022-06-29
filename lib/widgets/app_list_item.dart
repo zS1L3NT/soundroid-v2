@@ -122,12 +122,13 @@ class AppListItem extends StatelessWidget {
     required Function() onTap,
     Function()? onMoreTap,
     bool isDisabled = false,
+    required String heroTag,
   }) {
     return AppListItem(
       title: playlist.name,
       subtitle: "${playlist.trackIds.length} tracks",
       image: Hero(
-        tag: "playlist_${playlist.id}",
+        tag: heroTag,
         child: FittedBox(
           fit: BoxFit.cover,
           child: AppImage.network(
