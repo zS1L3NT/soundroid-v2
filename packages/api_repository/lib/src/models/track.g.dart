@@ -145,9 +145,12 @@ Track _$TrackFromJson(Map<String, dynamic> json) => Track(
           .map((e) => Artist.fromJson(e as Map<String, dynamic>))
           .toList(),
       thumbnail: json['thumbnail'] as String,
-    );
+    )..duration = json['duration'] == null
+        ? null
+        : Duration(microseconds: json['duration'] as int);
 
 Map<String, dynamic> _$TrackToJson(Track instance) => <String, dynamic>{
+      'duration': instance.duration?.inMicroseconds,
       'id': instance.id,
       'title': instance.title,
       'artists': instance.artists,
