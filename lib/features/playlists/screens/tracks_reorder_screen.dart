@@ -1,7 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
-import 'package:soundroid/widgets/app_icon.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class TracksReorderScreen extends StatefulWidget {
   const TracksReorderScreen({
@@ -53,9 +53,11 @@ class _TracksReorderScreenState extends State<TracksReorderScreen> {
               child: AppIcon.white(Icons.delete_rounded),
             ),
             onDismissed: (_) => setState(() => _tracks.removeAt(index)),
-            child: TrackReorderItem(
-              track: _tracks[index],
-              index: index,
+            child: AppListItem.fromTrack(
+              _tracks[index],
+              onTap: () {},
+              isDraggable: true,
+              dragIndex: index,
             ),
           );
         },

@@ -15,17 +15,11 @@ void showTrackBottomSheet(BuildContext context, Track track) {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 8),
-        StreamBuilder<Track?>(
-          stream: context.read<MusicProvider>().current,
-          builder: (context, snap) {
-            return AppListItem.fromTrack(
-              track,
-              onTap: () {
-                context.read<MusicProvider>().playTrackIds([track.id]);
-                Navigator.of(context).pop();
-              },
-              isActive: snap.data == track,
-            );
+        AppListItem.fromTrack(
+          track,
+          onTap: () {
+            context.read<MusicProvider>().playTrackIds([track.id]);
+            Navigator.of(context).pop();
           },
         ),
         const Divider(),

@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class QueueScreen extends StatefulWidget {
   const QueueScreen({Key? key}) : super(key: key);
@@ -40,10 +41,30 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
                       itemBuilder: (context, index) {
                         final track = tracks[shuffleModeEnabled ? shuffleOrder[index] : index];
 
-                        return QueueItem(
+                        return Dismissible(
                           key: ValueKey(track.id),
-                          track: track,
-                          index: index,
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            color: Colors.red,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 16),
+                            child: AppIcon.white(Icons.delete_rounded),
+                          ),
+                          onDismissed: (_) {
+                            context.read<MusicProvider>().queue.removeAt(index);
+                          },
+                          child: AppListItem.fromTrack(
+                            track,
+                            key: ValueKey(track.id),
+                            onTap: () {
+                              context
+                                  .read<MusicProvider>()
+                                  .player
+                                  .seek(Duration.zero, index: index);
+                            },
+                            isDraggable: true,
+                            dragIndex: index,
+                          ),
                         );
                       },
                       itemCount: tracks.length,

@@ -1,8 +1,10 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlaylistScreen extends StatelessWidget {
@@ -107,16 +109,22 @@ class PlaylistScreen extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, int index) {
-                    final trackId = playlist!.trackIds[index];
+                    return FutureBuilder<Track>(
+                      future: context.read<ApiRepository>().getTrack(playlist!.trackIds[index]),
+                      builder: (context, snap) {
+                        final track = snap.data;
 
-                    return TrackItem(
-                      key: ValueKey(trackId),
-                      trackId: trackId,
-                      onTap: () {
-                        context.read<PlaylistRepository>().updatePlaylist(
-                              playlist.copyWith.lastPlayed(PlaylistRepository.now),
-                            );
-                        context.read<MusicProvider>().playTrackIds(playlist.trackIds, index);
+                        return AppListItem.fromTrack(
+                          track,
+                          onTap: () {
+                            context.read<PlaylistRepository>().updatePlaylist(
+                                  playlist.copyWith.lastPlayed(PlaylistRepository.now),
+                                );
+                            context.read<MusicProvider>().playTrackIds(playlist.trackIds, index);
+                          },
+                          onMoreTap:
+                              track != null ? () => showTrackBottomSheet(context, track) : null,
+                        );
                       },
                     );
                   },

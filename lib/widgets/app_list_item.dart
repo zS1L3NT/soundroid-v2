@@ -1,6 +1,8 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 /// A helper class for building ListItems. This widget supports building
@@ -22,6 +24,8 @@ class AppListItem extends StatelessWidget {
     this.icon,
     required this.onTap,
     this.onMoreTap,
+    this.isDraggable = false,
+    this.dragIndex,
     required this.isActive,
     this.isDisabled = false,
   }) : super(key: key);
@@ -50,6 +54,10 @@ class AppListItem extends StatelessWidget {
   /// this function will be called when the Icon is tapped.
   final Function()? onMoreTap;
 
+  final bool isDraggable;
+
+  final int? dragIndex;
+
   /// Whether the list tile should make this item stand out to other list tiles
   ///
   /// Highlights the [title] and [subtitle] in with
@@ -68,25 +76,54 @@ class AppListItem extends StatelessWidget {
   ///
   /// The image rendered will be [AppImage.network] so as to
   /// show a shimmer if the track is null
-  factory AppListItem.fromTrack(
+  ///
+  /// The widget also listens to the current playing track from the
+  /// [MusicProvider] and sets the active state based on if the current
+  /// track playing is this track.
+  ///
+  /// If [isDraggable] is true, the leading icon in the list tile will be
+  /// a drag handle.
+  /// Else If [onMoreTap] is true, the trailing icon in the list tile will be
+  /// a more button.
+  /// Else there will be no trailing button
+  static Widget fromTrack(
     Track? track, {
+    Key? key,
     IconData? icon,
     required Function() onTap,
     Function()? onMoreTap,
-    required bool isActive,
+    bool isDraggable = false,
+    int? dragIndex,
   }) {
-    return AppListItem(
-      title: track?.title ?? "...",
-      subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
-      image: AppImage.network(
-        track?.thumbnail,
-        borderRadius: BorderRadius.circular(8),
-        size: 56,
-      ),
-      icon: icon,
-      onTap: onTap,
-      onMoreTap: onMoreTap,
-      isActive: isActive,
+    if (isDraggable) {
+      assert(onMoreTap == null, "Cannot define a more tap handler when isDraggable is true");
+      assert(dragIndex != null, "Must define a dragIndex when a Track isDraggable");
+    }
+
+    return Builder(
+      key: key,
+      builder: (context) {
+        return StreamBuilder<Track?>(
+          stream: context.read<MusicProvider>().current,
+          builder: (context, snap) {
+            return AppListItem(
+              title: track?.title ?? "...",
+              subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
+              image: AppImage.network(
+                track?.thumbnail,
+                borderRadius: BorderRadius.circular(8),
+                size: 56,
+              ),
+              icon: icon,
+              onTap: onTap,
+              onMoreTap: onMoreTap,
+              isActive: track == snap.data,
+              isDraggable: isDraggable,
+              dragIndex: dragIndex,
+            );
+          },
+        );
+      },
     );
   }
 
@@ -204,15 +241,23 @@ class AppListItem extends StatelessWidget {
                 fontWeight: isActive ? FontWeight.w600 : null,
               ),
         ),
-        trailing: onMoreTap != null
-            ? AppIcon.black87(
-                Icons.more_vert_rounded,
-                onPressed: onMoreTap,
+        trailing: isDraggable
+            ? ReorderableDragStartListener(
+                index: dragIndex!,
+                child: AppIcon.black87(
+                  Icons.drag_handle_rounded,
+                  onPressed: () {},
+                ),
               )
-            : null,
+            : onMoreTap != null
+                ? AppIcon.black87(
+                    Icons.more_vert_rounded,
+                    onPressed: onMoreTap,
+                  )
+                : null,
         contentPadding: EdgeInsets.only(
           left: 16,
-          right: onMoreTap != null ? 0 : 16,
+          right: (onMoreTap != null || isDraggable) ? 0 : 16,
         ),
       ),
     );
