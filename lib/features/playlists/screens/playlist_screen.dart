@@ -33,7 +33,13 @@ class PlaylistScreen extends StatelessWidget {
         );
   }
 
-  void onDownloadClick() {}
+  void onDownloadClick(BuildContext context, bool download) {
+    context.read<PlaylistRepository>().updatePlaylist(
+          playlist.copyWith.download(
+            !download,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +94,7 @@ class PlaylistScreen extends StatelessWidget {
                                       ? Icons.download_done_rounded
                                       : Icons.download_rounded,
                                   color: playlist.download ? Theme.of(context).primaryColor : null,
-                                  onPressed: onDownloadClick,
+                                  onPressed: () => onDownloadClick(context, playlist.download),
                                 )
                               : AppIcon.loading(color: Colors.black)
                         ],
