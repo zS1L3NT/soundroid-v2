@@ -97,16 +97,12 @@ class DownloadManager extends ChangeNotifier {
       List<List<int>> chunks = [];
       int downloaded = 0;
 
-      debugPrint("Fetching length of $trackId...");
       final url = Uri.parse("http://soundroid.zectan.com/api/download?videoId=$trackId");
       final response = await Client().send(Request("GET", url));
       final contentLength = await apiRepo.getLength(trackId);
 
       await for (final chunk in response.stream) {
         if (_queue?.isEmpty ?? _queue!.first != trackId) break;
-        debugPrint(
-          "Downloading $trackId: ${(downloaded / contentLength * 100).toStringAsFixed(2)}%",
-        );
         _updateNotification(trackId, downloaded / contentLength * 100);
 
         chunks.add(chunk);
@@ -114,12 +110,10 @@ class DownloadManager extends ChangeNotifier {
       }
 
       if (_queue?.isEmpty ?? _queue!.first != trackId) {
-        debugPrint("Download of $trackId cancelled");
         continue;
       }
       _updateNotification(trackId, 100);
 
-      debugPrint("Saving $trackId...");
       final bytes = Uint8List(contentLength);
       int offset = 0;
       for (final chunk in chunks) {
@@ -127,7 +121,6 @@ class DownloadManager extends ChangeNotifier {
         offset += chunk.length;
       }
       await file.writeAsBytes(bytes);
-      debugPrint("Saved $trackId!");
 
       _queue!.remove(trackId);
       _downloaded.add(trackId);
