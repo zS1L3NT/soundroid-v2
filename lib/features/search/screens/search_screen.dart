@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:great_list_view/great_list_view.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/utils/utils.dart';
@@ -11,6 +12,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends KeptAliveState<SearchScreen> {
+  final _controller = AnimatedListController();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -25,7 +28,7 @@ class _SearchScreenState extends KeptAliveState<SearchScreen> {
           : searchProvider.results != null
               ? SearchResultsWidget(results: searchProvider.results!)
               : searchProvider.query != ""
-                  ? const ApiSuggestions()
+                  ? ApiSuggestions(controller: _controller)
                   : const RecentSuggestions(),
     );
   }
