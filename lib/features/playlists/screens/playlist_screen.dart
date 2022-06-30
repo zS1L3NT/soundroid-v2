@@ -116,8 +116,6 @@ class PlaylistScreen extends StatelessWidget {
 
                         return AppListItem.fromTrack(
                           track,
-                          isDownloaded: context.select<DownloadManager, bool>(
-                              (manager) => manager.downloaded.contains(track?.id)),
                           onTap: () {
                             context.read<PlaylistRepository>().updatePlaylist(
                                   playlist.copyWith.lastPlayed(PlaylistRepository.now),

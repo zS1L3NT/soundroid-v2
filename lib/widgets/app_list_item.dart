@@ -1,4 +1,5 @@
 import 'package:api_repository/api_repository.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,10 @@ class AppListItem extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.image,
-    this.icon,
+    this.topLeftIcon,
+    this.topRightIcon,
+    this.bottomLeftIcon,
+    this.bottomRightIcon,
     required this.onTap,
     this.onMoreTap,
     this.isDraggable = false,
@@ -39,11 +43,14 @@ class AppListItem extends StatelessWidget {
   /// The image shown in the list tile
   final Widget image;
 
-  /// The icon shown at the bottom right of a list tile, if any
+  /// Icon that are shown around the image of a list tile, if any
   ///
-  /// If this property is set a white border and an Icon will render
-  /// at the bottom right of the [image]
-  final IconData? icon;
+  /// If these properties are set a white border and an Icon will render
+  /// around the [image]
+  final IconData? topLeftIcon;
+  final IconData? topRightIcon;
+  final IconData? bottomLeftIcon;
+  final IconData? bottomRightIcon;
 
   /// The function that is called when the list tile is tapped
   final Function() onTap;
@@ -89,8 +96,8 @@ class AppListItem extends StatelessWidget {
   static Widget fromTrack(
     Track? track, {
     Key? key,
-    IconData? icon,
-    bool isDownloaded = false,
+    IconData? topLeftIcon,
+    IconData? topRightIcon,
     required Function() onTap,
     Function()? onMoreTap,
     bool isDraggable = false,
@@ -101,30 +108,46 @@ class AppListItem extends StatelessWidget {
       assert(dragIndex != null, "Must define a dragIndex when a Track isDraggable");
     }
 
-    if (isDownloaded) {
-      assert(icon == null, "Cannot define an icon when isDownloaded is true");
-    }
-
     return Builder(
       key: key,
       builder: (context) {
         return StreamBuilder<Track?>(
           stream: context.read<MusicProvider>().current,
           builder: (context, snap) {
-            return AppListItem(
-              title: track?.title ?? "...",
-              subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
-              image: AppImage.network(
-                track?.thumbnail,
-                borderRadius: BorderRadius.circular(8),
-                size: 56,
-              ),
-              icon: isDownloaded ? Icons.download_rounded : icon,
-              onTap: onTap,
-              onMoreTap: onMoreTap,
-              isActive: track == snap.data,
-              isDraggable: isDraggable,
-              dragIndex: dragIndex,
+            final current = snap.data;
+
+            return StreamBuilder<User?>(
+              stream: context.read<AuthenticationRepository>().currentUser,
+              builder: (context, snap) {
+                final user = snap.data;
+
+                return AppListItem(
+                  title: track?.title ?? "...",
+                  subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
+                  image: AppImage.network(
+                    track?.thumbnail,
+                    borderRadius: BorderRadius.circular(8),
+                    size: 56,
+                  ),
+                  topLeftIcon: topLeftIcon,
+                  topRightIcon: topRightIcon,
+                  bottomLeftIcon: track != null
+                      ? (user?.likedTrackIds.contains(track.id) ?? false)
+                          ? Icons.favorite_rounded
+                          : null
+                      : null,
+                  bottomRightIcon: context.select<DownloadManager, bool>(
+                    (manager) => manager.downloaded.contains(track?.id),
+                  )
+                      ? Icons.download_rounded
+                      : null,
+                  onTap: onTap,
+                  onMoreTap: onMoreTap,
+                  isActive: track == current,
+                  isDraggable: isDraggable,
+                  dragIndex: dragIndex,
+                );
+              },
             );
           },
         );
@@ -135,7 +158,9 @@ class AppListItem extends StatelessWidget {
   /// Adapter for rendering [Album] items.
   factory AppListItem.fromAlbum(
     Album album, {
-    IconData? icon,
+    IconData? topLeftIcon,
+    IconData? bottomLeftIcon,
+    IconData? bottomRightIcon,
     required Function() onTap,
     Function()? onMoreTap,
   }) {
@@ -150,7 +175,10 @@ class AppListItem extends StatelessWidget {
           size: 56,
         ),
       ),
-      icon: icon,
+      topLeftIcon: topLeftIcon,
+      topRightIcon: Icons.album_rounded,
+      bottomLeftIcon: bottomLeftIcon,
+      bottomRightIcon: bottomRightIcon,
       onTap: onTap,
       onMoreTap: onMoreTap,
       isActive: false,
@@ -160,7 +188,8 @@ class AppListItem extends StatelessWidget {
   /// Adapter for rendering [Playlist] items.
   factory AppListItem.fromPlaylist(
     Playlist playlist, {
-    IconData? icon,
+    IconData? topLeftIcon,
+    IconData? topRightIcon,
     required Function() onTap,
     Function()? onMoreTap,
     bool isDisabled = false,
@@ -180,7 +209,10 @@ class AppListItem extends StatelessWidget {
           ),
         ),
       ),
-      icon: icon,
+      topLeftIcon: topLeftIcon,
+      topRightIcon: topRightIcon,
+      bottomLeftIcon: playlist.favourite ? Icons.favorite_rounded : null,
+      bottomRightIcon: playlist.download ? Icons.download_rounded : null,
       onTap: onTap,
       onMoreTap: onMoreTap,
       isActive: false,
@@ -200,36 +232,129 @@ class AppListItem extends StatelessWidget {
             // The image provided
             image,
 
-            // A border for the icon, if any
+            // A border for the topLeftIcon, if any
             Positioned(
-              right: -5,
-              bottom: -5,
+              top: -5,
+              left: -5,
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                width: icon != null ? 25 : 0,
-                height: icon != null ? 25 : 0,
+                duration: const Duration(milliseconds: 300),
+                width: topLeftIcon != null ? 23 : 0,
+                height: topLeftIcon != null ? 23 : 0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(23),
                 ),
               ),
             ),
 
-            // The icon, if any
+            // The topLeftIcon, if any
             Positioned(
-              right: 0,
-              bottom: 0,
+              top: 0,
+              left: 0,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: icon != null
+                child: topLeftIcon != null
                     ? Icon(
-                        icon,
+                        topLeftIcon,
                         color: Theme.of(context).primaryColor,
-                        size: 16,
+                        size: 14,
                       )
                     : const SizedBox(),
               ),
-            )
+            ),
+
+            // A border for the topRightIcon, if any
+            Positioned(
+              top: -5,
+              right: -5,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: topRightIcon != null ? 23 : 0,
+                height: topRightIcon != null ? 23 : 0,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(23),
+                ),
+              ),
+            ),
+
+            // The topRightIcon, if any
+            Positioned(
+              top: 0,
+              right: 0,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: topRightIcon != null
+                    ? Icon(
+                        topRightIcon,
+                        color: Theme.of(context).primaryColor,
+                        size: 14,
+                      )
+                    : const SizedBox(),
+              ),
+            ),
+
+            // A border for the bottomLeftIcon, if any
+            Positioned(
+              bottom: -5,
+              left: -5,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: bottomLeftIcon != null ? 23 : 0,
+                height: bottomLeftIcon != null ? 23 : 0,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(23),
+                ),
+              ),
+            ),
+
+            // The bottomLeftIcon, if any
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: bottomLeftIcon != null
+                    ? Icon(
+                        bottomLeftIcon,
+                        color: Theme.of(context).primaryColor,
+                        size: 14,
+                      )
+                    : const SizedBox(),
+              ),
+            ),
+
+            // A border for the bottomRightIcon, if any
+            Positioned(
+              bottom: -5,
+              right: -5,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: bottomRightIcon != null ? 23 : 0,
+                height: bottomRightIcon != null ? 23 : 0,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(23),
+                ),
+              ),
+            ),
+
+            // The bottomRightIcon, if any
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: bottomRightIcon != null
+                    ? Icon(
+                        bottomRightIcon,
+                        color: Theme.of(context).primaryColor,
+                        size: 14,
+                      )
+                    : const SizedBox(),
+              ),
+            ),
           ],
         ),
         title: AppText.ellipse(
