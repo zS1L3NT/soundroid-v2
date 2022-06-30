@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -14,6 +16,27 @@ class MusicProvider with ChangeNotifier {
       if (current != null) {
         _currentThumbnail = current.thumbnail;
         notifyListeners();
+      }
+    });
+
+    current.listen((track) async {
+      if (queue != null &&
+          track != null &&
+          track.uri.scheme == "file" &&
+          !File(track.uri.path).existsSync()) {
+        final tracks = queue!.tracks;
+        tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
+
+        try {
+          await _player.setAudioSource(
+            QueueAudioSource(children: tracks, apiRepo: apiRepo),
+            initialIndex: _player.currentIndex,
+          );
+        } catch (e) {
+          debugPrint("ERROR: " + e.toString());
+        }
+
+        await _player.play();
       }
     });
 
@@ -107,16 +130,20 @@ class MusicProvider with ChangeNotifier {
   ///
   /// Starts from the [from] position if defined or the first item in the queue.
   Future<void> playTrackIds(List<String> trackIds, [int from = 0]) async {
-    await _player.stop();
-    await _player.setAudioSource(
-      QueueAudioSource(
-        children: await Future.wait<Track>([
-          ...trackIds.sublist(from, trackIds.length),
-          ...trackIds.sublist(0, from)
-        ].map(apiRepo.getTrack)),
-        apiRepo: apiRepo,
-      ),
-    );
+    try {
+      await _player.setAudioSource(
+        QueueAudioSource(
+          children: await Future.wait<Track>([
+            ...trackIds.sublist(from, trackIds.length),
+            ...trackIds.sublist(0, from)
+          ].map(apiRepo.getTrack)),
+          apiRepo: apiRepo,
+        ),
+      );
+    } catch (e) {
+      debugPrint("ERROR: " + e.toString());
+    }
+
     await _player.play();
   }
 }

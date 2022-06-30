@@ -44,6 +44,16 @@ class Track extends ProgressiveAudioSource {
           ),
         );
 
+  Track online() {
+    return Track(
+      id: id,
+      title: title,
+      artists: artists,
+      thumbnail: thumbnail,
+      online: true,
+    );
+  }
+
   /// The ID of the Track from YouTube
   @HiveField(0)
   final String id;
