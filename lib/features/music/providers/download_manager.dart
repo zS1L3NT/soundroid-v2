@@ -33,6 +33,7 @@ class DownloadManager extends ChangeNotifier {
   DateTime _lastNotificationUpdate = DateTime.fromMillisecondsSinceEpoch(0);
 
   /// The list of tracks currently downloaded
+  List<String> get downloaded => _downloaded;
   late final _downloaded =
       _directory.listSync().map((file) => file.path.split("/").last.split(".").first).toList();
 

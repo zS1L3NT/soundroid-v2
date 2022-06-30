@@ -90,6 +90,7 @@ class AppListItem extends StatelessWidget {
     Track? track, {
     Key? key,
     IconData? icon,
+    bool isDownloaded = false,
     required Function() onTap,
     Function()? onMoreTap,
     bool isDraggable = false,
@@ -98,6 +99,10 @@ class AppListItem extends StatelessWidget {
     if (isDraggable) {
       assert(onMoreTap == null, "Cannot define a more tap handler when isDraggable is true");
       assert(dragIndex != null, "Must define a dragIndex when a Track isDraggable");
+    }
+
+    if (isDownloaded) {
+      assert(icon == null, "Cannot define an icon when isDownloaded is true");
     }
 
     return Builder(
@@ -114,7 +119,7 @@ class AppListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 size: 56,
               ),
-              icon: icon,
+              icon: isDownloaded ? Icons.download_rounded : icon,
               onTap: onTap,
               onMoreTap: onMoreTap,
               isActive: track == snap.data,
@@ -231,14 +236,13 @@ class AppListItem extends StatelessWidget {
           title,
           style: Theme.of(context).textTheme.subtitle1!.copyWith(
                 color: isActive ? Theme.of(context).primaryColor : null,
-                fontWeight: isActive ? FontWeight.w600 : null,
+                fontWeight: FontWeight.w600,
               ),
         ),
         subtitle: AppText.ellipse(
           subtitle,
-          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+          style: Theme.of(context).textTheme.subtitle2!.copyWith(
                 color: isActive ? Theme.of(context).primaryColor : null,
-                fontWeight: isActive ? FontWeight.w600 : null,
               ),
         ),
         trailing: isDraggable
