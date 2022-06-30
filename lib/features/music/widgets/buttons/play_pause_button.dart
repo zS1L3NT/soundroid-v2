@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class PlayPauseButton extends StatefulWidget {
   const PlayPauseButton({Key? key}) : super(key: key);
@@ -61,15 +63,28 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
               ),
             ],
           ),
-          child: IconButton(
-            icon: AnimatedIcon(
-              icon: AnimatedIcons.play_pause,
-              progress: _controller,
-            ),
-            color: Theme.of(context).primaryColor,
-            iconSize: 52,
-            splashRadius: 52,
-            onPressed: handleClick,
+          child: StreamBuilder<PlayerState?>(
+            stream: context.read<MusicProvider>().player.playerStateStream,
+            builder: (context, snap) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: snap.data == null || snap.data!.processingState == ProcessingState.buffering
+                    ? AppIcon.loading(
+                        size: 36,
+                        strokeWidth: 2,
+                      )
+                    : IconButton(
+                        icon: AnimatedIcon(
+                          icon: AnimatedIcons.play_pause,
+                          progress: _controller,
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        iconSize: 52,
+                        splashRadius: 52,
+                        onPressed: handleClick,
+                      ),
+              );
+            },
           ),
         ),
       ],

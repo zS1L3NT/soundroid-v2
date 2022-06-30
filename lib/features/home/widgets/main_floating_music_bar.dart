@@ -56,7 +56,7 @@ class MainFloatingMusicButton extends StatelessWidget {
                         strokeWidth: 3,
                         value: position != null && duration != null
                             ? position.inSeconds / duration.inSeconds
-                            : 0,
+                            : null,
                       );
                     },
                   );
