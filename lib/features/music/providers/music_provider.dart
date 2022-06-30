@@ -26,8 +26,7 @@ class MusicProvider with ChangeNotifier {
   AudioPlayer get player => _player;
   final _player = AudioPlayer();
 
-  QueueAudioSource get queue => _queue;
-  late final _queue = QueueAudioSource(children: [], apiRepo: apiRepo);
+  QueueAudioSource? get queue => _player.audioSource as QueueAudioSource?;
 
   String? get currentThumbnail => _currentThumbnail;
   String? _currentThumbnail;
@@ -109,14 +108,15 @@ class MusicProvider with ChangeNotifier {
   /// Starts from the [from] position if defined or the first item in the queue.
   Future<void> playTrackIds(List<String> trackIds, [int from = 0]) async {
     await _player.stop();
-    await _player.seek(Duration.zero, index: 0);
-    await _queue.clear();
-    await _queue.addTracks(
-      await Future.wait<Track>([
-        ...trackIds.sublist(from, trackIds.length),
-        ...trackIds.sublist(0, from)
-      ].map(apiRepo.getTrack)),
+    await _player.setAudioSource(
+      QueueAudioSource(
+        children: await Future.wait<Track>([
+          ...trackIds.sublist(from, trackIds.length),
+          ...trackIds.sublist(0, from)
+        ].map(apiRepo.getTrack)),
+        apiRepo: apiRepo,
+      ),
     );
-    _player.play();
+    await _player.play();
   }
 }

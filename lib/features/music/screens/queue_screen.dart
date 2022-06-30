@@ -51,7 +51,7 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
                             child: AppIcon.white(Icons.delete_rounded),
                           ),
                           onDismissed: (_) {
-                            context.read<MusicProvider>().queue.removeAt(index);
+                            context.read<MusicProvider>().queue?.removeAt(index);
                           },
                           child: AppListItem.fromTrack(
                             track,
@@ -69,7 +69,7 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
                       },
                       itemCount: tracks.length,
                       onReorder: (int oldIndex, int newIndex) {
-                        context.read<MusicProvider>().queue.move(
+                        context.read<MusicProvider>().queue?.move(
                               oldIndex,
                               newIndex < oldIndex ? newIndex : newIndex - 1,
                             );

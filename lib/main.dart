@@ -94,13 +94,10 @@ void main() async {
             );
           }),
           ChangeNotifierProvider(create: (context) {
-            final musicProvider = MusicProvider(
+            return MusicProvider(
               apiRepo: context.read<ApiRepository>(),
               listenRepo: context.read<ListenRepository>(),
             );
-
-            musicProvider.player.setAudioSource(musicProvider.queue);
-            return musicProvider;
           }),
           ChangeNotifierProvider(create: (context) {
             return DownloadManager(

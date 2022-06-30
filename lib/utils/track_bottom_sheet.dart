@@ -85,13 +85,13 @@ void showTrackBottomSheet(BuildContext context, Track track) {
             );
           },
         ),
-        if (!context.read<MusicProvider>().queue.tracks.contains(track))
+        if (!context.read<MusicProvider>().queue!.tracks.contains(track))
           ListTile(
             title: const Text("Add to queue"),
             leading: AppIcon.primaryColor(Icons.queue_music_rounded),
             onTap: () async {
               Navigator.of(context).pop();
-              await context.read<MusicProvider>().queue.addTrack(track);
+              await context.read<MusicProvider>().queue?.addTrack(track);
               const AppSnackBar(
                 text: "Added track to queue",
                 icon: Icons.playlist_add_check_rounded,
