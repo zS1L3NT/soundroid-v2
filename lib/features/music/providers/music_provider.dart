@@ -27,6 +27,10 @@ class MusicProvider with ChangeNotifier {
         final tracks = queue!.tracks;
         tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
 
+        // Don't change the audio source too quickly in case they're spamming the button
+        await Future.delayed(const Duration(seconds: 1));
+        if (await current.first != track) return;
+
         try {
           await _player.setAudioSource(
             QueueAudioSource(children: tracks, apiRepo: apiRepo),
