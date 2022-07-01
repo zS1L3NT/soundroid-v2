@@ -52,7 +52,9 @@ class PlaylistScreen extends StatelessWidget {
         stream: context.read<PlaylistRepository>().getPlaylist(playlist.id),
         builder: (context, snap) {
           final playlist = snap.data;
-          final downloaded = context.watch<DownloadManager>().downloaded;
+          final downloaded = context.select<DownloadManager, int?>(
+            (manager) => playlist?.trackIds.where(manager.downloaded.contains).length,
+          );
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -93,16 +95,14 @@ class PlaylistScreen extends StatelessWidget {
                               : AppIcon.loading(color: Colors.black),
                           playlist != null
                               ? playlist.download
-                                  ? playlist.trackIds.every(downloaded.contains)
+                                  ? playlist.trackIds.length == downloaded!
                                       ? AppIcon.primaryColor(
                                           Icons.download_done_rounded,
                                           onPressed: () =>
                                               onDownloadClick(context, playlist.download),
                                         )
                                       : AppIcon.loading(
-                                          value:
-                                              playlist.trackIds.where(downloaded.contains).length /
-                                                  playlist.trackIds.length,
+                                          value: downloaded / playlist.trackIds.length,
                                           onTap: () => onDownloadClick(context, playlist.download),
                                         )
                                   : AppIcon.primaryColor(

@@ -189,7 +189,9 @@ class AppListItem extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final downloaded = context.watch<DownloadManager>().downloaded;
+        final downloaded = context.select<DownloadManager, int>(
+          (manager) => playlist.trackIds.where(manager.downloaded.contains).length,
+        );
 
         return AppListItem(
           title: playlist.name,
@@ -207,10 +209,7 @@ class AppListItem extends StatelessWidget {
           ),
           topRightIcon: topRightIcon,
           favourite: playlist.favourite,
-          downloadProgress: playlist.download
-              ? playlist.trackIds.where((trackId) => downloaded.contains(trackId)).length /
-                  playlist.trackIds.length
-              : null,
+          downloadProgress: playlist.download ? downloaded / playlist.trackIds.length : null,
           onTap: onTap,
           onMoreTap: onMoreTap,
           isActive: false,
