@@ -44,15 +44,22 @@ class AppIcon extends StatelessWidget {
     double size = 16,
     double strokeWidth = 2,
     Color? color,
+    double? value,
+    Function()? onTap,
   }) {
-    return Padding(
-      padding: EdgeInsets.all(padding),
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: CircularProgressIndicator(
-          strokeWidth: strokeWidth,
-          color: color,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(size + padding),
+      child: Padding(
+        padding: EdgeInsets.all(padding),
+        child: SizedBox(
+          width: size,
+          height: size,
+          child: CircularProgressIndicator(
+            value: value == 0 ? null : value,
+            strokeWidth: strokeWidth,
+            color: color,
+          ),
         ),
       ),
     );
