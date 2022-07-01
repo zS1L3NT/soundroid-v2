@@ -12,37 +12,50 @@ class MusicProvider with ChangeNotifier {
     required this.apiRepo,
     required this.listenRepo,
   }) {
-    current.listen((current) {
-      if (current != null) {
-        _currentThumbnail = current.thumbnail;
-        notifyListeners();
-      }
-    });
+    Rx.combineLatest2<Track?, bool, void>(
+      current,
+      isOnlineStream(),
+      (track, isOnline) async {
+        if (track == null) return;
 
-    current.listen((track) async {
-      if (queue != null &&
-          track != null &&
-          track.uri.scheme == "file" &&
-          !File(track.uri.path).existsSync()) {
-        final tracks = queue!.tracks;
-        tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
-
-        // Don't change the audio source too quickly in case they're spamming the button
-        await Future.delayed(const Duration(seconds: 1));
-        if (await current.first != track) return;
-
-        try {
-          await _player.setAudioSource(
-            QueueAudioSource(children: tracks, apiRepo: apiRepo),
-            initialIndex: _player.currentIndex,
-          );
-        } catch (e) {
-          debugPrint("ERROR: " + e.toString());
+        if (!isOnline && track.uri.scheme == "http") {
+          return await _player.pause();
         }
 
-        await _player.play();
-      }
-    });
+        if (track.uri.scheme == "file" && !File(track.uri.path).existsSync()) {
+          await _player.pause();
+
+          if (isOnline) {
+            final tracks = queue!.tracks;
+            tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
+
+            try {
+              await _player.setAudioSource(
+                QueueAudioSource(children: tracks, apiRepo: apiRepo),
+                initialIndex: _player.currentIndex,
+              );
+            } catch (e) {
+              debugPrint("Failed to play audio source from internet: " + e.toString());
+            }
+
+            await _player.play();
+          }
+        }
+      },
+    ).listen((_) {});
+
+    Rx.combineLatest3<Track?, PlayerState, bool, void>(
+      current,
+      player.playerStateStream,
+      isOnlineStream(),
+      (track, playerState, isOnline) async {
+        if (track == null) return;
+
+        if (!isOnline && playerState.playing && track.uri.scheme == "http") {
+          return await _player.pause();
+        }
+      },
+    ).listen((_) {});
 
     _setupListenTracker();
   }

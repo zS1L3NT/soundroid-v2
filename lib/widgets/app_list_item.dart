@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 /// A helper class for building ListItems. This widget supports building
@@ -121,30 +122,38 @@ class AppListItem extends StatelessWidget {
                 final user = snap.data;
                 final downloadManager = context.watch<DownloadManager>();
 
-                return AppListItem(
-                  title: track?.title ?? "...",
-                  subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
-                  image: AppImage.network(
-                    track?.thumbnail,
-                    borderRadius: BorderRadius.circular(8),
-                    size: 56,
-                  ),
-                  topRightIcon: topRightIcon,
-                  favourite: user?.likedTrackIds.contains(track?.id),
-                  downloadProgress: downloadManager.downloaded.contains(track?.id)
-                      ? 1
-                      : downloadManager.queue == null
-                          ? null
-                          : downloadManager.queue!.contains(track?.id)
-                              ? downloadManager.queue!.first == track!.id
-                                  ? downloadManager.downloadProgress ?? 0
-                                  : 0
-                              : 0,
-                  onTap: onTap,
-                  onMoreTap: onMoreTap,
-                  isActive: track == current,
-                  isDraggable: isDraggable,
-                  dragIndex: dragIndex,
+                return StreamBuilder<bool>(
+                  stream: isOnlineStream(),
+                  builder: (context, snap) {
+                    final isOnline = snap.data == true;
+
+                    return AppListItem(
+                      title: track?.title ?? "...",
+                      subtitle: track?.artists.map((artist) => artist.name).join(", ") ?? "...",
+                      image: AppImage.network(
+                        track?.thumbnail,
+                        borderRadius: BorderRadius.circular(8),
+                        size: 56,
+                      ),
+                      topRightIcon: topRightIcon,
+                      favourite: user?.likedTrackIds.contains(track?.id),
+                      downloadProgress: downloadManager.downloaded.contains(track?.id)
+                          ? 1
+                          : downloadManager.queue == null
+                              ? null
+                              : downloadManager.queue!.contains(track?.id)
+                                  ? downloadManager.queue!.first == track!.id
+                                      ? downloadManager.downloadProgress ?? 0
+                                      : 0
+                                  : 0,
+                      onTap: onTap,
+                      onMoreTap: onMoreTap,
+                      isActive: track == current,
+                      isDisabled: !(downloadManager.downloaded.contains(track?.id) || isOnline),
+                      isDraggable: isDraggable,
+                      dragIndex: dragIndex,
+                    );
+                  },
                 );
               },
             );
