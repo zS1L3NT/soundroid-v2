@@ -52,6 +52,7 @@ class PlaylistScreen extends StatelessWidget {
         stream: context.read<PlaylistRepository>().getPlaylist(playlist.id),
         builder: (context, snap) {
           final playlist = snap.data;
+          final downloaded = context.watch<DownloadManager>().downloaded;
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -91,13 +92,23 @@ class PlaylistScreen extends StatelessWidget {
                                 )
                               : AppIcon.loading(color: Colors.black),
                           playlist != null
-                              ? AppIcon(
-                                  playlist.download
-                                      ? Icons.download_done_rounded
-                                      : Icons.download_rounded,
-                                  color: playlist.download ? Theme.of(context).primaryColor : null,
-                                  onPressed: () => onDownloadClick(context, playlist.download),
-                                )
+                              ? playlist.download
+                                  ? playlist.trackIds.every(downloaded.contains)
+                                      ? AppIcon.primaryColor(
+                                          Icons.download_done_rounded,
+                                          onPressed: () =>
+                                              onDownloadClick(context, playlist.download),
+                                        )
+                                      : AppIcon.loading(
+                                          value:
+                                              playlist.trackIds.where(downloaded.contains).length /
+                                                  playlist.trackIds.length,
+                                          onTap: () => onDownloadClick(context, playlist.download),
+                                        )
+                                  : AppIcon.primaryColor(
+                                      Icons.download_rounded,
+                                      onPressed: () => onDownloadClick(context, playlist.download),
+                                    )
                               : AppIcon.loading(color: Colors.black)
                         ],
                       ),

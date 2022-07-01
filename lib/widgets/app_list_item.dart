@@ -22,14 +22,13 @@ class AppListItem extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.image,
-    this.topLeftIcon,
     this.topRightIcon,
-    this.bottomLeftIcon,
-    this.bottomRightIcon,
-    required this.onTap,
-    this.onMoreTap,
+    this.favourite,
+    this.downloadProgress,
     this.isDraggable = false,
     this.dragIndex,
+    required this.onTap,
+    this.onMoreTap,
     required this.isActive,
     this.isDisabled = false,
   }) : super(key: key);
@@ -47,10 +46,11 @@ class AppListItem extends StatelessWidget {
   ///
   /// If these properties are set a white border and an Icon will render
   /// around the [image]
-  final IconData? topLeftIcon;
   final IconData? topRightIcon;
-  final IconData? bottomLeftIcon;
-  final IconData? bottomRightIcon;
+
+  final bool? favourite;
+
+  final double? downloadProgress;
 
   /// The function that is called when the list tile is tapped
   final Function() onTap;
@@ -96,7 +96,6 @@ class AppListItem extends StatelessWidget {
   static Widget fromTrack(
     Track? track, {
     Key? key,
-    IconData? topLeftIcon,
     IconData? topRightIcon,
     required Function() onTap,
     Function()? onMoreTap,
@@ -120,6 +119,7 @@ class AppListItem extends StatelessWidget {
               stream: context.read<AuthenticationRepository>().currentUser,
               builder: (context, snap) {
                 final user = snap.data;
+                final downloadManager = context.watch<DownloadManager>();
 
                 return AppListItem(
                   title: track?.title ?? "...",
@@ -129,18 +129,17 @@ class AppListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     size: 56,
                   ),
-                  topLeftIcon: topLeftIcon,
                   topRightIcon: topRightIcon,
-                  bottomLeftIcon: track != null
-                      ? (user?.likedTrackIds.contains(track.id) ?? false)
-                          ? Icons.favorite_rounded
-                          : null
-                      : null,
-                  bottomRightIcon: context.select<DownloadManager, bool>(
-                    (manager) => manager.downloaded.contains(track?.id),
-                  )
-                      ? Icons.download_rounded
-                      : null,
+                  favourite: user?.likedTrackIds.contains(track?.id),
+                  downloadProgress: downloadManager.downloaded.contains(track?.id)
+                      ? 1
+                      : downloadManager.queue == null
+                          ? null
+                          : downloadManager.queue!.contains(track?.id)
+                              ? downloadManager.queue!.first == track!.id
+                                  ? downloadManager.downloadProgress ?? 0
+                                  : 0
+                              : 0,
                   onTap: onTap,
                   onMoreTap: onMoreTap,
                   isActive: track == current,
@@ -158,9 +157,6 @@ class AppListItem extends StatelessWidget {
   /// Adapter for rendering [Album] items.
   factory AppListItem.fromAlbum(
     Album album, {
-    IconData? topLeftIcon,
-    IconData? bottomLeftIcon,
-    IconData? bottomRightIcon,
     required Function() onTap,
     Function()? onMoreTap,
   }) {
@@ -175,10 +171,7 @@ class AppListItem extends StatelessWidget {
           size: 56,
         ),
       ),
-      topLeftIcon: topLeftIcon,
       topRightIcon: Icons.album_rounded,
-      bottomLeftIcon: bottomLeftIcon,
-      bottomRightIcon: bottomRightIcon,
       onTap: onTap,
       onMoreTap: onMoreTap,
       isActive: false,
@@ -186,37 +179,44 @@ class AppListItem extends StatelessWidget {
   }
 
   /// Adapter for rendering [Playlist] items.
-  factory AppListItem.fromPlaylist(
+  static Widget fromPlaylist(
     Playlist playlist, {
-    IconData? topLeftIcon,
     IconData? topRightIcon,
     required Function() onTap,
     Function()? onMoreTap,
     bool isDisabled = false,
     required String heroTag,
   }) {
-    return AppListItem(
-      title: playlist.name,
-      subtitle: "${playlist.trackIds.length} tracks",
-      image: Hero(
-        tag: heroTag,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: AppImage.network(
-            playlist.thumbnail,
-            borderRadius: BorderRadius.circular(8),
-            size: 56,
+    return Builder(
+      builder: (context) {
+        final downloaded = context.watch<DownloadManager>().downloaded;
+
+        return AppListItem(
+          title: playlist.name,
+          subtitle: "${playlist.trackIds.length} tracks",
+          image: Hero(
+            tag: heroTag,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: AppImage.network(
+                playlist.thumbnail,
+                borderRadius: BorderRadius.circular(8),
+                size: 56,
+              ),
+            ),
           ),
-        ),
-      ),
-      topLeftIcon: topLeftIcon,
-      topRightIcon: topRightIcon,
-      bottomLeftIcon: playlist.favourite ? Icons.favorite_rounded : null,
-      bottomRightIcon: playlist.download ? Icons.download_rounded : null,
-      onTap: onTap,
-      onMoreTap: onMoreTap,
-      isActive: false,
-      isDisabled: isDisabled,
+          topRightIcon: topRightIcon,
+          favourite: playlist.favourite,
+          downloadProgress: playlist.download
+              ? playlist.trackIds.where((trackId) => downloaded.contains(trackId)).length /
+                  playlist.trackIds.length
+              : null,
+          onTap: onTap,
+          onMoreTap: onMoreTap,
+          isActive: false,
+          isDisabled: isDisabled,
+        );
+      },
     );
   }
 
@@ -232,38 +232,7 @@ class AppListItem extends StatelessWidget {
             // The image provided
             image,
 
-            // A border for the topLeftIcon, if any
-            Positioned(
-              top: -5,
-              left: -5,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: topLeftIcon != null ? 23 : 0,
-                height: topLeftIcon != null ? 23 : 0,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.circular(23),
-                ),
-              ),
-            ),
-
-            // The topLeftIcon, if any
-            Positioned(
-              top: 0,
-              left: 0,
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: topLeftIcon != null
-                    ? Icon(
-                        topLeftIcon,
-                        color: Theme.of(context).primaryColor,
-                        size: 14,
-                      )
-                    : const SizedBox(),
-              ),
-            ),
-
-            // A border for the topRightIcon, if any
+            // A circular background for the topRightIcon, if any
             Positioned(
               top: -5,
               right: -5,
@@ -294,14 +263,14 @@ class AppListItem extends StatelessWidget {
               ),
             ),
 
-            // A border for the bottomLeftIcon, if any
+            // A circular background for the favourite icon
             Positioned(
               bottom: -5,
               left: -5,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                width: bottomLeftIcon != null ? 23 : 0,
-                height: bottomLeftIcon != null ? 23 : 0,
+                width: favourite == true ? 23 : 0,
+                height: favourite == true ? 23 : 0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(23),
@@ -309,15 +278,15 @@ class AppListItem extends StatelessWidget {
               ),
             ),
 
-            // The bottomLeftIcon, if any
+            // The favourite icon
             Positioned(
               bottom: 0,
               left: 0,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: bottomLeftIcon != null
+                child: favourite == true
                     ? Icon(
-                        bottomLeftIcon,
+                        Icons.favorite_rounded,
                         color: Theme.of(context).primaryColor,
                         size: 14,
                       )
@@ -325,14 +294,14 @@ class AppListItem extends StatelessWidget {
               ),
             ),
 
-            // A border for the bottomRightIcon, if any
+            // A circular background for the download progress
             Positioned(
               bottom: -5,
               right: -5,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                width: bottomRightIcon != null ? 23 : 0,
-                height: bottomRightIcon != null ? 23 : 0,
+                width: downloadProgress != null ? 23 : 0,
+                height: downloadProgress != null ? 23 : 0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(23),
@@ -340,18 +309,32 @@ class AppListItem extends StatelessWidget {
               ),
             ),
 
-            // The bottomRightIcon, if any
+            // The download progress
             Positioned(
               bottom: 0,
               right: 0,
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: bottomRightIcon != null
-                    ? Icon(
-                        bottomRightIcon,
-                        color: Theme.of(context).primaryColor,
-                        size: 14,
-                      )
+                child: downloadProgress != null
+                    ? downloadProgress == 1
+                        ? AppIcon.primaryColor(
+                            Icons.download_done_rounded,
+                            size: 14,
+                          )
+                        : downloadProgress == 0
+                            ? const AppIcon(
+                                Icons.download_rounded,
+                                size: 14,
+                              )
+                            : Container(
+                                width: 12,
+                                height: 12,
+                                margin: const EdgeInsets.all(1),
+                                child: CircularProgressIndicator(
+                                  value: downloadProgress,
+                                  strokeWidth: 2,
+                                ),
+                              )
                     : const SizedBox(),
               ),
             ),

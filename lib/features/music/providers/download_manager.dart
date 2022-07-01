@@ -37,6 +37,9 @@ class DownloadManager extends ChangeNotifier {
   late final _downloaded =
       _directory.listSync().map((file) => file.path.split("/").last.split(".").first).toList();
 
+  double? get downloadProgress => _downloadProgress;
+  double? _downloadProgress;
+
   void setup() async {
     _directory = Directory((await getApplicationDocumentsDirectory()).path + "/tracks");
     if (!_directory.existsSync()) _directory.createSync();
@@ -100,11 +103,19 @@ class DownloadManager extends ChangeNotifier {
 
       final url = Uri.parse("http://soundroid.zectan.com/api/download?videoId=$trackId");
       final response = await Client().send(Request("GET", url));
-      final contentLength = await apiRepo.getLength(trackId);
+
+      int? contentLength;
+      try {
+        contentLength = await apiRepo.getLength(trackId);
+      } catch (e) {
+        debugPrint("Could not get file size, using indeterminate");
+      }
 
       await for (final chunk in response.stream) {
         if (_queue?.isEmpty ?? _queue!.first != trackId) break;
-        _updateNotification(trackId, downloaded / contentLength * 100);
+        _downloadProgress = contentLength != null ? (downloaded / contentLength) : null;
+        _updateNotification(trackId, _downloadProgress != null ? _downloadProgress! * 100 : null);
+        notifyListeners();
 
         chunks.add(chunk);
         downloaded += chunk.length;
@@ -113,9 +124,11 @@ class DownloadManager extends ChangeNotifier {
       if (_queue?.isEmpty ?? _queue!.first != trackId) {
         continue;
       }
+      _downloadProgress = 1;
       _updateNotification(trackId, 100);
+      notifyListeners();
 
-      final bytes = Uint8List(contentLength);
+      final bytes = Uint8List(downloaded);
       int offset = 0;
       for (final chunk in chunks) {
         bytes.setRange(offset, offset + chunk.length, chunk);
@@ -125,17 +138,19 @@ class DownloadManager extends ChangeNotifier {
 
       _queue!.remove(trackId);
       _downloaded.add(trackId);
+      _downloadProgress = 0;
       notifyListeners();
     }
 
     _queue = null;
+    _downloadProgress = null;
     notifyListeners();
 
     await Future.delayed(const Duration(seconds: 1));
     AndroidForegroundService.stopForeground();
   }
 
-  void _updateNotification(String trackId, double percent) {
+  void _updateNotification(String trackId, double? percent) {
     if (DateTime.now().difference(_lastNotificationUpdate).inSeconds < 1) return;
     _lastNotificationUpdate = DateTime.now();
 
@@ -145,9 +160,9 @@ class DownloadManager extends ChangeNotifier {
           id: notificationId,
           channelKey: notificationChannelKey,
           title: "Downloading ${_queue?.length} tracks",
-          body: "${track.title} - ${track.artists.map((artist) => artist.name).join(", ")} "
-              "(${percent.toStringAsFixed(2)}%)",
-          progress: percent.round(),
+          body: "${track.title} - ${track.artists.map((artist) => artist.name).join(", ")} " +
+              (percent != null ? "(${percent.toStringAsFixed(2)}%)" : ""),
+          progress: percent?.round(),
           notificationLayout: NotificationLayout.ProgressBar,
         ),
       );
