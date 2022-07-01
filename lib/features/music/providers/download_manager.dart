@@ -71,7 +71,7 @@ class DownloadManager extends ChangeNotifier {
 
   void download(String trackId) async {
     if (_queue != null && !_queue!.contains(trackId)) {
-      _queue!.add(trackId);
+      _queue!.insert(0, trackId);
       notifyListeners();
       return;
     }
