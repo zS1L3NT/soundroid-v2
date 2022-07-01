@@ -57,7 +57,7 @@ void main() async {
         channelDescription: 'Notification channel track download progress',
         defaultColor: const Color(0xFF126DFF),
         ledColor: Colors.white,
-        importance: NotificationImportance.High,
+        importance: NotificationImportance.Low,
         playSound: false,
         enableVibration: false,
       )
