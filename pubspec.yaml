@@ -64,6 +64,7 @@ dependencies:
   awesome_notifications: ^0.6.21
   diffutil_dart: ^3.0.0
   path_provider: ^2.0.11
+  connectivity_plus: ^2.3.5
 
 dev_dependencies:
   flutter_test:
