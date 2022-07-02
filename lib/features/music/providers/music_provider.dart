@@ -18,6 +18,9 @@ class MusicProvider with ChangeNotifier {
       (track, isOnline) async {
         if (track == null) return;
 
+        _currentThumbnail = track.thumbnail;
+        notifyListeners();
+
         if (!isOnline && track.uri.scheme == "http") {
           return await _player.pause();
         }
