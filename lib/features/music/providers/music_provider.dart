@@ -14,7 +14,7 @@ class MusicProvider with ChangeNotifier {
   }) {
     Rx.combineLatest2<Track?, bool, void>(
       current,
-      isOnlineStream(),
+      isOnlineStream(apiRepo),
       (track, isOnline) async {
         if (track == null) return;
 
@@ -50,7 +50,7 @@ class MusicProvider with ChangeNotifier {
     Rx.combineLatest3<Track?, PlayerState, bool, void>(
       current,
       player.playerStateStream,
-      isOnlineStream(),
+      isOnlineStream(apiRepo),
       (track, playerState, isOnline) async {
         if (track == null) return;
 

@@ -123,7 +123,7 @@ class AppListItem extends StatelessWidget {
                 final downloadManager = context.watch<DownloadManager>();
 
                 return StreamBuilder<bool>(
-                  stream: isOnlineStream(),
+                  stream: isOnlineStream(context.read<ApiRepository>()),
                   builder: (context, snap) {
                     final isOnline = snap.data == true;
 

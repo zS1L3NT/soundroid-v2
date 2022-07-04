@@ -138,4 +138,10 @@ class ApiRepository {
       throw Exception("Failed to fetch length");
     }
   }
+
+  /// Check if the app can connect to the server
+  Future<bool> checkConnection() async {
+    final response = await get(Uri.parse("$_host/connecttest"));
+    return response.statusCode == 200;
+  }
 }
