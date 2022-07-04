@@ -65,31 +65,45 @@ class DownloadManager extends ChangeNotifier {
         );
       });
     });
+
+    apiRepo.isOnlineStream.listen((isOnline) {
+      if (isOnline) {
+        download();
+      }
+    });
   }
 
   File getFile(String trackId) => File("${_directory.path}/$trackId.mp3");
 
-  void download(String trackId) async {
-    if (_queue != null && !_queue!.contains(trackId)) {
+  void download([String? trackId]) async {
+    if (trackId != null && _queue != null && !_queue!.contains(trackId)) {
       _queue!.insert(0, trackId);
       notifyListeners();
       return;
     }
 
-    _queue = [trackId];
-    notifyListeners();
+    if (trackId != null) {
+      _queue = [trackId];
+      apiRepo.getTrack(trackId).then((track) {
+        AndroidForegroundService.startForeground(
+          content: NotificationContent(
+            id: notificationId,
+            channelKey: notificationChannelKey,
+            title: "Downloading ${_queue!.length} tracks",
+            progress: 0,
+            notificationLayout: NotificationLayout.ProgressBar,
+          ),
+        );
+      });
+    } else {
+      if (_queue == null) {
+        return;
+      } else {
+        debugPrint("Network connection up, trying downloads");
+      }
+    }
 
-    apiRepo.getTrack(trackId).then((track) {
-      AndroidForegroundService.startForeground(
-        content: NotificationContent(
-          id: notificationId,
-          channelKey: notificationChannelKey,
-          title: "Downloading ${_queue!.length} tracks",
-          progress: 0,
-          notificationLayout: NotificationLayout.ProgressBar,
-        ),
-      );
-    });
+    notifyListeners();
 
     while (true) {
       if (_queue!.isEmpty) break;
@@ -102,7 +116,15 @@ class DownloadManager extends ChangeNotifier {
       int downloaded = 0;
 
       final url = Uri.parse("http://soundroid.zectan.com/api/download?videoId=$trackId");
-      final response = await Client().send(Request("GET", url));
+
+      late StreamedResponse response;
+      try {
+        response = await Client().send(Request("GET", url));
+      } catch (e) {
+        debugPrint("ERROR Pinging Download URL: $e");
+        notifyListeners();
+        return;
+      }
 
       int? contentLength;
       try {
@@ -111,14 +133,20 @@ class DownloadManager extends ChangeNotifier {
         debugPrint("Could not get file size, using indeterminate");
       }
 
-      await for (final chunk in response.stream) {
-        if (_queue?.isEmpty ?? _queue!.first != trackId) break;
-        _downloadProgress = contentLength != null ? (downloaded / contentLength) : null;
-        _updateNotification(trackId, _downloadProgress != null ? _downloadProgress! * 100 : null);
-        notifyListeners();
+      try {
+        await for (final chunk in response.stream) {
+          if (_queue?.isEmpty ?? _queue!.first != trackId) break;
+          _downloadProgress = contentLength != null ? (downloaded / contentLength) : null;
+          _updateNotification(trackId, _downloadProgress != null ? _downloadProgress! * 100 : null);
+          notifyListeners();
 
-        chunks.add(chunk);
-        downloaded += chunk.length;
+          chunks.add(chunk);
+          downloaded += chunk.length;
+        }
+      } catch (e) {
+        debugPrint("ERROR Downloading file content: $e");
+        notifyListeners();
+        return;
       }
 
       if (_queue?.isEmpty ?? _queue!.first != trackId) {
@@ -128,13 +156,19 @@ class DownloadManager extends ChangeNotifier {
       _updateNotification(trackId, 100);
       notifyListeners();
 
-      final bytes = Uint8List(downloaded);
-      int offset = 0;
-      for (final chunk in chunks) {
-        bytes.setRange(offset, offset + chunk.length, chunk);
-        offset += chunk.length;
+      try {
+        final bytes = Uint8List(downloaded);
+        int offset = 0;
+        for (final chunk in chunks) {
+          bytes.setRange(offset, offset + chunk.length, chunk);
+          offset += chunk.length;
+        }
+        await file.writeAsBytes(bytes);
+      } catch (e) {
+        debugPrint("ERROR Writing downloaded content to file: $e");
+        notifyListeners();
+        return;
       }
-      await file.writeAsBytes(bytes);
 
       _queue!.remove(trackId);
       _downloaded.add(trackId);
