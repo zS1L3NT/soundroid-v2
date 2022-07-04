@@ -22,11 +22,21 @@ class MusicProvider with ChangeNotifier {
         notifyListeners();
 
         if (!isOnline && track.uri.scheme == "http") {
-          return await _player.pause();
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR _player.stop(): $e");
+          }
+          return;
         }
 
         if (track.uri.scheme == "file" && !File(track.uri.path).existsSync()) {
-          await _player.pause();
+          await Future.delayed(Duration.zero);
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR _player.stop(): $e");
+          }
 
           if (isOnline) {
             final tracks = queue!.tracks;
@@ -38,10 +48,14 @@ class MusicProvider with ChangeNotifier {
                 initialIndex: _player.currentIndex,
               );
             } catch (e) {
-              debugPrint("Failed to play audio source from internet: " + e.toString());
+              debugPrint("ERROR _player.setAudioSource(): $e");
             }
 
-            await _player.play();
+            try {
+              await _player.play();
+            } catch (e) {
+              debugPrint("ERROR _player.play(): $e");
+            }
           }
         }
       },
@@ -55,7 +69,12 @@ class MusicProvider with ChangeNotifier {
         if (track == null) return;
 
         if (!isOnline && playerState.playing && track.uri.scheme == "http") {
-          return await _player.pause();
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR _player.stop(): $e");
+          }
+          return;
         }
       },
     ).listen((_) {});
@@ -161,9 +180,13 @@ class MusicProvider with ChangeNotifier {
         ),
       );
     } catch (e) {
-      debugPrint("ERROR: " + e.toString());
+      debugPrint("ERROR _player.setAudioSource(): $e");
     }
 
-    await _player.play();
+    try {
+      await _player.play();
+    } catch (e) {
+      debugPrint("ERROR _player.play(): $e");
+    }
   }
 }
