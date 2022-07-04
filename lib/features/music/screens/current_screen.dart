@@ -1,6 +1,5 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
@@ -36,7 +35,7 @@ class _CurrentScreenState extends KeptAliveState<CurrentScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: StreamBuilder<Track?>(
-                    stream: context.read<MusicService>().current,
+                    stream: context.read<MusicProvider>().current,
                     builder: (context, snap) {
                       return Column(
                         children: [

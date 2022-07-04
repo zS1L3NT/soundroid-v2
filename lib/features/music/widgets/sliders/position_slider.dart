@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 
 class PositionSlider extends StatefulWidget {
   const PositionSlider({Key? key}) : super(key: key);
@@ -8,8 +10,8 @@ class PositionSlider extends StatefulWidget {
 }
 
 class _PositionSliderState extends State<PositionSlider> {
-  // late final _durationStream = context.read<MusicProvider>().player.durationStream;
-  // late final _positionStream = context.read<MusicProvider>().player.positionStream;
+  late final _durationStream = context.read<MusicProvider>().player.durationStream;
+  late final _positionStream = context.read<MusicProvider>().player.positionStream;
 
   /// The position on the slider that the user is currently touching
   double? _slidePosition;
@@ -31,12 +33,12 @@ class _PositionSliderState extends State<PositionSlider> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration?>(
-      // stream: _durationStream,
+      stream: _durationStream,
       builder: (context, snap) {
         final duration = snap.data;
 
         return StreamBuilder<Duration>(
-          // stream: _positionStream,
+          stream: _positionStream,
           builder: (context, snap) {
             final position = snap.data;
 
@@ -72,11 +74,11 @@ class _PositionSliderState extends State<PositionSlider> {
                       // Change the _slidePosition when the user drags the slider
                       onChanged: (position) => setState(() => _slidePosition = position),
                       onChangeEnd: (position) {
-                        // context.read<MusicProvider>().player.seek(
-                        //       Duration(
-                        //         milliseconds: ((duration?.inMilliseconds ?? 0) * position).toInt(),
-                        //       ),
-                        //     );
+                        context.read<MusicProvider>().player.seek(
+                              Duration(
+                                milliseconds: ((duration?.inMilliseconds ?? 0) * position).toInt(),
+                              ),
+                            );
                         // Reset the _slidePosition when the user stops dragging
                         setState(() => _slidePosition = null);
                       },

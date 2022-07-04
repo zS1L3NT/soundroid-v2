@@ -1,6 +1,8 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -12,24 +14,24 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends KeptAliveState<QueueScreen> {
-  // late final _shuffleModeEnabledStream =
-  //     context.read<MusicProvider>().player.shuffleModeEnabledStream;
-  // late final _sequenceStream = context.read<MusicProvider>().player.sequenceStream;
+  late final _shuffleModeEnabledStream =
+      context.read<MusicProvider>().player.shuffleModeEnabledStream;
+  late final _sequenceStream = context.read<MusicProvider>().player.sequenceStream;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return StreamBuilder<bool>(
-      // stream: _shuffleModeEnabledStream,
+      stream: _shuffleModeEnabledStream,
       builder: (context, snap) {
         final shuffleModeEnabled = snap.data ?? false;
 
         return StreamBuilder<List<IndexedAudioSource>?>(
-          // stream: _sequenceStream,
+          stream: _sequenceStream,
           builder: (context, snap) {
             final tracks = snap.data?.cast<Track>();
-            // final shuffleOrder = context.watch<MusicProvider>().player.shuffleIndices!;
+            final shuffleOrder = context.watch<MusicProvider>().player.shuffleIndices!;
 
             return AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -37,8 +39,7 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
                   ? const SizedBox()
                   : ReorderableListView.builder(
                       itemBuilder: (context, index) {
-                        final track = tracks[index];
-                        // final track = tracks[shuffleModeEnabled ? shuffleOrder[index] : index];
+                        final track = tracks[shuffleModeEnabled ? shuffleOrder[index] : index];
 
                         return Dismissible(
                           key: ValueKey(track.id),
@@ -50,16 +51,16 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
                             child: AppIcon.white(Icons.delete_rounded),
                           ),
                           onDismissed: (_) {
-                            // context.read<MusicProvider>().queue?.removeAt(index);
+                            context.read<MusicProvider>().queue?.removeAt(index);
                           },
                           child: AppListItem.fromTrack(
                             track,
                             key: ValueKey(track.id),
                             onTap: () {
-                              // context
-                              //     .read<MusicProvider>()
-                              //     .player
-                              //     .seek(Duration.zero, index: index);
+                              context
+                                  .read<MusicProvider>()
+                                  .player
+                                  .seek(Duration.zero, index: index);
                             },
                             isDraggable: true,
                             dragIndex: index,
@@ -68,10 +69,10 @@ class _QueueScreenState extends KeptAliveState<QueueScreen> {
                       },
                       itemCount: tracks.length,
                       onReorder: (int oldIndex, int newIndex) {
-                        // context.read<MusicProvider>().queue?.move(
-                        //       oldIndex,
-                        //       newIndex < oldIndex ? newIndex : newIndex - 1,
-                        //     );
+                        context.read<MusicProvider>().queue?.move(
+                              oldIndex,
+                              newIndex < oldIndex ? newIndex : newIndex - 1,
+                            );
                       },
                     ),
             );

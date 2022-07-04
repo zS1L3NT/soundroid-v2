@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class CoverImage extends StatelessWidget {
@@ -7,7 +9,7 @@ class CoverImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final thumbnail = ""; // context.watch<MusicProvider>().currentThumbnail;
+    final thumbnail = context.watch<MusicProvider>().currentThumbnail;
     final size = MediaQuery.of(context).size.width * 0.7;
 
     return FutureBuilder<PaletteGenerator>(

@@ -1,6 +1,5 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
@@ -70,7 +69,7 @@ class HorizontalTracks extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                               onTap: isEnabled
                                   ? () {
-                                      context.read<MusicService>().playTracks([track]);
+                                      context.read<MusicProvider>().playTrackIds([track.id]);
                                     }
                                   : null,
                             ),

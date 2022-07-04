@@ -1,7 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class MainBottomAppBar extends StatelessWidget {
@@ -27,7 +27,7 @@ class MainBottomAppBar extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           child: StreamBuilder<Track?>(
-            stream: context.read<MusicService>().current,
+            stream: context.read<MusicProvider>().current,
             builder: (context, snap) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

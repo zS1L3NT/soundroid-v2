@@ -1,7 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:music_service/music_service.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
@@ -112,7 +111,7 @@ class AppListItem extends StatelessWidget {
       key: key,
       builder: (context) {
         return StreamBuilder<Track?>(
-          stream: context.read<MusicService>().current,
+          stream: context.read<MusicProvider>().current,
           builder: (context, snap) {
             final current = snap.data;
 

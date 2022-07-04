@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class RepeatButton extends StatelessWidget {
@@ -21,26 +23,26 @@ class RepeatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final player = context.read<MusicProvider>().player;
+    final player = context.read<MusicProvider>().player;
 
     return StreamBuilder<LoopMode>(
-      // stream: player.loopModeStream,
+      stream: player.loopModeStream,
       builder: (context, snap) {
         switch (snap.data) {
           case LoopMode.off:
             return AppIcon.primaryColorLight(
               Icons.repeat_rounded,
-              // onPressed: () => handleClick(player),
+              onPressed: () => handleClick(player),
             );
           case LoopMode.all:
             return AppIcon.primaryColorDark(
               Icons.repeat_rounded,
-              // onPressed: () => handleClick(player),
+              onPressed: () => handleClick(player),
             );
           case LoopMode.one:
             return AppIcon.primaryColorDark(
               Icons.repeat_one_rounded,
-              // onPressed: () => handleClick(player),
+              onPressed: () => handleClick(player),
             );
           default:
             return AppIcon.loading();

@@ -1,14 +1,15 @@
 import 'dart:io';
 
 import 'package:api_repository/api_repository.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:listen_repository/listen_repository.dart';
-import 'package:music_service/music_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:playlist_repository/playlist_repository.dart';
@@ -37,14 +38,14 @@ void main() async {
   PerfectVolumeControl.hideUI = true;
 
   // Initialize Audio Session
-  // await JustAudioBackground.init(
-  // androidNotificationChannelId: 'com.zectan.soundroid.audio',
-  // androidNotificationChannelName: 'Music',
-  // androidNotificationOngoing: true,
-  // );
-  // (await AudioSession.instance).configure(
-  // const AudioSessionConfiguration.music(),
-  // );
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.zectan.soundroid.audio',
+    androidNotificationChannelName: 'Music',
+    androidNotificationOngoing: true,
+  );
+  (await AudioSession.instance).configure(
+    const AudioSessionConfiguration.music(),
+  );
 
   // Initialize Notification Channels
   AwesomeNotifications().initialize(
@@ -93,7 +94,10 @@ void main() async {
             );
           }),
           ChangeNotifierProvider(create: (context) {
-            return MusicService()..setup();
+            return MusicProvider(
+              apiRepo: context.read<ApiRepository>(),
+              listenRepo: context.read<ListenRepository>(),
+            );
           }),
           ChangeNotifierProvider(create: (context) {
             return DownloadManager(

@@ -1,6 +1,5 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:music_service/music_service.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
@@ -128,16 +127,11 @@ class PlaylistScreen extends StatelessWidget {
 
                         return AppListItem.fromTrack(
                           track,
-                          onTap: () async {
+                          onTap: () {
                             context.read<PlaylistRepository>().updatePlaylist(
                                   playlist.copyWith.lastPlayed(PlaylistRepository.now),
                                 );
-                            context.read<MusicService>().playTracks(
-                                  await Future.wait(
-                                    playlist.trackIds.map(context.read<ApiRepository>().getTrack),
-                                  ),
-                                  index,
-                                );
+                            context.read<MusicProvider>().playTrackIds(playlist.trackIds, index);
                           },
                           onMoreTap:
                               track != null ? () => showTrackBottomSheet(context, track) : null,

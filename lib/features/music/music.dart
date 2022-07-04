@@ -1,4 +1,5 @@
 export 'providers/download_manager.dart';
+export 'providers/music_provider.dart';
 export 'screens/current_screen.dart';
 export 'screens/lyrics_screen.dart';
 export 'screens/playing_screen.dart';
