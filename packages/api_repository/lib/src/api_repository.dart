@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:api_repository/src/connection.dart';
 import 'package:api_repository/src/models/models.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
@@ -24,7 +24,9 @@ class ApiRepository {
   /// The base URL for the SounDroid API
   String get _host => "http://soundroid.zectan.com/api";
 
-  late final isOnlineStream = _isOnlineStream().asBroadcastStream();
+  late final _connection = Connection(host: _host);
+
+  Stream<bool> get isOnlineStream => _connection.listen();
 
   /// Fetch the home feed for the currently authenticated user
   Future<List<FeedSection>> getFeed() async {
@@ -140,25 +142,5 @@ class ApiRepository {
       debugPrint(response.body);
       throw Exception("Failed to fetch length");
     }
-  }
-
-  Stream<bool> _isOnlineStream() async* {
-    print("stream created");
-    bool previousValue = (await Connectivity().checkConnectivity()) != ConnectivityResult.none &&
-        await _checkConnection();
-    yield previousValue;
-
-    await for (final connectivity in Connectivity().onConnectivityChanged) {
-      final value = connectivity != ConnectivityResult.none && await _checkConnection();
-      if (value == previousValue) continue;
-      previousValue = value;
-      yield value;
-    }
-  }
-
-  /// Check if the app can connect to the server
-  Future<bool> _checkConnection() async {
-    final response = await get(Uri.parse("$_host/connecttest"));
-    return response.statusCode == 200;
   }
 }
