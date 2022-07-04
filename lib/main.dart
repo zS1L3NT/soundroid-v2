@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:api_repository/api_repository.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:listen_repository/listen_repository.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +20,10 @@ import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/search/search.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Track.directory = Directory((await getApplicationDocumentsDirectory()).path + "/tracks");
+
   // Initialize Hive
   await Hive.initFlutter();
 
@@ -39,23 +47,40 @@ void main() async {
     const AudioSessionConfiguration.music(),
   );
 
+  // Initialize Notification Channels
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'track_download_progress',
+        channelName: 'Track Download Progress',
+        channelDescription: 'Notification channel track download progress',
+        defaultColor: const Color(0xFF126DFF),
+        ledColor: Colors.white,
+        importance: NotificationImportance.Low,
+        playSound: false,
+        enableVibration: false,
+      )
+    ],
+  );
+
   runApp(
     MultiRepositoryProvider(
       // Initialize all repositories as providers
       providers: [
-        RepositoryProvider<ApiRepository>(
+        RepositoryProvider(
           create: (_) => ApiRepository(trackBox: trackBox),
         ),
-        RepositoryProvider<AuthenticationRepository>(
+        RepositoryProvider(
           create: (_) => AuthenticationRepository(),
         ),
-        RepositoryProvider<ListenRepository>(
+        RepositoryProvider(
           create: (_) => ListenRepository(),
         ),
-        RepositoryProvider<PlaylistRepository>(
+        RepositoryProvider(
           create: (_) => PlaylistRepository(),
         ),
-        RepositoryProvider<SearchRepository>(
+        RepositoryProvider(
           create: (_) => SearchRepository(),
         ),
       ],
@@ -69,14 +94,17 @@ void main() async {
             );
           }),
           ChangeNotifierProvider(create: (context) {
-            final musicProvider = MusicProvider(
+            return MusicProvider(
               apiRepo: context.read<ApiRepository>(),
               listenRepo: context.read<ListenRepository>(),
             );
-
-            musicProvider.player.setAudioSource(musicProvider.queue);
-            return musicProvider;
           }),
+          ChangeNotifierProvider(create: (context) {
+            return DownloadManager(
+              apiRepo: context.read<ApiRepository>(),
+              playlistRepo: context.read<PlaylistRepository>(),
+            );
+          })
         ],
         child: const App(),
       ),

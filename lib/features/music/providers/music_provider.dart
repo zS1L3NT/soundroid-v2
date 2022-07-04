@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:api_repository/api_repository.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:listen_repository/listen_repository.dart';
@@ -10,12 +13,61 @@ class MusicProvider with ChangeNotifier {
     required this.apiRepo,
     required this.listenRepo,
   }) {
-    current.listen((current) {
-      if (current != null) {
-        _currentThumbnail = current.thumbnail;
+    Rx.combineLatest2<Track?, bool, void>(
+      current,
+      apiRepo.isOnlineStream,
+      (track, isOnline) async {
+        if (track == null) return;
+
+        _currentThumbnail = track.thumbnail;
         notifyListeners();
-      }
-    });
+
+        if (!isOnline && track.uri.scheme != "file") {
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR AudioPlayer.stop(): $e");
+          }
+
+          try {
+            await (await AudioSession.instance).setActive(false);
+          } catch (e) {
+            debugPrint("ERROR AudioSession.setActive(): $e");
+          }
+
+          return;
+        }
+
+        if (track.uri.scheme == "file" && !File(track.uri.path).existsSync()) {
+          await Future.delayed(Duration.zero);
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR AudioPlayer.stop(): $e");
+          }
+
+          if (isOnline) {
+            final tracks = queue!.tracks;
+            tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
+
+            try {
+              await _player.setAudioSource(
+                QueueAudioSource(children: tracks, apiRepo: apiRepo),
+                initialIndex: _player.currentIndex,
+              );
+            } catch (e) {
+              debugPrint("ERROR AudioPlayer.setAudioSource(): $e");
+            }
+
+            try {
+              await _player.play();
+            } catch (e) {
+              debugPrint("ERROR AudioPlayer.play(): $e");
+            }
+          }
+        }
+      },
+    ).listen((_) {});
 
     _setupListenTracker();
   }
@@ -26,8 +78,7 @@ class MusicProvider with ChangeNotifier {
   AudioPlayer get player => _player;
   final _player = AudioPlayer();
 
-  QueueAudioSource get queue => _queue;
-  late final _queue = QueueAudioSource(children: [], apiRepo: apiRepo);
+  QueueAudioSource? get queue => _player.audioSource as QueueAudioSource?;
 
   String? get currentThumbnail => _currentThumbnail;
   String? _currentThumbnail;
@@ -42,6 +93,15 @@ class MusicProvider with ChangeNotifier {
           if (sequence == null || currentIndex == null) return null;
           if (sequence.length <= currentIndex) return null;
           return sequence[currentIndex] as Track;
+        },
+      );
+
+  Stream<bool> get currentIsPlayable => Rx.combineLatest2<Track?, bool, bool>(
+        current,
+        apiRepo.isOnlineStream,
+        (track, isOnline) {
+          return track != null &&
+              ((track.uri.scheme == "file" && File(track.uri.path).existsSync()) || isOnline);
         },
       );
 
@@ -108,15 +168,24 @@ class MusicProvider with ChangeNotifier {
   ///
   /// Starts from the [from] position if defined or the first item in the queue.
   Future<void> playTrackIds(List<String> trackIds, [int from = 0]) async {
-    await _player.stop();
-    await _player.seek(Duration.zero, index: 0);
-    await _queue.clear();
-    await _queue.addTracks(
-      await Future.wait<Track>([
-        ...trackIds.sublist(from, trackIds.length),
-        ...trackIds.sublist(0, from)
-      ].map(apiRepo.getTrack)),
-    );
-    _player.play();
+    try {
+      await _player.setAudioSource(
+        QueueAudioSource(
+          children: await Future.wait<Track>([
+            ...trackIds.sublist(from, trackIds.length),
+            ...trackIds.sublist(0, from)
+          ].map(apiRepo.getTrack)),
+          apiRepo: apiRepo,
+        ),
+      );
+    } catch (e) {
+      debugPrint("ERROR AudioPlayer.setAudioSource(): $e");
+    }
+
+    try {
+      await _player.play();
+    } catch (e) {
+      debugPrint("ERROR AudioPlayer.play(): $e");
+    }
   }
 }

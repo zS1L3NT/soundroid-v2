@@ -52,7 +52,7 @@ class YourPlaylistsSection extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(
-                        PlaylistScreen.route(playlist),
+                        PlaylistScreen.route(playlist, "home_playlist_${playlist.id}"),
                       );
                     },
                     child: Row(
@@ -73,7 +73,7 @@ class YourPlaylistsSection extends StatelessWidget {
                             },
                             blendMode: BlendMode.dstIn,
                             child: Hero(
-                              tag: "playlist_${playlist.id}",
+                              tag: "home_playlist_${playlist.id}",
                               child: FittedBox(
                                 fit: BoxFit.cover,
                                 child: AppImage.network(

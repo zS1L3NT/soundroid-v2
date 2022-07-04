@@ -22,18 +22,16 @@ class MainFloatingMusicButton extends StatelessWidget {
             StreamBuilder<Track?>(
               stream: context.read<MusicProvider>().current,
               builder: (context, snap) {
-                return Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Hero(
-                    tag: "current",
-                    child: AnimatedContainer(
-                      duration: const Duration(seconds: 1),
-                      width: 60,
-                      height: 60,
-                      child: AppImage.network(
-                        snap.data?.thumbnail,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                return Hero(
+                  tag: "current",
+                  child: AnimatedContainer(
+                    duration: const Duration(seconds: 1),
+                    width: 60,
+                    height: 60,
+                    margin: const EdgeInsets.all(2),
+                    child: AppImage.network(
+                      snap.data?.thumbnail,
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 );
@@ -56,7 +54,7 @@ class MainFloatingMusicButton extends StatelessWidget {
                         strokeWidth: 3,
                         value: position != null && duration != null
                             ? position.inSeconds / duration.inSeconds
-                            : 0,
+                            : null,
                       );
                     },
                   );

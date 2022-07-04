@@ -34,6 +34,9 @@ class SearchProvider with ChangeNotifier {
     handleTextChange(query ?? "");
   }
 
+  bool get hasError => _hasError;
+  bool _hasError = false;
+
   /// If search results are loading
   bool get isLoading => _isLoading;
   bool _isLoading = false;
@@ -69,6 +72,7 @@ class SearchProvider with ChangeNotifier {
     /// The date that the current search queries for the [query] was made
     final changedAt = DateTime.now();
     _results = null;
+    _hasError = false;
 
     // If the query is empty, show the recent searches instead
     if (query == "") {
@@ -89,6 +93,8 @@ class SearchProvider with ChangeNotifier {
       _apiSuggestions = apiSuggestions;
       _lastChangedAt = changedAt;
       notifyListeners();
+    }).catchError((e) {
+      debugPrint("ERROR ApiRepository.getSearchSuggestions(): $e");
     });
 
     searchRepo.getRecentSearches(query).then((recentSuggestions) {
@@ -110,18 +116,25 @@ class SearchProvider with ChangeNotifier {
     final changedAt = DateTime.now();
     _apiSuggestions = [];
     _isLoading = true;
+    _hasError = false;
     notifyListeners();
 
-    final results = await apiRepo.getSearchResults(query);
+    try {
+      final results = await apiRepo.getSearchResults(query);
 
-    // If when the data comes back and _lastChangedAt is later than changedAt,
-    // this means that a query that happened after this request returned a
-    // value faster than this, rendering this data as useless, therefore we
-    // ignore the data from this api call.
-    if (_lastChangedAt.isAfter(changedAt)) return;
+      // If when the data comes back and _lastChangedAt is later than changedAt,
+      // this means that a query that happened after this request returned a
+      // value faster than this, rendering this data as useless, therefore we
+      // ignore the data from this api call.
+      if (_lastChangedAt.isAfter(changedAt)) return;
+
+      _results = results;
+    } catch (e) {
+      _hasError = true;
+      debugPrint("ERROR ApiRepository.getSearchResults(): $e");
+    }
 
     _isLoading = false;
-    _results = results;
     notifyListeners();
   }
 }

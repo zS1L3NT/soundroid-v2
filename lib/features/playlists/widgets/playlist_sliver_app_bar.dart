@@ -15,6 +15,7 @@ class PlaylistSliverAppBar extends SliverAppBar {
     required this.initialPlaylist,
     required this.playlist,
     required this.controller,
+    required this.heroTag,
   }) : super(key: key);
 
   final Playlist initialPlaylist;
@@ -22,6 +23,8 @@ class PlaylistSliverAppBar extends SliverAppBar {
   final Playlist? playlist;
 
   final ScrollController controller;
+
+  final String heroTag;
 
   @override
   State<PlaylistSliverAppBar> createState() => _PlaylistSliverAppBarState();
@@ -201,11 +204,8 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
               _isHeroComplete = true;
 
               final hero = Hero(
-                tag: "playlist_$_playlistId",
-                child: AppImage.network(
-                  thumbnail,
-                  errorIconPadding: 24,
-                ),
+                tag: widget.heroTag,
+                child: AppImage.network(thumbnail),
               );
               if (thumbnail == null) {
                 return hero;

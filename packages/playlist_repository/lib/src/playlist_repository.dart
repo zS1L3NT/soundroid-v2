@@ -33,6 +33,23 @@ class PlaylistRepository {
         .map((snap) => snap.docs.map((doc) => doc.data()).toList());
   }
 
+  /// Gets a stream of all tracks that need to be downloaded in all playlists
+  Stream<List<String>> getDownloadedTrackIds() {
+    return _collection
+        .where("userRef", isEqualTo: _authenticationRepo.currentUserRef)
+        .where("download", isEqualTo: true)
+        .snapshots()
+        .map(
+          (snap) => snap.docs
+              .map((doc) => doc.data().trackIds)
+              // Flatten the list
+              .expand((i) => i)
+              // Remove duplicates
+              .toSet()
+              .toList(),
+        );
+  }
+
   /// Get a stream of a specific playlist by the [Playlist.id]
   Stream<Playlist?> getPlaylist(String id) {
     return _collection.doc(id).snapshots().map((doc) => doc.data());

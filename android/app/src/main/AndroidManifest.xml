@@ -46,6 +46,13 @@
             </intent-filter>
         </service>
 
+         <service
+            android:name="me.carda.awesome_notifications.services.ForegroundService"
+            android:enabled="true"            
+            android:exported="false"
+            android:stopWithTask="true"
+            android:foregroundServiceType="dataSync" />
+
         <receiver
             android:name="com.ryanheise.audioservice.MediaButtonReceiver"
             android:exported="false"

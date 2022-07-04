@@ -48,6 +48,7 @@ class PlaylistSelectScreen extends StatelessWidget {
                           Navigator.of(context).pop();
                           onSelect(playlist);
                         },
+                        heroTag: "library_playlist_${playlist.id}",
                         isDisabled: playlist.trackIds.contains(trackId),
                       );
                     },

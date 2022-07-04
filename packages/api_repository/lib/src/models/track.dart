@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api_repository/src/models/models.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +22,20 @@ part 'track.g.dart';
 @HiveType(typeId: 0)
 @JsonSerializable()
 class Track extends ProgressiveAudioSource {
+  static late Directory directory;
+
   Track({
     required this.id,
     required this.title,
     required this.artists,
     required this.thumbnail,
+    bool online = false,
   }) : super(
-          Uri.parse("http://soundroid.zectan.com/api/download?videoId=$id"),
+          Uri.parse(
+            online
+                ? "http://soundroid.zectan.com/api/download?videoId=$id"
+                : "file://${directory.path}/$id.mp3",
+          ),
           tag: MediaItem(
             id: id,
             title: title,
@@ -34,6 +43,16 @@ class Track extends ProgressiveAudioSource {
             artUri: Uri.parse(thumbnail),
           ),
         );
+
+  Track online() {
+    return Track(
+      id: id,
+      title: title,
+      artists: artists,
+      thumbnail: thumbnail,
+      online: true,
+    );
+  }
 
   /// The ID of the Track from YouTube
   @HiveField(0)

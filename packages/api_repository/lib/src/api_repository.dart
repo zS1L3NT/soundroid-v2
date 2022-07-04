@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:api_repository/src/connection.dart';
 import 'package:api_repository/src/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +8,7 @@ import 'package:http/http.dart';
 
 /// The API Repository contains all API calls to the SounDroid API.
 class ApiRepository {
-  const ApiRepository({
+  ApiRepository({
     required this.trackBox,
   });
 
@@ -22,6 +23,10 @@ class ApiRepository {
 
   /// The base URL for the SounDroid API
   String get _host => "http://soundroid.zectan.com/api";
+
+  late final _connection = Connection(host: _host);
+
+  Stream<bool> get isOnlineStream => _connection.listen();
 
   /// Fetch the home feed for the currently authenticated user
   Future<List<FeedSection>> getFeed() async {
@@ -124,6 +129,18 @@ class ApiRepository {
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch track");
+    }
+  }
+
+  /// Fetch the content length of a youtube video's audio
+  Future<int> getLength(String trackId) async {
+    final response = await get(Uri.parse("$_host/length?videoId=$trackId"));
+
+    if (response.statusCode == 200) {
+      return int.parse(response.body);
+    } else {
+      debugPrint(response.body);
+      throw Exception("Failed to fetch length");
     }
   }
 }

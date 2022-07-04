@@ -4,16 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:soundroid/features/search/search.dart';
 
 class ApiSuggestions extends StatelessWidget {
-  const ApiSuggestions({Key? key}) : super(key: key);
+  const ApiSuggestions({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final AnimatedListController controller;
 
   @override
   Widget build(BuildContext context) {
-    final searchProvider = context.watch<SearchProvider>();
-    final controller = AnimatedListController();
-
     // Animated items in the list reordering with this
     return AutomaticAnimatedListView<Suggestion>(
-      list: searchProvider.suggestions,
+      list: context.watch<SearchProvider>().suggestions,
       listController: controller,
       animator: const DefaultAnimatedListAnimator(
         dismissIncomingDuration: Duration(milliseconds: 300),

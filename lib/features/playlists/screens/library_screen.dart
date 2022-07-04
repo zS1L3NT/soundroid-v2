@@ -78,9 +78,10 @@ class _LibraryScreenState extends KeptAliveState<LibraryScreen> {
               playlist,
               onTap: () {
                 Navigator.of(context).push(
-                  PlaylistScreen.route(playlist),
+                  PlaylistScreen.route(playlist, "library_playlist_${playlist.id}"),
                 );
               },
+              heroTag: "library_playlist_${playlist.id}",
             );
           },
         );

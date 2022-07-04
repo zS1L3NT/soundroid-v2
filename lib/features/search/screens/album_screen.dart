@@ -2,8 +2,8 @@ import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
-import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/features/search/search.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class AlbumScreen extends StatelessWidget {
@@ -24,7 +24,6 @@ class AlbumScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentStream = context.read<MusicProvider>().current;
     final controller = ScrollController();
 
     return Scaffold(
@@ -64,7 +63,16 @@ class AlbumScreen extends StatelessWidget {
             builder: (context, snap) {
               final trackIds = snap.data;
 
-              if (trackIds == null) {
+              if (snap.hasError) {
+                return const SliverToBoxAdapter(
+                  child: Text(
+                    "Could not load album from the\nSounDroid server!",
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }
+
+              if (!snap.hasData) {
                 return const SliverToBoxAdapter(
                   child: Center(
                     child: CircularProgressIndicator(),
@@ -72,23 +80,27 @@ class AlbumScreen extends StatelessWidget {
                 );
               }
 
-              return StreamBuilder<Track?>(
-                stream: currentStream,
-                builder: (context, snap) {
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, int index) {
-                        return TrackItem(
-                          trackId: trackIds[index],
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, int index) {
+                    return FutureBuilder<Track>(
+                      future: context.read<ApiRepository>().getTrack(trackIds![index]),
+                      builder: (context, snap) {
+                        final track = snap.data;
+
+                        return AppListItem.fromTrack(
+                          track,
                           onTap: () {
                             context.read<MusicProvider>().playTrackIds(trackIds, index);
                           },
+                          onMoreTap:
+                              track != null ? () => showTrackBottomSheet(context, track) : null,
                         );
                       },
-                      childCount: trackIds.length,
-                    ),
-                  );
-                },
+                    );
+                  },
+                  childCount: trackIds!.length,
+                ),
               );
             },
           ),

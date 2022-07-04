@@ -1,3 +1,4 @@
+export 'providers/download_manager.dart';
 export 'providers/music_provider.dart';
 export 'screens/current_screen.dart';
 export 'screens/lyrics_screen.dart';
@@ -12,7 +13,5 @@ export 'widgets/buttons/skip_next_button.dart';
 export 'widgets/buttons/skip_previous_button.dart';
 export 'widgets/cover_image.dart';
 export 'widgets/playing_app_bar.dart';
-export 'widgets/queue_item.dart';
-export 'widgets/queue_item.dart';
 export 'widgets/sliders/position_slider.dart';
 export 'widgets/sliders/volume_slider.dart';

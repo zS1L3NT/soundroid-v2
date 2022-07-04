@@ -1,8 +1,11 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:soundroid/utils/utils.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class LikedSongsScreen extends StatelessWidget {
   const LikedSongsScreen({Key? key}) : super(key: key);
@@ -48,13 +51,19 @@ class LikedSongsScreen extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, int index) {
-                    final trackId = trackIds[index];
+                    return FutureBuilder<Track>(
+                      future: context.read<ApiRepository>().getTrack(trackIds[index]),
+                      builder: (context, snap) {
+                        final track = snap.data;
 
-                    return TrackItem(
-                      key: ValueKey(trackId),
-                      trackId: trackId,
-                      onTap: () {
-                        context.read<MusicProvider>().playTrackIds(trackIds, index);
+                        return AppListItem.fromTrack(
+                          track,
+                          onTap: () {
+                            context.read<MusicProvider>().playTrackIds(trackIds, index);
+                          },
+                          onMoreTap:
+                              track != null ? () => showTrackBottomSheet(context, track) : null,
+                        );
                       },
                     );
                   },

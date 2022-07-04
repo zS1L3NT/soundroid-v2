@@ -15,17 +15,11 @@ void showTrackBottomSheet(BuildContext context, Track track) {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 8),
-        StreamBuilder<Track?>(
-          stream: context.read<MusicProvider>().current,
-          builder: (context, snap) {
-            return AppListItem.fromTrack(
-              track,
-              onTap: () {
-                context.read<MusicProvider>().playTrackIds([track.id]);
-                Navigator.of(context).pop();
-              },
-              isActive: snap.data == track,
-            );
+        AppListItem.fromTrack(
+          track,
+          onTap: () {
+            context.read<MusicProvider>().playTrackIds([track.id]);
+            Navigator.of(context).pop();
           },
         ),
         const Divider(),
@@ -91,13 +85,20 @@ void showTrackBottomSheet(BuildContext context, Track track) {
             );
           },
         ),
-        if (!context.read<MusicProvider>().queue.tracks.contains(track))
+        if (!(context.read<MusicProvider>().queue?.tracks.contains(track) ?? false))
           ListTile(
             title: const Text("Add to queue"),
             leading: AppIcon.primaryColor(Icons.queue_music_rounded),
             onTap: () async {
               Navigator.of(context).pop();
-              await context.read<MusicProvider>().queue.addTrack(track);
+
+              final musicProvider = context.read<MusicProvider>();
+              if (musicProvider.queue != null) {
+                await musicProvider.queue?.addTrack(track);
+              } else {
+                musicProvider.playTrackIds([track.id]);
+              }
+
               const AppSnackBar(
                 text: "Added track to queue",
                 icon: Icons.playlist_add_check_rounded,

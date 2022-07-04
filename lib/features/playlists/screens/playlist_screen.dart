@@ -1,22 +1,28 @@
+import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
+import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlaylistScreen extends StatelessWidget {
   const PlaylistScreen({
     Key? key,
     required this.playlist,
+    required this.heroTag,
   }) : super(key: key);
 
   final Playlist playlist;
 
-  static Route route(Playlist playlist) {
+  final String heroTag;
+
+  static Route route(Playlist playlist, String heroTag) {
     return MaterialPageRoute(
       builder: (_) => PlaylistScreen(
         playlist: playlist,
+        heroTag: heroTag,
       ),
     );
   }
@@ -29,7 +35,13 @@ class PlaylistScreen extends StatelessWidget {
         );
   }
 
-  void onDownloadClick() {}
+  void onDownloadClick(BuildContext context, bool download) {
+    context.read<PlaylistRepository>().updatePlaylist(
+          playlist.copyWith.download(
+            !download,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +52,9 @@ class PlaylistScreen extends StatelessWidget {
         stream: context.read<PlaylistRepository>().getPlaylist(playlist.id),
         builder: (context, snap) {
           final playlist = snap.data;
+          final downloaded = context.select<DownloadManager, int?>(
+            (manager) => playlist?.trackIds.where(manager.downloaded.contains).length,
+          );
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -49,6 +64,7 @@ class PlaylistScreen extends StatelessWidget {
                 initialPlaylist: this.playlist,
                 playlist: playlist,
                 controller: controller,
+                heroTag: heroTag,
               ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -78,13 +94,21 @@ class PlaylistScreen extends StatelessWidget {
                                 )
                               : AppIcon.loading(color: Colors.black),
                           playlist != null
-                              ? AppIcon(
-                                  playlist.download
-                                      ? Icons.download_done_rounded
-                                      : Icons.download_rounded,
-                                  color: playlist.download ? Theme.of(context).primaryColor : null,
-                                  onPressed: onDownloadClick,
-                                )
+                              ? playlist.download
+                                  ? playlist.trackIds.length == downloaded!
+                                      ? AppIcon.primaryColor(
+                                          Icons.download_done_rounded,
+                                          onPressed: () =>
+                                              onDownloadClick(context, playlist.download),
+                                        )
+                                      : AppIcon.loading(
+                                          value: downloaded / playlist.trackIds.length,
+                                          onTap: () => onDownloadClick(context, playlist.download),
+                                        )
+                                  : AppIcon.primaryColor(
+                                      Icons.download_rounded,
+                                      onPressed: () => onDownloadClick(context, playlist.download),
+                                    )
                               : AppIcon.loading(color: Colors.black)
                         ],
                       ),
@@ -96,16 +120,22 @@ class PlaylistScreen extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, int index) {
-                    final trackId = playlist!.trackIds[index];
+                    return FutureBuilder<Track>(
+                      future: context.read<ApiRepository>().getTrack(playlist!.trackIds[index]),
+                      builder: (context, snap) {
+                        final track = snap.data;
 
-                    return TrackItem(
-                      key: ValueKey(trackId),
-                      trackId: trackId,
-                      onTap: () {
-                        context.read<PlaylistRepository>().updatePlaylist(
-                              playlist.copyWith.lastPlayed(PlaylistRepository.now),
-                            );
-                        context.read<MusicProvider>().playTrackIds(playlist.trackIds, index);
+                        return AppListItem.fromTrack(
+                          track,
+                          onTap: () {
+                            context.read<PlaylistRepository>().updatePlaylist(
+                                  playlist.copyWith.lastPlayed(PlaylistRepository.now),
+                                );
+                            context.read<MusicProvider>().playTrackIds(playlist.trackIds, index);
+                          },
+                          onMoreTap:
+                              track != null ? () => showTrackBottomSheet(context, track) : null,
+                        );
                       },
                     );
                   },

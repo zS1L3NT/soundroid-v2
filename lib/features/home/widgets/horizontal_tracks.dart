@@ -41,41 +41,60 @@ class HorizontalTracks extends StatelessWidget {
           itemBuilder: (context, index) {
             final track = tracks[index];
 
-            return Column(
-              children: [
-                Stack(
+            return StreamBuilder<bool>(
+              stream: context.read<ApiRepository>().isOnlineStream,
+              builder: (context, snap) {
+                final isEnabled = snap.data == true ||
+                    context.read<DownloadManager>().downloaded.contains(track.id);
+
+                return Column(
                   children: [
-                    AppImage.network(
-                      track.thumbnail,
-                      borderRadius: BorderRadius.circular(8),
-                      size: 128,
-                    ),
-                    SizedBox(
-                      width: 128,
-                      height: 128,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
-                          borderRadius: BorderRadius.circular(8),
-                          onTap: () {
-                            context.read<MusicProvider>().playTrackIds([track.id]);
-                          },
+                    Stack(
+                      children: [
+                        Opacity(
+                          opacity: isEnabled ? 1 : 0.5,
+                          child: AppImage.network(
+                            track.thumbnail,
+                            borderRadius: BorderRadius.circular(8),
+                            size: 128,
+                          ),
                         ),
+                        SizedBox(
+                          width: 128,
+                          height: 128,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              splashColor: const Color.fromRGBO(0, 0, 0, 0.4),
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: isEnabled
+                                  ? () {
+                                      context.read<MusicProvider>().playTrackIds([track.id]);
+                                    }
+                                  : null,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Opacity(
+                      opacity: isEnabled ? 1 : 0.5,
+                      child: AppText.marquee(
+                        track.title,
+                        width: 125,
+                      ),
+                    ),
+                    Opacity(
+                      opacity: isEnabled ? 1 : 0.5,
+                      child: AppText.marquee(
+                        track.artists.map((artist) => artist.name).join(", "),
+                        width: 125,
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 6),
-                AppText.marquee(
-                  track.title,
-                  width: 125,
-                ),
-                AppText.marquee(
-                  track.artists.map((artist) => artist.name).join(", "),
-                  width: 125,
-                ),
-              ],
+                );
+              },
             );
           },
         ),
