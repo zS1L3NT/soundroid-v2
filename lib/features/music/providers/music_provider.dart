@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:api_repository/api_repository.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:listen_repository/listen_repository.dart';
@@ -21,12 +22,19 @@ class MusicProvider with ChangeNotifier {
         _currentThumbnail = track.thumbnail;
         notifyListeners();
 
-        if (!isOnline && track.uri.scheme == "http") {
+        if (!isOnline && track.uri.scheme != "file") {
           try {
             await _player.stop();
           } catch (e) {
-            debugPrint("ERROR _player.stop(): $e");
+            debugPrint("ERROR AudioPlayer.stop(): $e");
           }
+
+          try {
+            await (await AudioSession.instance).setActive(false);
+          } catch (e) {
+            debugPrint("ERROR AudioSession.setActive(): $e");
+          }
+
           return;
         }
 
@@ -35,7 +43,7 @@ class MusicProvider with ChangeNotifier {
           try {
             await _player.stop();
           } catch (e) {
-            debugPrint("ERROR _player.stop(): $e");
+            debugPrint("ERROR AudioPlayer.stop(): $e");
           }
 
           if (isOnline) {
@@ -48,33 +56,15 @@ class MusicProvider with ChangeNotifier {
                 initialIndex: _player.currentIndex,
               );
             } catch (e) {
-              debugPrint("ERROR _player.setAudioSource(): $e");
+              debugPrint("ERROR AudioPlayer.setAudioSource(): $e");
             }
 
             try {
               await _player.play();
             } catch (e) {
-              debugPrint("ERROR _player.play(): $e");
+              debugPrint("ERROR AudioPlayer.play(): $e");
             }
           }
-        }
-      },
-    ).listen((_) {});
-
-    Rx.combineLatest3<Track?, PlayerState, bool, void>(
-      current,
-      player.playerStateStream,
-      apiRepo.isOnlineStream,
-      (track, playerState, isOnline) async {
-        if (track == null) return;
-
-        if (!isOnline && playerState.playing && track.uri.scheme == "http") {
-          try {
-            await _player.stop();
-          } catch (e) {
-            debugPrint("ERROR _player.stop(): $e");
-          }
-          return;
         }
       },
     ).listen((_) {});
@@ -103,6 +93,15 @@ class MusicProvider with ChangeNotifier {
           if (sequence == null || currentIndex == null) return null;
           if (sequence.length <= currentIndex) return null;
           return sequence[currentIndex] as Track;
+        },
+      );
+
+  Stream<bool> get currentIsPlayable => Rx.combineLatest2<Track?, bool, bool>(
+        current,
+        apiRepo.isOnlineStream,
+        (track, isOnline) {
+          return track != null &&
+              ((track.uri.scheme == "file" && File(track.uri.path).existsSync()) || isOnline);
         },
       );
 
@@ -180,13 +179,13 @@ class MusicProvider with ChangeNotifier {
         ),
       );
     } catch (e) {
-      debugPrint("ERROR _player.setAudioSource(): $e");
+      debugPrint("ERROR AudioPlayer.setAudioSource(): $e");
     }
 
     try {
       await _player.play();
     } catch (e) {
-      debugPrint("ERROR _player.play(): $e");
+      debugPrint("ERROR AudioPlayer.play(): $e");
     }
   }
 }
