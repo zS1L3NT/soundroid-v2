@@ -1,7 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/search/search.dart';
 import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
@@ -25,7 +25,7 @@ class SearchResultsWidget extends StatelessWidget {
             result,
             topRightIcon: Icons.music_note_rounded,
             onTap: () {
-              context.read<MusicProvider>().playTrackIds([result.id]);
+              context.read<MusicService>().playTracks([result]);
             },
             onMoreTap: () {
               showTrackBottomSheet(context, result);

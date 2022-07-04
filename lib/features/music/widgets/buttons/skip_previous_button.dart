@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class SkipPreviousButton extends StatelessWidget {
   const SkipPreviousButton({Key? key}) : super(key: key);
 
   void handleClick(BuildContext context) {
-    final player = context.read<MusicProvider>().player;
+    // final player = context.read<MusicProvider>().player;
 
-    if (player.position.inSeconds >= 2) {
-      player.seek(Duration.zero);
-    } else {
-      player.seekToPrevious();
-    }
+    // if (player.position.inSeconds >= 2) {
+    //   player.seek(Duration.zero);
+    // } else {
+    //   player.seekToPrevious();
+    // }
   }
 
   @override

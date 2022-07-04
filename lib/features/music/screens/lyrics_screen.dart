@@ -1,7 +1,7 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
 
 class LyricsScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
 
     return Center(
       child: StreamBuilder<Track?>(
-        stream: context.read<MusicProvider>().current,
+        stream: context.read<MusicService>().current,
         builder: (context, snap) {
           final current = snap.data;
 

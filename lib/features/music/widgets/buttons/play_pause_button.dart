@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class PlayPauseButton extends StatefulWidget {
@@ -12,7 +10,7 @@ class PlayPauseButton extends StatefulWidget {
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProviderStateMixin {
-  late final _player = context.read<MusicProvider>().player;
+  // late final _player = context.read<MusicProvider>().player;
   late final _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 400),
@@ -23,23 +21,23 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
   void initState() {
     super.initState();
 
-    _player.playingStream.listen((playing) {
-      if (mounted) {
-        if (playing) {
-          _controller.forward();
-        } else {
-          _controller.reverse();
-        }
-      }
-    });
+    // _player.playingStream.listen((playing) {
+    //   if (mounted) {
+    //     if (playing) {
+    //       _controller.forward();
+    //     } else {
+    //       _controller.reverse();
+    //     }
+    //   }
+    // });
   }
 
   void handleClick() {
-    if (_player.playing) {
-      _player.pause();
-    } else {
-      _player.play();
-    }
+    // if (_player.playing) {
+    //   _player.pause();
+    // } else {
+    //   _player.play();
+    // }
   }
 
   @override
@@ -64,7 +62,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
             ],
           ),
           child: StreamBuilder<PlayerState?>(
-            stream: context.read<MusicProvider>().player.playerStateStream,
+            // stream: context.read<MusicProvider>().player.playerStateStream,
             builder: (context, snap) {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),

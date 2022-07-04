@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class ShuffleButton extends StatelessWidget {
@@ -13,21 +11,21 @@ class ShuffleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player = context.read<MusicProvider>().player;
+    // final player = context.read<MusicProvider>().player;
 
     return StreamBuilder<bool>(
-      stream: player.shuffleModeEnabledStream,
+      // stream: player.shuffleModeEnabledStream,
       builder: (context, snap) {
         switch (snap.data) {
           case true:
             return AppIcon.primaryColorDark(
               Icons.shuffle_rounded,
-              onPressed: () => handleClick(player),
+              // onPressed: () => handleClick(player),
             );
           case false:
             return AppIcon.primaryColorLight(
               Icons.shuffle_rounded,
-              onPressed: () => handleClick(player),
+              // onPressed: () => handleClick(player),
             );
           default:
             return AppIcon.loading();

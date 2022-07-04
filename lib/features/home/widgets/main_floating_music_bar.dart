@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/widgets/widgets.dart';
@@ -9,8 +10,8 @@ class MainFloatingMusicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final durationStream = context.read<MusicProvider>().player.durationStream;
-    final positionStream = context.read<MusicProvider>().player.positionStream;
+    // final durationStream = context.read<MusicProvider>().player.durationStream;
+    // final positionStream = context.read<MusicProvider>().player.positionStream;
     bool isSwipeUp = false;
 
     return GestureDetector(
@@ -20,7 +21,7 @@ class MainFloatingMusicButton extends StatelessWidget {
         child: Stack(
           children: [
             StreamBuilder<Track?>(
-              stream: context.read<MusicProvider>().current,
+              stream: context.read<MusicService>().current,
               builder: (context, snap) {
                 return Padding(
                   padding: const EdgeInsets.all(2),
@@ -43,12 +44,12 @@ class MainFloatingMusicButton extends StatelessWidget {
               width: 64,
               height: 64,
               child: StreamBuilder<Duration?>(
-                stream: durationStream,
+                // stream: durationStream,
                 builder: (context, snap) {
                   final duration = snap.data;
 
                   return StreamBuilder<Duration>(
-                    stream: positionStream,
+                    // stream: positionStream,
                     builder: (context, snap) {
                       final position = snap.data;
 

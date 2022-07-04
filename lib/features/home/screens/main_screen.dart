@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:music_service/music_service.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/features/music/music.dart';
@@ -21,7 +22,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late final _currentStream = context.read<MusicProvider>().current;
+  late final _currentStream = context.read<MusicService>().current;
   final _controller = PageController();
   int _page = 0;
 

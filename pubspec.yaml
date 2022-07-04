@@ -34,6 +34,8 @@ dependencies:
     path: ./packages/api_repository
   authentication_repository:
     path: ./packages/authentication_repository
+  music_service:
+    path: ./packages/music_service
   listen_repository:
     path: ./packages/listen_repository
   playlist_repository:

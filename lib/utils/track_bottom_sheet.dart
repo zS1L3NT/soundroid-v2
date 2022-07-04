@@ -1,9 +1,9 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:music_service/music_service.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
-import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/playlists/playlists.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -18,7 +18,7 @@ void showTrackBottomSheet(BuildContext context, Track track) {
         AppListItem.fromTrack(
           track,
           onTap: () {
-            context.read<MusicProvider>().playTrackIds([track.id]);
+            context.read<MusicService>().playTracks([track]);
             Navigator.of(context).pop();
           },
         ),
@@ -85,26 +85,26 @@ void showTrackBottomSheet(BuildContext context, Track track) {
             );
           },
         ),
-        if (!(context.read<MusicProvider>().queue?.tracks.contains(track) ?? false))
-          ListTile(
-            title: const Text("Add to queue"),
-            leading: AppIcon.primaryColor(Icons.queue_music_rounded),
-            onTap: () async {
-              Navigator.of(context).pop();
+        // if (!(context.read<MusicProvider>().queue?.tracks.contains(track) ?? false))
+        //   ListTile(
+        //     title: const Text("Add to queue"),
+        //     leading: AppIcon.primaryColor(Icons.queue_music_rounded),
+        //     onTap: () async {
+        //       Navigator.of(context).pop();
 
-              final musicProvider = context.read<MusicProvider>();
-              if (musicProvider.queue != null) {
-                await musicProvider.queue?.addTrack(track);
-              } else {
-                musicProvider.playTrackIds([track.id]);
-              }
+        //       final musicProvider = context.read<MusicProvider>();
+        //       if (musicProvider.queue != null) {
+        //         await musicProvider.queue?.addTrack(track);
+        //       } else {
+        //         musicProvider.playTrackIds([track.id]);
+        //       }
 
-              const AppSnackBar(
-                text: "Added track to queue",
-                icon: Icons.playlist_add_check_rounded,
-              ).show(context);
-            },
-          ),
+        //       const AppSnackBar(
+        //         text: "Added track to queue",
+        //         icon: Icons.playlist_add_check_rounded,
+        //       ).show(context);
+        //     },
+        //   ),
         const SizedBox(height: 8),
       ],
     ),
