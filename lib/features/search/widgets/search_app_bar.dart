@@ -11,6 +11,8 @@ class SearchAppBar extends AppBar {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
+  final _focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -20,6 +22,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           const SizedBox(width: 16),
           Expanded(
             child: TextField(
+              focusNode: _focusNode,
               controller: context.read<SearchProvider>().controller,
               onChanged: context.read<SearchProvider>().handleTextChange,
               onEditingComplete: () {
@@ -46,7 +49,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
         context.watch<SearchProvider>().query != ""
             ? AppIcon(
                 Icons.clear_rounded,
-                onPressed: () => context.read<SearchProvider>().query = "",
+                onPressed: () {
+                  context.read<SearchProvider>().query = "";
+                  FocusScope.of(context).requestFocus(_focusNode);
+                },
               )
             : const SizedBox(),
         const SizedBox(width: 4)

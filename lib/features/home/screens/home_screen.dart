@@ -4,6 +4,7 @@ import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/utils/kept_alive_state.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 // 1) Your playlists
 // 2) Tracks that you've been listening to a lot
@@ -36,13 +37,27 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
           final sections = snap.data;
 
           if (snap.hasError && snap.connectionState == ConnectionState.done) {
-            return Center(
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [
-                  Text('Error: ${snap.error}'),
-                ],
-              ),
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 52 - kToolbarHeight - kToolbarHeight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon.red(
+                        Icons.cloud_off_rounded,
+                        size: 48,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Could not get feed from the\nSounDroid server!",
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                ),
+              ],
             );
           }
 

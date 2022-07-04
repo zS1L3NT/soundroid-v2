@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/utils/utils.dart';
+import 'package:soundroid/widgets/widgets.dart';
 
 class LyricsScreen extends StatefulWidget {
   const LyricsScreen({Key? key}) : super(key: key);
@@ -26,7 +27,20 @@ class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
             future: current != null ? context.read<ApiRepository>().getLyrics(current) : null,
             builder: (context, snap) {
               if (snap.hasError) {
-                return Text("Error: ${snap.error}");
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppIcon.red(
+                      Icons.cloud_off_rounded,
+                      size: 48,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Could not fetch lyrics from the\nSounDroid server!",
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                );
               }
 
               if (!snap.hasData) {
