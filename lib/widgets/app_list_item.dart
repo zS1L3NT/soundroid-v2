@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/music/music.dart';
-import 'package:soundroid/utils/utils.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 /// A helper class for building ListItems. This widget supports building
@@ -123,7 +122,7 @@ class AppListItem extends StatelessWidget {
                 final downloadManager = context.watch<DownloadManager>();
 
                 return StreamBuilder<bool>(
-                  stream: isOnlineStream(context.read<ApiRepository>()),
+                  stream: context.read<ApiRepository>().isOnlineStream,
                   builder: (context, snap) {
                     final isOnline = snap.data == true;
 
