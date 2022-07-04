@@ -5,6 +5,7 @@ publish_to: none
 environment:
   sdk: ">=2.16.0 <3.0.0"
 dependencies: 
+  connectivity_plus: ^2.3.5
   copy_with_extension: ^4.0.0
   equatable: ^2.0.3
   flutter: 

@@ -205,10 +205,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
 
               final hero = Hero(
                 tag: widget.heroTag,
-                child: AppImage.network(
-                  thumbnail,
-                  errorIconPadding: 24,
-                ),
+                child: AppImage.network(thumbnail),
               );
               if (thumbnail == null) {
                 return hero;

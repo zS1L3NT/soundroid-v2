@@ -68,19 +68,19 @@ void main() async {
     MultiRepositoryProvider(
       // Initialize all repositories as providers
       providers: [
-        RepositoryProvider<ApiRepository>(
+        RepositoryProvider(
           create: (_) => ApiRepository(trackBox: trackBox),
         ),
-        RepositoryProvider<AuthenticationRepository>(
+        RepositoryProvider(
           create: (_) => AuthenticationRepository(),
         ),
-        RepositoryProvider<ListenRepository>(
+        RepositoryProvider(
           create: (_) => ListenRepository(),
         ),
-        RepositoryProvider<PlaylistRepository>(
+        RepositoryProvider(
           create: (_) => PlaylistRepository(),
         ),
-        RepositoryProvider<SearchRepository>(
+        RepositoryProvider(
           create: (_) => SearchRepository(),
         ),
       ],

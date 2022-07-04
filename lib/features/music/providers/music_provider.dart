@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:api_repository/api_repository.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:listen_repository/listen_repository.dart';
@@ -12,37 +13,61 @@ class MusicProvider with ChangeNotifier {
     required this.apiRepo,
     required this.listenRepo,
   }) {
-    current.listen((current) {
-      if (current != null) {
-        _currentThumbnail = current.thumbnail;
+    Rx.combineLatest2<Track?, bool, void>(
+      current,
+      apiRepo.isOnlineStream,
+      (track, isOnline) async {
+        if (track == null) return;
+
+        _currentThumbnail = track.thumbnail;
         notifyListeners();
-      }
-    });
 
-    current.listen((track) async {
-      if (queue != null &&
-          track != null &&
-          track.uri.scheme == "file" &&
-          !File(track.uri.path).existsSync()) {
-        final tracks = queue!.tracks;
-        tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
+        if (!isOnline && track.uri.scheme != "file") {
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR AudioPlayer.stop(): $e");
+          }
 
-        // Don't change the audio source too quickly in case they're spamming the button
-        await Future.delayed(const Duration(seconds: 1));
-        if (await current.first != track) return;
+          try {
+            await (await AudioSession.instance).setActive(false);
+          } catch (e) {
+            debugPrint("ERROR AudioSession.setActive(): $e");
+          }
 
-        try {
-          await _player.setAudioSource(
-            QueueAudioSource(children: tracks, apiRepo: apiRepo),
-            initialIndex: _player.currentIndex,
-          );
-        } catch (e) {
-          debugPrint("ERROR: " + e.toString());
+          return;
         }
 
-        await _player.play();
-      }
-    });
+        if (track.uri.scheme == "file" && !File(track.uri.path).existsSync()) {
+          await Future.delayed(Duration.zero);
+          try {
+            await _player.stop();
+          } catch (e) {
+            debugPrint("ERROR AudioPlayer.stop(): $e");
+          }
+
+          if (isOnline) {
+            final tracks = queue!.tracks;
+            tracks[_player.currentIndex!] = tracks[_player.currentIndex!].online();
+
+            try {
+              await _player.setAudioSource(
+                QueueAudioSource(children: tracks, apiRepo: apiRepo),
+                initialIndex: _player.currentIndex,
+              );
+            } catch (e) {
+              debugPrint("ERROR AudioPlayer.setAudioSource(): $e");
+            }
+
+            try {
+              await _player.play();
+            } catch (e) {
+              debugPrint("ERROR AudioPlayer.play(): $e");
+            }
+          }
+        }
+      },
+    ).listen((_) {});
 
     _setupListenTracker();
   }
@@ -68,6 +93,15 @@ class MusicProvider with ChangeNotifier {
           if (sequence == null || currentIndex == null) return null;
           if (sequence.length <= currentIndex) return null;
           return sequence[currentIndex] as Track;
+        },
+      );
+
+  Stream<bool> get currentIsPlayable => Rx.combineLatest2<Track?, bool, bool>(
+        current,
+        apiRepo.isOnlineStream,
+        (track, isOnline) {
+          return track != null &&
+              ((track.uri.scheme == "file" && File(track.uri.path).existsSync()) || isOnline);
         },
       );
 
@@ -145,9 +179,13 @@ class MusicProvider with ChangeNotifier {
         ),
       );
     } catch (e) {
-      debugPrint("ERROR: " + e.toString());
+      debugPrint("ERROR AudioPlayer.setAudioSource(): $e");
     }
 
-    await _player.play();
+    try {
+      await _player.play();
+    } catch (e) {
+      debugPrint("ERROR AudioPlayer.play(): $e");
+    }
   }
 }

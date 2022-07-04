@@ -18,7 +18,7 @@ class _PositionSliderState extends State<PositionSlider> {
 
   String formatDuration(Duration? duration) {
     if (duration == null) {
-      return "??:??";
+      return "--:--";
     }
 
     final minutes = "${duration.inMinutes % 60}".padLeft(2, "0");
@@ -42,58 +42,75 @@ class _PositionSliderState extends State<PositionSlider> {
           builder: (context, snap) {
             final position = snap.data;
 
-            return Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: Text(
-                    formatDuration(
-                      // If the user is dragging the slider, show the user's slide position timing instead
-                      _slidePosition != null && duration != null
-                          ? Duration(
-                              milliseconds: (duration.inMilliseconds * _slidePosition!).toInt(),
-                            )
-                          : position,
-                    ),
-                    style: Theme.of(context).textTheme.caption,
+            return StreamBuilder<bool>(
+              stream: context.read<MusicProvider>().currentIsPlayable,
+              builder: (context, snap) {
+                final currentIsPlayable = snap.data == true;
+
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: currentIsPlayable ? 1 : 0.5,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 40,
+                        child: Text(
+                          formatDuration(
+                            // If the user is dragging the slider, show the user's slide position timing instead
+                            _slidePosition != null && duration != null
+                                ? Duration(
+                                    milliseconds:
+                                        (duration.inMilliseconds * _slidePosition!).toInt(),
+                                  )
+                                : position,
+                          ),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ),
+                      SliderTheme(
+                        data: SliderThemeData(
+                          trackHeight: 2,
+                          disabledThumbColor: Theme.of(context).primaryColor,
+                          disabledActiveTrackColor: Theme.of(context).primaryColor,
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 8),
+                        ),
+                        child: Expanded(
+                          child: Slider.adaptive(
+                            // If the user is dragging the slider, show the user's slide position instead
+                            value: _slidePosition ??
+                                (position != null && duration != null
+                                    ? position.inSeconds / duration.inSeconds
+                                    : 0),
+                            // Change the _slidePosition when the user drags the slider
+                            onChanged: currentIsPlayable
+                                ? (position) => setState(() => _slidePosition = position)
+                                : null,
+                            onChangeEnd: (position) {
+                              context.read<MusicProvider>().player.seek(
+                                    Duration(
+                                      milliseconds:
+                                          ((duration?.inMilliseconds ?? 0) * position).toInt(),
+                                    ),
+                                  );
+                              // Reset the _slidePosition when the user stops dragging
+                              setState(() => _slidePosition = null);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 40,
+                        child: Text(
+                          formatDuration(duration),
+                          style: Theme.of(context).textTheme.caption,
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SliderTheme(
-                  data: const SliderThemeData(
-                    trackHeight: 2,
-                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8),
-                    overlayShape: RoundSliderOverlayShape(overlayRadius: 8),
-                  ),
-                  child: Expanded(
-                    child: Slider.adaptive(
-                      // If the user is dragging the slider, show the user's slide position instead
-                      value: _slidePosition ??
-                          (position != null && duration != null
-                              ? position.inSeconds / duration.inSeconds
-                              : 0),
-                      // Change the _slidePosition when the user drags the slider
-                      onChanged: (position) => setState(() => _slidePosition = position),
-                      onChangeEnd: (position) {
-                        context.read<MusicProvider>().player.seek(
-                              Duration(
-                                milliseconds: ((duration?.inMilliseconds ?? 0) * position).toInt(),
-                              ),
-                            );
-                        // Reset the _slidePosition when the user stops dragging
-                        setState(() => _slidePosition = null);
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 40,
-                  child: Text(
-                    formatDuration(duration),
-                    style: Theme.of(context).textTheme.caption,
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ],
+                );
+              },
             );
           },
         );

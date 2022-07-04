@@ -52,10 +52,7 @@ class _AlbumSliverAppBarState extends State<AlbumSliverAppBar> {
             fit: BoxFit.cover,
             child: Hero(
               tag: "album_${widget.album.id}",
-              child: AppImage.network(
-                widget.album.thumbnail,
-                errorIconPadding: 24,
-              ),
+              child: AppImage.network(widget.album.thumbnail),
             ),
           ),
         ),

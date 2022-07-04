@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:api_repository/src/connection.dart';
 import 'package:api_repository/src/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +8,7 @@ import 'package:http/http.dart';
 
 /// The API Repository contains all API calls to the SounDroid API.
 class ApiRepository {
-  const ApiRepository({
+  ApiRepository({
     required this.trackBox,
   });
 
@@ -22,6 +23,10 @@ class ApiRepository {
 
   /// The base URL for the SounDroid API
   String get _host => "http://soundroid.zectan.com/api";
+
+  late final _connection = Connection(host: _host);
+
+  Stream<bool> get isOnlineStream => _connection.listen();
 
   /// Fetch the home feed for the currently authenticated user
   Future<List<FeedSection>> getFeed() async {
