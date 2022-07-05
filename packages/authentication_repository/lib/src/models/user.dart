@@ -11,7 +11,7 @@ class User extends Equatable {
   const User({
     required this.name,
     required this.email,
-    required this.picture,
+    this.picture,
     required this.verified,
     required this.likedTrackIds,
   });
@@ -23,7 +23,7 @@ class User extends Equatable {
   final String email;
 
   /// The profile picture of the User
-  final String picture;
+  final String? picture;
 
   /// Whether the User's email address has been verified
   final bool verified;

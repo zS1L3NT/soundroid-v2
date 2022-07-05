@@ -54,6 +54,31 @@ class AuthenticationRepository {
     }
   }
 
+  Future<bool> register(String email, String name, String password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await _document.set(
+        User(
+          email: email,
+          name: name,
+          verified: false,
+          likedTrackIds: const [],
+        ),
+      );
+
+      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Register Failed: $e");
+      return false;
+    }
+  }
+
   Future<bool> logout() async {
     try {
       await FirebaseAuth.instance.signOut();

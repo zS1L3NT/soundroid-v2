@@ -1,8 +1,10 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -12,12 +14,54 @@ class SignupScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final nameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<SignupScreen> createState() => _SignupScreenState();
+}
 
+class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  void handleRegister() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    if (await context.read<AuthenticationRepository>().register(
+          _emailController.text,
+          _nameController.text,
+          _passwordController.text,
+        )) {
+      Navigator.of(context).pushAndRemoveUntil(
+        PageRouteBuilder(
+          pageBuilder: (c, anim, anim2) => const VerifyEmailScreen(),
+          transitionsBuilder: (c, anim, anim2, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.5, 0),
+                end: Offset.zero,
+              ).animate(anim),
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 200),
+          reverseTransitionDuration: const Duration(milliseconds: 200),
+        ),
+        (_) => false,
+      );
+    } else {
+      const AppSnackBar(
+        text: "Failed to sign up with the provided credentials",
+        icon: Icons.close_rounded,
+        color: Colors.red,
+      ).show(context);
+    }
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -27,7 +71,7 @@ class SignupScreen extends StatelessWidget {
             vertical: 8,
           ),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -42,7 +86,7 @@ class SignupScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
-                  controller: nameController,
+                  controller: _nameController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your name',
@@ -63,7 +107,7 @@ class SignupScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: emailController,
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
@@ -84,33 +128,13 @@ class SignupScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 PasswordFormField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   name: "Password",
                   placeholder: "Enter your password",
                 ),
                 const SizedBox(height: 24),
                 FullSizedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        PageRouteBuilder(
-                          pageBuilder: (c, anim, anim2) => const VerifyEmailScreen(),
-                          transitionsBuilder: (c, anim, anim2, child) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0.5, 0),
-                                end: Offset.zero,
-                              ).animate(anim),
-                              child: child,
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 200),
-                          reverseTransitionDuration: const Duration(milliseconds: 200),
-                        ),
-                        (_) => false,
-                      );
-                    }
-                  },
+                  onPressed: _isLoading ? null : handleRegister,
                   child: const Text("Register"),
                 ),
               ],
