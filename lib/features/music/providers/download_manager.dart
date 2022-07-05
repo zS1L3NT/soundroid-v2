@@ -29,6 +29,8 @@ class DownloadManager extends ChangeNotifier {
   List<String>? get queue => _queue;
   List<String>? _queue;
 
+  bool _isDownloading = false;
+
   /// Last time the download notification was updated
   DateTime _lastNotificationUpdate = DateTime.fromMillisecondsSinceEpoch(0);
 
@@ -103,6 +105,8 @@ class DownloadManager extends ChangeNotifier {
       }
     }
 
+    if (_isDownloading) return;
+    _isDownloading = true;
     notifyListeners();
 
     while (true) {
