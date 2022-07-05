@@ -9,8 +9,10 @@ dependencies:
   cloud_firestore: ^3.1.17
   copy_with_extension: ^4.0.0
   equatable: ^2.0.3
+  firebase_auth: ^3.4.0
   flutter: 
     sdk: flutter
+  google_sign_in: ^5.3.3
 
 dev_dependencies:
   build_runner: ^2.1.11
