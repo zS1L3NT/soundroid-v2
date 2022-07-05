@@ -41,9 +41,9 @@ class MusicProvider with ChangeNotifier {
         if (track.uri.scheme == "file" && !File(track.uri.path).existsSync()) {
           await Future.delayed(Duration.zero);
           try {
-            await _player.stop();
+            await _player.pause();
           } catch (e) {
-            debugPrint("ERROR AudioPlayer.stop(): $e");
+            debugPrint("ERROR AudioPlayer.pause(): $e");
           }
 
           if (isOnline) {
