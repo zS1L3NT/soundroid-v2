@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
@@ -24,19 +27,35 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 1), checkCooldown);
-
-    // ! Remove after prototyping stage
-    // Timer(const Duration(seconds: 5), () {
-    // Navigator.of(context).pushReplacement(MainScreen.route());
-    // });
+    Timer(
+      const Duration(seconds: 1),
+      checkCooldown,
+    );
   }
 
   void checkCooldown() {
     if (_cooldown > 0) {
-      setState(() => _cooldown--);
-      Timer(const Duration(seconds: 1), checkCooldown);
+      if (context.read<AuthenticationRepository>().isEmailVerified) {
+        Navigator.of(context).pushReplacement(MainScreen.route());
+      } else {
+        setState(() => _cooldown--);
+        Timer(
+          const Duration(seconds: 1),
+          checkCooldown,
+        );
+      }
     }
+  }
+
+  void resendVerification() async {
+    await context.read<AuthenticationRepository>().sendVerificationEmail();
+    setState(() {
+      _cooldown = 60;
+      Timer(
+        const Duration(seconds: 1),
+        checkCooldown,
+      );
+    });
   }
 
   @override
@@ -74,12 +93,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             ),
             const Spacer(),
             TextButton(
-              onPressed: _cooldown == 0
-                  ? () => setState(() {
-                        _cooldown = 60;
-                        Timer(const Duration(seconds: 1), checkCooldown);
-                      })
-                  : null,
+              onPressed: _cooldown == 0 ? resendVerification : null,
               child: Text(
                 "Resend verification email${_cooldown > 0 ? " in ${_cooldown}s" : ""}",
               ),

@@ -20,6 +20,8 @@ class AuthenticationRepository {
   /// The document reference of the currently signed in user
   DocumentReference<User> get currentUserRef => _document;
 
+  bool get isEmailVerified => FirebaseAuth.instance.currentUser!.emailVerified;
+
   /// Get a stream of the current user data
   Stream<User?> get currentUser => _document.snapshots().map((snap) => snap.data());
 
@@ -65,12 +67,11 @@ class AuthenticationRepository {
         User(
           email: email,
           name: name,
-          verified: false,
           likedTrackIds: const [],
         ),
       );
 
-      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+      await sendVerificationEmail();
 
       return true;
     } catch (e) {
@@ -85,6 +86,16 @@ class AuthenticationRepository {
       return true;
     } catch (e) {
       debugPrint("ERROR Google Sign Out Failed: $e");
+      return false;
+    }
+  }
+
+  Future<bool> sendVerificationEmail() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Send Verification Email Failed: $e");
       return false;
     }
   }

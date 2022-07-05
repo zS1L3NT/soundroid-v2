@@ -13,9 +13,7 @@ abstract class _$UserCWProxy {
 
   User name(String name);
 
-  User picture(String picture);
-
-  User verified(bool verified);
+  User picture(String? picture);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `User(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -28,7 +26,6 @@ abstract class _$UserCWProxy {
     List<String>? likedTrackIds,
     String? name,
     String? picture,
-    bool? verified,
   });
 }
 
@@ -49,10 +46,7 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
   User name(String name) => this(name: name);
 
   @override
-  User picture(String picture) => this(picture: picture);
-
-  @override
-  User verified(bool verified) => this(verified: verified);
+  User picture(String? picture) => this(picture: picture);
 
   @override
 
@@ -67,7 +61,6 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
     Object? likedTrackIds = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? picture = const $CopyWithPlaceholder(),
-    Object? verified = const $CopyWithPlaceholder(),
   }) {
     return User(
       email: email == const $CopyWithPlaceholder() || email == null
@@ -83,14 +76,10 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      picture: picture == const $CopyWithPlaceholder() || picture == null
+      picture: picture == const $CopyWithPlaceholder()
           ? _value.picture
           // ignore: cast_nullable_to_non_nullable
-          : picture as String,
-      verified: verified == const $CopyWithPlaceholder() || verified == null
-          ? _value.verified
-          // ignore: cast_nullable_to_non_nullable
-          : verified as bool,
+          : picture as String?,
     );
   }
 }
