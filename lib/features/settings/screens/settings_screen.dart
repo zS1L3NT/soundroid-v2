@@ -1,11 +1,24 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/features/settings/settings.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
+
+  void handleLogout(BuildContext context) async {
+    if (await context.read<AuthenticationRepository>().logout()) {
+      Navigator.of(context).pushReplacement(WelcomeScreen.route());
+    } else {
+      const AppSnackBar(
+        text: "Failed to sign out",
+        icon: Icons.close_rounded,
+      ).show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +97,7 @@ class SettingsScreen extends StatelessWidget {
                   description: "Any music playing will be stopped.",
                   confirmText: "Logout",
                   isDanger: true,
-                  onConfirm: () {
-                    Navigator.of(context).pushReplacement(WelcomeScreen.route());
-                  },
+                  onConfirm: () => handleLogout(context),
                 ).show(context);
               },
             ),

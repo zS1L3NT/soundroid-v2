@@ -54,6 +54,16 @@ class AuthenticationRepository {
     }
   }
 
+  Future<bool> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Google Sign Out Failed: $e");
+      return false;
+    }
+  }
+
   /// Update the currently signed in user's data
   void updateUser(User user) async {
     return _document.update(user.toJson());
