@@ -1,15 +1,41 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => const WelcomeScreen(),
     );
+  }
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  bool _isLoading = false;
+
+  void handleGoogleSignIn() async {
+    setState(() => _isLoading = true);
+    if (await context.read<AuthenticationRepository>().signInWithGoogle()) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MainScreen.route(),
+        (_) => false,
+      );
+    } else {
+      const AppSnackBar(
+        text: "Failed to sign in with Google",
+        icon: Icons.close_rounded,
+        color: Colors.red,
+      ).show(context);
+    }
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -47,9 +73,11 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               FullSizedButton(
-                onPressed: () {
-                  Navigator.of(context).push(SignupScreen.route());
-                },
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                        Navigator.of(context).push(SignupScreen.route());
+                      },
                 child: const Padding(
                   padding: EdgeInsets.all(12),
                   child: Text("Sign Up with Email"),
@@ -57,12 +85,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MainScreen.route(),
-                    (_) => false,
-                  );
-                },
+                onPressed: _isLoading ? null : handleGoogleSignIn,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Row(
@@ -88,9 +111,11 @@ class WelcomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 32),
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(SigninScreen.route());
-                  },
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          Navigator.of(context).push(SigninScreen.route());
+                        },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [

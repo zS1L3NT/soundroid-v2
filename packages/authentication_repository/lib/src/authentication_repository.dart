@@ -1,6 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, GoogleAuthProvider;
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 /// The Authentication Repository contains all Firebase calls regarding authentication and user data.
 class AuthenticationRepository {
@@ -20,6 +22,37 @@ class AuthenticationRepository {
 
   /// Get a stream of the current user data
   Stream<User?> get currentUser => _document.snapshots().map((snap) => snap.data());
+
+  Future<bool> signInWithGoogle() async {
+    try {
+      final account = await GoogleSignIn().signIn();
+      final authentication = await account?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: authentication?.accessToken,
+        idToken: authentication?.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Google Sign In Failed: $e");
+      return false;
+    }
+  }
+
+  Future<bool> login(String email, String password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Login Failed: $e");
+      return false;
+    }
+  }
 
   /// Update the currently signed in user's data
   void updateUser(User user) async {

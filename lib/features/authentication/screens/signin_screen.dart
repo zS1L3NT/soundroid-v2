@@ -1,9 +1,11 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class SigninScreen extends StatelessWidget {
+class SigninScreen extends StatefulWidget {
   const SigninScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -13,11 +15,56 @@ class SigninScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<SigninScreen> createState() => _SigninScreenState();
+}
 
+class _SigninScreenState extends State<SigninScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  void handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    if (await context.read<AuthenticationRepository>().login(
+          _emailController.text,
+          _passwordController.text,
+        )) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MainScreen.route(),
+        (_) => false,
+      );
+    } else {
+      const AppSnackBar(
+        text: "Failed to login with the provided credentials",
+        icon: Icons.close_rounded,
+        color: Colors.red,
+      ).show(context);
+    }
+    setState(() => _isLoading = false);
+  }
+
+  void handleGoogleSignIn() async {
+    setState(() => _isLoading = true);
+    if (await context.read<AuthenticationRepository>().signInWithGoogle()) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MainScreen.route(),
+        (_) => false,
+      );
+    } else {
+      const AppSnackBar(
+        text: "Failed to sign in with Google",
+        icon: Icons.close_rounded,
+        color: Colors.red,
+      ).show(context);
+    }
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -31,7 +78,7 @@ class SigninScreen extends StatelessWidget {
               vertical: 8,
             ),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -46,7 +93,7 @@ class SigninScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   TextFormField(
-                    controller: emailController,
+                    controller: _emailController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your email address',
@@ -67,20 +114,13 @@ class SigninScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   PasswordFormField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     name: "Password",
                     placeholder: "Enter your password",
                   ),
                   const SizedBox(height: 24),
                   FullSizedButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MainScreen.route(),
-                          (_) => false,
-                        );
-                      }
-                    },
+                    onPressed: _isLoading ? null : handleLogin,
                     child: const Text("Login"),
                   ),
                   const SizedBox(height: 12),
@@ -95,12 +135,7 @@ class SigninScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MainScreen.route(),
-                        (_) => false,
-                      );
-                    },
+                    onPressed: _isLoading ? null : handleGoogleSignIn,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Row(
@@ -126,9 +161,11 @@ class SigninScreen extends StatelessWidget {
                   const Spacer(),
                   Center(
                     child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(ForgotPasswordScreen.route());
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              Navigator.of(context).push(ForgotPasswordScreen.route());
+                            },
                       child: const Text("Forgot your password?"),
                     ),
                   ),
