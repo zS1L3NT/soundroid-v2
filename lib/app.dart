@@ -66,7 +66,7 @@ class App extends StatelessWidget {
         builder: (context, snap) {
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: snap.hasData
+            child: snap.connectionState == ConnectionState.done
                 ? snap.data == null
                     ? const WelcomeScreen()
                     : snap.data!
