@@ -1,8 +1,10 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   static Route route() {
@@ -12,9 +14,38 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
 
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  bool _isLoading = false;
+
+  void handleSendInstructions() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    if (await context
+        .read<AuthenticationRepository>()
+        .sendPasswordResetEmail(_emailController.text)) {
+      AppAlertDialog(
+        title: "Check your email",
+        description: "Check your email for instructions to reset your password",
+        onClose: Navigator.of(context).pop,
+      ).show(context);
+    } else {
+      const AppSnackBar(
+        icon: Icons.close_rounded,
+        text: "Something went wrong, please try again",
+        color: Colors.red,
+      ).show(context);
+    }
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -24,7 +55,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             vertical: 8,
           ),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -39,6 +70,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your email address',
@@ -59,17 +91,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 FullSizedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      AppAlertDialog(
-                        title: "Check your email",
-                        description: "Check your email for instructions to reset your password",
-                        onClose: () {
-                          Navigator.of(context).push(ResetPasswordScreen.route());
-                        },
-                      ).show(context);
-                    }
-                  },
+                  onPressed: _isLoading ? null : handleSendInstructions,
                   child: const Text("Send Instructions"),
                 ),
               ],

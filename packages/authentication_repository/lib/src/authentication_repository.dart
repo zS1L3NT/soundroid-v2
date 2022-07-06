@@ -103,6 +103,16 @@ class AuthenticationRepository {
     }
   }
 
+  Future<bool> sendPasswordResetEmail(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Send Password Reset Email Failed: $e");
+      return false;
+    }
+  }
+
   /// Update the currently signed in user's data
   void updateUser(User user) async {
     return _document.update(user.toJson());
