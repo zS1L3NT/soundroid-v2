@@ -20,7 +20,10 @@ class AuthenticationRepository {
   /// The document reference of the currently signed in user
   DocumentReference<User> get currentUserRef => _document;
 
-  bool get isEmailVerified => FirebaseAuth.instance.currentUser!.emailVerified;
+  Future<bool?> get isEmailVerified async {
+    await FirebaseAuth.instance.currentUser?.reload();
+    return FirebaseAuth.instance.currentUser?.emailVerified;
+  }
 
   /// Get a stream of the current user data
   Stream<User?> get currentUser => _document.snapshots().map((snap) => snap.data());

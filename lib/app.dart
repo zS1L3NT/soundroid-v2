@@ -1,5 +1,8 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -58,7 +61,21 @@ class App extends StatelessWidget {
         // For sexy Android 12 overscroll behaviour
         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
-      home: const WelcomeScreen(),
+      home: FutureBuilder<bool?>(
+        future: context.read<AuthenticationRepository>().isEmailVerified,
+        builder: (context, snap) {
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: snap.hasData
+                ? snap.data == null
+                    ? const WelcomeScreen()
+                    : snap.data!
+                        ? const MainScreen()
+                        : const VerifyEmailScreen()
+                : const Center(child: CircularProgressIndicator()),
+          );
+        },
+      ),
     );
   }
 }

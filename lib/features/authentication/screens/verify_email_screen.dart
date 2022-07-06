@@ -31,19 +31,25 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       const Duration(seconds: 1),
       checkCooldown,
     );
+
+    watchEmailVerified();
+  }
+
+  void watchEmailVerified() async {
+    while (true) {
+      if (await context.read<AuthenticationRepository>().isEmailVerified == true) {
+        Navigator.of(context).pushReplacement(MainScreen.route());
+      }
+    }
   }
 
   void checkCooldown() {
     if (_cooldown > 0) {
-      if (context.read<AuthenticationRepository>().isEmailVerified) {
-        Navigator.of(context).pushReplacement(MainScreen.route());
-      } else {
-        setState(() => _cooldown--);
-        Timer(
-          const Duration(seconds: 1),
-          checkCooldown,
-        );
-      }
+      setState(() => _cooldown--);
+      Timer(
+        const Duration(seconds: 1),
+        checkCooldown,
+      );
     }
   }
 
