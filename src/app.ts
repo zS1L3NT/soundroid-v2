@@ -36,4 +36,11 @@ const readRouteFolder = (folderName: string) => {
 
 readRouteFolder("")
 
+app.get("/open", (req,res) => {
+	const url = new URL("sdd://soundroid.zectan.com")
+	url.searchParams.set("mode", encodeURIComponent((req.query.mode as string | undefined) ?? ""))
+	url.searchParams.set("code", encodeURIComponent((req.query.oobCode as string | undefined) ?? ""))
+	res.redirect(url.href)
+})
+
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`))
