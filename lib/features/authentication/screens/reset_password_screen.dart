@@ -1,22 +1,67 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
-class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({
+    Key? key,
+    required this.code,
+  }) : super(key: key);
 
-  static Route route() {
+  final String code;
+
+  static Route route(String code) {
     return MaterialPageRoute(
-      builder: (_) => const ResetPasswordScreen(),
+      builder: (_) => ResetPasswordScreen(
+        code: code,
+      ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final passwordController = TextEditingController();
-    final passwordConfirmController = TextEditingController();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+}
 
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
+  bool _isLoading = false;
+
+  void handleResetPassword() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    if (await context
+        .read<AuthenticationRepository>()
+        .resetPassword(_passwordController.text, widget.code)) {
+      AppAlertDialog(
+        title: "Password reset!",
+        description: "Please use your new password when logging into your account.",
+        onClose: () {
+          Navigator.of(context).pushAndRemoveUntil(
+            WelcomeScreen.route(),
+            (route) => true,
+          );
+          Navigator.of(context).push(
+            SigninScreen.route(),
+          );
+        },
+      ).show(context);
+    } else {
+      const AppSnackBar(
+        text: "Password reset failed!",
+        icon: Icons.close,
+        color: Colors.red,
+      ).show(context);
+    }
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CloseAppBar(),
       body: SingleChildScrollView(
@@ -26,7 +71,7 @@ class ResetPasswordScreen extends StatelessWidget {
             vertical: 8,
           ),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -41,17 +86,17 @@ class ResetPasswordScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 PasswordFormField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   name: "Password",
                   placeholder: "Enter your password",
                 ),
                 const SizedBox(height: 16),
                 PasswordFormField(
-                  controller: passwordConfirmController,
+                  controller: _passwordConfirmController,
                   name: "Confirm Password",
                   placeholder: "Enter your password again",
                   validator: (value) {
-                    if (value != passwordController.text) {
+                    if (value != _passwordController.text) {
                       return "Passwords don't match";
                     }
 
@@ -61,18 +106,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 FullSizedButton(
                   child: const Text("Reset Password"),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      AppAlertDialog(
-                        title: "Password reset!",
-                        description: "Please use your new password when logging into your account.",
-                        onClose: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    }
-                  },
+                  onPressed: _isLoading ? null : handleResetPassword,
                 ),
               ],
             ),

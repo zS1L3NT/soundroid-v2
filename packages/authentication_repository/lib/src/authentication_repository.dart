@@ -113,6 +113,29 @@ class AuthenticationRepository {
     }
   }
 
+  Future<bool> validateCode(String code) async {
+    try {
+      await FirebaseAuth.instance.checkActionCode(code);
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Validate Code Invalid: $e");
+      return false;
+    }
+  }
+
+  Future<bool> resetPassword(String password, String code) async {
+    try {
+      await FirebaseAuth.instance.confirmPasswordReset(
+        code: code,
+        newPassword: password,
+      );
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Reset Password Failed: $e");
+      return false;
+    }
+  }
+
   /// Update the currently signed in user's data
   void updateUser(User user) async {
     return _document.update(user.toJson());

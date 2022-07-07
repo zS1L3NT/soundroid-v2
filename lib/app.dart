@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
 import 'package:soundroid/features/home/home.dart';
+import 'package:uni_links/uni_links.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -61,21 +62,29 @@ class App extends StatelessWidget {
         // For sexy Android 12 overscroll behaviour
         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
-      home: FutureBuilder<bool?>(
-        future: context.read<AuthenticationRepository>().isEmailVerified,
-        builder: (context, snap) {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            child: snap.connectionState == ConnectionState.done
-                ? snap.data == null
-                    ? const WelcomeScreen()
-                    : snap.data!
-                        ? const MainScreen()
-                        : const VerifyEmailScreen()
-                : const Center(child: CircularProgressIndicator()),
-          );
-        },
-      ),
+      home: Builder(builder: (context) {
+        uriLinkStream.listen((uri) {
+          if (uri != null) {
+            Navigator.of(context).push(DeepLinkingScreen.route(uri));
+          }
+        });
+
+        return FutureBuilder<bool?>(
+          future: context.read<AuthenticationRepository>().isEmailVerified,
+          builder: (context, snap) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: snap.connectionState == ConnectionState.done
+                  ? snap.data == null
+                      ? const WelcomeScreen()
+                      : snap.data!
+                          ? const MainScreen()
+                          : const VerifyEmailScreen()
+                  : const Center(child: CircularProgressIndicator()),
+            );
+          },
+        );
+      }),
     );
   }
 }
