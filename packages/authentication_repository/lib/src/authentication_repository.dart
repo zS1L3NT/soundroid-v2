@@ -48,7 +48,7 @@ class AuthenticationRepository {
 
   Future<bool> login(String email, String password) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
