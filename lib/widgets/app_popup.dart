@@ -363,3 +363,42 @@ class AppSnackBar {
     );
   }
 }
+
+class AppLoader {
+  late Function(Function()) setState;
+
+  double opacity = 1;
+
+  void show(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            this.setState = setState;
+
+            return AnimatedOpacity(
+              opacity: opacity,
+              duration: const Duration(milliseconds: 500),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void hide(BuildContext context) {
+    setState(() => opacity = 0);
+
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      Navigator.of(context).pop,
+    );
+  }
+}

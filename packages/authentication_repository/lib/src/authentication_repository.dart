@@ -147,12 +147,25 @@ class AuthenticationRepository {
   }
 
   /// Update the currently signed in user's data
-  void updateUser(User user) async {
-    return _document.update(user.toJson());
+  Future<bool> updateUser(User user) async {
+    try {
+      await _document.update(user.toJson());
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Updating User: $e");
+      return false;
+    }
   }
 
   /// Delete the currently signed in user's data
-  void deleteUser() async {
-    return _document.delete();
+  Future<bool> deleteUser() async {
+    try {
+      await _document.delete();
+      await FirebaseAuth.instance.currentUser!.delete();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Deleting User: $e");
+      return false;
+    }
   }
 }
