@@ -322,6 +322,7 @@ class AppSnackBar {
     required this.text,
     required this.icon,
     this.color,
+    this.duration,
   });
 
   /// The text to show in the snackbar
@@ -333,6 +334,9 @@ class AppSnackBar {
   /// The background color of the snackbar
   final Color? color;
 
+  /// The duration to show the snackbar for
+  final Duration? duration;
+
   /// Shows the SnackBar
   void show(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -341,11 +345,19 @@ class AppSnackBar {
           children: [
             AppIcon.white(icon),
             const SizedBox(width: 16),
-            Text(text),
+            AppText.marquee(
+              text,
+              width: MediaQuery.of(context).size.width - 102,
+              startAfter: const Duration(seconds: 1),
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ],
         ),
         behavior: SnackBarBehavior.floating,
         backgroundColor: color ?? Theme.of(context).primaryColor,
+        duration: duration ?? const Duration(seconds: 4),
       ),
     );
   }
