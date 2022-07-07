@@ -8,11 +8,18 @@ import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
-  const VerifyEmailScreen({Key? key}) : super(key: key);
+  const VerifyEmailScreen({
+    Key? key,
+    required this.showCountdown,
+  }) : super(key: key);
 
-  static Route route() {
+  final bool showCountdown;
+
+  static Route route(bool showCountdown) {
     return MaterialPageRoute(
-      builder: (_) => const VerifyEmailScreen(),
+      builder: (_) => VerifyEmailScreen(
+        showCountdown: showCountdown,
+      ),
     );
   }
 
@@ -21,7 +28,7 @@ class VerifyEmailScreen extends StatefulWidget {
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  int _cooldown = 60;
+  late int _cooldown = widget.showCountdown ? 60 : 0;
 
   @override
   void initState() {

@@ -79,7 +79,7 @@ class App extends StatelessWidget {
                       ? const WelcomeScreen()
                       : snap.data!
                           ? const MainScreen()
-                          : const VerifyEmailScreen()
+                          : const VerifyEmailScreen(showCountdown: false)
                   : const Center(child: CircularProgressIndicator()),
             );
           },

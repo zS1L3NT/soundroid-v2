@@ -35,7 +35,9 @@ class _SignupScreenState extends State<SignupScreen> {
         )) {
       Navigator.of(context).pushAndRemoveUntil(
         PageRouteBuilder(
-          pageBuilder: (c, anim, anim2) => const VerifyEmailScreen(),
+          pageBuilder: (c, anim, anim2) => const VerifyEmailScreen(
+            showCountdown: true,
+          ),
           transitionsBuilder: (c, anim, anim2, child) {
             return SlideTransition(
               position: Tween<Offset>(
