@@ -44,14 +44,16 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   void watchEmailVerified() async {
     while (true) {
+      if (!mounted) break;
       if (await context.read<AuthenticationRepository>().isEmailVerified == true) {
         Navigator.of(context).pushReplacement(MainScreen.route());
+        return;
       }
     }
   }
 
   void checkCooldown() {
-    if (_cooldown > 0) {
+    if (mounted && _cooldown > 0) {
       setState(() => _cooldown--);
       Timer(
         const Duration(seconds: 1),

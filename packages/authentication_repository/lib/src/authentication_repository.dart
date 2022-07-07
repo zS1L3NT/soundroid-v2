@@ -113,6 +113,16 @@ class AuthenticationRepository {
     }
   }
 
+  Future<bool> verifyEmail(String code) async {
+    try {
+      await FirebaseAuth.instance.applyActionCode(code);
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Verify Email Failed: $e");
+      return false;
+    }
+  }
+
   Future<bool> validateCode(String code) async {
     try {
       await FirebaseAuth.instance.checkActionCode(code);

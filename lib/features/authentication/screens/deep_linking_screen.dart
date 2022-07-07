@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/app_popup.dart';
 
 class DeepLinkingScreen extends StatefulWidget {
@@ -38,29 +39,34 @@ class _DeepLinkingScreenState extends State<DeepLinkingScreen> {
     try {
       mode = widget.uri.queryParameters['mode']!;
       code = widget.uri.queryParameters['code']!;
-    } catch (e) {
-      return const AppSnackBar(
-        text: "Invalid URL",
-        icon: Icons.close,
-        color: Colors.red,
-      ).show(context);
-    }
 
-    if (await context.read<AuthenticationRepository>().validateCode(code)) {
+      if (!await context.read<AuthenticationRepository>().validateCode(code)) throw Error();
+
       switch (mode) {
         case "resetPassword":
           Navigator.of(context).pushReplacement(
             ResetPasswordScreen.route(code),
           );
           break;
+        case "verifyEmail":
+          if (!await context.read<AuthenticationRepository>().verifyEmail(code)) throw Error();
+          Navigator.of(context).pushAndRemoveUntil(
+            MainScreen.route(),
+            (_) => false,
+          );
+          break;
+        default:
+          throw Error();
       }
-    } else {
+    } catch (e) {
       const AppSnackBar(
         text: "Invalid URL",
         icon: Icons.close,
         color: Colors.red,
       ).show(context);
-      Navigator.of(context).pop();
+      try {
+        Navigator.of(context).pop();
+      } catch (_) {}
     }
   }
 
