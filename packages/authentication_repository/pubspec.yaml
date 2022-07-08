@@ -10,6 +10,7 @@ dependencies:
   copy_with_extension: ^4.0.0
   equatable: ^2.0.3
   firebase_auth: ^3.4.0
+  firebase_storage: ^10.2.18
   flutter: 
     sdk: flutter
   google_sign_in: ^5.3.3

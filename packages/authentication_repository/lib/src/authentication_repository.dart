@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, GoogleAuthProvider;
+import 'package:firebase_auth/firebase_auth.dart'
+    show EmailAuthProvider, FirebaseAuth, GoogleAuthProvider, UserInfo;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// The Authentication Repository contains all Firebase calls regarding authentication and user data.
 class AuthenticationRepository {
+  final _storage = FirebaseStorage.instance;
+
   /// A [DocumentReference] to the currently signed in user.
   ///
   /// A user should only be able to modify his data and no one elses.
@@ -16,6 +22,8 @@ class AuthenticationRepository {
         toFirestore: (user, _) => user.toJson(),
       )
       .doc(FirebaseAuth.instance.currentUser!.uid);
+
+  Reference get _picture => _storage.ref("users/${FirebaseAuth.instance.currentUser!.uid}.png");
 
   /// The document reference of the currently signed in user
   DocumentReference<User> get currentUserRef => _document;
@@ -28,6 +36,8 @@ class AuthenticationRepository {
   /// Get a stream of the current user data
   Stream<User?> get currentUser => _document.snapshots().map((snap) => snap.data());
 
+  List<UserInfo> get providers => FirebaseAuth.instance.currentUser!.providerData;
+
   Future<bool> signInWithGoogle() async {
     try {
       final account = await GoogleSignIn().signIn();
@@ -38,10 +48,51 @@ class AuthenticationRepository {
         idToken: authentication?.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (!(await _document.get()).exists) {
+        await _document.set(
+          User(
+            email: user.user!.email!,
+            name: user.user!.displayName!,
+            likedTrackIds: const [],
+          ),
+        );
+      }
+
       return true;
     } catch (e) {
       debugPrint("ERROR Google Sign In Failed: $e");
+      return false;
+    }
+  }
+
+  Future<bool> connectToGoogle() async {
+    try {
+      final account = await GoogleSignIn().signIn();
+      final authentication = await account?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: authentication?.accessToken,
+        idToken: authentication?.idToken,
+      );
+
+      await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+      await FirebaseAuth.instance.currentUser!.reload();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Connecting to Google Failed: $e");
+      return false;
+    }
+  }
+
+  Future<bool> disconnectFromGoogle() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.unlink(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD);
+      await FirebaseAuth.instance.currentUser!.reload();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR DIsconnecting to Google Failed: $e");
       return false;
     }
   }
@@ -133,6 +184,16 @@ class AuthenticationRepository {
     }
   }
 
+  Future<void> updatePassword(String oldPassword, String newPassword) async {
+    await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(
+      EmailAuthProvider.credential(
+        email: FirebaseAuth.instance.currentUser!.email!,
+        password: oldPassword,
+      ),
+    );
+    await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+  }
+
   Future<bool> resetPassword(String password, String code) async {
     try {
       await FirebaseAuth.instance.confirmPasswordReset(
@@ -155,6 +216,16 @@ class AuthenticationRepository {
       debugPrint("ERROR Updating User: $e");
       return false;
     }
+  }
+
+  Future<void> setPicture(File file) async {
+    await _picture.putFile(file);
+    await _document.update({"picture": await _picture.getDownloadURL()});
+  }
+
+  Future<void> deletePicture() async {
+    await _picture.delete();
+    await _document.update({"picture": null});
   }
 
   /// Delete the currently signed in user's data
