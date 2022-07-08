@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
-    show EmailAuthProvider, FirebaseAuth, GoogleAuthProvider, UserInfo;
+    show EmailAuthProvider, FirebaseAuth, GoogleAuthProvider;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -36,7 +36,9 @@ class AuthenticationRepository {
   /// Get a stream of the current user data
   Stream<User?> get currentUser => _document.snapshots().map((snap) => snap.data());
 
-  List<UserInfo> get providers => FirebaseAuth.instance.currentUser!.providerData;
+  List<String> get providers => FirebaseAuth.instance.currentUser!.providerData
+      .map((provider) => provider.providerId)
+      .toList();
 
   Future<bool> signInWithGoogle() async {
     try {
@@ -67,34 +69,22 @@ class AuthenticationRepository {
     }
   }
 
-  Future<bool> connectToGoogle() async {
-    try {
-      final account = await GoogleSignIn().signIn();
-      final authentication = await account?.authentication;
+  Future<void> connectToGoogle() async {
+    final account = await GoogleSignIn().signIn();
+    final authentication = await account?.authentication;
 
-      final credential = GoogleAuthProvider.credential(
-        accessToken: authentication?.accessToken,
-        idToken: authentication?.idToken,
-      );
+    final credential = GoogleAuthProvider.credential(
+      accessToken: authentication?.accessToken,
+      idToken: authentication?.idToken,
+    );
 
-      await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
-      await FirebaseAuth.instance.currentUser!.reload();
-      return true;
-    } catch (e) {
-      debugPrint("ERROR Connecting to Google Failed: $e");
-      return false;
-    }
+    await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+    await FirebaseAuth.instance.currentUser!.reload();
   }
 
-  Future<bool> disconnectFromGoogle() async {
-    try {
-      await FirebaseAuth.instance.currentUser!.unlink(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD);
-      await FirebaseAuth.instance.currentUser!.reload();
-      return true;
-    } catch (e) {
-      debugPrint("ERROR DIsconnecting to Google Failed: $e");
-      return false;
-    }
+  Future<void> disconnectFromGoogle() async {
+    await FirebaseAuth.instance.currentUser!.unlink(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD);
+    await FirebaseAuth.instance.currentUser!.reload();
   }
 
   Future<bool> login(String email, String password) async {
@@ -224,13 +214,14 @@ class AuthenticationRepository {
   }
 
   Future<void> deletePicture() async {
-    await _picture.delete();
+    await _picture.delete().catchError((_) {});
     await _document.update({"picture": null});
   }
 
   /// Delete the currently signed in user's data
   Future<bool> deleteUser() async {
     try {
+      await _picture.delete().catchError((_) {});
       await _document.delete();
       await FirebaseAuth.instance.currentUser!.delete();
       return true;

@@ -73,8 +73,9 @@ class PlaylistRepository {
   }
 
   /// Delete a playlist
-  Future<void> deletePlaylist(String id) {
-    return _collection.doc(id).delete();
+  Future<void> deletePlaylist(String id) async {
+    await _collection.doc(id).delete();
+    await deletePicture(id);
   }
 
   Future<bool> deleteAll() async {
@@ -88,6 +89,7 @@ class PlaylistRepository {
       final batch = FirebaseFirestore.instance.batch();
       for (final listen in playlists.docs) {
         batch.delete(listen.reference);
+        deletePicture(listen.id);
       }
       await batch.commit();
       return true;
@@ -109,6 +111,6 @@ class PlaylistRepository {
 
   /// Delete a playlist thumbnail from Firebase Storage
   Future<void> deletePicture(String id) {
-    return _storage.ref("playlists/$id.png").delete();
+    return _storage.ref("playlists/$id.png").delete().catchError((_) {});
   }
 }
