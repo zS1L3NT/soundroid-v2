@@ -2,6 +2,7 @@ import { DocumentReference } from "firebase-admin/firestore"
 
 import { listensColl, spotify, usersColl, ytmusic } from "../apis"
 import processThumbnail from "../functions/processThumbnail"
+import IsAuthenticated from "../middleware/IsAuthenticated"
 import Artist from "../models/Artist"
 import Track from "../models/Track"
 import User from "../models/User"
@@ -11,9 +12,11 @@ export class GET extends Route {
 	private userRef!: DocumentReference<User>
 	private mostFrequentTrackIds: string[] = []
 
+	override middleware = [IsAuthenticated]
+
 	async handle() {
 		//@ts-ignore
-		this.userRef = usersColl.doc("jnbZI9qOLtVsehqd6ICcw584ED93")
+		this.userRef = usersColl.doc(this.req.userId)
 		this.mostFrequentTrackIds = Object.entries(
 			(
 				await listensColl
