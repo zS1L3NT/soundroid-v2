@@ -67,13 +67,38 @@ class _HomeScreenState extends KeptAliveState<HomeScreen> {
             );
           }
 
+          if (sections!.isEmpty) {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 52 - kToolbarHeight - kToolbarHeight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon.primaryColor(
+                        Icons.music_note_rounded,
+                        size: 48,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Start listening to some music\nso we know what songs to\nrecommend you!",
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+
           return StreamBuilder<List<Playlist>>(
             stream: _playlistsStream,
             builder: (context, snap) {
               final playlists = snap.data;
 
               return ListView.builder(
-                itemCount: sections!.length + 1,
+                itemCount: sections.length + 1,
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return YourPlaylistsSection(
