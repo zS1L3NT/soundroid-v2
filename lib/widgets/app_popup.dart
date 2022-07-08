@@ -322,6 +322,7 @@ class AppSnackBar {
     required this.text,
     required this.icon,
     this.color,
+    this.duration,
   });
 
   /// The text to show in the snackbar
@@ -333,6 +334,9 @@ class AppSnackBar {
   /// The background color of the snackbar
   final Color? color;
 
+  /// The duration to show the snackbar for
+  final Duration? duration;
+
   /// Shows the SnackBar
   void show(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -341,12 +345,61 @@ class AppSnackBar {
           children: [
             AppIcon.white(icon),
             const SizedBox(width: 16),
-            Text(text),
+            AppText.marquee(
+              text,
+              width: MediaQuery.of(context).size.width - 102,
+              extraHeight: 3,
+              startAfter: const Duration(seconds: 1),
+              velocity: 60,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ],
         ),
         behavior: SnackBarBehavior.floating,
         backgroundColor: color ?? Theme.of(context).primaryColor,
+        duration: duration ?? const Duration(seconds: 4),
       ),
+    );
+  }
+}
+
+class AppLoader {
+  late Function(Function()) setState;
+
+  double opacity = 1;
+
+  void show(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            this.setState = setState;
+
+            return AnimatedOpacity(
+              opacity: opacity,
+              duration: const Duration(milliseconds: 500),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void hide(BuildContext context) {
+    setState(() => opacity = 0);
+
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      Navigator.of(context).pop,
     );
   }
 }

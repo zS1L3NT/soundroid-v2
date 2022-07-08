@@ -1,15 +1,25 @@
 import 'dart:async';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
-  const VerifyEmailScreen({Key? key}) : super(key: key);
+  const VerifyEmailScreen({
+    Key? key,
+    required this.showCountdown,
+  }) : super(key: key);
 
-  static Route route() {
+  final bool showCountdown;
+
+  static Route route(bool showCountdown) {
     return MaterialPageRoute(
-      builder: (_) => const VerifyEmailScreen(),
+      builder: (_) => VerifyEmailScreen(
+        showCountdown: showCountdown,
+      ),
     );
   }
 
@@ -18,25 +28,49 @@ class VerifyEmailScreen extends StatefulWidget {
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  int _cooldown = 60;
+  late int _cooldown = widget.showCountdown ? 60 : 0;
 
   @override
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 1), checkCooldown);
+    Timer(
+      const Duration(seconds: 1),
+      checkCooldown,
+    );
 
-    // ! Remove after prototyping stage
-    // Timer(const Duration(seconds: 5), () {
-    // Navigator.of(context).pushReplacement(MainScreen.route());
-    // });
+    watchEmailVerified();
+  }
+
+  void watchEmailVerified() async {
+    while (true) {
+      if (!mounted) break;
+      if (await context.read<AuthenticationRepository>().isEmailVerified == true) {
+        Navigator.of(context).pushReplacement(MainScreen.route());
+        return;
+      }
+    }
   }
 
   void checkCooldown() {
-    if (_cooldown > 0) {
+    if (mounted && _cooldown > 0) {
       setState(() => _cooldown--);
-      Timer(const Duration(seconds: 1), checkCooldown);
+      Timer(
+        const Duration(seconds: 1),
+        checkCooldown,
+      );
     }
+  }
+
+  void resendVerification() async {
+    await context.read<AuthenticationRepository>().sendVerificationEmail();
+    setState(() {
+      _cooldown = 60;
+      Timer(
+        const Duration(seconds: 1),
+        checkCooldown,
+      );
+    });
   }
 
   @override
@@ -74,12 +108,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             ),
             const Spacer(),
             TextButton(
-              onPressed: _cooldown == 0
-                  ? () => setState(() {
-                        _cooldown = 60;
-                        Timer(const Duration(seconds: 1), checkCooldown);
-                      })
-                  : null,
+              onPressed: _cooldown == 0 ? resendVerification : null,
               child: Text(
                 "Resend verification email${_cooldown > 0 ? " in ${_cooldown}s" : ""}",
               ),

@@ -1,3 +1,4 @@
+export 'screens/deep_linking_screen.dart';
 export 'screens/forgot_password_screen.dart';
 export 'screens/reset_password_screen.dart';
 export 'screens/signin_screen.dart';

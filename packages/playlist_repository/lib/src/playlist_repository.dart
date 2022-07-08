@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:playlist_repository/src/models/models.dart';
 
 /// The Playlist Repository contains all Firebase calls regarding playlist data and thumbnail storage
@@ -72,8 +73,30 @@ class PlaylistRepository {
   }
 
   /// Delete a playlist
-  Future<void> deletePlaylist(String id) {
-    return _collection.doc(id).delete();
+  Future<void> deletePlaylist(String id) async {
+    await _collection.doc(id).delete();
+    await deletePicture(id);
+  }
+
+  Future<bool> deleteAll() async {
+    try {
+      final playlists = await _collection
+          .where(
+            "userRef",
+            isEqualTo: _authenticationRepo.currentUserRef,
+          )
+          .get();
+      final batch = FirebaseFirestore.instance.batch();
+      for (final listen in playlists.docs) {
+        batch.delete(listen.reference);
+        deletePicture(listen.id);
+      }
+      await batch.commit();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Delete all playlists: $e");
+      return false;
+    }
   }
 
   /// Get the url of a playlist thumbnail in Firebase Storage
@@ -88,6 +111,6 @@ class PlaylistRepository {
 
   /// Delete a playlist thumbnail from Firebase Storage
   Future<void> deletePicture(String id) {
-    return _storage.ref("playlists/$id.png").delete();
+    return _storage.ref("playlists/$id.png").delete().catchError((_) {});
   }
 }

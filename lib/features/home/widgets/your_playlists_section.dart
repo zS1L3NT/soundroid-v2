@@ -13,7 +13,7 @@ class YourPlaylistsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (playlists == null) {
+    if (playlists == null || playlists!.isEmpty) {
       return const SizedBox();
     }
 

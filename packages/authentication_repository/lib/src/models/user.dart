@@ -11,8 +11,7 @@ class User extends Equatable {
   const User({
     required this.name,
     required this.email,
-    required this.picture,
-    required this.verified,
+    this.picture,
     required this.likedTrackIds,
   });
 
@@ -23,10 +22,7 @@ class User extends Equatable {
   final String email;
 
   /// The profile picture of the User
-  final String picture;
-
-  /// Whether the User's email address has been verified
-  final bool verified;
+  final String? picture;
 
   /// The IDs of the Tracks the User has liked
   final List<String> likedTrackIds;
@@ -35,14 +31,12 @@ class User extends Equatable {
       : name = json["name"],
         email = json["email"],
         picture = json["picture"],
-        verified = json["verified"],
         likedTrackIds = json["likedTrackIds"].cast<String>();
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'email': email,
         'picture': picture,
-        'verified': verified,
         'likedTrackIds': likedTrackIds,
       };
 
@@ -51,12 +45,11 @@ class User extends Equatable {
         name,
         email,
         picture,
-        verified,
         likedTrackIds,
       ];
 
   @override
   String toString() {
-    return "User { $name; $email; $verified; $likedTrackIds }";
+    return "User { $name; $email; $likedTrackIds }";
   }
 }

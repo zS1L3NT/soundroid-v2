@@ -4,12 +4,12 @@ class FullSizedButton extends StatelessWidget {
   const FullSizedButton({
     Key? key,
     required this.child,
-    required this.onPressed,
+    this.onPressed,
   }) : super(key: key);
 
   final Widget child;
 
-  final Function() onPressed;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {

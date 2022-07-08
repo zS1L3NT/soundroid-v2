@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:listen_repository/src/models/models.dart';
 
 /// The Listen Repository contains all Firebase calls regarding user listening data.
@@ -43,6 +44,26 @@ class ListenRepository {
           timestamp: timestamp,
         ),
       );
+    }
+  }
+
+  Future<bool> deleteAll() async {
+    try {
+      final listens = await _collection
+          .where(
+            "userRef",
+            isEqualTo: _authenticationRepo.currentUserRef,
+          )
+          .get();
+      final batch = FirebaseFirestore.instance.batch();
+      for (final listen in listens.docs) {
+        batch.delete(listen.reference);
+      }
+      await batch.commit();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Delete all listens: $e");
+      return false;
     }
   }
 }

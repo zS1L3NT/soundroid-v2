@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:search_repository/src/models/models.dart';
 
 /// The Search Repository contains all Firebase calls regarding search data
@@ -38,5 +39,25 @@ class SearchRepository {
         .where("query", isEqualTo: text)
         .get()
         .then((snap) => snap.docs.first.reference.delete());
+  }
+
+  Future<bool> deleteAll() async {
+    try {
+      final searches = await _collection
+          .where(
+            "userRef",
+            isEqualTo: _authenticationRepo.currentUserRef,
+          )
+          .get();
+      final batch = FirebaseFirestore.instance.batch();
+      for (final listen in searches.docs) {
+        batch.delete(listen.reference);
+      }
+      await batch.commit();
+      return true;
+    } catch (e) {
+      debugPrint("ERROR Delete all searches: $e");
+      return false;
+    }
   }
 }

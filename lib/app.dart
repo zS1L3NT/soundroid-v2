@@ -1,8 +1,30 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/home/home.dart';
+import 'package:uni_links/uni_links.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    uriLinkStream.listen((uri) {
+      if (uri != null) {
+        _navigatorKey.currentState!.push(DeepLinkingScreen.route(uri));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +80,24 @@ class App extends StatelessWidget {
         // For sexy Android 12 overscroll behaviour
         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
-      home: const WelcomeScreen(),
+      navigatorKey: _navigatorKey,
+      home: FutureBuilder<bool?>(
+        future: context.read<AuthenticationRepository>().isEmailVerified,
+        builder: (context, snap) {
+          final isEmailVerified = snap.data;
+
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: snap.connectionState == ConnectionState.done
+                ? isEmailVerified == null
+                    ? const WelcomeScreen()
+                    : isEmailVerified
+                        ? const MainScreen()
+                        : const VerifyEmailScreen(showCountdown: false)
+                : const Center(child: CircularProgressIndicator()),
+          );
+        },
+      ),
     );
   }
 }
