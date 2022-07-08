@@ -108,17 +108,10 @@ class _ProfileSectionState extends State<ProfileSection> {
         throw Error();
       }
 
-      const AppSnackBar(
-        text: "Updated profile",
-        icon: Icons.check_rounded,
-      ).show(context);
+      AppSnackBar.success("Updated profile").show(context);
     } catch (e) {
       debugPrint("ERROR Update Profile Failed: $e");
-      AppSnackBar(
-        text: (e as dynamic).message,
-        icon: Icons.error_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error((e as dynamic).message).show(context);
     }
 
     setState(() => _isLoading = false);

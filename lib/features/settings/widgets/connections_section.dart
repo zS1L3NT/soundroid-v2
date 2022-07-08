@@ -21,16 +21,10 @@ class _ConnectionsSectionState extends State<ConnectionsSection> {
     try {
       if (context.read<AuthenticationRepository>().providers.contains("google.com")) {
         await context.read<AuthenticationRepository>().disconnectFromGoogle();
-        const AppSnackBar(
-          text: "Account disconnected from Google",
-          icon: Icons.check_rounded,
-        ).show(context);
+        AppSnackBar.success("Account disconnected from Google").show(context);
       } else {
         await context.read<AuthenticationRepository>().connectToGoogle();
-        const AppSnackBar(
-          text: "Account connected to Google",
-          icon: Icons.check_rounded,
-        ).show(context);
+        AppSnackBar.success("Account connected to Google").show(context);
       }
     } catch (e) {
       AppSnackBar(

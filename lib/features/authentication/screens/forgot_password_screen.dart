@@ -35,11 +35,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         onClose: Navigator.of(context).pop,
       ).show(context);
     } else {
-      const AppSnackBar(
-        icon: Icons.close_rounded,
-        text: "Something went wrong, please try again",
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Something went wrong, please try again").show(context);
     }
     setState(() => _isLoading = false);
   }

@@ -321,8 +321,8 @@ class AppSnackBar {
   const AppSnackBar({
     required this.text,
     required this.icon,
-    this.color,
-    this.duration,
+    required this.color,
+    required this.duration,
   });
 
   /// The text to show in the snackbar
@@ -335,7 +335,33 @@ class AppSnackBar {
   final Color? color;
 
   /// The duration to show the snackbar for
-  final Duration? duration;
+  final Duration duration;
+
+  factory AppSnackBar.success(
+    String text, {
+    IconData? icon,
+    Duration duration = const Duration(seconds: 4),
+  }) {
+    return AppSnackBar(
+      text: text,
+      icon: icon ?? Icons.check_rounded,
+      color: Colors.green,
+      duration: duration,
+    );
+  }
+
+  factory AppSnackBar.error(
+    String text, {
+    IconData? icon,
+    Duration duration = const Duration(seconds: 4),
+  }) {
+    return AppSnackBar(
+      text: text,
+      icon: icon ?? Icons.close_rounded,
+      color: Colors.red,
+      duration: duration,
+    );
+  }
 
   /// Shows the SnackBar
   void show(BuildContext context) {
@@ -358,8 +384,8 @@ class AppSnackBar {
           ],
         ),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: color ?? Theme.of(context).primaryColor,
-        duration: duration ?? const Duration(seconds: 4),
+        backgroundColor: color,
+        duration: duration,
       ),
     );
   }

@@ -29,11 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         (_) => false,
       );
     } else {
-      const AppSnackBar(
-        text: "Failed to sign in with Google",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to sign in with Google").show(context);
     }
     setState(() => _isLoading = false);
   }

@@ -59,11 +59,7 @@ class _DeepLinkingScreenState extends State<DeepLinkingScreen> {
           throw Error();
       }
     } catch (e) {
-      const AppSnackBar(
-        text: "Invalid URL",
-        icon: Icons.close,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Invalid URL").show(context);
       try {
         Navigator.of(context).pop();
       } catch (_) {}

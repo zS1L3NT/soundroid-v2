@@ -76,8 +76,8 @@ void showTrackBottomSheet(BuildContext context, Track track) {
                           playlist.trackIds + [track.id],
                         ),
                       );
-                  const AppSnackBar(
-                    text: "Added track to playlist",
+                  AppSnackBar.success(
+                    "Added track to playlist",
                     icon: Icons.playlist_add_check_rounded,
                   ).show(context);
                 },
@@ -99,8 +99,8 @@ void showTrackBottomSheet(BuildContext context, Track track) {
                 musicProvider.playTrackIds([track.id]);
               }
 
-              const AppSnackBar(
-                text: "Added track to queue",
+              AppSnackBar.success(
+                "Added track to queue",
                 icon: Icons.playlist_add_check_rounded,
               ).show(context);
             },

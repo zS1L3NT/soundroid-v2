@@ -29,16 +29,9 @@ class _ChangePasswordSectionState extends State<ChangePasswordSection> {
       _currentPasswordController.clear();
       _newPasswordController.clear();
       _newPasswordConfirmationController.clear();
-      const AppSnackBar(
-        text: "Password changed",
-        icon: Icons.check_rounded,
-      ).show(context);
+      AppSnackBar.success("Password changed").show(context);
     } catch (e) {
-      AppSnackBar(
-        text: (e as dynamic).message,
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error((e as dynamic).message).show(context);
     }
 
     setState(() => _isLoading = false);

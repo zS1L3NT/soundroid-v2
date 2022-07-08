@@ -51,11 +51,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         },
       ).show(context);
     } else {
-      const AppSnackBar(
-        text: "Password reset failed!",
-        icon: Icons.close,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Password reset failed!").show(context);
     }
     setState(() => _isLoading = false);
   }

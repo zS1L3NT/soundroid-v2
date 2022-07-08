@@ -53,11 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
         (_) => false,
       );
     } else {
-      const AppSnackBar(
-        text: "Failed to sign up with the provided credentials",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to sign up with the provided credentials").show(context);
     }
     setState(() => _isLoading = false);
   }

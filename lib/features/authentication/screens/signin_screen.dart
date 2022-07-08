@@ -37,11 +37,7 @@ class _SigninScreenState extends State<SigninScreen> {
         (_) => false,
       );
     } else {
-      const AppSnackBar(
-        text: "Failed to login with the provided credentials",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to login with the provided credentials").show(context);
     }
     setState(() => _isLoading = false);
   }
@@ -54,11 +50,7 @@ class _SigninScreenState extends State<SigninScreen> {
         (_) => false,
       );
     } else {
-      const AppSnackBar(
-        text: "Failed to sign in with Google",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to sign in with Google").show(context);
     }
     setState(() => _isLoading = false);
   }

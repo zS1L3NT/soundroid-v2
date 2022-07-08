@@ -21,16 +21,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final loader = AppLoader()..show(context);
 
     if (await context.read<ListenRepository>().deleteAll()) {
-      const AppSnackBar(
-        text: "Cleared listening history",
-        icon: Icons.check_rounded,
-      ).show(context);
+      AppSnackBar.success("Cleared listening history").show(context);
     } else {
-      const AppSnackBar(
-        text: "Failed to clear listening history",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to clear listening history").show(context);
     }
 
     Navigator.of(context).pop();
@@ -41,16 +34,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final loader = AppLoader()..show(context);
 
     if (await context.read<SearchRepository>().deleteAll()) {
-      const AppSnackBar(
-        text: "Cleared search history",
-        icon: Icons.check_rounded,
-      ).show(context);
+      AppSnackBar.success("Cleared search history").show(context);
     } else {
-      const AppSnackBar(
-        text: "Failed to clear search history",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to clear search history").show(context);
     }
 
     Navigator.of(context).pop();
@@ -69,16 +55,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ]);
 
     if (results.every((result) => result)) {
-      const AppSnackBar(
-        text: "All account data deleted",
-        icon: Icons.check_rounded,
-      ).show(context);
+      AppSnackBar.success("All account data deleted").show(context);
     } else {
-      const AppSnackBar(
-        text: "Failed to delete all account data",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to delete all account data").show(context);
     }
 
     Navigator.of(context).pushAndRemoveUntil(
@@ -91,11 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (await context.read<AuthenticationRepository>().logout()) {
       Navigator.of(context).pushReplacement(WelcomeScreen.route());
     } else {
-      const AppSnackBar(
-        text: "Failed to sign out",
-        icon: Icons.close_rounded,
-        color: Colors.red,
-      ).show(context);
+      AppSnackBar.error("Failed to sign out").show(context);
     }
   }
 

@@ -65,10 +65,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
                     .copyWith
                     .trackIds(tracks.map((track) => track.id).toList()),
               );
-          const AppSnackBar(
-            text: "Updated playlist order",
-            icon: Icons.check_rounded,
-          ).show(context);
+          AppSnackBar.success("Updated playlist order").show(context);
         },
       ),
     );
@@ -95,10 +92,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
             await playlistRepo.getPicture(_playlistId),
           ),
     );
-    const AppSnackBar(
-      text: "Updated playlist image",
-      icon: Icons.check_rounded,
-    ).show(context);
+    AppSnackBar.success("Updated playlist image").show(context);
   }
 
   void onRemovePictureClick() async {
@@ -107,10 +101,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
           (widget.playlist ?? widget.initialPlaylist).copyWith.thumbnail(null),
         );
     await context.read<PlaylistRepository>().deletePicture(_playlistId);
-    const AppSnackBar(
-      text: "Removed playlist picture",
-      icon: Icons.check_rounded,
-    ).show(context);
+    AppSnackBar.success("Removed playlist picture").show(context);
   }
 
   void onChangePictureClick() {
@@ -154,10 +145,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
         await context.read<PlaylistRepository>().updatePlaylist(
               (widget.playlist ?? widget.initialPlaylist).copyWith.name(name),
             );
-        const AppSnackBar(
-          text: "Renamed playlist",
-          icon: Icons.check_rounded,
-        ).show(context);
+        AppSnackBar.success("Renamed playlist").show(context);
       },
     ).show(context);
   }
@@ -173,10 +161,7 @@ class _PlaylistSliverAppBarState extends State<PlaylistSliverAppBar> {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         await context.read<PlaylistRepository>().deletePlaylist(_playlistId);
-        const AppSnackBar(
-          text: "Deleted playlist",
-          icon: Icons.check_rounded,
-        ).show(context);
+        AppSnackBar.success("Deleted playlist").show(context);
       },
     ).show(context);
   }
