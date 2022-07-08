@@ -40,6 +40,10 @@ class AuthenticationRepository {
       .map((provider) => provider.providerId)
       .toList();
 
+  Future<String> getTokenId() {
+    return FirebaseAuth.instance.currentUser!.getIdToken();
+  }
+
   Future<bool> signInWithGoogle() async {
     try {
       final account = await GoogleSignIn().signIn();

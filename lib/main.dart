@@ -64,15 +64,20 @@ void main() async {
     ],
   );
 
+  final authenticationRepo = AuthenticationRepository();
+
   runApp(
     MultiRepositoryProvider(
       // Initialize all repositories as providers
       providers: [
         RepositoryProvider(
-          create: (_) => ApiRepository(trackBox: trackBox),
+          create: (_) => ApiRepository(
+            trackBox: trackBox,
+            getIdToken: authenticationRepo.getTokenId,
+          ),
         ),
         RepositoryProvider(
-          create: (_) => AuthenticationRepository(),
+          create: (_) => authenticationRepo,
         ),
         RepositoryProvider(
           create: (_) => ListenRepository(),

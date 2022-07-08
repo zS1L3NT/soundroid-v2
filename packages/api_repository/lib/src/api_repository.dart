@@ -10,6 +10,7 @@ import 'package:http/http.dart';
 class ApiRepository {
   ApiRepository({
     required this.trackBox,
+    required this.getIdToken,
   });
 
   /// Hive Box for [Track] instances.
@@ -21,6 +22,8 @@ class ApiRepository {
   /// which have already been returned by the API before.
   final Box<Track> trackBox;
 
+  final Future<String> Function() getIdToken;
+
   /// The base URL for the SounDroid API
   String get _host => "http://soundroid.zectan.com/api";
 
@@ -30,7 +33,12 @@ class ApiRepository {
 
   /// Fetch the home feed for the currently authenticated user
   Future<List<FeedSection>> getFeed() async {
-    final response = await get(Uri.parse("$_host/feed"));
+    final response = await get(
+      Uri.parse("$_host/feed"),
+      headers: {
+        "Authorization": "Bearer ${await getIdToken()}",
+      },
+    );
 
     if (response.statusCode == 200) {
       return (jsonDecode(response.body) as List).map((section) {
