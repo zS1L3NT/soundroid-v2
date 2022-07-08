@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -105,6 +107,25 @@ class AppImage extends StatelessWidget {
       builder: (context) {
         return Image.asset(
           asset,
+          width: size ?? width,
+          height: size ?? height,
+        );
+      },
+    );
+  }
+
+  factory AppImage.file(
+    File file, {
+    double? size,
+    double? width,
+    double? height,
+    BorderRadius borderRadius = BorderRadius.zero,
+  }) {
+    return AppImage(
+      borderRadius: borderRadius,
+      builder: (context) {
+        return Image.file(
+          file,
           width: size ?? width,
           height: size ?? height,
         );

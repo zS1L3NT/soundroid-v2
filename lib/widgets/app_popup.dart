@@ -350,6 +350,7 @@ class AppSnackBar {
               width: MediaQuery.of(context).size.width - 102,
               extraHeight: 3,
               startAfter: const Duration(seconds: 1),
+              velocity: 60,
               style: const TextStyle(
                 color: Colors.white,
               ),

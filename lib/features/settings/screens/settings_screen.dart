@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void handleDeleteAccount() async {
     Navigator.of(context).pop();
 
-    final loader = AppLoader()..show(context);
+    AppLoader().show(context);
     final results = await Future.wait([
       context.read<ListenRepository>().deleteAll(),
       context.read<SearchRepository>().deleteAll(),
@@ -81,7 +81,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ).show(context);
     }
 
-    loader.hide(context);
     Navigator.of(context).pushAndRemoveUntil(
       WelcomeScreen.route(),
       (route) => false,
@@ -108,15 +107,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: "Profile",
           children: [
             const SizedBox(height: 8),
-            SimpleSettingsTile(
-              leading: AppImage.network(
-                "https://wiki.d-addicts.com/images/4/4c/IU.jpg",
-                borderRadius: BorderRadius.circular(20),
-                size: 40,
-              ),
-              title: "Zechariah Tan",
-              subtitle: "2100326D@student.tp.edu.sg",
-              child: const ProfileScreen(),
+            StreamBuilder<User?>(
+              stream: context.read<AuthenticationRepository>().currentUser,
+              builder: (context, snap) {
+                final user = snap.data;
+
+                return SimpleSettingsTile(
+                  leading: AppImage.network(
+                    user?.picture,
+                    borderRadius: BorderRadius.circular(20),
+                    size: 40,
+                  ),
+                  title: user?.name ?? "...",
+                  subtitle: user?.email ?? "...",
+                  child: const ProfileScreen(),
+                );
+              },
             ),
           ],
         ),
