@@ -39,13 +39,13 @@ export abstract class Route<BV = {}, QV = {}> {
 			}
 		}
 
-		let handle = this.handle.bind(this)
-
+		let handle = (next: () => Promise<void>) => next()
+		
 		for (const Middleware of this.middleware.reverse()) {
-			handle = () => new Middleware(this.req, this.res).handle(handle)
+			handle = (next: () => Promise<void>) => new Middleware(this.req, this.res).handle(next)
 		}
 
-		handle()
+		handle(this.handle.bind(this))
 			.catch(err => {
 				logger.error(err)
 				this.res.status(500).send(err)
