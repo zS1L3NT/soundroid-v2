@@ -21,7 +21,7 @@ class DownloadManager extends ChangeNotifier {
 
   final ApiRepository apiRepo;
   final PlaylistRepository playlistRepo;
-  late final Directory _directory;
+  late Directory _directory;
 
   /// The queue of pending downloads
   ///
@@ -126,8 +126,7 @@ class DownloadManager extends ChangeNotifier {
         response = await Client().send(Request("GET", url));
       } catch (e) {
         debugPrint("ERROR Pinging Download URL: $e");
-        notifyListeners();
-        return;
+        break;
       }
 
       int? contentLength;
@@ -149,8 +148,7 @@ class DownloadManager extends ChangeNotifier {
         }
       } catch (e) {
         debugPrint("ERROR Downloading file content: $e");
-        notifyListeners();
-        return;
+        break;
       }
 
       if (_queue?.isEmpty ?? _queue!.first != trackId) {
@@ -170,8 +168,7 @@ class DownloadManager extends ChangeNotifier {
         await file.writeAsBytes(bytes);
       } catch (e) {
         debugPrint("ERROR Writing downloaded content to file: $e");
-        notifyListeners();
-        return;
+        break;
       }
 
       _queue!.remove(trackId);
@@ -180,8 +177,9 @@ class DownloadManager extends ChangeNotifier {
       notifyListeners();
     }
 
-    _queue = null;
+    if (_queue?.isEmpty ?? false) _queue = null;
     _downloadProgress = null;
+    _isDownloading = false;
     notifyListeners();
 
     await Future.delayed(const Duration(seconds: 1));
