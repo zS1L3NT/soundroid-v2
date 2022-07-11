@@ -94,7 +94,11 @@ class _AppState extends State<App> {
                     : isEmailVerified
                         ? const MainScreen()
                         : const VerifyEmailScreen(showCountdown: false)
-                : const Center(child: CircularProgressIndicator()),
+                : const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
           );
         },
       ),
