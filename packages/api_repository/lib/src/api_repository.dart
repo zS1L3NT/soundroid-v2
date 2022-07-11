@@ -73,7 +73,12 @@ class ApiRepository {
   ///
   /// Caches all track results in the [trackBox] for future usage.
   Future<SearchResults> getSearchResults(String query) async {
-    final response = await get(Uri.parse("$_host/search?query=${Uri.encodeComponent(query)}"));
+    final response = await get(
+      Uri.parse("$_host/search?query=${Uri.encodeComponent(query)}"),
+      headers: {
+        "Authorization": "Bearer ${await getIdToken()}",
+      },
+    );
 
     if (response.statusCode == 200) {
       final searchResults = SearchResults.fromJson(jsonDecode(response.body));
