@@ -77,7 +77,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Enter the email address associated with your account and we'll send an email with instructions to reset your password",
+                  "Enter your new password below to reset your password.",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 32),
