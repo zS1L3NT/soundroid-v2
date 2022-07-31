@@ -47,9 +47,10 @@ class DownloadManager extends ChangeNotifier {
     if (!_directory.existsSync()) _directory.createSync();
 
     playlistRepo.getDownloadedTrackIds().listen((trackIds) {
-      calculateListDiff(_downloaded + (queue ?? []), trackIds)
-          .getUpdatesWithData()
-          .forEach((change) {
+      calculateListDiff(
+        (_downloaded + (queue ?? [])).reversed.toList(),
+        (trackIds).reversed.toList(),
+      ).getUpdatesWithData().forEach((change) {
         change.when(
           insert: (_, trackId) {
             download(trackId);
@@ -79,7 +80,7 @@ class DownloadManager extends ChangeNotifier {
 
   void download([String? trackId]) async {
     if (trackId != null && _queue != null && !_queue!.contains(trackId)) {
-      _queue!.insert(0, trackId);
+      _queue!.add(trackId);
       notifyListeners();
       return;
     }

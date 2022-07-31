@@ -162,6 +162,70 @@ class AppListItem extends StatelessWidget {
     );
   }
 
+  static Widget fromDownloadingTrackId(String trackId) {
+    return Builder(
+      builder: (context) {
+        final downloadManager = context.watch<DownloadManager>();
+
+        return FutureBuilder<Track>(
+          future: context.read<ApiRepository>().getTrack(trackId),
+          builder: (context, snap) {
+            final track = snap.data;
+
+            final double? progress = downloadManager.downloaded.contains(track?.id)
+                ? 1
+                : downloadManager.queue == null
+                    ? null
+                    : downloadManager.queue!.contains(track?.id)
+                        ? downloadManager.queue!.first == track!.id
+                            ? downloadManager.downloadProgress ?? 0
+                            : 0
+                        : 0;
+
+            return ListTile(
+              onTap: () {},
+              title: AppText.ellipse(
+                track?.title ?? "...",
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              subtitle: AppText.ellipse(
+                  track?.artists.map((artist) => artist.name).join(", ") ?? "...",
+                  style: Theme.of(context).textTheme.subtitle2),
+              leading: AppImage.network(
+                track?.thumbnail,
+                borderRadius: BorderRadius.circular(8),
+                size: 56,
+              ),
+              trailing: progress != null
+                  ? progress == 1
+                      ? AppIcon.primaryColor(
+                          Icons.download_done_rounded,
+                          size: 14,
+                        )
+                      : progress == 0
+                          ? const AppIcon(
+                              Icons.download_rounded,
+                              size: 20,
+                            )
+                          : Container(
+                              width: 18,
+                              height: 18,
+                              margin: const EdgeInsets.all(1),
+                              child: CircularProgressIndicator(
+                                value: progress,
+                                strokeWidth: 3,
+                              ),
+                            )
+                  : const SizedBox(),
+            );
+          },
+        );
+      },
+    );
+  }
+
   /// Adapter for rendering [Album] items.
   factory AppListItem.fromAlbum(
     Album album, {
