@@ -97,7 +97,7 @@ class ApiRepository {
   }
 
   /// Fetch lyrics for a [track]
-  Future<List<String>> getLyrics(Track track) async {
+  Future<Lyrics> getLyrics(Track track) async {
     final response = await get(
       Uri.parse(
         "$_host/lyrics?query=${Uri.encodeComponent(track.title)} ${Uri.encodeComponent(track.artists.map((artist) => artist.name).join(" "))}",
@@ -105,7 +105,7 @@ class ApiRepository {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body).cast<String>();
+      return Lyrics.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
       throw Exception("Failed to fetch lyrics");

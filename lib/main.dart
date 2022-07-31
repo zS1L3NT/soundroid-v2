@@ -6,6 +6,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -21,6 +22,8 @@ import 'package:soundroid/features/search/search.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   Track.directory = Directory((await getApplicationDocumentsDirectory()).path + "/tracks");
 

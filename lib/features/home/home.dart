@@ -1,6 +1,8 @@
+export 'screens/downloads_screen.dart';
 export 'screens/home_screen.dart';
 export 'screens/main_screen.dart';
 export 'widgets/artist_section.dart';
+export 'widgets/downloads_app_bar.dart';
 export 'widgets/home_app_bar.dart';
 export 'widgets/horizontal_tracks.dart';
 export 'widgets/main_bottom_app_bar.dart';

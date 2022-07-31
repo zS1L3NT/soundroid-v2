@@ -23,7 +23,7 @@ class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
         builder: (context, snap) {
           final current = snap.data;
 
-          return FutureBuilder<List<String>>(
+          return FutureBuilder<Lyrics>(
             future: current != null ? context.read<ApiRepository>().getLyrics(current) : null,
             builder: (context, snap) {
               if (snap.hasError) {
@@ -47,21 +47,29 @@ class _LyricsScreenState extends KeptAliveState<LyricsScreen> {
                 return const CircularProgressIndicator();
               }
 
+              final lyrics = snap.data!;
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                child: ListView.separated(
-                  itemCount: snap.data!.length,
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemBuilder: (context, index) {
-                    return Text(
-                      snap.data![index],
-                      style: const TextStyle(
-                        fontSize: 17,
-                        height: 2,
-                      ),
-                      textAlign: TextAlign.center,
+                child: StreamBuilder<Duration>(
+                  stream: context.read<MusicProvider>().player.positionStream,
+                  builder: (context, snap) {
+                    final position = snap.data ?? Duration.zero;
+
+                    return ListView.builder(
+                      itemCount: lyrics.lines.length,
+                      itemBuilder: (context, index) {
+                        return Text(
+                          lyrics.lines[index],
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: lyrics.times == null
+                                ? Theme.of(context).textTheme.bodyText2!.color
+                                : position.inSeconds > (lyrics.times![index] - 1)
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).textTheme.bodyText2!.color,
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
