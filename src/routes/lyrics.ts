@@ -1,6 +1,7 @@
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import googleIt from "google-it"
 import { useTry } from "no-try"
+import similarity from "string-similarity"
 import { OBJECT, STRING } from "validate-any"
 
 import { Route } from "../setup"
@@ -11,6 +12,40 @@ export class GET extends Route<any, { query: string }> {
 	})
 
 	async handle() {
+		const [googleLyrics, textylLyrics] = await Promise.all([
+			this.getLyricsFromGoogle(),
+			this.getLyricsFromTextyl()
+		])
+
+		if (textylLyrics === null) {
+			if (googleLyrics === null) {
+				return this.throw("Failed to find lyrics for the search query")
+			} else {
+				return this.respond(googleLyrics)
+			}
+		} else if (googleLyrics === null) {
+			return this.respond(textylLyrics)
+		}
+
+		if (
+			similarity.compareTwoStrings(
+				googleLyrics.lyrics
+					.join(" ")
+					.replace(/[\n ]*/g, " ")
+					.toLowerCase(),
+				textylLyrics.lyrics
+					.join(" ")
+					.replace(/[\n ]*/g, " ")
+					.toLowerCase()
+			) >= 0.8
+		) {
+			return this.respond(textylLyrics)
+		} else {
+			return this.respond(googleLyrics)
+		}
+	}
+
+	async getLyricsFromGoogle() {
 		const results = await googleIt({
 			query: `${this.query.query} site:genius.com`,
 			"no-display": true
@@ -22,8 +57,7 @@ export class GET extends Route<any, { query: string }> {
 			.at(0)
 
 		if (!result) {
-			this.throw("Failed to find results on Google for search query")
-			return
+			return null
 		}
 
 		const html = (await axios.get<string>(result.link)).data
@@ -38,8 +72,7 @@ export class GET extends Route<any, { query: string }> {
 			.at(0)?.songPage?.lyricsData?.body
 
 		if (lyrics === undefined) {
-			this.throw("Failed to fetch lyrics from genius.com")
-			return
+			return null
 		}
 
 		const getLyrics = (lyrics: any): string => {
@@ -58,13 +91,27 @@ export class GET extends Route<any, { query: string }> {
 			return ""
 		}
 
-		this.respond(
-			getLyrics(lyrics)
+		return {
+			lyrics: getLyrics(lyrics)
 				.replaceAll(/(\[.*\])/g, "")
-				.replaceAll(/\n+/g, "\n")
+				.replaceAll(/\n{3,}/g, "\n\n")
 				.trim()
-				.split("\n")
-		)
-		return
+				.split("\n"),
+			times: null
+		}
+	}
+
+	async getLyricsFromTextyl() {
+		try {
+			const result = <AxiosResponse<{ seconds: number; lyrics: string }[]>>(
+				await axios.get(`https://api.textyl.co/api/lyrics?q=${this.query.query}`)
+			)
+			return {
+				lyrics: result.data.map(({ lyrics }) => lyrics),
+				times: result.data.map(({ seconds }) => seconds)
+			}
+		} catch (e) {
+			return null
+		}
 	}
 }
