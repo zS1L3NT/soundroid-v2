@@ -29,11 +29,11 @@ export class GET extends Route<any, { query: string }> {
 
 		if (
 			similarity.compareTwoStrings(
-				googleLyrics.lyrics
+				googleLyrics.lines
 					.join(" ")
 					.replace(/[\n ]*/g, " ")
 					.toLowerCase(),
-				textylLyrics.lyrics
+				textylLyrics.lines
 					.join(" ")
 					.replace(/[\n ]*/g, " ")
 					.toLowerCase()
@@ -92,7 +92,7 @@ export class GET extends Route<any, { query: string }> {
 		}
 
 		return {
-			lyrics: getLyrics(lyrics)
+			lines: getLyrics(lyrics)
 				.replaceAll(/(\[.*\])/g, "")
 				.replaceAll(/\n{3,}/g, "\n\n")
 				.trim()
@@ -107,7 +107,7 @@ export class GET extends Route<any, { query: string }> {
 				await axios.get(`https://api.textyl.co/api/lyrics?q=${this.query.query}`)
 			)
 			return {
-				lyrics: result.data.map(({ lyrics }) => lyrics),
+				lines: result.data.map(({ lyrics }) => lyrics),
 				times: result.data.map(({ seconds }) => seconds)
 			}
 		} catch (e) {
