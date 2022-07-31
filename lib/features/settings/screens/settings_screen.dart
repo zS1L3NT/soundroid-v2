@@ -1,3 +1,4 @@
+import 'package:audio_session/audio_session.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
@@ -6,6 +7,7 @@ import 'package:playlist_repository/playlist_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:search_repository/search_repository.dart';
 import 'package:soundroid/features/authentication/authentication.dart';
+import 'package:soundroid/features/music/music.dart';
 import 'package:soundroid/features/settings/settings.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -64,11 +66,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       WelcomeScreen.route(),
       (route) => false,
     );
+
+    context.read<MusicProvider>().playTrackIds([]);
+    await (await AudioSession.instance).setActive(false);
   }
 
   void handleLogout() async {
     if (await context.read<AuthenticationRepository>().logout()) {
       Navigator.of(context).pushReplacement(WelcomeScreen.route());
+
+      context.read<MusicProvider>().playTrackIds([]);
+      await (await AudioSession.instance).setActive(false);
     } else {
       AppSnackBar.error("Failed to sign out").show(context);
     }
