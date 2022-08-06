@@ -1,6 +1,6 @@
 # SounDroid v2
 
-![License](https://img.shields.io/github/license/zS1L3NT/dart-flutter-souondroid?style=for-the-badge) ![Languages](https://img.shields.io/github/languages/count/zS1L3NT/dart-flutter-souondroid?style=for-the-badge) ![Top Language](https://img.shields.io/github/languages/top/zS1L3NT/dart-flutter-souondroid?style=for-the-badge) ![Commit Activity](https://img.shields.io/github/commit-activity/y/zS1L3NT/dart-flutter-souondroid?style=for-the-badge) ![Last commit](https://img.shields.io/github/last-commit/zS1L3NT/dart-flutter-souondroid?style=for-the-badge)
+![License](https://img.shields.io/github/license/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Languages](https://img.shields.io/github/languages/count/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Top Language](https://img.shields.io/github/languages/top/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Commit Activity](https://img.shields.io/github/commit-activity/y/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Last commit](https://img.shields.io/github/last-commit/zS1L3NT/dart-flutter-soundroid?style=for-the-badge)
 
 SounDroid v2 is a rebuild of the original SounDroid v1 [here](https://github.com/zS1L3NT/andorid-soundroid-v1).<br>
 The backend for SounDroid v2 is [here](https://github.com/zS1L3NT/web-express-soundroid).<br>
