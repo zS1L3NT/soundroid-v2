@@ -27,22 +27,6 @@ class PlaylistScreen extends StatelessWidget {
     );
   }
 
-  void onFavouriteClick(BuildContext context, bool favourite) {
-    context.read<PlaylistRepository>().updatePlaylist(
-          playlist.copyWith.favourite(
-            !favourite,
-          ),
-        );
-  }
-
-  void onDownloadClick(BuildContext context, bool download) {
-    context.read<PlaylistRepository>().updatePlaylist(
-          playlist.copyWith.download(
-            !download,
-          ),
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     final controller = ScrollController();
@@ -90,7 +74,12 @@ class PlaylistScreen extends StatelessWidget {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: playlist.favourite ? Theme.of(context).primaryColor : null,
-                                  onPressed: () => onFavouriteClick(context, playlist.favourite),
+                                  onPressed: () =>
+                                      context.read<PlaylistRepository>().updatePlaylist(
+                                            playlist.copyWith.favourite(
+                                              !playlist.favourite,
+                                            ),
+                                          ),
                                 )
                               : AppIcon.loading(color: Colors.black),
                           playlist != null
@@ -99,15 +88,29 @@ class PlaylistScreen extends StatelessWidget {
                                       ? AppIcon.primaryColor(
                                           Icons.download_done_rounded,
                                           onPressed: () =>
-                                              onDownloadClick(context, playlist.download),
+                                              context.read<PlaylistRepository>().updatePlaylist(
+                                                    playlist.copyWith.download(
+                                                      !playlist.download,
+                                                    ),
+                                                  ),
                                         )
                                       : AppIcon.loading(
                                           value: downloaded / playlist.trackIds.length,
-                                          onTap: () => onDownloadClick(context, playlist.download),
+                                          onTap: () =>
+                                              context.read<PlaylistRepository>().updatePlaylist(
+                                                    playlist.copyWith.download(
+                                                      !playlist.download,
+                                                    ),
+                                                  ),
                                         )
                                   : AppIcon.primaryColor(
                                       Icons.download_rounded,
-                                      onPressed: () => onDownloadClick(context, playlist.download),
+                                      onPressed: () =>
+                                          context.read<PlaylistRepository>().updatePlaylist(
+                                                playlist.copyWith.download(
+                                                  !playlist.download,
+                                                ),
+                                              ),
                                     )
                               : AppIcon.loading(color: Colors.black)
                         ],
