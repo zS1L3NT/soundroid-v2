@@ -44,13 +44,14 @@ class _SigninScreenState extends State<SigninScreen> {
 
   void handleGoogleSignIn() async {
     setState(() => _isLoading = true);
-    if (await context.read<AuthenticationRepository>().signInWithGoogle()) {
+    final error = await context.read<AuthenticationRepository>().loginWithGoogle();
+    if (error == null) {
       Navigator.of(context).pushAndRemoveUntil(
         MainScreen.route(),
         (_) => false,
       );
     } else {
-      AppSnackBar.error("Failed to sign in with Google").show(context);
+      AppSnackBar.error(error).show(context);
     }
     setState(() => _isLoading = false);
   }

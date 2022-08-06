@@ -44,32 +44,67 @@ class AuthenticationRepository {
     return FirebaseAuth.instance.currentUser!.getIdToken();
   }
 
-  Future<bool> signInWithGoogle() async {
+  Future<String?> loginWithGoogle() async {
     try {
       final account = await GoogleSignIn().signIn();
-      final authentication = await account?.authentication;
+      if (account == null) {
+        return "Google login was cancelled";
+      }
 
+      final providers = await FirebaseAuth.instance.fetchSignInMethodsForEmail(account.email);
+      if (providers.isEmpty) {
+        return "Please register for an account before logging in";
+      }
+
+      final authentication = await account.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: authentication?.accessToken,
-        idToken: authentication?.idToken,
+        accessToken: authentication.accessToken,
+        idToken: authentication.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return null;
+    } catch (e) {
+      debugPrint("ERROR Google Sign In Failed: $e");
+      return "Failed to login with Google";
+    }
+  }
+
+  Future<String?> registerWithGoogle() async {
+    try {
+      final account = await GoogleSignIn().signIn();
+      if (account == null) {
+        return "Google register was cancelled";
+      }
+
+      final providers = await FirebaseAuth.instance.fetchSignInMethodsForEmail(account.email);
+      if (providers.isNotEmpty) {
+        if (providers.length == 1 && providers.first == EmailAuthProvider.PROVIDER_ID) {
+          return "Please login with the email and password you registered with";
+        } else {
+          return "Please login with your Google account";
+        }
+      }
+
+      final authentication = await account.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: authentication.accessToken,
+        idToken: authentication.idToken,
       );
 
       final user = await FirebaseAuth.instance.signInWithCredential(credential);
+      await _document.set(
+        User(
+          email: user.user!.email!,
+          name: user.user!.displayName!,
+          likedTrackIds: const [],
+        ),
+      );
 
-      if (!(await _document.get()).exists) {
-        await _document.set(
-          User(
-            email: user.user!.email!,
-            name: user.user!.displayName!,
-            likedTrackIds: const [],
-          ),
-        );
-      }
-
-      return true;
+      return null;
     } catch (e) {
       debugPrint("ERROR Google Sign In Failed: $e");
-      return false;
+      return "Failed to register with Google";
     }
   }
 
