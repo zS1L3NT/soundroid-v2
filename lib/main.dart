@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:listen_repository/listen_repository.dart';
@@ -51,7 +52,7 @@ void main() async {
   );
 
   // Initialize Notification Channels
-  AwesomeNotifications().initialize(
+  await AwesomeNotifications().initialize(
     null,
     [
       NotificationChannel(
@@ -66,6 +67,8 @@ void main() async {
       )
     ],
   );
+
+  FlutterNativeSplash.remove();
 
   final authenticationRepo = AuthenticationRepository();
 
