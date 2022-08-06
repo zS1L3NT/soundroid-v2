@@ -169,6 +169,12 @@ class MusicProvider with ChangeNotifier {
   /// Starts from the [from] position if defined or the first item in the queue.
   Future<void> playTrackIds(List<String> trackIds, [int from = 0]) async {
     try {
+      await _player.stop();
+    } catch (e) {
+      debugPrint("ERROR AudioPlayer.stop(): $e");
+    }
+
+    try {
       await _player.setAudioSource(
         QueueAudioSource(
           children: await Future.wait<Track>([
