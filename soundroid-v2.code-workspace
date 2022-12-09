@@ -10,5 +10,16 @@
             "path": "."
         }
     ],
-    "settings": {}
+    "settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true,
+            "dart-flutter-soundroid": true,
+            "web-express-soundroid-v2": true
+        }
+    }
 }

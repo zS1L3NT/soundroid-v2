@@ -1,15 +1,24 @@
 # SounDroid v2
 
-![License](https://img.shields.io/github/license/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Languages](https://img.shields.io/github/languages/count/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Top Language](https://img.shields.io/github/languages/top/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Commit Activity](https://img.shields.io/github/commit-activity/y/zS1L3NT/dart-flutter-soundroid?style=for-the-badge) ![Last commit](https://img.shields.io/github/last-commit/zS1L3NT/dart-flutter-soundroid?style=for-the-badge)
+![License](https://img.shields.io/github/license/zS1L3NT/soundroid-v2?style=for-the-badge) ![Languages](https://img.shields.io/github/languages/count/zS1L3NT/soundroid-v2?style=for-the-badge) ![Top Language](https://img.shields.io/github/languages/top/zS1L3NT/soundroid-v2?style=for-the-badge) ![Commit Activity](https://img.shields.io/github/commit-activity/y/zS1L3NT/soundroid-v2?style=for-the-badge) ![Last commit](https://img.shields.io/github/last-commit/zS1L3NT/soundroid-v2?style=for-the-badge)
 
-SounDroid v2 is a rebuild of the original SounDroid v1 [here](https://github.com/zS1L3NT/andorid-soundroid-v1).<br>
-The backend for SounDroid v2 is [here](https://github.com/zS1L3NT/web-express-soundroid).<br>
+SounDroid v2 is a rebuild of the original [SounDroid v1](https://github.com/zS1L3NT/soundroid-v1).
 
 View the video demonstration of the application [here](https://youtu.be/74Z8wLyDtRU).
 
 ## Motivation
 
 I need a deliverable for my MBAP (Mobile Application Development) submission and I wanted to rebuild my original SounDroid v1 application.
+
+## Subrepositories
+
+### [`dart-flutter-soundroid`](dart-flutter-soundroid)
+
+The Flutter application
+
+### [`web-express-soundroid-v2`](web-express-soundroid-v2)
+
+The Express backend for converting YouTube Videos to MP3
 
 ## Features
 
@@ -66,6 +75,23 @@ I need a deliverable for my MBAP (Mobile Application Development) submission and
 
 ## Usage
 
+### Setup the Firebase Project
+
+Instructions are listed in [Firebase-Setup.md](Firebase-Setup.md).
+
+### Setup the Express Backend
+
+Copy the .env.example file to .env then fill in the correct project credentials
+
+```
+$ npm i
+$ npm run dev
+```
+
+### Setup the Flutter App
+
+Replace all instances of `http://soundroid.zectan.com` with your own backend URL.
+
 ```
 $ flutter pub get
 $ flutter run
@@ -118,3 +144,29 @@ $ flutter run
         -   [![path_provider](https://img.shields.io/badge/path_provider-%5E2.0.11-blue?style=flat-square)](https://pub.dev/packages/path_provider)
         -   [![rxdart](https://img.shields.io/badge/rxdart-%5E0.27.4-blue?style=flat-square)](https://pub.dev/packages/rxdart)
         -   [![uni_links](https://img.shields.io/badge/uni_links-%5E0.5.1-blue?style=flat-square)](https://pub.dev/packages/uni_links)
+-   Express
+    -   TypeScript
+        -   [![@types/express](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/@types/express?style=flat-square)](https://npmjs.com/package/@types/express)
+        -   [![@types/node](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/@types/node?style=flat-square)](https://npmjs.com/package/@types/node)
+        -   [![@types/sharp](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/@types/sharp?style=flat-square)](https://npmjs.com/package/@types/sharp)
+        -   [![@types/spotify-web-api-node](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/@types/spotify-web-api-node?style=flat-square)](https://npmjs.com/package/@types/spotify-web-api-node)
+        -   [![@types/string-similarity](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/@types/string-similarity?style=flat-square)](https://npmjs.com/package/@types/string-similarity)
+        -   [![ts-node-dev](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/ts-node-dev?style=flat-square)](https://npmjs.com/package/ts-node-dev)
+        -   [![typescript](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dev/typescript?style=flat-square)](https://npmjs.com/package/typescript)
+    -   Firebase
+        -   [![firebase-admin](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/firebase-admin?style=flat-square)](https://npmjs.com/package/firebase-admin)
+        -   [![google-it](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/google-it?style=flat-square)](https://npmjs.com/package/google-it)
+    -   YouTube APIs
+        -   [![ytdl-core](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/ytdl-core?style=flat-square)](https://npmjs.com/package/ytdl-core)
+        -   [![ytmusic-api](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/ytmusic-api?style=flat-square)](https://npmjs.com/package/ytmusic-api)
+    -   Miscellaneous
+        -   [![axios](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/axios?style=flat-square)](https://npmjs.com/package/axios)
+        -   [![colors](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/colors?style=flat-square)](https://npmjs.com/package/colors)
+        -   [![dotenv](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/dotenv?style=flat-square)](https://npmjs.com/package/dotenv)
+        -   [![express](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/express?style=flat-square)](https://npmjs.com/package/express)
+        -   [![no-try](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/no-try?style=flat-square)](https://npmjs.com/package/no-try)
+        -   [![sharp](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/sharp?style=flat-square)](https://npmjs.com/package/sharp)
+        -   [![spotify-web-api-node](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/spotify-web-api-node?style=flat-square)](https://npmjs.com/package/spotify-web-api-node)
+        -   [![string-similarity](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/string-similarity?style=flat-square)](https://npmjs.com/package/string-similarity)
+        -   [![tracer](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/tracer?style=flat-square)](https://npmjs.com/package/tracer)
+        -   [![validate-any](https://img.shields.io/github/package-json/dependency-version/zS1L3NT/web-express-soundroid-v2/validate-any?style=flat-square)](https://npmjs.com/package/validate-any)
