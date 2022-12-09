@@ -1,0 +1,20 @@
+name: listen_repository
+description: Dart package which manages listens.
+publish_to: none
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+  
+dependencies: 
+  authentication_repository:
+    path: ../authentication_repository
+  cloud_firestore: ^3.1.17
+  copy_with_extension: ^4.0.0
+  equatable: ^2.0.3
+  flutter: 
+    sdk: flutter
+
+dev_dependencies:
+  build_runner: ^2.1.11
+  copy_with_extension_gen: ^4.0.0
+  flutter_lints: ^1.0.0
