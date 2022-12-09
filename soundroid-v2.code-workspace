@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            "path": "web-express-soundroid-v2"
+        },
+        {
+            "path": "dart-flutter-soundroid"
+        },
+        {
+            "path": "."
+        }
+    ],
+    "settings": {}
+}
