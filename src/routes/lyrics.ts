@@ -18,7 +18,7 @@ export class GET extends Route<any, { query: string }> {
 
 		const result = results
 			.filter(result => result.link.match(/^https:\/\/genius\.com\/[\w-]+$/))
-			.filter(result => !result.title.match(/\(Romanized|\w+ Translation\) Lyrics - Genius$/))
+			.filter(result => !result.title.match(/\(Romanized|\w+ Translation\) Lyrics - /))
 			.at(0)
 
 		if (!result) {
