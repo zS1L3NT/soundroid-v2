@@ -1,6 +1,6 @@
 {
 	"name": "web-express-soundroid-v2",
-	"description": "Node API for SounDroid",
+	"description": "Express Server for SounDroid",
 	"main": "dist/app.js",
 	"author": "zS1L3NT <zechariahtan144@gmail.com> (https://www.zectan.com)",
 	"scripts": {

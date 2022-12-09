@@ -1,6 +1,6 @@
 FROM node:16
 
-WORKDIR /home/web-express-soundroid
+WORKDIR /home/web-express-soundroid-v2
 
 COPY . .
 

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:playlist_repository/playlist_repository.dart';
+import 'package:soundroid/env.dart';
 
 class DownloadManager extends ChangeNotifier {
   DownloadManager({
@@ -120,7 +121,7 @@ class DownloadManager extends ChangeNotifier {
       List<List<int>> chunks = [];
       int downloaded = 0;
 
-      final url = Uri.parse("http://soundroid.zectan.com/api/download?videoId=$trackId");
+      final url = Uri.parse("$API_URL/api/download?videoId=$trackId");
 
       late StreamedResponse response;
       try {

@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:soundroid/env.dart';
 
 part 'track.g.dart';
 
@@ -32,9 +33,7 @@ class Track extends ProgressiveAudioSource {
     bool online = false,
   }) : super(
           Uri.parse(
-            online
-                ? "http://soundroid.zectan.com/api/download?videoId=$id"
-                : "file://${directory.path}/$id.mp3",
+            online ? "$API_URL/api/download?videoId=$id" : "file://${directory.path}/$id.mp3",
           ),
           tag: MediaItem(
             id: id,

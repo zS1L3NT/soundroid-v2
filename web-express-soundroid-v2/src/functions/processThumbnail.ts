@@ -5,7 +5,7 @@ export default (url = "") => {
 		return url.replace(/w\d+-h\d+/, "w500-h500")
 	} else {
 		const host =
-			process.env.NODE_ENV === "production" ? "soundroid.zectan.com" : "localhost:5190"
-		return `http://${host}/api/thumbnail?url=` + encodeURIComponent(url)
+			process.env.NODE_ENV === "production" ? process.env.API_URL : "http://localhost:5190"
+		return `${host}/api/thumbnail?url=` + encodeURIComponent(url)
 	}
 }

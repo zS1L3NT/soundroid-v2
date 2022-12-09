@@ -1,5 +1,6 @@
 import 'package:api_repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:soundroid/env.dart';
 import 'package:soundroid/features/home/home.dart';
 import 'package:soundroid/widgets/widgets.dart';
 
@@ -21,7 +22,7 @@ class ArtistSectionWidget extends StatelessWidget {
           child: Row(
             children: [
               AppImage.network(
-                "http://soundroid.zectan.com/api/thumbnail?artistId=${section.artist.id}",
+                "$API_URL/api/thumbnail?artistId=${section.artist.id}",
                 borderRadius: BorderRadius.circular(28),
                 size: 56,
               ),

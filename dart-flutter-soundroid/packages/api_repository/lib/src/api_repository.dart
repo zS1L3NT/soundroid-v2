@@ -5,6 +5,7 @@ import 'package:api_repository/src/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
+import 'package:soundroid/env.dart';
 
 /// The API Repository contains all API calls to the SounDroid API.
 class ApiRepository {
@@ -25,7 +26,7 @@ class ApiRepository {
   final Future<String> Function() getIdToken;
 
   /// The base URL for the SounDroid API
-  String get _host => "http://soundroid.zectan.com/api";
+  String get _host => "$API_URL/api";
 
   late final _connection = Connection(host: _host);
 

@@ -81,7 +81,7 @@ Instructions are listed in [Firebase-Setup.md](Firebase-Setup.md).
 
 ### Setup the Express Backend
 
-Copy the .env.example file to .env then fill in the correct project credentials
+Copy the `.env.example` file to `.env` then fill in the correct project credentials
 
 ```
 $ npm i
@@ -90,7 +90,7 @@ $ npm run dev
 
 ### Setup the Flutter App
 
-Replace all instances of `http://soundroid.zectan.com` with your own backend URL.
+Copy the `env.example.dart` file to `env.dart` then fill in the correct project credentials
 
 ```
 $ flutter pub get
