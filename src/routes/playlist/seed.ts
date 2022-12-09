@@ -1,14 +1,13 @@
 import admin from "firebase-admin"
-import { Playlist, Song } from "../all"
+import { Playlist, Song } from "../../types.d"
+import { Request, Response } from "express"
 
-export default async (
-	TAG: string,
-	firestore: admin.firestore.Firestore,
-	userId: string
-) => {
-	console.log(TAG, "Defaulting for userId: " + userId)
+const db = admin.firestore()
 
-	const COMTPlaylistId = firestore.collection("playlists").doc().id
+export const POST = async (req: Request, res: Response) => {
+	const { userId } = req.body as { userId: string }
+
+	const COMTPlaylistId = db.collection("playlists").doc().id
 	const COMTPlaylist: Playlist = {
 		id: COMTPlaylistId,
 		name: "COMT Default",
@@ -47,17 +46,11 @@ export default async (
 		}
 	]
 
-	const IUPlaylistId = firestore.collection("playlists").doc().id
+	const IUPlaylistId = db.collection("playlists").doc().id
 	const IUPlaylist: Playlist = {
 		id: IUPlaylistId,
 		name: "IU Best Songs",
-		order: [
-			"v7bnOxV4jAc",
-			"0-q1KafFCLU",
-			"TqIAndOnd74",
-			"JSOBF_WhqEM",
-			"I0_ZXHzKysc"
-		],
+		order: ["v7bnOxV4jAc", "0-q1KafFCLU", "TqIAndOnd74", "JSOBF_WhqEM", "I0_ZXHzKysc"],
 		cover: "https://akns-images.eonline.com/eol_images/Entire_Site/20181026/rs_600x600-181126230834-e-asia-iu-things-to-know-thumbnail.jpg?fit=around%7C1200:1200&output-quality=90&crop=1200:1200;center,top",
 		colorHex: "#A88867",
 		userId
@@ -110,25 +103,17 @@ export default async (
 		}
 	]
 
-	await firestore
-		.collection("playlists")
-		.doc(COMTPlaylistId)
-		.set(COMTPlaylist)
+	await db.collection("playlists").doc(COMTPlaylistId).set(COMTPlaylist)
 
-	for (let i = 0, il = COMTSongs.length; i < il; i++) {
-		const COMTSong = COMTSongs[i]
-		await firestore
-			.collection("songs")
-			.add(COMTSong)
+	for (const COMTSong of COMTSongs) {
+		await db.collection("songs").add(COMTSong)
 	}
 
-	await firestore
-		.collection("playlists")
-		.doc(IUPlaylistId)
-		.set(IUPlaylist)
+	await db.collection("playlists").doc(IUPlaylistId).set(IUPlaylist)
 
-	for (let i = 0, il = IUSongs.length; i < il; i++) {
-		const IUSong = IUSongs[i]
-		await firestore.collection("songs").add(IUSong)
+	for (const IUSong of IUSongs) {
+		await db.collection("songs").add(IUSong)
 	}
+
+	res.status(200).send({})
 }
